@@ -16,10 +16,6 @@ from pygments.token import Keyword, Name, Comment, String, Error, \
 import urwid
 
 # =============================================================================
-
-TYPING_DELAY = 0.130
-
-# =============================================================================
 # Utility Classes
 # =============================================================================
 
@@ -128,9 +124,10 @@ class State(Enum):
 
 
 class CodeListBox(urwid.ListBox):
-    def __init__(self, state=State.WAITING):
+    def __init__(self, typing_delay, state):
         self.body = urwid.SimpleListWalker([AppendableText('')])
         self.state = state
+        self.typing_delay = typing_delay
 
         super(CodeListBox, self).__init__(self.body)
 
@@ -193,14 +190,14 @@ class CodeListBox(urwid.ListBox):
                 self.body.contents[-1].append( (colour, text[0]) )
                 self.typing = list(text[1:])
                 self.typing_token = token
-                self.loop.set_alarm_in(TYPING_DELAY, self.typewriter)
+                self.loop.set_alarm_in(self.typing_delay, self.typewriter)
         else:
             # get the next letter off the typing queue and add it to our
             # widget
             colour = TokenLookup.get_colouring(self.typing_token)
             letter = self.typing.pop(0)
             self.body.contents[-1].append( (colour, letter) )
-            self.loop.set_alarm_in(TYPING_DELAY, self.typewriter)
+            self.loop.set_alarm_in(self.typing_delay, self.typewriter)
 
     def keypress(self, size, key):
         key = super(CodeListBox, self).keypress(size, key)
@@ -235,17 +232,41 @@ class CodeListBox(urwid.ListBox):
 parser = argparse.ArgumentParser(description=('Displays a highlighted version '
     'of python text to the screen as if it is being typed'))
 parser.add_argument('filename', help='Name of file containing python to parse')
+parser.add_argument('-c', '--continuous', action='store_true', 
+    help=('Instead of prentending to type like a human, just dump the file to '
+        'the screen'))
+
+# set up the typing_delay / words_per_minute options
+delay = 0.130
+group = parser.add_mutually_exclusive_group()
+group.add_argument('-d', '--delay', type=int, 
+    help=('Amount of time between each letter when in typewriter mode. '
+        'Specified in milliseconds. Defaults to %s' % delay * 1000))
+group.add_argument('-w', '--wpm', type=int, help=('Number of words per '
+    'minute that the typing speed should look like'))
+
 args = parser.parse_args()
 
+# --- setup our parms based on our args
+
+# calulcate our delay
+if args.delay:
+    delay = args.delay / 1000
+elif args.wpm:
+    # in typing class, wpm calc is based on 5 letter words, change number of
+    # words into letters per second then invert to get delay
+    delay = 1 / (5 * args.wpm  / 60)
+
+state = State.WAITING
+if args.continuous:
+    state = State.CONTINUOUS
+
+# --- Read our file and build our widgets
 # get file contents and use urwid to display
 with open(args.filename) as f:
     contents = f.read()
 
-#box = CodeListBox(state=State.CONTINUOUS)
-box = CodeListBox()
-
+box = CodeListBox(delay, state)
 loop = urwid.MainLoop(box, TokenLookup.palette)
 box.setup(loop, contents)
-
-#loop.set_alarm_in(1, do_append)
 loop.run()
