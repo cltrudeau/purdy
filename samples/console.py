@@ -1,6 +1,6 @@
 >>> # This is a comment
 >>> numbers = [6, 3, 9, 1]
->>>
+>>> 
 >>> sorted(numbers)
 [1, 3, 6, 9]
 >>> numbers

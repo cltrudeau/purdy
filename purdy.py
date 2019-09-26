@@ -120,22 +120,87 @@ class AppendableText(urwid.Text):
 
 
 class State(Enum):
-    WAITING = 0
-    TYPING  = 1
+    CONTINUOUS = 0
+
+    WAITING = 1
+    ABOUT_TO_TYPE = 2
+    TYPING  = 2
 
 
 class CodeListBox(urwid.ListBox):
-    def __init__(self, code):
+    def __init__(self, state=State.WAITING):
         self.body = urwid.SimpleListWalker([AppendableText('')])
-        self.state = State.WAITING
+        self.state = state
+
+        super(CodeListBox, self).__init__(self.body)
+
+    def setup(self, loop, code):
+        # call this method once the main loop has been created
+        self.loop = loop
 
         # parse and store the pygment'd code
         lexer = PythonConsoleLexer()
         self.code_tokens = list(lexer.get_tokens(code))
         self.code_index = 0
         self.code_len = len(self.code_tokens)
+        self.typing = []
+        self.typing_token = None
 
-        super(CodeListBox, self).__init__(self.body)
+        if self.state == State.CONTINUOUS:
+            self.show_tokens()
+        else:
+            self.show_tokens(Generic.Prompt)
+            self.state = State.ABOUT_TO_TYPE
+
+    def show_tokens(self, stop_after=None):
+        """Adds colourized contents to our list box. If "stop_after" is given, 
+        it returns after adding the token of the given type
+        """
+        for token, text in self.code_tokens[self.code_index:]:
+            self.code_index += 1
+            colour = TokenLookup.get_colouring(token)
+
+            if text == '\n':
+                # hit a CR, add a new line to our output
+                self.body.contents.append(AppendableText(''))
+            else:
+                # just append whatever we have
+                self.body.contents[-1].append( (colour, text) )
+
+            if token == stop_after:
+                break
+
+    def typewriter(self, loop=None, data=None):
+        if self.typing == []:
+            # nothing in queue, start typing the next token
+            token, text = self.code_tokens[self.code_index]
+            colour = TokenLookup.get_colouring(token)
+            self.code_index += 1
+
+            if text == '\n':
+                # hit a CR, add a new line to our output, leave typewrite,
+                # print tokens until next prompt
+                self.body.contents.append(AppendableText(''))
+                self.show_tokens(stop_after=Generic.Prompt)
+                self.state = State.ABOUT_TO_TYPE
+                return
+            elif text == '':
+                # lexer spits out empty text sometimes, need to ignore it
+                self.loop.set_alarm_in(0, self.typewriter)
+            else:
+                # insert first letter into our text widget, keep the rest
+                # and set a timer for the next letter
+                self.body.contents[-1].append( (colour, text[0]) )
+                self.typing = list(text[1:])
+                self.typing_token = token
+                self.loop.set_alarm_in(TYPING_DELAY, self.typewriter)
+        else:
+            # get the next letter off the typing queue and add it to our
+            # widget
+            colour = TokenLookup.get_colouring(self.typing_token)
+            letter = self.typing.pop(0)
+            self.body.contents[-1].append( (colour, letter) )
+            self.loop.set_alarm_in(TYPING_DELAY, self.typewriter)
 
     def keypress(self, size, key):
         key = super(CodeListBox, self).keypress(size, key)
@@ -147,27 +212,20 @@ class CodeListBox(urwid.ListBox):
         if self.code_index >= self.code_len:
             return
 
+        # you should only get here if we are not in CONTINUOUS mode
         if self.state == State.WAITING:
-            # loop through our code until we hit a prompt or a "\n"
+            # want to stop after we see a prompt
+            self.show_tokens(stop_after=Generic.Prompt)
 
-            for token, text in self.code_tokens[self.code_index:]:
-                self.code_index += 1
-                colour = TokenLookup.get_colouring(token)
+            # after we printed the prompt we want to go into typewriter mode,
+            # set the state and wait for the next keypress
+            self.state = State.ABOUT_TO_TYPE
+        elif self.state == State.ABOUT_TO_TYPE:
+            # got the keypress while waiting to type, start typing
+            self.state = State.TYPING
+            self.typewriter()
 
-                #if token == Generic.Prompt:
-                #    # in case of a prompt, print it and then wait for next
-                #    # keypress
-                #    self.body.contents[-1].append(text)
-                #    break
-
-                if text == '\n':
-                    # hit a CR, add a new line to our output
-                    self.body.contents.append(AppendableText(''))
-                else:
-                    # just append whatever we have
-                    self.body.contents[-1].append( (colour, text) )
-
-            #import pudb; pudb.set_trace()
+        # else: State.TYPING, ignore keypress
 
 # =============================================================================
 # Main
@@ -176,15 +234,18 @@ class CodeListBox(urwid.ListBox):
 # define command line arguments
 parser = argparse.ArgumentParser(description=('Displays a highlighted version '
     'of python text to the screen as if it is being typed'))
-parser.add_argument('files', type=str, nargs='+',
-    help='One or more file names to parse')
+parser.add_argument('filename', help='Name of file containing python to parse')
 args = parser.parse_args()
 
 # get file contents and use urwid to display
-with open(args.files[0]) as f:
+with open(args.filename) as f:
     contents = f.read()
 
-box = CodeListBox(contents)
+#box = CodeListBox(state=State.CONTINUOUS)
+box = CodeListBox()
+
 loop = urwid.MainLoop(box, TokenLookup.palette)
+box.setup(loop, contents)
+
 #loop.set_alarm_in(1, do_append)
 loop.run()
