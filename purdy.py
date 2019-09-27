@@ -2,9 +2,8 @@
 
 __version__ = '0.1.0'
 
-import argparse
+import argparse, random, time
 from enum import Enum
-import time 
 
 from pygments import highlight
 from pygments.lexers import PythonConsoleLexer
@@ -124,10 +123,11 @@ class State(Enum):
 
 
 class CodeListBox(urwid.ListBox):
-    def __init__(self, typing_delay, state):
+    def __init__(self, typing_delay, variance, state):
         self.body = urwid.SimpleListWalker([AppendableText('')])
         self.state = state
         self.typing_delay = typing_delay
+        self.variance = variance
 
         super(CodeListBox, self).__init__(self.body)
 
@@ -190,7 +190,10 @@ class CodeListBox(urwid.ListBox):
                 self.body.contents[-1].append( (colour, text[0]) )
                 self.typing = list(text[1:])
                 self.typing_token = token
-                self.loop.set_alarm_in(self.typing_delay, self.typewriter)
+
+                vary_by = random.randint(0, 2 * self.variance) - self.variance
+                delay = self.typing_delay + (vary_by / 1000)
+                self.loop.set_alarm_in(delay, self.typewriter)
         else:
             # get the next letter off the typing queue and add it to our
             # widget
@@ -235,6 +238,10 @@ parser.add_argument('filename', help='Name of file containing python to parse')
 parser.add_argument('-c', '--continuous', action='store_true', 
     help=('Instead of prentending to type like a human, just dump the file to '
         'the screen'))
+parser.add_argument('--variance', type=int, default=20,
+    help=('To make the typing look more real there is a variance in the '
+        'delay between keystrokes. This value, in milliseconds is how '
+        'much to go over or under the delay by'))
 
 # set up the typing_delay / words_per_minute options
 delay = 0.130
@@ -266,7 +273,7 @@ if args.continuous:
 with open(args.filename) as f:
     contents = f.read()
 
-box = CodeListBox(delay, state)
+box = CodeListBox(delay, args.variance, state)
 loop = urwid.MainLoop(box, TokenLookup.palette)
 box.setup(loop, contents)
 loop.run()
