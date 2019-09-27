@@ -238,17 +238,19 @@ parser.add_argument('filename', help='Name of file containing python to parse')
 parser.add_argument('-c', '--continuous', action='store_true', 
     help=('Instead of prentending to type like a human, just dump the file to '
         'the screen'))
-parser.add_argument('--variance', type=int, default=20,
+parser.add_argument('--variance', type=int, default=30,
     help=('To make the typing look more real there is a variance in the '
         'delay between keystrokes. This value, in milliseconds is how '
-        'much to go over or under the delay by'))
+        'much to go over or under the delay by. Defaults to +/- 30ms'))
+parser.add_argument('--version', action='version', 
+    version='%(prog)s {version}'.format(version=__version__ ))
 
 # set up the typing_delay / words_per_minute options
 delay = 0.130
 group = parser.add_mutually_exclusive_group()
 group.add_argument('-d', '--delay', type=int, 
     help=('Amount of time between each letter when in typewriter mode. '
-        'Specified in milliseconds. Defaults to %s' % delay * 1000))
+        'Specified in milliseconds. Defaults to %s' % (delay * 1000)))
 group.add_argument('-w', '--wpm', type=int, help=('Number of words per '
     'minute that the typing speed should look like'))
 
