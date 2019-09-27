@@ -4,5 +4,5 @@ pudb==2019.1
 Pygments==2.4.2
 Sphinx==2.2.0
 sphinx-rtd-theme==0.4.3
-tox==3.14.0
+twine==2.0.0
 urwid==2.0.1
