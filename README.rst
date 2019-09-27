@@ -29,12 +29,12 @@ Command Line Options
 
 **--continuous** Instead of waiting for key presses, display the whole file
 
-**--delay DELAY** change the amount of delay between "typed" letters. Defaults
-                to 130ms. Value given in milliseconds. Mutually exclusive with
-                the "--wpm" option
+**--delay DELAY**   change the amount of delay between "typed" letters. Defaults
+                    to 130ms. Value given in milliseconds. Mutually exclusive
+                    with the "--wpm" option
 
-**--wpm WPM** specify the typing speed in Words Per Minute. Mutually exclusive
-            with the "--delay" option
+**--wpm WPM**   specify the typing speed in Words Per Minute. Mutually
+                exclusive with the "--delay" option
 
 **--variance VARIANCE**     to make the typing look more real a random value of 
                             plus or minus "VARIANCE" is added to the typing
@@ -43,7 +43,7 @@ Command Line Options
 
 **--version** Display pgraom version and exit
 
-:param --help:    Display help information
+**--help**    Display help information
 
 
 Installation
