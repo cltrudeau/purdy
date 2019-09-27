@@ -17,7 +17,7 @@ snippet. Output is paused when it sees a REPL prompt (">>> "). Pressing any
 key (except "q") will continue the typing. Lines starting with a prompt mimic
 typing, lines not on a prompt are output immediately.
 
-.. image:: docs/purdy_example.gif
+.. image:: example_purdy.gif
 
 Once the code has been displayed, further key presses are ignored. At any time
 you can press "q" to quit.

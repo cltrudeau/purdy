@@ -28,6 +28,11 @@ if year == copyright_start:
 else:
     copyright = '%d-%d, %s' % (copyright_start, year, author)
 
+# short version number (X.Y)
+import imp
+mod = imp.load_source('purdy_mod', '../purdy')
+version = mod.__version__
+
 
 # -- General configuration ---------------------------------------------------
 

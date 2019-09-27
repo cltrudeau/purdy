@@ -1,0 +1,2 @@
+Due to pathing issues, the example animated gif has to be in two places:
+base and docs/. If you change the image, do it in two places
