@@ -21,7 +21,7 @@ copyright_owner = 'Christopher Trudeau'
 
 # short version number (X.Y)
 import imp
-mod = imp.load_source(project, '../purdy.py')
+mod = imp.load_source(project, '../purdy')
 version = mod.__version__
 
 # ===========================================================================

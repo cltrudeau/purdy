@@ -1,6 +1,6 @@
 #!/bin/bash
 
-version=`grep "__version__ = " purdy.py | cut -d "'" -f 2`
+version=`grep "__version__ = " purdy | cut -d "'" -f 2`
 
 git tag "$version"
 

@@ -3,7 +3,7 @@ import os, sys, re
 # get version info from module without importing it
 version_re = re.compile("""__version__[\s]*=[\s]*['|"](.*)['|"]""")
 
-with open('purdy.py') as f:
+with open('purdy') as f:
     content = f.read()
     match = version_re.search(content)
     version = match.group(1)
@@ -34,9 +34,11 @@ SETUP_ARGS = dict(
         'Topic :: Software Development :: Libraries :: Python Modules',
     ],
     keywords='code display',
-    py_modules = ['purdy',],
+    #py_modules = ['purdy',],
+    scripts=['purdy'],
     install_requires = [
-        'pygments>=2.4.2',
+        'Pygments>=2.4.2',
+        'urwid>=2.0.1',
     ],
 )
 
