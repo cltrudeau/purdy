@@ -1,11 +1,13 @@
 import random
 from enum import Enum
 
-from pygments.lexers import PythonConsoleLexer
+from pygments.lexers import PythonConsoleLexer, PythonLexer
 from pygments.token import Keyword, Name, Comment, String, Error, \
     Number, Operator, Generic, Token, Whitespace
 
 import urwid
+
+from conf import TypingMode, Lexer
 
 # =============================================================================
 # Utility Classes
@@ -65,6 +67,13 @@ TokenLookup.palette = [(str(token), colour[0], colour[1]) for token, colour in \
     TokenLookup.colours.items()]
 
 # -----------------------------------------------------------------------------
+
+LEXERS = {
+    Lexer.CONSOLE.value:PythonConsoleLexer, 
+    Lexer.PYTHON.value:PythonLexer,
+}
+
+# -----------------------------------------------------------------------------
 # Widgets
 # -----------------------------------------------------------------------------
 
@@ -116,11 +125,16 @@ class State(Enum):
 
 
 class CodeListBox(urwid.ListBox):
-    def __init__(self, typing_delay, variance, state):
+    def __init__(self, settings):
         self.body = urwid.SimpleListWalker([AppendableText('')])
-        self.state = state
-        self.typing_delay = typing_delay
-        self.variance = variance
+        self.typing_delay = settings['delay'] / 1000
+        self.variance = settings['delay_variance']
+        self.lexer = LEXERS[settings['lexer']]
+
+        if settings['typing_mode'] == TypingMode.ALL_AT_ONCE:
+            self.state = State.CONTINUOUS
+        else:
+            self.state = State.WAITING
 
         super(CodeListBox, self).__init__(self.body)
 
@@ -129,7 +143,7 @@ class CodeListBox(urwid.ListBox):
         self.loop = loop
 
         # parse and store the pygment'd code
-        lexer = PythonConsoleLexer()
+        lexer = self.lexer()
         self.code_tokens = list(lexer.get_tokens(code))
         self.code_index = 0
         self.code_len = len(self.code_tokens)
@@ -224,11 +238,11 @@ class CodeListBox(urwid.ListBox):
 # Window Runner
 # =============================================================================
 
-def purdy_window(delay, variance, state, contents):
+def purdy_window(settings, contents):
     """Launches the urwid window loop showing the given contents. Does not
     return until the urwid loop exits."""
 
-    box = CodeListBox(delay, variance, state)
+    box = CodeListBox(settings)
     loop = urwid.MainLoop(box, TokenLookup.palette)
     box.setup(loop, contents)
     loop.run()
