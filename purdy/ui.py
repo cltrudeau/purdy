@@ -7,7 +7,7 @@ from pygments.token import Keyword, Name, Comment, String, Error, \
 
 import urwid
 
-from conf import TypingMode, Lexer
+from purdy.conf import settings, TypingMode, Lexer
 
 # =============================================================================
 # Utility Classes
@@ -238,11 +238,14 @@ class CodeListBox(urwid.ListBox):
 # Window Runner
 # =============================================================================
 
-def purdy_window(settings, contents):
+def purdy_window(contents, conf_settings=None):
     """Launches the urwid window loop showing the given contents. Does not
     return until the urwid loop exits."""
 
-    box = CodeListBox(settings)
+    if conf_settings is None:
+        conf_settings = settings
+
+    box = CodeListBox(conf_settings)
     loop = urwid.MainLoop(box, TokenLookup.palette)
     box.setup(loop, contents)
     loop.run()

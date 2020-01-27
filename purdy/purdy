@@ -68,4 +68,4 @@ if __name__ == '__main__':
     with open(args.filename) as f:
         contents = f.read()
 
-    purdy_window(settings, contents)
+    purdy_window(contents, settings)

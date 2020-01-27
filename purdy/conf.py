@@ -18,7 +18,7 @@ settings = {
     'typing_mode':TypingMode.PROMPTED,
 
     # which Pygments lexer to use for highlightling content
-    'lexer':Lexer.CONSOLE,
+    'lexer':Lexer.CONSOLE.value,
 
     # delay between characters appearing on screen, specified in milliseconds
     'delay':130,
