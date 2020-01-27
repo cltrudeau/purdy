@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 
-__version__ = '0.1.1'
+### Command line script that runs the purdy library with a single file
 
 import argparse, random, time
 from enum import Enum

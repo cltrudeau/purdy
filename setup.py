@@ -1,13 +1,6 @@
 import os, sys, re
 
-# get version info from module without importing it
-version_re = re.compile("""__version__[\s]*=[\s]*['|"](.*)['|"]""")
-
-with open('purdy') as f:
-    content = f.read()
-    match = version_re.search(content)
-    version = match.group(1)
-
+from purdy import __version__
 
 readme = os.path.join(os.path.dirname(__file__), 'README.rst')
 long_description = open(readme).read()
@@ -15,7 +8,7 @@ long_description = open(readme).read()
 
 SETUP_ARGS = dict(
     name='purdy',
-    version=version,
+    version=__version__,
     description=('Terminal based code snippet display tool '),
     long_description=long_description,
     url='https://github.com/cltrudeau/purdy',
@@ -34,8 +27,8 @@ SETUP_ARGS = dict(
         'Topic :: Software Development :: Libraries :: Python Modules',
     ],
     keywords='code display',
-    #py_modules = ['purdy',],
-    scripts=['purdy'],
+    py_modules = ['purdy',],
+    scripts=['purdy/purdy'],
     install_requires = [
         'Pygments>=2.4.2',
         'urwid>=2.0.1',
