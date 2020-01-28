@@ -50,7 +50,17 @@ class BaseWindow(urwid.Pile):
 
         except StopIteration:
             # action is done doing things, pop it off the queue
-            self.screen.actions.pop()
+            self.screen.actions.pop(0)
+
+            if self.screen.actions:
+                # there is another action in the action queue, set it up
+                self.screen.actions[0].setup(self.screen.settings)
+
+                if self.screen.movie_mode != -1:
+                    # in movie mode we simulate the key presses, set the 
+                    # callback
+                    self.screen.loop.set_alarm_in(self.screen.movie_mode, 
+                        self.alarm)
 
 
 class Screen:
@@ -63,10 +73,12 @@ class Screen:
         if self.movie_mode != -1:
             self.movie_mode = float(self.movie_mode) / 1000.0
 
-        self.code_box = CodeListBox(conf_settings)
-        self.base_window = BaseWindow(self, [self.code_box, ])
-
+        self._build_boxes()
         self.loop = urwid.MainLoop(self.base_window, TokenLookup.palette)
+
+    def _build_boxes(self):
+        self.code_box = CodeListBox()
+        self.base_window = BaseWindow(self, [self.code_box, ])
 
     def run(self, actions):
         """Calls the main event loop in urwid. Does not return until the UI
@@ -83,6 +95,18 @@ class Screen:
         # call urwid's main loop, this code doesn't return until the loop
         # exits!!!
         self.loop.run()
+
+
+class SplitScreen(Screen):
+    def _build_boxes(self):
+        # override the default build, creating two code boxes instead
+        self.top_box = CodeListBox()
+        divider = (3, urwid.Filler(urwid.Divider('-'), valign='top', top=1, 
+            bottom=1))
+        self.bottom_box = CodeListBox()
+
+        self.base_window = BaseWindow(self, [self.top_box, divider,
+            self.bottom_box])
 
 # =============================================================================
 # Widgets
@@ -128,7 +152,7 @@ class AppendableText(urwid.Text):
 
 
 class CodeListBox(urwid.ListBox):
-    def __init__(self, settings):
+    def __init__(self):
         self.body = urwid.SimpleListWalker([AppendableText('')])
         super(CodeListBox, self).__init__(self.body)
 

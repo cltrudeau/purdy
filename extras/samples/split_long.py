@@ -11,16 +11,16 @@ from purdy.ui import SplitScreen
 
 settings['movie_mode'] = 20
 
-py_code = CodeBlob('../display_code/code.py', 'py3')
-con_code = CodeBlob('../display_code/console.py', 'con')
+code1 = CodeBlob('../display_code/console.py', 'con')
+code2 = CodeBlob('../display_code/console.py', 'con')
 
 screen = SplitScreen(settings)
-py_box = screen.top_box
-con_box = screen.bottom_box
+box1 = screen.top_box
+box2 = screen.bottom_box
 
 actions = [
-    AppendAll(py_box, py_code),
-    AppendTypewriter(con_box, con_code),
+    AppendAll(box1, code1),
+    AppendAll(box2, code2),
 ]
 
 screen.run(actions)
