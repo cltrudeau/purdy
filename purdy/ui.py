@@ -1,81 +1,48 @@
-import random
 from enum import Enum
-
-from pygments.lexers import PythonConsoleLexer, PythonLexer
-from pygments.token import Keyword, Name, Comment, String, Error, \
-    Number, Operator, Generic, Token, Whitespace
 
 import urwid
 
-from purdy.conf import settings, TypingMode, Lexer
+from purdy.content import TokenLookup
+from purdy.settings import settings
 
 # =============================================================================
-# Utility Classes
+# Main Screen
 # =============================================================================
 
-class TokenLookup():
-    colours = {
-        Token:              ('',             ''),
-        Whitespace:         ('',             ''),
-        Comment:            ('dark cyan',    ''),
-        Comment.Preproc:    ('dark cyan',    ''),
-        Keyword:            ('brown',       ''),
-        Keyword.Type:       ('brown',       ''),
-        Operator.Word:      ('brown',       ''),
-        Name.Builtin:       ('dark cyan',    ''),
-        Name.Function:      ('dark cyan',    ''),
-        Name.Namespace:     ('dark cyan',    ''),
-        Name.Class:         ('dark cyan',    ''),
-        Name.Exception:     ('dark green',   ''),
-        Name.Decorator:     ('dark cyan',    ''),
-        Name.Variable:      ('',             ''),
-        Name.Constant:      ('',             ''),
-        Name.Attribute:     ('',             ''),
-        Name.Tag:           ('',             ''),
-        String:             ('dark magenta', ''),
-        Number:             ('dark magenta', ''),
-        Generic.Prompt:     ('dark blue',    ''),
-        Generic.Error:      ('dark green',   ''),
-        Error:              ('dark green',   ''),
-    }
+class BaseWindow(urwid.Pile):
+    def __init__(self, screen, *args, **kwargs):
+        self.screen = screen
+        super(BaseWindow, self).__init__(*args, **kwargs)
 
-    palette = None
-
-    @classmethod
-    def get_colouring(cls, token):
-        # Tokens are hierarchical and mapped to colours in our palette using
-        # their names. If the token is in our colour map, return its name, if
-        # it isn't, go up its hierarchy until a match is found
-        if token in cls.colours:
-            return str(token)
-
-        # token not in our map, search its ancestors
-        token = token.parent
-        while(token != None):
-            if token in cls.colours:
-                return str(token)
-
-            token = token.parent
-
-        # something went wrong with our lookup, return the default
-        return 'Token'
+    def keypress(self, size, key):
+        if key in ('q', 'Q'):
+            raise urwid.ExitMainLoop()
 
 
-# can't do a list comprehension in the declarative area of the class, due to
-# scoping rules, do it here
-TokenLookup.palette = [(str(token), colour[0], colour[1]) for token, colour in \
-    TokenLookup.colours.items()]
+class Screen:
+    def __init__(self, conf_settings=None):
+        self.settings = conf_settings
+        if conf_settings is None:
+            self.settings = settings
 
-# -----------------------------------------------------------------------------
+        self.code_box = CodeListBox(conf_settings)
+        base_window = BaseWindow(self, [self.code_box, ])
 
-LEXERS = {
-    Lexer.CONSOLE.value:PythonConsoleLexer, 
-    Lexer.PYTHON.value:PythonLexer,
-}
+        self.loop = urwid.MainLoop(base_window, TokenLookup.palette)
 
-# -----------------------------------------------------------------------------
+    def run(self, actions):
+        """Calls the main event loop in urwid. Does not return until the UI
+        exits."""
+        # store our display actions and setup the first one
+        self.actions = actions
+        self.actions[0].setup(self.settings)
+
+        # call urwid's main loop
+        self.loop.run()
+
+# =============================================================================
 # Widgets
-# -----------------------------------------------------------------------------
+# =============================================================================
 
 class AppendableText(urwid.Text):
     def append(self, markup):
@@ -127,125 +94,12 @@ class State(Enum):
 class CodeListBox(urwid.ListBox):
     def __init__(self, settings):
         self.body = urwid.SimpleListWalker([AppendableText('')])
-        self.typing_delay = settings['delay'] / 1000
-        self.variance = settings['delay_variance']
-        self.lexer = LEXERS[settings['lexer']]
-
-        if settings['typing_mode'] == TypingMode.ALL_AT_ONCE:
-            self.state = State.CONTINUOUS
-        else:
-            self.state = State.WAITING
-
         super(CodeListBox, self).__init__(self.body)
 
-    def setup(self, loop, code):
-        # call this method once the main loop has been created
-        self.loop = loop
+    def append_newline(self):
+        # add a new line to our listbox
+        self.body.contents.append(AppendableText(''))
 
-        # parse and store the pygment'd code
-        lexer = self.lexer()
-        self.code_tokens = list(lexer.get_tokens(code))
-        self.code_index = 0
-        self.code_len = len(self.code_tokens)
-        self.typing = []
-        self.typing_token = None
-
-        if self.state == State.CONTINUOUS:
-            self.show_tokens()
-        else:
-            self.show_tokens(Generic.Prompt)
-            self.state = State.ABOUT_TO_TYPE
-
-    def show_tokens(self, stop_after=None):
-        """Adds colourized contents to our list box. If "stop_after" is given, 
-        it returns after adding the token of the given type
-        """
-        for token, text in self.code_tokens[self.code_index:]:
-            self.code_index += 1
-            colour = TokenLookup.get_colouring(token)
-
-            if text == '\n':
-                # hit a CR, add a new line to our output
-                self.body.contents.append(AppendableText(''))
-            else:
-                # just append whatever we have
-                self.body.contents[-1].append( (colour, text) )
-
-            if token == stop_after:
-                break
-
-    def typewriter(self, loop=None, data=None):
-        if self.typing == []:
-            # nothing in queue, start typing the next token
-            token, text = self.code_tokens[self.code_index]
-            colour = TokenLookup.get_colouring(token)
-            self.code_index += 1
-
-            if text == '\n':
-                # hit a CR, add a new line to our output, leave typewrite,
-                # print tokens until next prompt
-                self.body.contents.append(AppendableText(''))
-                self.show_tokens(stop_after=Generic.Prompt)
-                self.state = State.ABOUT_TO_TYPE
-                return
-            elif text == '':
-                # lexer spits out empty text sometimes, need to ignore it
-                self.loop.set_alarm_in(0, self.typewriter)
-            else:
-                # insert first letter into our text widget, keep the rest
-                # and set a timer for the next letter
-                self.body.contents[-1].append( (colour, text[0]) )
-                self.typing = list(text[1:])
-                self.typing_token = token
-
-                vary_by = random.randint(0, 2 * self.variance) - self.variance
-                delay = self.typing_delay + (vary_by / 1000)
-                self.loop.set_alarm_in(delay, self.typewriter)
-        else:
-            # get the next letter off the typing queue and add it to our
-            # widget
-            colour = TokenLookup.get_colouring(self.typing_token)
-            letter = self.typing.pop(0)
-            self.body.contents[-1].append( (colour, letter) )
-            self.loop.set_alarm_in(self.typing_delay, self.typewriter)
-
-    def keypress(self, size, key):
-        key = super(CodeListBox, self).keypress(size, key)
-
-        if key in ('q', 'Q'):
-            raise urwid.ExitMainLoop()
-
-        # if we've output all the code, ignore the keypress
-        if self.code_index >= self.code_len:
-            return
-
-        # you should only get here if we are not in CONTINUOUS mode
-        if self.state == State.WAITING:
-            # want to stop after we see a prompt
-            self.show_tokens(stop_after=Generic.Prompt)
-
-            # after we printed the prompt we want to go into typewriter mode,
-            # set the state and wait for the next keypress
-            self.state = State.ABOUT_TO_TYPE
-        elif self.state == State.ABOUT_TO_TYPE:
-            # got the keypress while waiting to type, start typing
-            self.state = State.TYPING
-            self.typewriter()
-
-        # else: State.TYPING, ignore keypress
-
-# =============================================================================
-# Window Runner
-# =============================================================================
-
-def purdy_window(contents, conf_settings=None):
-    """Launches the urwid window loop showing the given contents. Does not
-    return until the urwid loop exits."""
-
-    if conf_settings is None:
-        conf_settings = settings
-
-    box = CodeListBox(conf_settings)
-    loop = urwid.MainLoop(box, TokenLookup.palette)
-    box.setup(loop, contents)
-    loop.run()
+    def append_token(self, colour, text):
+        # add a coloured token to the last line of our list
+        self.body.contents[-1].append( (colour, text) )

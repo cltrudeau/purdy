@@ -4,9 +4,12 @@
 
 import argparse
 
-from __init__ import __version__
-from conf import settings, TypingMode, Lexer
-from ui import State, purdy_window
+from purdy.__init__ import __version__
+
+from purdy.actions import AppendAll
+from purdy.content import LEXERS, CodeBlob
+from purdy.settings import settings
+from purdy.ui import Screen
 
 # =============================================================================
 # Main
@@ -26,10 +29,10 @@ if __name__ == '__main__':
         help=('Instead of prentending to type like a human, just dump the file '
         'to the screen'))
 
-    parser.add_argument('-l', '--lexer', choices=[i.value for i in Lexer],
-        default='con', help=('Choose Pygments Lexer to use to parse the '
-            'content. Choices are "con" for console (default), or "py3" for '
-            'Python 3'))
+    parser.add_argument('-l', '--lexer', choices=LEXERS.choices,
+        default=LEXERS.default_name, help=('Choose Pygments Lexer to use to '
+            'parse the content. Choices are "con" for console (default), or '
+            '"py3" for Python 3'))
 
     # set up the typing_delay / words_per_minute options
     group = parser.add_mutually_exclusive_group()
@@ -46,13 +49,7 @@ if __name__ == '__main__':
     # --- setup our parms based on our args
     args = parser.parse_args()
 
-    if args.continuous:
-        settings['typing_mode'] = TypingMode.ALL_AT_ONCE
-
-    if args.lexer:
-        settings['lexer'] = args.lexer
-
-    # calulcate our typing settings delay
+    # calulcate our typing settings delays
     if args.delay:
         settings['delay'] = args.delay
     elif args.wpm:
@@ -63,9 +60,19 @@ if __name__ == '__main__':
     if args.variance:
         settings['delay_variance'] = args.variance
 
-    # --- Read our file and build our widgets
-    # get file contents and use urwid to display
-    with open(args.filename) as f:
-        contents = f.read()
+    # initialize our display screen using a single code listing box
+    screen = Screen()
+    code_box = screen.code_box
 
-    purdy_window(contents, settings)
+    # read the code being displayed and create the appropriate action
+    blob = CodeBlob(args.filename, args.lexer)
+
+    if args.continuous:
+        action = AppendAll(code_box, blob)
+    else:
+        # TODO:
+        # typewriter action goes here 
+        pass
+
+    # --- All set, run it
+    screen.run([action])
