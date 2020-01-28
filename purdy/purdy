@@ -6,7 +6,7 @@ import argparse
 
 from purdy.__init__ import __version__
 
-from purdy.actions import AppendAll
+from purdy.actions import AppendAll, AppendTypewriter
 from purdy.content import LEXERS, CodeBlob
 from purdy.settings import settings
 from purdy.ui import Screen
@@ -70,9 +70,7 @@ if __name__ == '__main__':
     if args.continuous:
         action = AppendAll(code_box, blob)
     else:
-        # TODO:
-        # typewriter action goes here 
-        pass
+        action = AppendTypewriter(code_box, blob)
 
     # --- All set, run it
     screen.run([action])
