@@ -1,9 +1,7 @@
-from enum import Enum
-
 import urwid
 
 from purdy.content import TokenLookup
-from purdy.settings import settings
+from purdy.settings import settings as default_settings
 
 # =============================================================================
 # Main Screen
@@ -18,12 +16,41 @@ class BaseWindow(urwid.Pile):
         if key in ('q', 'Q'):
             raise urwid.ExitMainLoop()
 
+        if not self.screen.actions:
+            # no actions left to do, ignore the keypress
+            return
+
+        self.next_action(key)
+
+    def alarm(self, loop, data):
+        self.next_action()
+
+    def next_action(self, key=None):
+        """Actions are triggered either by a key press or an alarm. This
+        method looks in the action queue and gets the tells the top most
+        action to take its next step.
+
+        :param key: the key that was pressed, or None if it was an alarm
+        """
+
+        try:
+            # tell the current action to do its thing
+            timer = self.screen.actions[0].next(key)
+
+            if timer != -1:
+                # positive value means set callback timer 
+                self.screen.loop.set_alarm_in(timer, self.alarm)
+
+        except StopIteration:
+            # action is done doing things, pop it off the queue
+            self.screen.actions.pop()
+
 
 class Screen:
     def __init__(self, conf_settings=None):
         self.settings = conf_settings
         if conf_settings is None:
-            self.settings = settings
+            self.settings = default_settings
 
         self.code_box = CodeListBox(conf_settings)
         base_window = BaseWindow(self, [self.code_box, ])
@@ -81,14 +108,6 @@ class AppendableText(urwid.Text):
             output.append( (None, markup) )
 
         self.set_text(output)
-
-
-class State(Enum):
-    CONTINUOUS = 0
-
-    WAITING = 1
-    ABOUT_TO_TYPE = 2
-    TYPING  = 2
 
 
 class CodeListBox(urwid.ListBox):
