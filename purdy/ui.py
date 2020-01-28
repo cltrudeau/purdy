@@ -12,42 +12,46 @@ class BaseWindow(urwid.Pile):
         self.screen = screen
         super(BaseWindow, self).__init__(*args, **kwargs)
 
+    def _next_focus(self):
+        # switch focus to the next focusable item in our pile
+
+        # want to walk the list of widgets in the pile, starting at the one
+        # after the one in focus, looping to the beginning
+        #
+        # build the list from the focus point to the end, then remove the
+        # focus point
+        indices = list(range(self.focus_position, len(self.contents)))
+        indices.pop(0)
+
+        # add from the beginning of the list to the focus point, inclusive
+        indices.extend( range(0, self.focus_position + 1) )
+
+        # now use the list of indicies to find the first widget that is
+        # allowed to be focused and focus it
+        for index in indices:
+            widget, _ = self.contents[index]
+            if getattr(widget, 'tab_focusable', False):
+                # found a focusable widget, set it as focused and we're done
+                self.focus_position = index
+                return
+
     def keypress(self, size, key):
         if key in ('q', 'Q'):
             raise urwid.ExitMainLoop()
 
-        result = super(BaseWindow, self).keypress(size, key)
-        if result is None:
-            # keypress was handled by child, we're done
-            return None
+        if key not in ('right', 'left'):
+            # we don't want to pass left/right to the children, we want it to
+            # act as "next action", everything else pass to the child to
+            # handle for scrolling etc
+            result = super(BaseWindow, self).keypress(size, key)
+            if result is None:
+                # keypress was handled by child, we're done
+                return None
 
         # --- at this point the keypress was not handled by the children, see
         # if we want to do anything with it
-
         if key == 'tab':
-            # switch focus to the next focusable item in our pile
-
-            # want to walk the list of widgets in the pile, starting at the
-            # one after the one in focus, looping to the beginning
-            #
-            # build the list from the focus point to the end, then remove the
-            # focus point
-            indices = list(range(self.focus_position, len(self.contents)))
-            indices.pop(0)
-
-            # add from the beginning of the list to the focus point, inclusive
-            indices.extend( range(0, self.focus_position + 1) )
-
-            # now use the list of indicies to find the first widget that is
-            # allowed to be focused and focus it
-            for index in indices:
-                widget, _ = self.contents[index]
-                if getattr(widget, 'tab_focusable', False):
-                    # found a focusable widget, set it as focused and we're
-                    # done
-                    self.focus_position = index
-                    break
-
+            self._next_focus()
             return None
 
         if not self.screen.actions:
@@ -111,7 +115,7 @@ class Screen:
         self.loop = urwid.MainLoop(self.base_window, TokenLookup.palette)
 
     def _build_boxes(self):
-        self.code_box = CodeListBox()
+        self.code_box = CodeBox()
         self.base_window = BaseWindow(self, [self.code_box, ])
 
     def run(self, actions):
@@ -135,10 +139,7 @@ class SplitScreen(Screen):
     def _build_boxes(self):
         # override the default build, creating two code boxes instead
         self.top_box = CodeBox()
-        #self.top_box = CodeListBox()
         divider = (3, DividingLine())
-
-        #self.bottom_box = CodeListBox()
         self.bottom_box = CodeBox()
 
         self.base_window = BaseWindow(self, [self.top_box, divider,
@@ -195,22 +196,6 @@ class DividingLine(urwid.Filler):
         divider = urwid.Divider('-')
         super(DividingLine, self).__init__(divider, valign='top', top=1, 
             bottom=1)
-
-
-class CodeListBox(urwid.ListBox):
-    tab_focusable = True
-
-    def __init__(self):
-        self.body = urwid.SimpleListWalker([AppendableText('')])
-        super(CodeListBox, self).__init__(self.body)
-
-    def append_newline(self):
-        # add a new line to our listbox
-        self.body.contents.append(AppendableText(''))
-
-    def append_token(self, colour, text):
-        # add a coloured token to the last line of our list
-        self.body.contents[-1].append( (colour, text) )
 
 # -----------------------------------------------------------------------------
 # Code Box -- box that displays code
