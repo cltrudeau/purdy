@@ -268,3 +268,8 @@ class CodeBox(urwid.Columns):
     def append_token(self, colour, text):
         # add a coloured token to the last line of our list
         self.body.contents[-1].append( (colour, text) )
+
+    def clear(self):
+        # clears the list and starts fresh
+        self.body.contents.clear() 
+        self.body.contents.append(AppendableText(''))

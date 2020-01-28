@@ -25,6 +25,13 @@ class AppendAll:
     def next(self, key):
         raise StopIteration
 
+
+class ReplaceAll(AppendAll):
+    def setup(self, settings):
+        # Replace is just like Append, but clear the box first
+        self.code_box.clear()
+        super().setup(settings)
+
 # -----------------------------------------------------------------------------
 
 class State(Enum):
@@ -117,3 +124,10 @@ class AppendTypewriter:
             self.code_box.append_token(self.typing_token.colour, letter)
 
             return self.delay_until_next_letter
+
+
+class ReplaceTypewriter(AppendTypewriter):
+    def setup(self, settings):
+        # Replace is just like Append, but clear the box first
+        self.code_box.clear()
+        super(ReplaceTypewriter, self).setup(settings)
