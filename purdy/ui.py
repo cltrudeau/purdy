@@ -20,6 +20,10 @@ class BaseWindow(urwid.Pile):
             # no actions left to do, ignore the keypress
             return
 
+        if self.screen.settings['movie_mode'] != -1:
+            # in movie mode, ignore key press
+            return
+
         self.next_action(key)
 
     def alarm(self, loop, data):
@@ -32,7 +36,6 @@ class BaseWindow(urwid.Pile):
 
         :param key: the key that was pressed, or None if it was an alarm
         """
-
         try:
             # tell the current action to do its thing
             timer = self.screen.actions[0].next(key)
@@ -40,6 +43,10 @@ class BaseWindow(urwid.Pile):
             if timer != -1:
                 # positive value means set callback timer 
                 self.screen.loop.set_alarm_in(timer, self.alarm)
+            elif self.screen.movie_mode != -1:
+                # in movie mode we simulate the key presses, set the callback
+                self.screen.loop.set_alarm_in(self.screen.movie_mode, 
+                    self.alarm)
 
         except StopIteration:
             # action is done doing things, pop it off the queue
@@ -52,10 +59,14 @@ class Screen:
         if conf_settings is None:
             self.settings = default_settings
 
-        self.code_box = CodeListBox(conf_settings)
-        base_window = BaseWindow(self, [self.code_box, ])
+        self.movie_mode = self.settings['movie_mode']
+        if self.movie_mode != -1:
+            self.movie_mode = float(self.movie_mode) / 1000.0
 
-        self.loop = urwid.MainLoop(base_window, TokenLookup.palette)
+        self.code_box = CodeListBox(conf_settings)
+        self.base_window = BaseWindow(self, [self.code_box, ])
+
+        self.loop = urwid.MainLoop(self.base_window, TokenLookup.palette)
 
     def run(self, actions):
         """Calls the main event loop in urwid. Does not return until the UI
@@ -64,7 +75,13 @@ class Screen:
         self.actions = actions
         self.actions[0].setup(self.settings)
 
-        # call urwid's main loop
+        if self.movie_mode != -1:
+            # in movie mode we simulate the key presses, set the callback to
+            # start the process
+            self.loop.set_alarm_in(self.movie_mode, self.base_window.alarm)
+
+        # call urwid's main loop, this code doesn't return until the loop
+        # exits!!!
         self.loop.run()
 
 # =============================================================================
