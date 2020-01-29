@@ -80,12 +80,6 @@ class TokenLookup():
         # something went wrong with our lookup, return the default
         return 'Token'
 
-
-# can't do a list comprehension in the declarative area of the class, due to
-# scoping rules, do it here
-TokenLookup.palette = [(str(token), colour[0], colour[1]) for token, colour in \
-    TokenLookup.colours.items()]
-
 # =============================================================================
 
 CodeToken = namedtuple('CodeToken', ['token_type', 'colour', 'text'])

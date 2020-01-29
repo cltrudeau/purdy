@@ -102,7 +102,8 @@ class BaseWindow(urwid.Pile):
 
 
 class Screen:
-    def __init__(self, conf_settings=None):
+    def __init__(self, conf_settings=None, show_line_numbers=False):
+        self.show_line_numbers = show_line_numbers
         self.settings = conf_settings
         if conf_settings is None:
             self.settings = default_settings
@@ -112,10 +113,20 @@ class Screen:
             self.movie_mode = float(self.movie_mode) / 1000.0
 
         self._build_boxes()
-        self.loop = urwid.MainLoop(self.base_window, TokenLookup.palette)
+
+        # create the palette, start by using the colours in the TokenLookup
+        palette = [(str(token), colour[0], colour[1]) for token, colour in \
+            TokenLookup.colours.items()]
+
+        # now append colour attributes that aren't for the tokens
+        palette.extend([
+            ('line_number', 'dark gray', ''),
+        ])
+
+        self.loop = urwid.MainLoop(self.base_window, palette)
 
     def _build_boxes(self):
-        self.code_box = CodeBox()
+        self.code_box = CodeBox(self.show_line_numbers)
         self.base_window = BaseWindow(self, [self.code_box, ])
 
     def run(self, actions):
@@ -136,11 +147,17 @@ class Screen:
 
 
 class SplitScreen(Screen):
+    def __init__(self, conf_settings=None, show_top_line_numbers=False,
+            show_bottom_line_numbers=False):
+        self.show_top_line_numbers = show_top_line_numbers
+        self.show_bottom_line_numbers = show_bottom_line_numbers
+        super().__init__(conf_settings)
+
     def _build_boxes(self):
         # override the default build, creating two code boxes instead
-        self.top_box = CodeBox()
+        self.top_box = CodeBox(self.show_top_line_numbers)
         divider = (3, DividingLine())
-        self.bottom_box = CodeBox()
+        self.bottom_box = CodeBox(self.show_bottom_line_numbers)
 
         self.base_window = BaseWindow(self, [self.top_box, divider,
             self.bottom_box])
@@ -251,8 +268,11 @@ class CodeBox(urwid.Columns):
 
     # CodeBox is ListBox of Text with code in it accompanied by a side bar
     # with indicators about focus and scroll position
-    def __init__(self):
-        self.body = urwid.SimpleListWalker([AppendableText('')])
+    def __init__(self, show_line_numbers):
+        self.show_line_numbers = show_line_numbers
+        self.line_number = 1
+        self.body = urwid.SimpleListWalker([])
+        self.append_newline()
 
         scroller = ScrollingIndicator()
         listbox = ScrollingListBox(scroller, self.body)
@@ -261,15 +281,35 @@ class CodeBox(urwid.Columns):
 
         super(CodeBox, self).__init__(layout)
 
-    def append_newline(self):
-        # add a new line to our listbox
-        self.body.contents.append(AppendableText(''))
-
-    def append_token(self, colour, text):
-        # add a coloured token to the last line of our list
-        self.body.contents[-1].append( (colour, text) )
-
     def clear(self):
         # clears the list and starts fresh
         self.body.contents.clear() 
-        self.body.contents.append(AppendableText(''))
+        self.append_newline()
+
+    def append_newline(self):
+        # add a new line to our listbox
+        markup = ''
+        if self.show_line_numbers:
+            markup = ('line_number', f'{self.line_number:3} ')
+            self.line_number += 1
+
+        self.body.contents.append(AppendableText(markup))
+
+    def append_tokens(self, tokens):
+        for token in tokens:
+            self.append_token(token)
+
+    def append_token(self, token):
+        if token.text == '\n':
+            # hit a CR, add a new line to our output
+            self.append_newline()
+        else:
+            # remove any trailing \n (and only those)
+            text = token.text.rstrip('\n')
+
+            # add a coloured token to the last line of our list
+            self.body.contents[-1].append( (token.colour, text) )
+
+            # if we stripped a \n, add a new line
+            if token.text != text:
+                self.append_newline()

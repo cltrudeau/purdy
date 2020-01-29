@@ -15,12 +15,7 @@ class AppendAll:
         self.code_blob = code_blob
 
     def setup(self, settings):
-        for token in self.code_blob.tokens:
-            if token.text == '\n':
-                # hit a CR, add a new line to our output
-                self.code_box.append_newline()
-            else:
-                self.code_box.append_token(token.colour, token.text)
+        self.code_box.append_tokens(self.code_blob.tokens)
 
     def next(self, key):
         raise StopIteration
@@ -63,6 +58,8 @@ class AppendTypewriter:
         # adds tokens to the CodeListBox stopping after a prompt
         for token in self.code_blob.tokens[self.current_token:]:
             self.current_token += 1
+            self.code_box.append_token(token)
+
             if token.text == '\n':
                 # hit a CR, add a new line to our output
                 self.code_box.append_newline()

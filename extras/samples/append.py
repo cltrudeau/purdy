@@ -7,7 +7,7 @@ from purdy.actions import AppendAll
 from purdy.content import CodeBlob
 from purdy.ui import Screen
 
-screen = Screen()
+screen = Screen(show_line_numbers=True)
 code_box = screen.code_box
 blob = CodeBlob('../display_code/simple.py', 'con')
 
