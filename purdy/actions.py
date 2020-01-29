@@ -137,8 +137,13 @@ class Highlight:
         pass
 
     def next(self, key):
-        self.code_box.body.contents[self.line_number].set_highlight(
-            self.highlight)
+        numbers = self.line_number
+        if isinstance(self.line_number, int):
+            numbers = [self.line_number]
+
+        for number in numbers:
+            self.code_box.body.contents[number].set_highlight(
+                self.highlight)
 
         raise StopIteration
 

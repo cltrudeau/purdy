@@ -15,6 +15,7 @@ actions = [
     AppendAll(code_box, blob),
     Highlight(code_box, 1, True),
     Highlight(code_box, 1, False),
+    Highlight(code_box, (2, 3), True),
 ]
 
 screen.run(actions)
