@@ -4,6 +4,35 @@ from purdy.content import TokenLookup
 from purdy.settings import settings as default_settings
 
 # =============================================================================
+# Globals
+
+# build palette
+highlight_colour = 'dark gray'
+
+# create the palette, start by using the colours in the TokenLookup
+palette = [(str(token), colour[0], colour[1]) for token, colour in \
+    TokenLookup.colours.items()]
+
+# add the highlighted versions of the token colours
+palette.extend([
+    (str(token) + '_highlight', colour[0], highlight_colour) \
+        for token, colour in TokenLookup.colours.items()
+])
+
+# now append colour attributes that aren't for the tokens
+palette.extend([
+    ('line_number', 'dark gray', ''),
+    ('highlight', '', highlight_colour),
+    ('empty', '', ''),
+])
+
+# now create the attribute mapper for highlighted colours
+highlight_mapper = {
+    str(token):str(token) + '_highlight' for token in TokenLookup.colours.keys()
+}
+highlight_mapper[None] = 'highlight'
+
+# =============================================================================
 # Main Screen
 # =============================================================================
 
@@ -58,7 +87,7 @@ class BaseWindow(urwid.Pile):
             # no actions left to do, ignore the keypress
             return None
 
-        if self.screen.settings['movie_mode'] != -1:
+        if self.screen.movie_mode != -1:
             # in movie mode, ignore key press
             return None
 
@@ -114,19 +143,11 @@ class Screen:
 
         self._build_boxes()
 
-        # create the palette, start by using the colours in the TokenLookup
-        palette = [(str(token), colour[0], colour[1]) for token, colour in \
-            TokenLookup.colours.items()]
-
-        # now append colour attributes that aren't for the tokens
-        palette.extend([
-            ('line_number', 'dark gray', ''),
-        ])
-
+        global palette
         self.loop = urwid.MainLoop(self.base_window, palette)
 
     def _build_boxes(self):
-        self.code_box = CodeBox(self.show_line_numbers)
+        self.code_box = CodeBox(self, self.show_line_numbers)
         self.base_window = BaseWindow(self, [self.code_box, ])
 
     def run(self, actions):
@@ -155,9 +176,9 @@ class SplitScreen(Screen):
 
     def _build_boxes(self):
         # override the default build, creating two code boxes instead
-        self.top_box = CodeBox(self.show_top_line_numbers)
+        self.top_box = CodeBox(self, self.show_top_line_numbers)
         divider = (3, DividingLine())
-        self.bottom_box = CodeBox(self.show_bottom_line_numbers)
+        self.bottom_box = CodeBox(self, self.show_bottom_line_numbers)
 
         self.base_window = BaseWindow(self, [self.top_box, divider,
             self.bottom_box])
@@ -166,9 +187,13 @@ class SplitScreen(Screen):
 # Widgets
 # =============================================================================
 
-class AppendableText(urwid.Text):
+class AppendableText(urwid.AttrMap):
+    def __init__(self, markup):
+        self.widget = urwid.Text(markup)
+        super(AppendableText, self).__init__(self.widget, 'empty')
+
     def append(self, markup):
-        text, attrs = self.get_text()
+        text, attrs = self.widget.get_text()
         output = []
         if len(attrs) == 0:
             # no attributes, just add the text
@@ -202,7 +227,14 @@ class AppendableText(urwid.Text):
             # the output with no attributes
             output.append( (None, markup) )
 
-        self.set_text(output)
+        self.widget.set_text(output)
+
+    def set_highlight(self, highlight):
+        if highlight:
+            global highlight_mapper
+            self.set_attr_map(highlight_mapper)
+        else:
+            self.set_attr_map({})
 
 # -----------------------------------------------------------------------------
 
@@ -268,7 +300,8 @@ class CodeBox(urwid.Columns):
 
     # CodeBox is ListBox of Text with code in it accompanied by a side bar
     # with indicators about focus and scroll position
-    def __init__(self, show_line_numbers):
+    def __init__(self, screen, show_line_numbers):
+        self.screen = screen
         self.show_line_numbers = show_line_numbers
         self.line_number = 1
         self.body = urwid.SimpleListWalker([])

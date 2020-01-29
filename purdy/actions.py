@@ -124,3 +124,34 @@ class ReplaceTypewriter(AppendTypewriter):
         # Replace is just like Append, but clear the box first
         self.code_box.clear()
         super(ReplaceTypewriter, self).setup(settings)
+
+# =============================================================================
+
+class Highlight:
+    def __init__(self, code_box, line_number, highlight):
+        self.code_box = code_box
+        self.line_number = line_number
+        self.highlight = highlight
+
+    def setup(self, settings):
+        pass
+
+    def next(self, key):
+        self.code_box.body.contents[self.line_number].set_highlight(
+            self.highlight)
+
+        raise StopIteration
+
+# =============================================================================
+
+class StopMovie:
+    def __init__(self, screen):
+        self.screen = screen
+
+    def setup(self, settings):
+        pass
+
+    def next(self, key):
+        self.screen.movie_mode = -1
+
+        raise StopIteration

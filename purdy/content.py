@@ -59,8 +59,6 @@ class TokenLookup():
         Error:              ('dark green',   ''),
     }
 
-    palette = None
-
     @classmethod
     def get_colouring(cls, token):
         # Tokens are hierarchical and mapped to colours in our palette using

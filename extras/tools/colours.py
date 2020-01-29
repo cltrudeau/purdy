@@ -19,11 +19,17 @@ fg_colours = [ 'black', 'dark red', 'dark green', 'brown', 'dark blue',
 
 palette = [ (colour, colour, '') for colour in fg_colours ]
 
+palette.append( ('highlight', 'dark gray', 'dark gray') )
+
 # ===========================================================================
 
 # create a Text widget with each colour in the palette
 contents = [urwid.Text('*** Starting\n\n'), ]
+
 contents.extend( [urwid.Text((colour, colour)) for colour in fg_colours] )
+
+contents.append( urwid.AttrMap( urwid.Text(('brown', 'brown')), 'highlight' ))
+
 contents.append(urwid.Text('\n\n*** Done'))
 
 walker = urwid.SimpleListWalker(contents)
