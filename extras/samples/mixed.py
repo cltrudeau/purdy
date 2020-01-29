@@ -14,7 +14,7 @@ settings['movie_mode'] = 20
 py_code = CodeBlob('../display_code/code.py', 'py3')
 con_code = CodeBlob('../display_code/console.py', 'con')
 
-screen = SplitScreen(settings)
+screen = SplitScreen(settings, show_top_line_numbers=True)
 py_box = screen.top_box
 con_box = screen.bottom_box
 

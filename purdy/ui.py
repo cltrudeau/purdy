@@ -307,9 +307,17 @@ class CodeBox(urwid.Columns):
             # remove any trailing \n (and only those)
             text = token.text.rstrip('\n')
 
+            if self.show_line_numbers:
+                # any \n in the text needs to be padded on the left to account
+                # for the indents caused by the line numbers
+                text = text.replace('\n', '\n    ')
+
             # add a coloured token to the last line of our list
             self.body.contents[-1].append( (token.colour, text) )
 
             # if we stripped a \n, add a new line
             if token.text != text:
                 self.append_newline()
+
+    def append_text(self, colour, text):
+        self.body.contents[-1].append( (colour, text) )

@@ -7,6 +7,8 @@ from enum import Enum
 
 from pygments.token import Generic
 
+from purdy.content import CodeToken
+
 # =============================================================================
 
 class AppendAll:
@@ -60,12 +62,6 @@ class AppendTypewriter:
             self.current_token += 1
             self.code_box.append_token(token)
 
-            if token.text == '\n':
-                # hit a CR, add a new line to our output
-                self.code_box.append_newline()
-            else:
-                self.code_box.append_token(token.colour, token.text)
-
             if token.token_type == Generic.Prompt:
                 # stop at first prompt encountered
                 break
@@ -109,7 +105,7 @@ class AppendTypewriter:
             else:
                 # insert first letter into our text widget, put the rest in
                 # the typing queue, set callback timer for next letter
-                self.code_box.append_token(token.colour, token.text[0])
+                self.code_box.append_text(token.colour, token.text[0])
                 self.typing_queue = list(token.text[1:])
                 self.typing_token = token
 
@@ -118,7 +114,7 @@ class AppendTypewriter:
             # typing queue has letters in it, get the next letter and add it
             # to our widget
             letter = self.typing_queue.pop(0)
-            self.code_box.append_token(self.typing_token.colour, letter)
+            self.code_box.append_text(self.typing_token.colour, letter)
 
             return self.delay_until_next_letter
 
