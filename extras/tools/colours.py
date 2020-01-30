@@ -12,25 +12,53 @@ def exit_on_q(key):
 
 # ===========================================================================
 
-fg_colours = [ 'black', 'dark red', 'dark green', 'brown', 'dark blue', 
-    'dark magenta', 'dark cyan', 'light gray', 'dark gray', 'light red', 
-    'light green', 'yellow', 'light blue', 'light magenta', 'light cyan', 
-    'white', ]
+colour_groups = [
+    # all colours
+    ('black        ', 'white         ', 'brown      ', 'yellow     '),
+    ('dark red     ', 'light red     ', 'dark green ', 'light green',), 
+    ('dark blue    ', 'light blue    ', 'dark cyan  ', 'light cyan ',),
+    ('dark magenta ', 'light magenta ', 'dark gray  ', 'light gray ',),
 
-palette = [ (colour, colour, '') for colour in fg_colours ]
+    # colours from Pygments 
+    ('dark cyan    ', 'brown         ', 'dark green ', 'dark magenta'),
+    ('dark blue    ', ),
+    ('dark blue', ),
+]
 
-palette.append( ('highlight', 'dark gray', 'dark gray') )
+highlights = [
+    'dark gray',
+    'light gray',
+]
+
+palette = []
+mapset = [ {} for h in highlights ]
+for group in colour_groups:
+    for colour in group:
+        cname = colour.rstrip()
+        palette.append( (cname, cname, '') )
+
+        for index, highlight in enumerate(highlights):
+            hname = f'{cname}_{highlight}_hl'
+            palette.append( ( hname, cname, highlight) )
+            mapset[index][cname] = hname
 
 # ===========================================================================
 
 # create a Text widget with each colour in the palette
-contents = [urwid.Text('*** Starting\n\n'), ]
+contents = []
 
-contents.extend( [urwid.Text((colour, colour)) for colour in fg_colours] )
+#import pudb; pudb.set_trace()
+for group in colour_groups:
+    text = [(cname.rstrip(), cname) for cname in group]
+    contents.append( urwid.Text(text) )
 
-contents.append( urwid.AttrMap( urwid.Text(('brown', 'brown')), 'highlight' ))
+for index, highlight in enumerate(highlights):
+    contents.append( urwid.Text(' ') )
 
-contents.append(urwid.Text('\n\n*** Done'))
+    for group in colour_groups:
+        text = [(cname.rstrip(), cname) for cname in group]
+        contents.append( urwid.AttrMap( urwid.Text(text), mapset[index] ) )
+
 
 walker = urwid.SimpleListWalker(contents)
 box = urwid.ListBox(walker)
