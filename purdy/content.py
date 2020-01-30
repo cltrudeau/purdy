@@ -35,28 +35,33 @@ LEXERS = LexerContainer()
 
 class TokenLookup():
     colours = {
-        Token:              ('',             ''),
-        Whitespace:         ('',             ''),
-        Comment:            ('dark cyan',    ''),
-        Comment.Preproc:    ('dark cyan',    ''),
-        Keyword:            ('brown',       ''),
-        Keyword.Type:       ('brown',       ''),
-        Operator.Word:      ('brown',       ''),
-        Name.Builtin:       ('dark cyan',    ''),
-        Name.Function:      ('dark cyan',    ''),
-        Name.Namespace:     ('dark cyan',    ''),
-        Name.Class:         ('dark cyan',    ''),
-        Name.Exception:     ('dark green',   ''),
-        Name.Decorator:     ('dark cyan',    ''),
-        Name.Variable:      ('',             ''),
-        Name.Constant:      ('',             ''),
-        Name.Attribute:     ('',             ''),
-        Name.Tag:           ('',             ''),
-        String:             ('dark magenta', ''),
-        Number:             ('dark magenta', ''),
-        Generic.Prompt:     ('dark blue',    ''),
-        Generic.Error:      ('dark green',   ''),
-        Error:              ('dark green',   ''),
+        # urwid colour spec supports both 16 and 256 colour terminals
+        #                    fg16            bg16    fg256   bg256
+        Token:              ('',             '', '', '',             ''),
+        Whitespace:         ('',             '', '', '',             ''),
+        Comment:            ('dark cyan',    '', '', 'dark cyan',    ''),
+        Comment.Preproc:    ('dark cyan',    '', '', 'dark cyan',    ''),
+        Keyword:            ('brown',        '', '', 'brown',        ''),
+        Keyword.Type:       ('brown',        '', '', 'brown',        ''),
+        Operator:           ('brown',        '', '', 'brown',        ''),
+        Operator.Word:      ('brown',        '', '', 'brown',        ''),
+        Name:               ('light gray',   '', '', 'light gray',   ''),
+        Name.Builtin:       ('dark cyan',    '', '', '#068',         ''),
+        Name.Function:      ('dark cyan',    '', '', 'light gray',   ''),
+        Name.Namespace:     ('dark cyan',    '', '', 'light gray',   ''),
+        Name.Class:         ('dark cyan',    '', '', 'light gray',   ''),
+        Name.Exception:     ('dark green',   '', '', 'dark green',   ''),
+        Name.Decorator:     ('dark cyan',    '', '', '#66d,bold',    ''),
+        Name.Variable:      ('',             '', '', '',             ''),
+        Name.Constant:      ('',             '', '', '',             ''),
+        Name.Attribute:     ('',             '', '', '',             ''),
+        Name.Tag:           ('',             '', '', '',             ''),
+        String:             ('dark magenta', '', '', 'dark magenta', ''),
+        Number:             ('dark magenta', '', '', 'dark magenta', ''),
+        Generic.Prompt:     ('dark blue',    '', '', 'dark blue',    ''),
+        Generic.Error:      ('dark green',   '', '', 'dark green',   ''),
+        Generic.Traceback:  ('',             '', '', '#a00,bold',    ''),
+        Error:              ('dark green',   '', '', '#f00',         ''),
     }
 
     @classmethod
@@ -77,6 +82,21 @@ class TokenLookup():
 
         # something went wrong with our lookup, return the default
         return 'Token'
+
+    @classmethod
+    def get_colour_attribute(cls, token):
+        # colour attribute is a 6-tuple, first part being a name (we'll use
+        # the same name as the token), next 5 parts are the colour strings for
+        # fg16, bg16, x, fg256, bg256
+        return ( str(token), ) + tuple( cls.colours[token] )
+
+    @classmethod
+    def get_highlight_colour_attribute(cls, token):
+        # return 6-tuple colour attribute using the highlight colour as the
+        # background colour instead of the one in our table
+        colour = cls.colours[token]
+        return ( str(token) + '_highlight', 'black', 'light gray', '', 
+            'white', 'g23' )
 
 # =============================================================================
 

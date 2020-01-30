@@ -5,17 +5,18 @@
 
 from purdy.actions import AppendAll, Highlight
 from purdy.content import CodeBlob
+from purdy.settings import settings
 from purdy.ui import Screen
 
-screen = Screen(show_line_numbers=True)
+#settings['colour'] = 16
+screen = Screen(settings, show_line_numbers=True)
 code_box = screen.code_box
-blob = CodeBlob('../display_code/simple.py', 'con')
+blob = CodeBlob('../display_code/console.py', 'con')
 
 actions = [
     AppendAll(code_box, blob),
-    Highlight(code_box, 1, True),
-    Highlight(code_box, 1, False),
-    Highlight(code_box, (2, 3), True),
+    Highlight(code_box, range(0, 45), True),
+    Highlight(code_box, range(0, 45), False),
 ]
 
 screen.run(actions)

@@ -29,6 +29,9 @@ if __name__ == '__main__':
         help=('Instead of prentending to type like a human, just dump the file '
         'to the screen'))
 
+    parser.add_argument('-x16', action='store_true', help=('Force 16 colour '
+        'terminal mode in case 256 is not working to the screen'))
+
     parser.add_argument('-l', '--lexer', choices=LEXERS.choices,
         default=LEXERS.default_name, help=('Choose Pygments Lexer to use to '
             'parse the content. Choices are "con" for console (default), or '
@@ -59,6 +62,9 @@ if __name__ == '__main__':
 
     if args.variance:
         settings['delay_variance'] = args.variance
+
+    if args.x16:
+        settings['colour'] = 16
 
     # initialize our display screen using a single code listing box
     screen = Screen()

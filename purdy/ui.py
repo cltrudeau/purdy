@@ -6,31 +6,8 @@ from purdy.settings import settings as default_settings
 # =============================================================================
 # Globals
 
-# build palette
-highlight_colour = 'dark gray'
-
-# create the palette, start by using the colours in the TokenLookup
-palette = [(str(token), colour[0], colour[1]) for token, colour in \
-    TokenLookup.colours.items()]
-
-# add the highlighted versions of the token colours
-palette.extend([
-    (str(token) + '_highlight', colour[0], highlight_colour) \
-        for token, colour in TokenLookup.colours.items()
-])
-
-# now append colour attributes that aren't for the tokens
-palette.extend([
-    ('line_number', 'dark gray', ''),
-    ('highlight', '', highlight_colour),
-    ('empty', '', ''),
-])
-
-# now create the attribute mapper for highlighted colours
-highlight_mapper = {
-    str(token):str(token) + '_highlight' for token in TokenLookup.colours.keys()
-}
-highlight_mapper[None] = 'highlight'
+palette = []
+highlight_mapper = {}
 
 # =============================================================================
 # Main Screen
@@ -142,13 +119,39 @@ class Screen:
             self.movie_mode = float(self.movie_mode) / 1000.0
 
         self._build_boxes()
+        self._build_palette()
 
-        global palette
         self.loop = urwid.MainLoop(self.base_window, palette)
+
+        if self.settings['colour'] == 256:
+            self.loop.screen.set_terminal_properties(colors=256)
+            self.loop.screen.reset_default_terminal_palette()
 
     def _build_boxes(self):
         self.code_box = CodeBox(self, self.show_line_numbers)
         self.base_window = BaseWindow(self, [self.code_box, ])
+
+    def _build_palette(self):
+        global palette, highlight_mapper
+
+        for token in TokenLookup.colours.keys():
+            # add the colour to the palette
+            palette.append( TokenLookup.get_colour_attribute(token) )
+
+            # add the highlight version of the colour to the palette
+            palette.append( TokenLookup.get_highlight_colour_attribute(token) )
+
+            # add a mapping between the colour and the highlight
+            highlight_mapper[str(token)] = str(token) + '_highlight'
+
+        # now append colour attributes that aren't for the tokens
+        palette.extend([
+            ('line_number', 'dark gray', '', '', 'dark gray', ''),
+            ('empty', '', '', '', '', ''),
+        ])
+
+        # add default map value
+        highlight_mapper[None] = 'highlight'
 
     def run(self, actions):
         """Calls the main event loop in urwid. Does not return until the UI

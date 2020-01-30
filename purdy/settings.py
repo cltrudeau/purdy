@@ -10,4 +10,7 @@ settings = {
     # disables, otherwise value in milliseconds for delay between played steps
     # (like 'delay' field
     'movie_mode':-1,
+
+    # xterm colour mode, anything but 256 gives default
+    'colour':256,
 }

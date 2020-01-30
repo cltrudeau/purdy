@@ -37,5 +37,8 @@ SyntaxError: invalid syntax
 ... 
 ...     for x in range(1, 10):
 ...         while(True):
-...             break
+...             try:
+...                b = numbers[0]
+...             except IndexError:
+...                break
 ... 
