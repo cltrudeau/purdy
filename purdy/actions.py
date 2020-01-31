@@ -5,9 +5,7 @@
 import random
 from enum import Enum
 
-from pygments.token import Generic
-
-from purdy.content import CodeToken
+from purdy.content import Animate
 
 # =============================================================================
 
@@ -17,7 +15,10 @@ class AppendAll:
         self.code_blob = code_blob
 
     def setup(self, settings):
-        self.code_box.append_tokens(self.code_blob.tokens)
+        for line in self.code_blob.lines:
+            self.code_box.add_line(line.markup)
+
+        return -1
 
     def next(self, key):
         raise StopIteration
@@ -27,7 +28,7 @@ class ReplaceAll(AppendAll):
     def setup(self, settings):
         # Replace is just like Append, but clear the box first
         self.code_box.clear()
-        super().setup(settings)
+        return super().setup(settings)
 
 # -----------------------------------------------------------------------------
 
@@ -40,31 +41,21 @@ class AppendTypewriter:
     def __init__(self, code_box, code_blob):
         self.code_box = code_box
         self.code_blob = code_blob
-        self.num_tokens = len(self.code_blob.tokens)
 
     def setup(self, settings):
         # delay settings
         self.typing_delay = settings['delay'] / 1000
         self.variance = settings['delay_variance']
 
-        # current token 
-        self.current_token = 0
-        self.typing_queue = []
-        self.typing_token = None
+        # get the chunks of typewriter animation for the first line
+        self.chunks = self.code_blob.typewriter_chunks()
 
-        # type tokens until first prompt
-        self.show_tokens()
-        self.state = State.WAITING
+        # insert the first chunk from the first line in our CodeBox
+        self.current_chunk = 0
 
-    def show_tokens(self):
-        # adds tokens to the CodeListBox stopping after a prompt
-        for token in self.code_blob.tokens[self.current_token:]:
-            self.current_token += 1
-            self.code_box.append_token(token)
-
-            if token.token_type == Generic.Prompt:
-                # stop at first prompt encountered
-                break
+        self.state = State.TYPING
+        self.code_box.add_line()
+        return self.next(None)
 
     @property
     def delay_until_next_letter(self):
@@ -72,8 +63,7 @@ class AppendTypewriter:
         return self.typing_delay + (vary_by / 1000)
 
     def next(self, key):
-        # if we've output all the code, we are done
-        if self.current_token >= self.num_tokens:
+        if self.current_chunk >= len(self.chunks):
             raise StopIteration
 
         if self.state == State.TYPING and key is not None:
@@ -84,39 +74,27 @@ class AppendTypewriter:
             # got a keypress: start typing
             self.state = State.TYPING
 
-        # state is State.TYPING
-        if self.typing_queue == []:
-            # nothing in typing queue, get next token to type
-            token = self.code_blob.tokens[self.current_token]
-            self.current_token += 1
-
-            if token.text == '\n':
-                # hit a CR, add a new line to our output, leave typewriter
-                # mode, print tokens until next prompt
-                self.code_box.append_newline()
-                self.show_tokens()
-                self.state = State.WAITING
-                return -1
-            elif token.text == '':
-                # lexer spits out empty text sometimes, need to ignore it,
-                # ask for an immediate call-back to invoke next letter in the
-                # queue
-                return 0
-            else:
-                # insert first letter into our text widget, put the rest in
-                # the typing queue, set callback timer for next letter
-                self.code_box.append_text(token.colour, token.text[0])
-                self.typing_queue = list(token.text[1:])
-                self.typing_token = token
-
+        chunk = self.chunks[self.current_chunk]
+        while True:
+            if chunk == Animate.NEWLINE:
+                self.code_box.add_line()
+                self.current_chunk += 1
+            elif chunk == Animate.DELAY:
+                self.current_chunk += 1
                 return self.delay_until_next_letter
-        else:
-            # typing queue has letters in it, get the next letter and add it
-            # to our widget
-            letter = self.typing_queue.pop(0)
-            self.code_box.append_text(self.typing_token.colour, letter)
+            elif chunk == Animate.WAIT:
+                self.state = State.WAITING
+                self.current_chunk += 1
+                return -1
+            else:
+                # display the markup in the chunk
+                self.code_box.set_last_line(chunk)
+                self.current_chunk += 1
 
-            return self.delay_until_next_letter
+            if self.current_chunk >= len(self.chunks):
+                raise StopIteration
+
+            chunk = self.chunks[self.current_chunk]
 
 
 class ReplaceTypewriter(AppendTypewriter):
@@ -124,6 +102,25 @@ class ReplaceTypewriter(AppendTypewriter):
         # Replace is just like Append, but clear the box first
         self.code_box.clear()
         super(ReplaceTypewriter, self).setup(settings)
+
+# =============================================================================
+
+class Insert:
+    def __init__(self, code_box, line_number, code_blob):
+        self.code_box = code_box
+        self.code_blob = code_blob
+        self.line_number = line_number
+
+    def setup(self, settings):
+        line_no = self.line_number
+        for line in self.code_blob.lines:
+            self.code_box.add_line_at(line_no, line.markup)
+            line_no += 1
+
+        self.code_box.fix_line_numbers(self.line_number)
+
+    def next(self, key):
+        raise StopIteration
 
 # =============================================================================
 
@@ -142,7 +139,7 @@ class Highlight:
             numbers = [self.line_number]
 
         for number in numbers:
-            self.code_box.body.contents[number].set_highlight(
+            self.code_box.body.contents[number - 1].set_highlight(
                 self.highlight)
 
         raise StopIteration

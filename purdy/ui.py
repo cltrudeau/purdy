@@ -158,9 +158,12 @@ class Screen:
         exits."""
         # store our display actions and setup the first one
         self.actions = actions
-        self.actions[0].setup(self.settings)
+        timer = self.actions[0].setup(self.settings)
 
-        if self.movie_mode != -1:
+        if timer != -1:
+            # action setup has request an alarm
+            self.loop.set_alarm_in(timer, self.base_window.alarm)
+        elif self.movie_mode != -1:
             # in movie mode we simulate the key presses, set the callback to
             # start the process
             self.loop.set_alarm_in(self.movie_mode, self.base_window.alarm)
@@ -191,46 +194,26 @@ class SplitScreen(Screen):
 # =============================================================================
 
 class AppendableText(urwid.AttrMap):
+    ### Text-like widget that supports highlighting
+
     def __init__(self, markup):
-        self.widget = urwid.Text(markup)
-        super(AppendableText, self).__init__(self.widget, 'empty')
+        self.text_widget = urwid.Text('')
+        self.set_text(markup)
+        super(AppendableText, self).__init__(self.text_widget, 'empty')
+
+    def set_text(self, markup):
+        # urwid.Text supports three formats for markup: 1) plain text, 2)
+        # tuple of palette attribute name and text, or 3) a list contain items
+        # which are #1 or #2; to make things easier, convert it to a list
+        self.markup = markup
+        if isinstance(markup, str) or isinstance(markup, tuple):
+            self.markup = [markup]
+
+        self.text_widget.set_text(self.markup)
 
     def append(self, markup):
-        text, attrs = self.widget.get_text()
-        output = []
-        if len(attrs) == 0:
-            # no attributes, just add the text
-            output.append((None, text))
-        else:
-            # have attributes, get_text() returns a string and a series of
-            # tuples that are the name of the attribute applied and the
-            # length, need to re-build the list of text pieces for set_text()
-            #import pudb; pudb.set_trace()
-            pos = 0
-            for name, length in attrs:
-                if length == 0:
-                    # empty strings mess up urwid's attributes, skip them if
-                    # they happend
-                    continue
-
-                text_piece = text[pos:pos+length]
-                pos += length
-                output.append( (name, text_piece) )
-
-            if pos < len(text):
-                output.append( (None, text[pos:]) )
-
-        # now we actually want to append something
-        if isinstance(markup, list):
-            output.extend(markup)
-        elif isinstance(markup, tuple):
-            output.append(markup)
-        else:
-            # not a list, not a tuple, must be a string; tack it on the end of
-            # the output with no attributes
-            output.append( (None, markup) )
-
-        self.widget.set_text(output)
+        self.markup.append(markup)
+        self.set_text(self.markup)
 
     def set_highlight(self, highlight):
         if highlight:
@@ -308,7 +291,6 @@ class CodeBox(urwid.Columns):
         self.show_line_numbers = show_line_numbers
         self.line_number = 1
         self.body = urwid.SimpleListWalker([])
-        self.append_newline()
 
         scroller = ScrollingIndicator()
         listbox = ScrollingListBox(scroller, self.body)
@@ -320,40 +302,50 @@ class CodeBox(urwid.Columns):
     def clear(self):
         # clears the list and starts fresh
         self.body.contents.clear() 
-        self.append_newline()
 
-    def append_newline(self):
-        # add a new line to our listbox
-        markup = ''
+    # --- Add Lines
+    def add_line(self, markup=['']):
+        """Appends an empty line to the end of the code listing
+
+        :param markup: markup to put in the line, defaults to empty
+        """
+        self.add_line_at(len(self.body.contents) + 1, markup)
+
+    def add_line_at(self, position, markup=['']):
+        """Inserts a new empty line in the code box
+
+        :param position: line number to insert at (1-indexed), pushes any
+            existing content down; i.e. position=1 inserts at the top of the
+            list
+        :param markup: markup to put in the newly inserted line, defaults to
+                       empty
+        """
         if self.show_line_numbers:
-            markup = ('line_number', f'{self.line_number:3} ')
-            self.line_number += 1
+            markup = [TokenLookup.line_number_markup(position), ] +  markup
 
-        self.body.contents.append(AppendableText(markup))
+        self.body.contents.insert(position - 1, AppendableText(markup))
 
-    def append_tokens(self, tokens):
-        for token in tokens:
-            self.append_token(token)
+    def fix_line_numbers(self, position):
+        """Fixes line numbers after adding new lines to the code box"""
+        line_no = position
+        for widget in self.body.contents[line_no - 1:]:
+            markup = widget.markup
 
-    def append_token(self, token):
-        if token.text == '\n':
-            # hit a CR, add a new line to our output
-            self.append_newline()
-        else:
-            # remove any trailing \n (and only those)
-            text = token.text.rstrip('\n')
+            # this should only be called in show_line_numbers mode, so we can
+            # assume that the first part of the markup is the line number
+            # chunk
+            #
+            # re-build the markup, replacing the line number chunk with a new
+            # one
+            text = TokenLookup.line_number_markup(line_no)
+            new_markup = [text, ] + markup[1:]
+            widget.set_text(new_markup)
 
-            if self.show_line_numbers:
-                # any \n in the text needs to be padded on the left to account
-                # for the indents caused by the line numbers
-                text = text.replace('\n', '\n    ')
+            line_no += 1
 
-            # add a coloured token to the last line of our list
-            self.body.contents[-1].append( (token.colour, text) )
+    # --- Set line
+    def set_last_line(self, markup):
+        self.body.contents[-1].set_text(markup)
 
-            # if we stripped a \n, add a new line
-            if token.text != text:
-                self.append_newline()
-
-    def append_text(self, colour, text):
-        self.body.contents[-1].append( (colour, text) )
+    def set_line(self, position, markup):
+        self.body.contents[position - 1].set_text(markup)

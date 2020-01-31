@@ -2,4 +2,4 @@
 
 echo "============================================================"
 echo "== pyflakes =="
-pyflakes purdy
+pyflakes purdy extras/samples extras/tools

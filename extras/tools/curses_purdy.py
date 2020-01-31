@@ -6,9 +6,7 @@ import time
 
 import curses
 
-from pygments import highlight
 from pygments.lexers import PythonConsoleLexer
-from pygments.formatters import Terminal256Formatter, RawTokenFormatter
 
 from pygments.token import Keyword, Name, Comment, String, Error, \
     Number, Operator, Generic, Token, Whitespace
