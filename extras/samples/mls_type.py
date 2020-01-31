@@ -3,12 +3,12 @@
 # Example code for programatically calling the purdy library and showing a
 # console based code snippet
 
-from purdy.actions import AppendAll
+from purdy.actions import AppendTypewriter
 from purdy.content import CodeFile
 from purdy.ui import Screen
 
-screen = Screen(show_line_numbers=True)
+screen = Screen()
 code_box = screen.code_box
-blob = CodeFile('../display_code/console2.py', 'con')
-action = AppendAll(code_box, blob)
+blob = CodeFile('../display_code/mls.py', 'con')
+action = AppendTypewriter(code_box, blob)
 screen.run([action])

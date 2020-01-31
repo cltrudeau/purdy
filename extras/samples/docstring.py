@@ -9,6 +9,6 @@ from purdy.ui import Screen
 
 screen = Screen(show_line_numbers=True)
 code_box = screen.code_box
-blob = CodeFile('../display_code/console2.py', 'con')
+blob = CodeFile('../display_code/docstring.py', 'py3')
 action = AppendAll(code_box, blob)
 screen.run([action])

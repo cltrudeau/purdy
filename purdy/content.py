@@ -86,6 +86,21 @@ class TokenLookup():
         return 'Token'
 
     @classmethod
+    def is_a(cls, token1, token2):
+        ### Returns true if token1 is equal to or a child of token2
+        if token1 == token2:
+            return True
+
+        parent = token1.parent
+        while(parent != None):
+            if parent == token2:
+                return True
+
+            parent = parent.parent
+
+        return False
+
+    @classmethod
     def get_colour_attribute(cls, token):
         # colour attribute is a 6-tuple, first part being a name (we'll use
         # the same name as the token), next 5 parts are the colour strings for
@@ -158,7 +173,8 @@ class Code:
             if token.text == '\n':
                 # hit a CR, time to create a new CodeLine object
                 if not token_set:
-                    continue
+                    token2 = CodeToken(token.token_type, 'empty', '')
+                    token_set = [token2 ]
 
                 line = CodeLine(token_set)
                 self.lines.append(line)
@@ -168,6 +184,17 @@ class Code:
             elif token.text == '':
                 # tokenizer sometimes puts in empty stuff, skip it
                 continue
+            elif TokenLookup.is_a(token.token_type, String) and \
+                    '\n' in token.text:
+                # String tokens may be multi-line
+                for row in token.text.split('\n'):
+                    token2 = CodeToken(token.token_type, token.colour, 
+                        row)
+                    token_set.append(token2)
+                    line = CodeLine( token_set )
+                    self.lines.append(line)
+
+                    token_set = []
             else:
                 if token.text[-1] == '\n':
                     # there is a \n at the end of the token, need to rebuild
