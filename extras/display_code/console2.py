@@ -27,7 +27,7 @@ SyntaxError: invalid syntax
 ...     BAR = 12
 ...
 ...     def bar(self):
-...             pass
+...         pass
 >>> @decorated
 ... def thing(a, b, c):
 ...     numbers = [1, 2, 3, 0.2, 0x12]

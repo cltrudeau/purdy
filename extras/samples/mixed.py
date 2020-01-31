@@ -24,11 +24,11 @@ actions = [
     Wait(),
     StopMovie(screen),
     Wait(),
-    Highlight(py_box, 3, True),
+    Highlight(py_box, 4, True),
     Wait(),
     Highlight(con_box, 3, True),
     Wait(),
-    Highlight(py_box, 3, False),
+    Highlight(py_box, 4, False),
 ]
 
 screen.run(actions)

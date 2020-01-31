@@ -162,9 +162,6 @@ class Code:
         # turn our tokens into lines of code
         self._build_code_lines()
 
-        #chunks = self.typewriter_chunks()
-        #import pudb; pudb.set_trace()
-
     def _build_code_lines(self):
         self.lines = []
 
@@ -213,79 +210,9 @@ class Code:
                     token_set.append(token)
 
     def typewriter_chunks(self):
-        ### returns a list of markup sets, each of which is a cell in the
-        # typewriter animation, so "x=1" turns into ['x', 'x=', 'x=1',]
-        # (except with the markup)
-        chunks = []
-        line = []
-        traceback = False
-        for token in self.tokens:
-            if token.text == '' and token.token_type != Generic.Traceback:
-                # skip empty tokens
-                continue
+        return TypewriterChunkifier().parse(self.tokens)
 
-            if token.text == '\n':
-                if line:
-                    chunks.append(line)
-                    line = []
-
-                chunks.append( Animate.NEWLINE )
-                continue
-
-            if token.token_type == Generic.Prompt:
-                if traceback:
-                    # we're in traceback mode, spit out the last line then get
-                    # out of traceback mode
-                    traceback = False
-                    if line:
-                        chunks.append( copy(line) )
-                        line = []
-                
-                markup = (token.colour, token.text)
-                line.append(markup)
-                chunks.append( copy(line) )
-                chunks.append( Animate.WAIT )
-            elif token.token_type in Generic.Output:
-                for row in token.text.rstrip('\n').split('\n'):
-                    chunks.append( (token.colour, row) )
-                    chunks.append( Animate.NEWLINE )
-            elif token.token_type in Generic.Traceback:
-                # tracebacks are funny, they are followed by stack trace
-                # information that should be colourized but treated as a
-                # single output block, go into "traceback mode" so that no
-                # animation happens until we get to the next Prompt
-                traceback = True
-                text = token.text.rstrip()
-                if text:
-                    chunks.append( (token.colour, token.text.rstrip() ) )
-                    chunks.append( Animate.NEWLINE )
-
-                line = []
-            else:
-                if traceback:
-                    line.append( (token.colour, token.text) )
-                else:
-                    # type things letter by letter now
-                    word = ''
-                    for letter in token.text:
-                        word += letter
-                        markup = (token.colour, word)
-
-                        if len(word) == 1:
-                            line.append( markup )
-                        else:
-                            line[-1] = markup
-
-                        chunks.append( copy(line) )
-                        chunks.append( Animate.DELAY )
-
-        # clean off any instructions from the end (e.g. if it ends in a Prompt
-        # there will be a WAIT and a NEWLINE
-        while isinstance(chunks[-1], Animate):
-            chunks.pop()
-
-        return chunks
-
+# -----------------------------------------------------------------------------
 
 class CodeFile(Code):
     def __init__(self, filename, lexer_name):
@@ -294,3 +221,99 @@ class CodeFile(Code):
             contents = f.read()
 
         super().__init__(contents, lexer_name)
+
+# -----------------------------------------------------------------------------
+
+class TypewriterChunkifier:
+    ### Encapsulates token parsing into typewriter animation chunks
+
+    def __init__(self):
+        self.chunks = []
+        self.line = []
+        self.traceback = False
+
+        self.handlers = {
+            Generic.Prompt   :self._prompt_handler,
+            Generic.Output   :self._output_handler,
+            Generic.Traceback:self._traceback_handler,
+        }
+
+    def _prompt_handler(self, token):
+        ### chunkifies Generic.Prompt tokens
+        if self.traceback:
+            # we're in traceback mode, spit out the last line then get
+            # out of traceback mode
+            self.traceback = False
+            if self.line:
+                self.chunks.append( copy(self.line) )
+                self.line = []
+        
+        markup = (token.colour, token.text)
+        self.line.append(markup)
+        self.chunks.append( copy(self.line) )
+        self.chunks.append( Animate.WAIT )
+
+    def _output_handler(self, token):
+        ### chunkifies Generic.Output tokens
+        for row in token.text.rstrip('\n').split('\n'):
+            self.chunks.append( (token.colour, row) )
+            self.chunks.append( Animate.NEWLINE )
+
+    def _traceback_handler(self, token):
+        ### chunkifies Generic.Traceback tokens
+
+        # tracebacks are funny, they are followed by stack trace information
+        # that should be colourized but treated as a single output block, go
+        # into "traceback mode" so that no animation happens until we get to
+        # the next Prompt
+        self.traceback = True
+        text = token.text.rstrip()
+        if text:
+            self.chunks.append( (token.colour, token.text.rstrip() ) )
+            self.chunks.append( Animate.NEWLINE )
+
+        self.line = []
+
+    def _default_handler(self, token):
+        ### chunkifies tokens without specific handlers
+        if self.traceback:
+            self.line.append( (token.colour, token.text) )
+        else:
+            # type things letter by letter now
+            word = ''
+            for letter in token.text:
+                word += letter
+                markup = (token.colour, word)
+
+                if len(word) == 1:
+                    self.line.append( markup )
+                else:
+                    self.line[-1] = markup
+
+                self.chunks.append( copy(self.line) )
+                self.chunks.append( Animate.DELAY )
+
+    def parse(self, tokens):
+        for token in tokens:
+            if token.text == '' and token.token_type != Generic.Traceback:
+                # skip empty tokens
+                continue
+
+            if token.text == '\n':
+                if self.line:
+                    self.chunks.append( copy(self.line) )
+                    self.line = []
+
+                self.chunks.append( Animate.NEWLINE )
+                continue
+
+            # lookup the handler for this token and run it
+            fn = self.handlers.get(token.token_type, self._default_handler)
+            fn(token)
+
+        # clean off any instructions from the end (e.g. if it ends in a Prompt
+        # there will be a WAIT and a NEWLINE
+        while isinstance(self.chunks[-1], Animate):
+            self.chunks.pop()
+
+        return self.chunks
