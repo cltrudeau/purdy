@@ -211,13 +211,15 @@ class CodeLineBuilder:
 
     def _string_handler(self, lines, token):
         # String tokens may be multi-line
-        for row in token.text.split('\n'):
-            token2 = CodeToken(token.token_type, token.colour, row)
+        for row in token.text.splitlines(True):
+            token2 = CodeToken(token.token_type, token.colour, row.rstrip('\n'))
             self.token_set.append(token2)
-            line = CodeLine( self.token_set )
-            lines.append(line)
 
-            self.token_set = []
+            if row[-1] == '\n':
+                line = CodeLine( self.token_set )
+                lines.append(line)
+
+                self.token_set = []
 
     def _default_handler(self, lines, token):
         if token.text[-1] == '\n':
