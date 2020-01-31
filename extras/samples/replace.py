@@ -3,7 +3,7 @@
 # Example code for programatically calling the purdy library and showing a
 # console based code snippet
 
-from purdy.actions import AppendAll, ReplaceAll, ReplaceTypewriter
+from purdy.actions import AppendAll, ReplaceAll, ReplaceTypewriter, Wait
 from purdy.content import CodeFile
 from purdy.ui import Screen
 
@@ -14,7 +14,9 @@ blob2 = CodeFile('../display_code/console.py', 'con')
 
 actions = [
     AppendAll(code_box, blob),
+    Wait(),
     ReplaceAll(code_box, blob2),
+    Wait(),
     ReplaceTypewriter(code_box, blob),
 ]
 

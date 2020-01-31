@@ -3,7 +3,7 @@
 # Example code for programatically calling the purdy library and showing a
 # console based code snippet
 
-from purdy.actions import AppendAll, Highlight
+from purdy.actions import AppendAll, Highlight, Wait
 from purdy.content import CodeFile
 from purdy.settings import settings
 from purdy.ui import Screen
@@ -15,7 +15,9 @@ blob = CodeFile('../display_code/console2.py', 'con')
 
 actions = [
     AppendAll(code_box, blob),
+    Wait(),
     Highlight(code_box, range(1, 45), True),
+    Wait(),
     Highlight(code_box, range(1, 45), False),
 ]
 

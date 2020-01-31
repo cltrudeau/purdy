@@ -10,7 +10,16 @@ from purdy.content import Animate
 # =============================================================================
 
 class AppendAll:
+    """Appends the code to the code box. All work is done in the setup()
+    phase, does not wait for a key press.
+    """
     def __init__(self, code_box, code_blob):
+        """Constructor
+
+        :param code_box: a :class:`CodeBox` widget where the code will be 
+            presented
+        :param code: a :class:`Code` object containing code to post
+        """
         self.code_box = code_box
         self.code_blob = code_blob
 
@@ -18,13 +27,14 @@ class AppendAll:
         for line in self.code_blob.lines:
             self.code_box.add_line(line.markup)
 
-        return -1
-
     def next(self, key):
         raise StopIteration
 
 
 class ReplaceAll(AppendAll):
+    """Same as :class:`AppendAll` except it clears the code box before
+    inserting the code.
+    """
     def setup(self, settings):
         # Replace is just like Append, but clear the box first
         self.code_box.clear()
@@ -38,7 +48,19 @@ class State(Enum):
 
 
 class AppendTypewriter:
+    """Appends the code to the code box using a typewriter animation. Meant to
+    be used with console-style (REPL) scripts. Prompts are printed immediately,
+    anything after a prompt waits for a key press. Each key press will cause
+    the typewriter animation to print out as if you are typing a command after
+    the prompt. Results from a "command" appear immediately. 
+    """
     def __init__(self, code_box, code_blob):
+        """Constructor
+
+        :param code_box: a :class:`CodeBox` widget where the code will be 
+                         presented
+        :param code: a :class:`Code` object containing code to post
+        """
         self.code_box = code_box
         self.code_blob = code_blob
 
@@ -55,7 +77,6 @@ class AppendTypewriter:
 
         self.state = State.TYPING
         self.code_box.add_line()
-        return self.next(None)
 
     @property
     def delay_until_next_letter(self):
@@ -98,6 +119,9 @@ class AppendTypewriter:
 
 
 class ReplaceTypewriter(AppendTypewriter):
+    """Same as :class:`AppendTypewriter` but clears the code box before
+    starting the animation.
+    """
     def setup(self, settings):
         # Replace is just like Append, but clear the box first
         self.code_box.clear()
@@ -106,7 +130,19 @@ class ReplaceTypewriter(AppendTypewriter):
 # =============================================================================
 
 class Insert:
+    """Inserts a piece of code at the given line number. Code on the line
+    number before the insertion is pushed downards -- i.e. inserting on line 1
+    has the new code at the top of the document.
+    """
     def __init__(self, code_box, line_number, code_blob):
+        """Constructor
+
+        :param code_box: a :class:`CodeBox` widget where the code will be 
+            presented
+        :param line_number: line number (1-indexed) where code is to be
+                            inserted
+        :param code: a :class:`Code` object containing code to post
+        """
         self.code_box = code_box
         self.code_blob = code_blob
         self.line_number = line_number
@@ -125,7 +161,18 @@ class Insert:
 # =============================================================================
 
 class Highlight:
+    """Changes the colour attributes of the given line number to be
+    highlighted.
+    """
     def __init__(self, code_box, line_number, highlight):
+        """Constructor
+
+        :param code_box: a :class:`CodeBox` widget where the code will be 
+            presented
+        :param line_number: line number (1-indexed) where code is to be
+                            inserted. Also supports a list of line numbers.
+        :param highlight: `True` to turn highlighting on, `False` to turn it off
+        """
         self.code_box = code_box
         self.line_number = line_number
         self.highlight = highlight
@@ -147,7 +194,14 @@ class Highlight:
 # =============================================================================
 
 class StopMovie:
+    """If the system is working in movie-mode, this action causes it to leave
+    movie mode and go back to being interactive, expecting key presses.
+    """
     def __init__(self, screen):
+        """Constructor
+
+        :param screen: :class:`Screen` object that controls the playback
+        """
         self.screen = screen
 
     def setup(self, settings):
@@ -155,5 +209,21 @@ class StopMovie:
 
     def next(self, key):
         self.screen.movie_mode = -1
+
+        raise StopIteration
+
+
+class Wait:
+    """Action does nothing but wait for a key press"""
+    def __init__(self):
+        self.called = False
+
+    def setup(self, settings):
+        pass
+
+    def next(self, key):
+        if not self.called:
+            self.called = True
+            return -1
 
         raise StopIteration

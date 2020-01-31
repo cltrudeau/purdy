@@ -3,7 +3,7 @@
 # Example code for programatically calling the purdy library and showing a
 # console based code snippet
 
-from purdy.actions import AppendAll, Insert
+from purdy.actions import AppendAll, Insert, Wait
 from purdy.content import CodeFile, Code
 from purdy.ui import Screen
 
@@ -22,6 +22,7 @@ blob2 = Code(insert_me, 'con')
 
 actions = [
     AppendAll(code_box, blob),
+    Wait(),
     Insert(code_box, 4, blob2)
 ]
 

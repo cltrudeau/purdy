@@ -2,7 +2,8 @@
 
 # Example code for showing a top with code and a bottom with console
 
-from purdy.actions import AppendAll, AppendTypewriter, Highlight, StopMovie
+from purdy.actions import (AppendAll, AppendTypewriter, Highlight, StopMovie,
+    Wait)
 from purdy.content import CodeFile
 from purdy.settings import settings
 from purdy.ui import SplitScreen
@@ -18,10 +19,15 @@ con_box = screen.bottom_box
 
 actions = [
     AppendAll(py_box, py_code),
+    Wait(),
     AppendTypewriter(con_box, con_code),
+    Wait(),
     StopMovie(screen),
+    Wait(),
     Highlight(py_box, 3, True),
+    Wait(),
     Highlight(con_box, 3, True),
+    Wait(),
     Highlight(py_box, 3, False),
 ]
 

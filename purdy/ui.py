@@ -97,7 +97,8 @@ class BaseWindow(urwid.Pile):
             self.screen.actions.pop(0)
 
             if self.screen.actions:
-                # there is another action in the action queue, set it up
+                # there is another action in the action queue, set it up and
+                # then force a call back to its first step
                 self.screen.actions[0].setup(self.screen.settings)
 
                 if self.screen.movie_mode != -1:
@@ -105,6 +106,8 @@ class BaseWindow(urwid.Pile):
                     # callback
                     self.screen.loop.set_alarm_in(self.screen.movie_mode, 
                         self.alarm)
+                else:
+                    self.screen.loop.set_alarm_in(0, self.alarm)
 
 
 class Screen:
@@ -158,15 +161,16 @@ class Screen:
         exits."""
         # store our display actions and setup the first one
         self.actions = actions
-        timer = self.actions[0].setup(self.settings)
+        self.actions[0].setup(self.settings)
 
-        if timer != -1:
-            # action setup has request an alarm
-            self.loop.set_alarm_in(timer, self.base_window.alarm)
-        elif self.movie_mode != -1:
+        # as soon as the loop is going invoke the next action, setup a
+        # callback
+        if self.movie_mode != -1:
             # in movie mode we simulate the key presses, set the callback to
             # start the process
             self.loop.set_alarm_in(self.movie_mode, self.base_window.alarm)
+        else:
+            self.loop.set_alarm_in(0, self.base_window.alarm)
 
         # call urwid's main loop, this code doesn't return until the loop
         # exits!!!

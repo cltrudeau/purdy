@@ -14,6 +14,7 @@
 htmlcov/
 foo.py
 debug.log
+debug.lock
 db.sqlite3
 logs/*
 *.egg
