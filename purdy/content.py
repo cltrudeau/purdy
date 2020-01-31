@@ -149,65 +149,26 @@ class CodeLine:
 
 
 class Code:
+    """Object encapsulates text containing code that is to be displayed
+
+    :param contents: string with lines of code
+    :param lexer_name: name of lexer to use on the code, one of 'con' for
+                       Console lexer or 'py3' for Python 3 lexer
+    :param show_line_numbers: True if code should have line numbers when 
+                              displayed, defaults to False
+    """
     def __init__(self, contents, lexer_name, show_line_numbers=False):
         self.show_line_numbers = show_line_numbers
         lexer = LEXERS.get_lexer(lexer_name)
 
         # parse the code
         self.tokens = []
+        self.lines = []
         for token_type, text in lexer.get_tokens(contents):
             colour = TokenLookup.get_colouring(token_type)
             self.tokens.append( CodeToken(token_type, colour, text) )
 
-        # turn our tokens into lines of code
-        self._build_code_lines()
-
-    def _build_code_lines(self):
-        self.lines = []
-
-        token_set = []
-        for token in self.tokens:
-            if token.text == '\n':
-                # hit a CR, time to create a new CodeLine object
-                if not token_set:
-                    token2 = CodeToken(token.token_type, 'empty', '')
-                    token_set = [token2 ]
-
-                line = CodeLine(token_set)
-                self.lines.append(line)
-
-                # reset to start the next group of tokens
-                token_set = []
-            elif token.text == '':
-                # tokenizer sometimes puts in empty stuff, skip it
-                continue
-            elif TokenLookup.is_a(token.token_type, String) and \
-                    '\n' in token.text:
-                # String tokens may be multi-line
-                for row in token.text.split('\n'):
-                    token2 = CodeToken(token.token_type, token.colour, 
-                        row)
-                    token_set.append(token2)
-                    line = CodeLine( token_set )
-                    self.lines.append(line)
-
-                    token_set = []
-            else:
-                if token.text[-1] == '\n':
-                    # there is a \n at the end of the token, need to rebuild
-                    # it without it, then create the CodeLine object
-                    token2 = CodeToken(token.token_type, token.colour,
-                        token.text.rstrip('\n'))
-                    token_set.append(token2)
-
-                    # token text caused a CR, create a new CodeLine object
-                    line = CodeLine(token_set)
-                    self.lines.append(line)
-
-                    # reset to start the next group of tokens
-                    token_set = []
-                else:
-                    token_set.append(token)
+        CodeLineBuilder().parse(self.tokens, self.lines)
 
     def typewriter_chunks(self):
         return TypewriterChunkifier().parse(self.tokens)
@@ -215,12 +176,79 @@ class Code:
 # -----------------------------------------------------------------------------
 
 class CodeFile(Code):
-    def __init__(self, filename, lexer_name):
+    """Subclass of :class:`Code` which reads code to be displayed from a file
+
+    :param filename: name of file to read to get the code contents
+    :param lexer_name: name of lexer to use on the code, one of 'con' for
+                       Console lexer or 'py3' for Python 3 lexer
+    :param show_line_numbers: True if code should have line numbers when 
+                              displayed, defaults to False
+    """
+    def __init__(self, filename, lexer_name, show_line_numbers=False):
         filename = os.path.abspath(filename)
         with open(filename) as f:
             contents = f.read()
 
-        super().__init__(contents, lexer_name)
+        super().__init__(contents, lexer_name, show_line_numbers)
+
+# -----------------------------------------------------------------------------
+
+class CodeLineBuilder:
+    ### Class encapsulates handling tokens of code and turning them into
+    # CodeLine objects with appropriate markup
+
+    def _newline_handler(self, lines, token):
+        # hit a CR, time to create a new CodeLine object
+        if not self.token_set:
+            token2 = CodeToken(token.token_type, 'empty', '')
+            self.token_set = [token2 ]
+
+        line = CodeLine(self.token_set)
+        lines.append(line)
+
+        # reset to start the next group of tokens
+        self.token_set = []
+
+    def _string_handler(self, lines, token):
+        # String tokens may be multi-line
+        for row in token.text.split('\n'):
+            token2 = CodeToken(token.token_type, token.colour, row)
+            self.token_set.append(token2)
+            line = CodeLine( self.token_set )
+            lines.append(line)
+
+            self.token_set = []
+
+    def _default_handler(self, lines, token):
+        if token.text[-1] == '\n':
+            # there is a \n at the end of the token, need to rebuild it
+            # without it, then create the CodeLine object
+            token2 = CodeToken(token.token_type, token.colour,
+                token.text.rstrip('\n'))
+            self.token_set.append(token2)
+
+            # token text caused a CR, create a new CodeLine object
+            line = CodeLine(self.token_set)
+            lines.append(line)
+
+            # reset to start the next group of tokens
+            self.token_set = []
+        else:
+            self.token_set.append(token)
+
+    def parse(self, tokens, lines):
+        self.token_set = []
+        for token in tokens:
+            if token.text == '\n':
+                self._newline_handler(lines, token)
+            elif token.text == '':
+                # tokenizer sometimes puts in empty stuff, skip it
+                continue
+            elif TokenLookup.is_a(token.token_type, String) and \
+                    '\n' in token.text:
+                self._string_handler(lines, token)
+            else:
+                self._default_handler(lines, token)
 
 # -----------------------------------------------------------------------------
 
