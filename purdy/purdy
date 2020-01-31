@@ -7,7 +7,7 @@ import argparse
 from purdy.__init__ import __version__
 
 from purdy.actions import AppendAll, AppendTypewriter
-from purdy.content import LEXERS, CodeBlob
+from purdy.content import LEXERS, CodeFile
 from purdy.settings import settings
 from purdy.ui import Screen
 
@@ -71,7 +71,7 @@ if __name__ == '__main__':
     code_box = screen.code_box
 
     # read the code being displayed and create the appropriate action
-    blob = CodeBlob(args.filename, args.lexer)
+    blob = CodeFile(args.filename, args.lexer)
 
     if args.continuous:
         action = AppendAll(code_box, blob)

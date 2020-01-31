@@ -129,6 +129,10 @@ class Animate(Enum):
 
 
 class CodeLine:
+    """Represents a single line of code to be displayed. Wraps the urwid
+    text markup language. The markup for this line can be accessed through 
+    :attr:`CodeLine.markup`
+    """
     def __init__(self, tokens):
         self.tokens = tokens
         self.markup = ['']

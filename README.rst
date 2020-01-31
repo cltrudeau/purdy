@@ -26,14 +26,22 @@ you can press "q" to quit.
 Command Line Options
 ====================
 
---continuous
+-c, --continuous
     Instead of waiting for key presses, display the whole file
 
---delay DELAY
+-x16
+    purdy defaults to using 256 colour mode in the terminal. This flag forces
+    it to use 16 colour mode
+
+-l, --lexer
+    Default lexer is Python Console lexer ('con'), using this parameter you
+    can also change it to a Python 3 code lexer ('py3')
+
+-d, --delay DELAY
     change the amount of delay between "typed" letters. Defaults to 130ms.
     Value given in milliseconds. Mutually exclusive with the "--wpm" option
 
---wpm WPM
+-w, --wpm WPM
     specify the typing speed in Words Per Minute. Mutually exclusive with the
     "--delay" option
 
@@ -56,10 +64,20 @@ Installation
 
     $ pip install purdy
 
+
+Coding With Purdy
+=================
+
+The "purdy" script is fairly simple. You can also create programs using the
+purdy library. Your programs can have much more complicated interactions,
+including having split screens, highlighting lines and more. 
+
+
 Supports
 ========
 
 purdy has been tested with Python 3.7
+
 
 Docs & Source
 =============

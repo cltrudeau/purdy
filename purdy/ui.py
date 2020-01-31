@@ -111,7 +111,22 @@ class BaseWindow(urwid.Pile):
 
 
 class Screen:
+    """Manages the display and event loop for the slide show. All purdy
+    scripts need to create one of these or its children.
+
+    This class includes a single :class:`ui.CodeBox` widget which can be accessed
+    as :attr:`Screen.code_box`
+    """
     def __init__(self, conf_settings=None, show_line_numbers=False):
+        """Constructor
+
+        :param conf_settings: a settings dictionary object. Defaults to 
+                              `None` which uses the default settings
+                              dictionary: :attr:`settings.settings`
+
+        :param show_line_numbers: True turns line numbers on inside the
+                                  associated code box. Defaults to False
+        """
         self.show_line_numbers = show_line_numbers
         self.settings = conf_settings
         if conf_settings is None:
@@ -157,7 +172,7 @@ class Screen:
         highlight_mapper[None] = 'highlight'
 
     def run(self, actions):
-        """Calls the main event loop in urwid. Does not return until the UI
+        """Calls the main display event loop. Does not return until the UI
         exits."""
         # store our display actions and setup the first one
         self.actions = actions
@@ -178,8 +193,22 @@ class Screen:
 
 
 class SplitScreen(Screen):
+    """Inheritor of :class:`Screen`. This implementation supports two 
+    :class:`CodeBox` instances, stacked vertically and separated by a dividing
+    line. The code boxes are :attr:`SplitScreen.top_box` and
+    :attr:`SplitScreen.bottom_box`. 
+    """
     def __init__(self, conf_settings=None, show_top_line_numbers=False,
             show_bottom_line_numbers=False):
+        """Constructor
+
+        :param conf_settings: a settings dictionary object. Defaults to 
+                              `None` which uses the default settings
+                              dictionary: :attr:`settings.settings`
+
+        :param show_line_numbers: True turns line numbers on inside the
+                                  associated code box. Defaults to False
+        """
         self.show_top_line_numbers = show_top_line_numbers
         self.show_bottom_line_numbers = show_bottom_line_numbers
         super().__init__(conf_settings)
@@ -286,11 +315,38 @@ class ScrollingListBox(urwid.ListBox):
 
 
 class CodeBox(urwid.Columns):
+    """Widget that displays the code. Actions use the methods in this class to
+    change the text being displayed.
+
+    The widget wraps an urwid ListBox, with each line in the box being a line
+    of code. It also provides indiciators on the right side of the screen as
+    to whether there is content above or below the current screen. If the
+    parent :class:`Screen` implementation has multiple instances of this class
+    active, the scroll area will also indicate which code box is focused. 
+
+    The up and down arrows as well as the page-up and page-down buttons are
+    supported. If there are multiple code boxes, tab key will change the
+    focus.
+
+    Each line of the code box displays text through the :class:`urwid.Text`
+    widget. The methods in the this class for displaying content use urwid's
+    markup tuple for determing the appearance of text. If you are writing new
+    actions, you generally don't need to understand the markup language, just
+    pass in the :class:`CodeLine.markup <purdy.content.CodeLine>` 
+    attribute from the line in your :class:`Code <purdy.content.Code>` object.
+    """
     tab_focusable = True
 
     # CodeBox is ListBox of Text with code in it accompanied by a side bar
     # with indicators about focus and scroll position
     def __init__(self, screen, show_line_numbers):
+        """Constructor. These objects should only be constructed by a parent
+        :class:`Screen` object.
+
+        :param screen: the :class:`Screen` building this code box
+
+        :param show_line_numbers: True if this box is to display line numbers
+        """
         self.screen = screen
         self.show_line_numbers = show_line_numbers
         self.line_number = 1
@@ -349,7 +405,16 @@ class CodeBox(urwid.Columns):
 
     # --- Set line
     def set_last_line(self, markup):
+        """Changes the last line in the code box to have the given markup 
+
+        :param markup: new markup tuple for the line
+        """
         self.body.contents[-1].set_text(markup)
 
     def set_line(self, position, markup):
+        """Changes the given line in the code box to have the given markup 
+
+        :param position: line number to change (1-indexed)
+        :param markup: new markup tuple for the line
+        """
         self.body.contents[position - 1].set_text(markup)
