@@ -17,6 +17,7 @@ class Thing:
                 print('Unreachable')
 
 
+@decorated
 def other_thing():
     if True != False:
         print('Uh duh')

@@ -19,6 +19,7 @@ def exit_on_q(key):
 
 palette = [
     ('blue-green-b-red-black', 'dark blue', 'dark green', '', '#f00', '#000'),
+    ('cyan-black-b-66d-068', 'dark cyan', '', '', '#66d', '#068'),
 ]
 
 #for colour in colours:

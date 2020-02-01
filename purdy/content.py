@@ -137,8 +137,19 @@ class CodeLine:
     text markup language. The markup for this line can be accessed through 
     :attr:`CodeLine.markup`
     """
-    def __init__(self, tokens):
+    @classmethod
+    def parse_factory(cls, text, lexer):
+        ### create a CodeLine based on passed in text
+        tokens = []
+        for token_type, text in lexer.get_tokens(text):
+            colour = TokenLookup.get_colouring(token_type)
+            tokens.append( CodeToken(token_type, colour, text) )
+
+        return CodeLine(tokens, lexer)
+
+    def __init__(self, tokens, lexer):
         self.tokens = tokens
+        self.lexer = lexer
         self.markup = ['']
         self.is_output = self.tokens[0] == Generic.Output
 
@@ -176,7 +187,7 @@ class Code:
             colour = TokenLookup.get_colouring(token_type)
             self.tokens.append( CodeToken(token_type, colour, text) )
 
-        CodeLineBuilder().parse(self.tokens, self.lines)
+        CodeLineBuilder().parse(self.tokens, self.lines, lexer)
 
     def typewriter_chunks(self):
         return TypewriterChunkifier().parse(self.tokens)
@@ -211,7 +222,7 @@ class CodeLineBuilder:
             token2 = CodeToken(token.token_type, 'empty', '')
             self.token_set = [token2 ]
 
-        line = CodeLine(self.token_set)
+        line = CodeLine(self.token_set, self.lexer)
         lines.append(line)
 
         # reset to start the next group of tokens
@@ -224,7 +235,7 @@ class CodeLineBuilder:
             self.token_set.append(token2)
 
             if row[-1] == '\n':
-                line = CodeLine( self.token_set )
+                line = CodeLine(self.token_set, self.lexer)
                 lines.append(line)
 
                 self.token_set = []
@@ -238,7 +249,7 @@ class CodeLineBuilder:
             self.token_set.append(token2)
 
             # token text caused a CR, create a new CodeLine object
-            line = CodeLine(self.token_set)
+            line = CodeLine(self.token_set, self.lexer)
             lines.append(line)
 
             # reset to start the next group of tokens
@@ -246,7 +257,8 @@ class CodeLineBuilder:
         else:
             self.token_set.append(token)
 
-    def parse(self, tokens, lines):
+    def parse(self, tokens, lines, lexer):
+        self.lexer = lexer
         self.token_set = []
         for token in tokens:
             if token.text == '\n':

@@ -374,6 +374,20 @@ class CodeBox(urwid.Columns):
         # clears the list and starts fresh
         self.body.contents.clear() 
 
+    def get_markup(self, position):
+        """Returns the markup at the given position (removes any line numbers
+        first.
+
+        :returns: markup at the given position (1-indexed)
+        """
+        markup = self.body.contents[position - 1].markup
+
+        if self.show_line_numbers:
+            # remove the first tuple with the line number in it
+            markup = markup[1:]
+
+        return markup
+
     # --- Add Lines
     def add_line(self, markup=['']):
         """Appends an empty line to the end of the code listing
@@ -414,7 +428,7 @@ class CodeBox(urwid.Columns):
 
             line_no += 1
 
-    # --- Set line
+    # --- Change lines
     def set_last_line(self, markup):
         """Changes the last line in the code box to have the given markup 
 
@@ -428,4 +442,7 @@ class CodeBox(urwid.Columns):
         :param position: line number to change (1-indexed)
         :param markup: new markup tuple for the line
         """
+        if self.show_line_numbers:
+            markup = [TokenLookup.line_number_markup(position), ] + list(markup)
+
         self.body.contents[position - 1].set_text(markup)
