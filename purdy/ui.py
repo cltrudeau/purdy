@@ -215,8 +215,10 @@ class SplitScreen(Screen):
                               `None` which uses the default settings
                               dictionary: :attr:`settings.settings`
 
-        :param show_line_numbers: True turns line numbers on inside the
-                                  associated code box. Defaults to False
+        :param show_top_line_numbers: True turns line numbers on inside the
+                                      top code box. Defaults to False
+        :param show_bottom_line_numbers: True turns line numbers on inside the
+                                         bottom code box. Defaults to False
         """
         self.show_top_line_numbers = show_top_line_numbers
         self.show_bottom_line_numbers = show_bottom_line_numbers
