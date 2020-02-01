@@ -8,7 +8,9 @@ Contents
 .. toctree::
     :maxdepth: 2
 
+    self
     prog
+    modules
 
 
 Indices and tables

@@ -1,6 +1,10 @@
-### content.py
-#
-# Methods for parsing and managing code to be displayed
+"""
+Content Module (purdy.content.py)
+---------------------------------
+
+This module is responsible for managing the code to be displayed. Parsing and
+colourizing is done here along with classes that store the code.
+"""
 
 import os
 from collections import namedtuple

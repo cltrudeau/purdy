@@ -1,6 +1,52 @@
-# =============================================================================
-# Actions
-# =============================================================================
+"""
+Actions (purdy.actions.py)
+--------------------------
+
+Actions create the presentation to the user. An action is similar to a
+slide in a slide show, except it can both present and change lines of code on
+the screen.
+
+All purdy library programs have the following basic structure:
+
+.. code-block:: python
+
+    screen = Screen()
+    actions = [ ... ]
+    screen.run(actions)
+
+
+Each presentation must include one or more actions passed to a
+:code:`Screen <purdy.ui.Screen>` object. The screen then calls the action's
+`setup()` method followed by its `next()` method. The `next()` method does one
+of three things: 1) return -1, indicating the screen should wait for the next
+key press before calling `next()` again, 2) return >= 0, indicating the screen
+should set a timer and call back after the elapsed time (in milliseconds), or
+3) raise StopIteration to tell screen this action is complete.
+
+When an action completes, screen looks for the next action in the list, calls
+its `setup()` method and then its `next()` method, and the process repeats.
+
+An action has the following structure:
+
+.. code-block:: python
+
+    class SomeAction:
+
+        def setup(self, settings):
+            # initial setup, including writing to screen's widgets is done
+            # here
+
+        def next(self, key):
+            if # done
+                raise StopIteration
+
+            elif # wait for key press
+                return -1
+
+            else 
+                # call me back in 20 ms
+                return 20
+"""
 
 import random
 from enum import Enum

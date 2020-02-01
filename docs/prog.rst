@@ -46,37 +46,8 @@ widget on the screen that displays code.
 Purdy is built using the `urwid <http://urwid.org/>`_ xterm library. 
 
 
-Examples
-========
+Sample Code
+-----------
 
-Example code can be found in the "extras/samples" directory of the repository:
+Sample code can be found in the "extras/samples" directory of the repository:
 https://github.com/cltrudeau/purdy/tree/master/extras/samples
-
-
-Modules
-=======
-
-
-purdy.ui
---------
-
-.. automodule:: purdy.ui
-    :members: Screen, SplitScreen, CodeBox
-
-
-purdy.content
--------------
-
-.. automodule:: purdy.content
-    :members: Code, CodeFile, CodeLine
-
-
-Default Settings
-----------------
-
-.. autoattribute:: purdy.settings.settings
-    :annotation:
-
-.. literalinclude:: ../purdy/settings.py
-    :language: python
-

@@ -1,3 +1,12 @@
+"""
+UI (purdy.ui.py)
+----------------
+
+Classes that manage presentation to the screen, the widgets for displaying
+code and the event loop for action management are defined in this module
+
+"""
+
 import urwid
 
 from purdy.content import TokenLookup
