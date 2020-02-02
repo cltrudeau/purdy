@@ -11,10 +11,10 @@ def exit_on_q(key):
     global loop
     if key == '1':
         loop.screen.set_terminal_properties(colors=16)
-        loop.screen.reset_default_terminal_palette()
+        #loop.screen.reset_default_terminal_palette()
     elif key == '2':
         loop.screen.set_terminal_properties(colors=256)
-        loop.screen.reset_default_terminal_palette()
+        #loop.screen.reset_default_terminal_palette()
 
 
 palette = [
@@ -33,9 +33,14 @@ contents = []
 for colour in palette:
     contents.append( urwid.Text( (colour[0], colour[0]) ) )
 
+for colour in palette:
+    spec = urwid.AttrSpec(colour[4], colour[5])
+    contents.append( urwid.Text( (spec, colour[0]) ) )
+
 walker = urwid.SimpleListWalker(contents)
 box = urwid.ListBox(walker)
 
-loop = urwid.MainLoop(box, palette, unhandled_input=exit_on_q)
+loop = urwid.MainLoop(box, unhandled_input=exit_on_q)
 loop.screen.set_terminal_properties(colors=256)
+loop.screen.register_palette(palette)
 loop.run()
