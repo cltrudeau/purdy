@@ -1,8 +1,13 @@
-# These requirements are for running tests, the script only needs a subset, 
+# These requirements are for running tests, the script only needs a subset,
 # see setup.py for that list
-pudb==2019.1
-Pygments==2.4.2
-Sphinx==2.2.0
+logthing==0.10.1
+pudb==2017.1.2
+-e git+git@github.com:cltrudeau/purdy.git@6c12882a7e91516c7b3027f23c7bd0e64843278f#egg=purdy
+pyflakes==1.5.0
+Pygments==2.5.2
+Sphinx==2.3.1
 sphinx-rtd-theme==0.4.3
-twine==2.0.0
+twine==1.8.1
 urwid==2.0.1
+virtualenv==16.0.0
+waelstow==0.10.0

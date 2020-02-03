@@ -90,6 +90,26 @@ class TokenLookup():
         return 'Token'
 
     @classmethod
+    def get_coloured_token(cls, token):
+        # Tokens are hierarchical, we only want to deal with those in our
+        # colour map.  If the token is in our colour map, return it, if
+        # it isn't, go up its hierarchy until a match is found
+        if token in cls.colours:
+            return token
+
+        # token not in our map, search its ancestors
+        token = token.parent
+        while(token != None):
+            if token in cls.colours:
+                return token
+
+            token = token.parent
+
+        # something went wrong with our lookup, return the default
+        return Token
+
+
+    @classmethod
     def is_a(cls, token1, token2):
         ### Returns true if token1 is equal to or a child of token2
         if token1 == token2:

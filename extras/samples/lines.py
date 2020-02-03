@@ -28,6 +28,9 @@ actions = [
     Wait(),
     AppendLineTypewriter(code_box, 1, '56789', 'con'),
     Wait(),
+    AppendLineTypewriter(code_box, 1, '333', 'con'),
+    AppendLineTypewriter(code_box, 1, '444', 'con'),
+    Wait(),
     ReplaceLineTypewriter(code_box, 2, '>>> e = 5', 'con'),
     Wait(),
 ]
