@@ -54,6 +54,10 @@ class BaseWindow(urwid.Pile):
         if key in ('q', 'Q'):
             raise urwid.ExitMainLoop()
 
+        if key in ('f1', 'f2', 'f3', 'f4', 'f5', 'f6', 'f7', 'f8', 'f9', 'f10'):
+            # let parent handle function keys
+            return super(BaseWindow, self).keypress(size, key)
+
         if key not in ('right', 'left'):
             # we don't want to pass left/right to the children, we want it to
             # act as "next action", everything else pass to the child to
@@ -123,8 +127,8 @@ class Screen:
     """Manages the display and event loop for the slide show. All purdy
     scripts need to create one of these or its children.
 
-    This class includes a single :class:`ui.CodeBox` widget which can be accessed
-    as :attr:`Screen.code_box`
+    This class includes a single :class:`ui.CodeBox` widget which can be
+    accessed as :attr:`Screen.code_box`
     """
     def __init__(self, conf_settings=None, show_line_numbers=False):
         """Constructor
@@ -208,7 +212,7 @@ class SplitScreen(Screen):
     :attr:`SplitScreen.bottom_box`. 
     """
     def __init__(self, conf_settings=None, show_top_line_numbers=False,
-            show_bottom_line_numbers=False):
+            show_bottom_line_numbers=False, top_height=0):
         """Constructor
 
         :param conf_settings: a settings dictionary object. Defaults to 
@@ -222,6 +226,7 @@ class SplitScreen(Screen):
         """
         self.show_top_line_numbers = show_top_line_numbers
         self.show_bottom_line_numbers = show_bottom_line_numbers
+        self.top_height = top_height
         super().__init__(conf_settings)
 
     def _build_boxes(self):
@@ -230,7 +235,11 @@ class SplitScreen(Screen):
         divider = (3, DividingLine())
         self.bottom_box = CodeBox(self, self.show_bottom_line_numbers)
 
-        self.base_window = BaseWindow(self, [self.top_box, divider,
+        first_box = self.top_box
+        if self.top_height != 0:
+            first_box = (self.top_height, self.top_box)
+
+        self.base_window = BaseWindow(self, [first_box, divider,
             self.bottom_box])
 
 # =============================================================================
