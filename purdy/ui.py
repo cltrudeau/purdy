@@ -130,7 +130,8 @@ class Screen:
     This class includes a single :class:`ui.CodeBox` widget which can be
     accessed as :attr:`Screen.code_box`
     """
-    def __init__(self, conf_settings=None, show_line_numbers=False):
+    def __init__(self, conf_settings=None, show_line_numbers=False,
+            auto_scroll=True):
         """Constructor
 
         :param conf_settings: a settings dictionary object. Defaults to 
@@ -139,9 +140,12 @@ class Screen:
 
         :param show_line_numbers: True turns line numbers on inside the
                                   associated code box. Defaults to False
+        :param auto_scroll: scroll the :class:`ui.CodeBox` down when new
+                            content is added to the bottom. Defaults to True
         """
         self.show_line_numbers = show_line_numbers
         self.settings = conf_settings
+        self.auto_scroll = auto_scroll
         if conf_settings is None:
             self.settings = default_settings
 
@@ -159,7 +163,7 @@ class Screen:
             self.loop.screen.reset_default_terminal_palette()
 
     def _build_boxes(self):
-        self.code_box = CodeBox(self, self.show_line_numbers)
+        self.code_box = CodeBox(self, self.show_line_numbers, self.auto_scroll)
         self.base_window = BaseWindow(self, [self.code_box, ])
 
     def _build_palette(self):
@@ -212,7 +216,8 @@ class SplitScreen(Screen):
     :attr:`SplitScreen.bottom_box`. 
     """
     def __init__(self, conf_settings=None, show_top_line_numbers=False,
-            show_bottom_line_numbers=False, top_height=0):
+            top_auto_scroll=True, show_bottom_line_numbers=False, 
+            bottom_auto_scroll=True, top_height=0):
         """Constructor
 
         :param conf_settings: a settings dictionary object. Defaults to 
@@ -221,19 +226,32 @@ class SplitScreen(Screen):
 
         :param show_top_line_numbers: True turns line numbers on inside the
                                       top code box. Defaults to False
+        :param top_auto_scroll: When True, the top :class:`ui.CodeBox` 
+                                automatically scrolls to newly added content.
+                                Defaults to True.
         :param show_bottom_line_numbers: True turns line numbers on inside the
                                          bottom code box. Defaults to False
+        :param bottom_auto_scroll: When True, the bottom :class:`ui.CodeBox` 
+                                automatically scrolls to newly added content.
+                                Defaults to True.
+        :param top_height: Number of lines the top box should be. A value of 0
+                           indicates top and bottom should be the same size.
+                           Defaults to 0.
         """
         self.show_top_line_numbers = show_top_line_numbers
+        self.top_auto_scroll = top_auto_scroll
         self.show_bottom_line_numbers = show_bottom_line_numbers
+        self.bottom_auto_scroll = bottom_auto_scroll
         self.top_height = top_height
         super().__init__(conf_settings)
 
     def _build_boxes(self):
         # override the default build, creating two code boxes instead
-        self.top_box = CodeBox(self, self.show_top_line_numbers)
+        self.top_box = CodeBox(self, self.show_top_line_numbers,
+            self.top_auto_scroll)
         divider = (3, DividingLine())
-        self.bottom_box = CodeBox(self, self.show_bottom_line_numbers)
+        self.bottom_box = CodeBox(self, self.show_bottom_line_numbers, 
+            self.bottom_auto_scroll)
 
         first_box = self.top_box
         if self.top_height != 0:
@@ -359,7 +377,7 @@ class CodeBox(urwid.Columns):
 
     # CodeBox is ListBox of Text with code in it accompanied by a side bar
     # with indicators about focus and scroll position
-    def __init__(self, screen, show_line_numbers):
+    def __init__(self, screen, show_line_numbers, auto_scroll):
         """Constructor. These objects should only be constructed by a parent
         :class:`Screen` object.
 
@@ -370,12 +388,13 @@ class CodeBox(urwid.Columns):
         self.screen = screen
         self.show_line_numbers = show_line_numbers
         self.line_number = 1
+        self.auto_scroll = auto_scroll
         self.body = urwid.SimpleListWalker([])
 
         scroller = ScrollingIndicator()
-        listbox = ScrollingListBox(scroller, self.body)
+        self.listbox = ScrollingListBox(scroller, self.body)
 
-        layout = [listbox, (1, scroller)]
+        layout = [self.listbox, (1, scroller)]
 
         super(CodeBox, self).__init__(layout)
 
@@ -418,6 +437,10 @@ class CodeBox(urwid.Columns):
             markup = [TokenLookup.line_number_markup(position), ] +  markup
 
         self.body.contents.insert(position - 1, AppendableText(markup))
+
+        # scroll to the new content
+        if self.auto_scroll:
+            self.listbox.set_focus(position - 1)
 
     def fix_line_numbers(self, position):
         """Fixes line numbers after adding new lines to the code box"""

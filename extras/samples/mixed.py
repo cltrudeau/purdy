@@ -13,7 +13,8 @@ settings['movie_mode'] = 2
 py_code = CodeFile('../display_code/code.py', 'py3')
 con_code = CodeFile('../display_code/simple.py', 'con')
 
-screen = SplitScreen(settings, show_top_line_numbers=True)
+screen = SplitScreen(settings, show_top_line_numbers=True,
+    top_auto_scroll=False)
 py_box = screen.top_box
 con_box = screen.bottom_box
 
