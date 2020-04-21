@@ -9,8 +9,8 @@ from purdy.ui import SplitScreen
 
 settings['movie_mode'] = 20
 
-code1 = CodeFile('../display_code/console2.py', 'con')
-code2 = CodeFile('../display_code/console2.py', 'con')
+code1 = CodeFile('../display_code/console2.repl', 'con')
+code2 = CodeFile('../display_code/console2.repl', 'con')
 
 screen = SplitScreen(settings)
 box1 = screen.top_box

@@ -11,7 +11,7 @@ from purdy.ui import Screen
 #settings['colour'] = 16
 screen = Screen(settings, show_line_numbers=True)
 code_box = screen.code_box
-blob = CodeFile('../display_code/console2.py', 'con')
+blob = CodeFile('../display_code/console2.repl', 'con')
 
 actions = [
     AppendAll(code_box, blob),

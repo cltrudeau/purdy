@@ -11,7 +11,7 @@ from purdy.ui import SplitScreen
 settings['movie_mode'] = 2
 
 py_code = CodeFile('../display_code/code.py', 'py3')
-con_code = CodeFile('../display_code/simple.py', 'con')
+con_code = CodeFile('../display_code/simple.repl', 'con')
 
 screen = SplitScreen(settings, show_top_line_numbers=True, top_height=35)
 py_box = screen.top_box

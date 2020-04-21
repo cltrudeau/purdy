@@ -12,6 +12,6 @@ settings['movie_mode'] = 2
 
 screen = Screen(settings)
 code_box = screen.code_box
-blob = CodeFile('../display_code/console2.py', 'con')
+blob = CodeFile('../display_code/console2.repl', 'con')
 action = AppendTypewriter(code_box, blob)
 screen.run([action])

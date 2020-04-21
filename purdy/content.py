@@ -11,7 +11,7 @@ from collections import namedtuple
 from copy import copy
 from enum import Enum
 
-from pygments.lexers import PythonConsoleLexer, PythonLexer
+from pygments.lexers import PythonConsoleLexer, PythonLexer, BashSessionLexer
 from pygments.token import Keyword, Name, Comment, String, Error, \
     Number, Operator, Generic, Token, Whitespace
 
@@ -22,6 +22,7 @@ class LexerContainer:
         self._lexers = {
             'con':(PythonConsoleLexer(), 'Python Console'), 
             'py3':(PythonLexer(), 'Python 3'),
+            'bash':(BashSessionLexer(), 'Bash Console'),
         }
 
     @property

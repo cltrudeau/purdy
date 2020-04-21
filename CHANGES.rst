@@ -1,3 +1,8 @@
+0.4
+===
+
+* add support for bash session lexer
+
 0.3
 ===
 

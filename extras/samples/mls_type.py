@@ -9,6 +9,6 @@ from purdy.ui import Screen
 
 screen = Screen()
 code_box = screen.code_box
-blob = CodeFile('../display_code/mls.py', 'con')
+blob = CodeFile('../display_code/mls.repl', 'con')
 action = AppendTypewriter(code_box, blob)
 screen.run([action])

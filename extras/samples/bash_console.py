@@ -9,6 +9,6 @@ from purdy.ui import Screen
 
 screen = Screen()
 code_box = screen.code_box
-blob = CodeFile('../display_code/console.repl', 'con')
+blob = CodeFile('../display_code/curl.bash', 'bash')
 action = AppendTypewriter(code_box, blob)
 screen.run([action])
