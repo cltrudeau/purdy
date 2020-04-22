@@ -184,6 +184,7 @@ class Screen:
     def _build_boxes(self):
         box = CodeBox(self, self.show_line_numbers, self.auto_scroll)
         self.code_boxes.append(box)
+        self.code_box = self.code_boxes[0]
         self.base_window = BaseWindow(self, [box, ])
 
     def _build_palette(self):
@@ -228,63 +229,8 @@ class Screen:
         # exits!!!
         self.loop.run()
 
-# -----------------------------------------------------------------------------
-
-class SplitScreen(Screen):
-    """Inheritor of :class:`Screen`. This implementation supports two 
-    :class:`CodeBox` instances, stacked vertically and separated by a dividing
-    line. The code boxes are :attr:`SplitScreen.top_box` and
-    :attr:`SplitScreen.bottom_box`. 
-    """
-    def __init__(self, conf_settings=None, show_top_line_numbers=False,
-            top_auto_scroll=True, show_bottom_line_numbers=False, 
-            bottom_auto_scroll=True, top_height=0):
-        """Constructor
-
-        :param conf_settings: a settings dictionary object. Defaults to 
-                              `None` which uses the default settings
-                              dictionary: :attr:`settings.settings`
-
-        :param show_top_line_numbers: True turns line numbers on inside the
-                                      top code box. Defaults to False
-        :param top_auto_scroll: When True, the top :class:`ui.CodeBox` 
-                                automatically scrolls to newly added content.
-                                Defaults to True.
-        :param show_bottom_line_numbers: True turns line numbers on inside the
-                                         bottom code box. Defaults to False
-        :param bottom_auto_scroll: When True, the bottom :class:`ui.CodeBox` 
-                                automatically scrolls to newly added content.
-                                Defaults to True.
-        :param top_height: Number of lines the top box should be. A value of 0
-                           indicates top and bottom should be the same size.
-                           Defaults to 0.
-        """
-        self.show_top_line_numbers = show_top_line_numbers
-        self.top_auto_scroll = top_auto_scroll
-        self.show_bottom_line_numbers = show_bottom_line_numbers
-        self.bottom_auto_scroll = bottom_auto_scroll
-        self.top_height = top_height
-        super().__init__(conf_settings)
-
-    def _build_boxes(self):
-        # override the default build, creating two code boxes instead
-        self.top_box = CodeBox(self, self.show_top_line_numbers,
-            self.top_auto_scroll)
-        self.code_boxes.append(self.top_box)
-        divider = (3, DividingLine())
-        self.bottom_box = CodeBox(self, self.show_bottom_line_numbers, 
-            self.bottom_auto_scroll)
-        self.code_boxes.append(self.bottom_box)
-
-        first_box = self.top_box
-        if self.top_height != 0:
-            first_box = (self.top_height, self.top_box)
-
-        self.base_window = BaseWindow(self, [first_box, divider,
-            self.bottom_box])
-
 # =============================================================================
-# GridScreen
+# RowScreen
 # =============================================================================
 
 class Box:
@@ -388,3 +334,43 @@ class RowScreen(Screen):
             row.build(self, boxen)
 
         self.base_window = BaseWindow(self, boxen)
+
+# -----------------------------------------------------------------------------
+
+class SplitScreen(RowScreen):
+    """Inheritor of :class:`Screen`. This implementation supports two 
+    :class:`CodeBox` instances, stacked vertically and separated by a dividing
+    line. The code boxes are :attr:`SplitScreen.top_box` and
+    :attr:`SplitScreen.bottom_box`. 
+    """
+    def __init__(self, conf_settings=None, show_top_line_numbers=False,
+            top_auto_scroll=True, show_bottom_line_numbers=False, 
+            bottom_auto_scroll=True, top_height=0):
+        """Constructor
+
+        :param conf_settings: a settings dictionary object. Defaults to 
+                              `None` which uses the default settings
+                              dictionary: :attr:`settings.settings`
+
+        :param show_top_line_numbers: True turns line numbers on inside the
+                                      top code box. Defaults to False
+        :param top_auto_scroll: When True, the top :class:`ui.CodeBox` 
+                                automatically scrolls to newly added content.
+                                Defaults to True.
+        :param show_bottom_line_numbers: True turns line numbers on inside the
+                                         bottom code box. Defaults to False
+        :param bottom_auto_scroll: When True, the bottom :class:`ui.CodeBox` 
+                                automatically scrolls to newly added content.
+                                Defaults to True.
+        :param top_height: Number of lines the top box should be. A value of 0
+                           indicates top and bottom should be the same size.
+                           Defaults to 0.
+        """
+        # this existed before RowScreen, being kept for backwards
+        # compatibility
+        top = Box(show_top_line_numbers, top_auto_scroll, top_height)
+        bottom = Box(show_bottom_line_numbers, bottom_auto_scroll)
+        super().__init__(conf_settings, [top, bottom])
+
+        self.top_box = self.code_boxes[0]
+        self.bottom_box = self.code_boxes[1]
