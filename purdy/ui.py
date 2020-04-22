@@ -265,7 +265,8 @@ class TwinBox:
     :class:`RowScreen`
     """
     def __init__(self, left_line_numbers=False, left_auto_scroll=True, 
-        right_line_numbers=False, right_auto_scroll=True, height=0):
+        left_weight=1, right_line_numbers=False, right_auto_scroll=True, 
+        right_weight=1, height=0):
         """Constructor
 
         :param left_line_numbers:
@@ -276,20 +277,34 @@ class TwinBox:
         :param right_auto_scroll: True to specify that scrolling happens
                                   automatically for the left and right boxes
                                   created by this spec. Defaults to True.
+
+        :param left_weight:
+        :param right_weight: relative weights for the widths of the columns,
+                             if the values are the same then the columns are
+                             the same width, otherwise the widths are formed
+                             based on the ratio of left:right. Example:
+                             left_weight=2, right_weight=1 means the left side
+                             will be twice the width of the right side. Both
+                             values default to 1.
+
         :param height: number of lines for the row this set of boxes is in. 
                        The default of 0 specifies automatic height
         """
         self.left_line_numbers = left_line_numbers
         self.left_auto_scroll = left_auto_scroll
+        self.left_weight = left_weight
         self.right_line_numbers = right_line_numbers
         self.right_auto_scroll = right_auto_scroll
+        self.right_weight = right_weight
         self.height = height
 
     def build(self, screen, container):
         left = CodeBox(self, self.left_line_numbers, self.left_auto_scroll)
         screen.code_boxes.append(left)
+        left = ('weight', self.left_weight, left)
         right = CodeBox(self, self.right_line_numbers, self.right_auto_scroll)
         screen.code_boxes.append(right)
+        right = ('weight', self.right_weight, right)
 
         twin = TwinContainer([left, right], dividechars=1)
 

@@ -9,8 +9,8 @@ from purdy.ui import RowScreen, Box, TwinBox
 py_code = CodeFile('../display_code/code.py', 'py3')
 con_code = CodeFile('../display_code/console2.repl', 'con')
 
-screen = RowScreen(rows=[TwinBox(left_line_numbers=True, height=14), 
-    Box(auto_scroll=False)])
+screen = RowScreen(rows=[TwinBox(left_line_numbers=True, right_weight=2, 
+    height=14), Box(auto_scroll=False)])
 
 actions = [
     AppendAll(screen.code_boxes[0], py_code),
