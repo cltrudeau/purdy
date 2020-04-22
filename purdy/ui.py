@@ -11,7 +11,7 @@ import urwid
 
 from purdy.content import TokenLookup
 from purdy.settings import settings as default_settings
-from purdy.widgets import CodeBox, DividingLine
+from purdy.widgets import CodeBox, DividingLine, TwinContainer
 
 # =============================================================================
 # Globals
@@ -29,26 +29,42 @@ class BaseWindow(urwid.Pile):
         super(BaseWindow, self).__init__(*args, **kwargs)
 
     def _next_focus(self):
-        # switch focus to the next focusable item in our pile
+        ### switch focus to the next code box
+        widget, _ = self.contents[self.focus_position]
 
-        # want to walk the list of widgets in the pile, starting at the one
-        # after the one in focus, looping to the beginning
-        #
-        # build the list from the focus point to the end, then remove the
-        # focus point
-        indices = list(range(self.focus_position, len(self.contents)))
-        indices.pop(0)
+        if isinstance(widget, TwinContainer):
+            # container is focused, try to shift focus inside of it
+            for i in range(widget.focus_position + 1, len(widget.contents)):
+                # loop through items to see if there is a next one
+                current, _ = widget.contents[i]
+                if getattr(current, 'tab_focusable', False):
+                    # found a tab-focusable item past the current focus
+                    # position in the container, set it to the focus and finish
+                    widget.focus_position = i
+                    return
 
-        # add from the beginning of the list to the focus point, inclusive
-        indices.extend( range(0, self.focus_position + 1) )
+        # if you get here: widget wasn't a TwinContainer, or was one with its 
+        # last item focused,
+        for i in range(self.focus_position + 1, len(self.contents)):
+            # loop through the items in the pile try to find the next
+            # focusable
+            current, _ = self.contents[i]
+            if getattr(current, 'tab_focusable', False):
+                self.focus_position = i
+                if isinstance(current, TwinContainer):
+                    # set focus to first item in TwinContainer
+                    current.focus_position = 0
+                return
 
-        # now use the list of indicies to find the first widget that is
-        # allowed to be focused and focus it
-        for index in indices:
-            widget, _ = self.contents[index]
-            if getattr(widget, 'tab_focusable', False):
-                # found a focusable widget, set it as focused and we're done
-                self.focus_position = index
+        # if you get here then you've looped from focus point to end of pile
+        # start again from the beginning
+        for i in range(0, self.focus_position):
+            current, _ = self.contents[i]
+            if getattr(current, 'tab_focusable', False):
+                self.focus_position = i
+                if isinstance(current, TwinContainer):
+                    # set focus to first item in TwinContainer
+                    current.focus_position = 0
                 return
 
     def keypress(self, size, key):
@@ -145,6 +161,7 @@ class Screen:
         :param auto_scroll: scroll the :class:`ui.CodeBox` down when new
                             content is added to the bottom. Defaults to True
         """
+        self.code_boxes = []
         self.show_line_numbers = show_line_numbers
         self.settings = conf_settings
         self.auto_scroll = auto_scroll
@@ -165,8 +182,9 @@ class Screen:
             self.loop.screen.reset_default_terminal_palette()
 
     def _build_boxes(self):
-        self.code_box = CodeBox(self, self.show_line_numbers, self.auto_scroll)
-        self.base_window = BaseWindow(self, [self.code_box, ])
+        box = CodeBox(self, self.show_line_numbers, self.auto_scroll)
+        self.code_boxes.append(box)
+        self.base_window = BaseWindow(self, [box, ])
 
     def _build_palette(self):
         global palette, highlight_mapper
@@ -252,9 +270,11 @@ class SplitScreen(Screen):
         # override the default build, creating two code boxes instead
         self.top_box = CodeBox(self, self.show_top_line_numbers,
             self.top_auto_scroll)
+        self.code_boxes.append(self.top_box)
         divider = (3, DividingLine())
         self.bottom_box = CodeBox(self, self.show_bottom_line_numbers, 
             self.bottom_auto_scroll)
+        self.code_boxes.append(self.bottom_box)
 
         first_box = self.top_box
         if self.top_height != 0:
@@ -327,12 +347,12 @@ class TwinBox:
 
         pad = urwid.Padding(left, right=1)
 
-        column = urwid.Columns([pad, right])
+        twin = TwinContainer([pad, right])
 
         if self.height != 0:
-            column = (self.height, column)
+            twin = (self.height, twin)
 
-        container.append(column)
+        container.append(twin)
 
 
 class RowScreen(Screen):
@@ -353,7 +373,6 @@ class RowScreen(Screen):
                      screen
         """
         self.rows = rows
-        self.code_boxes = []
         super().__init__(conf_settings)
 
     def _build_boxes(self):

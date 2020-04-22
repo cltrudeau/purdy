@@ -229,3 +229,7 @@ class CodeBox(urwid.Columns):
             markup = [TokenLookup.line_number_markup(position), ] + list(markup)
 
         self.body.contents[position - 1].set_text(markup)
+
+
+class TwinContainer(urwid.Columns):
+    tab_focusable = True
