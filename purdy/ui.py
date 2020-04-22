@@ -123,6 +123,7 @@ class BaseWindow(urwid.Pile):
                 else:
                     self.screen.loop.set_alarm_in(0, self.alarm)
 
+# -----------------------------------------------------------------------------
 
 class Screen:
     """Manages the display and event loop for the slide show. All purdy
@@ -209,6 +210,7 @@ class Screen:
         # exits!!!
         self.loop.run()
 
+# -----------------------------------------------------------------------------
 
 class SplitScreen(Screen):
     """Inheritor of :class:`Screen`. This implementation supports two 
@@ -260,3 +262,110 @@ class SplitScreen(Screen):
 
         self.base_window = BaseWindow(self, [first_box, divider,
             self.bottom_box])
+
+# =============================================================================
+# GridScreen
+# =============================================================================
+
+class Box:
+    """Specifies a box to contain code, used by :class:`RowScreen`"""
+    def __init__(self, line_numbers=False, auto_scroll=True, height=0):
+        """Constructor
+
+        :param line_numbers: True turns line numbers on inside the 
+                             :class:`purdy.widgets.CodeBox` created by this
+                             specification. Defaults to False
+        :param auto_scroll: When True, :class:`purdy.widgets.CodeBox` created
+                            by this specification automatically scrolls to
+                            newly added content.  Defaults to True.
+        :param height: Number of lines the row containing this box should be. 
+                       A value of 0 indicates automatic spacing.  Defaults to 0.
+        """
+        self.line_numbers = line_numbers
+        self.auto_scroll = auto_scroll
+        self.height = height
+
+    def build(self, screen, container):
+        codebox = CodeBox(self, self.line_numbers, self.auto_scroll)
+        screen.code_boxes.append(codebox)
+        if self.height != 0:
+            codebox = (self.height, codebox)
+
+        container.append(codebox)
+
+
+class TwinBox:
+    """Specifies two side-by-side boxes to contain code, used by 
+    :class:`RowScreen`
+    """
+    def __init__(self, left_line_numbers=False, left_auto_scroll=True, 
+        right_line_numbers=False, right_auto_scroll=True, height=0):
+        """Constructor
+
+        :param left_line_numbers:
+        :param right_line_numbers: True to show line numbers in the left and
+                                   right box created by this spec. Defaults to
+                                   False
+        :param left_auto_scroll:
+        :param right_auto_scroll: True to specify that scrolling happens
+                                  automatically for the left and right boxes
+                                  created by this spec. Defaults to True.
+        :param height: number of lines for the row this set of boxes is in. 
+                       The default of 0 specifies automatic height
+        """
+        self.left_line_numbers = left_line_numbers
+        self.left_auto_scroll = left_auto_scroll
+        self.right_line_numbers = right_line_numbers
+        self.right_auto_scroll = right_auto_scroll
+        self.height = height
+
+    def build(self, screen, container):
+        left = CodeBox(self, self.left_line_numbers, self.left_auto_scroll)
+        screen.code_boxes.append(left)
+        right = CodeBox(self, self.right_line_numbers, self.right_auto_scroll)
+        screen.code_boxes.append(right)
+
+        pad = urwid.Padding(left, right=1)
+
+        column = urwid.Columns([pad, right])
+
+        if self.height != 0:
+            column = (self.height, column)
+
+        container.append(column)
+
+
+class RowScreen(Screen):
+    """Inheritor of :class:`Screen`. This implementation supports
+    specification of multiple rows of
+    :class:`purdy.widgets.CodeBox` objects.
+
+    """
+    def __init__(self, conf_settings=None, rows=[]):
+        """Constructor
+
+        :param conf_settings: a settings dictionary object. Defaults to 
+                              `None` which uses the default settings
+                              dictionary: :attr:`settings.settings`
+
+        :param rows: a list containing one or more :class:`Box` or 
+                     :class:`TwinBox` definitions, to specify the layout of the
+                     screen
+        """
+        self.rows = rows
+        self.code_boxes = []
+        super().__init__(conf_settings)
+
+    def _build_boxes(self):
+        # override the default build, creating a code box for each specified
+        boxen = []
+
+        for index, row in enumerate(self.rows):
+            if index != 0:
+                # not the first row, add a divider before adding the next box
+                divider = (3, DividingLine())
+                boxen.append(divider)
+
+            row.build(self, boxen)
+
+        self.base_window = BaseWindow(self, boxen)
