@@ -2,7 +2,11 @@ Modules
 =======
 
 .. automodule:: purdy.ui
-    :members: Screen, SplitScreen, CodeBox
+    :members: Screen, SplitScreen
+
+
+.. automodule:: purdy.widgets
+    :members: CodeBox
 
 
 .. automodule:: purdy.content
