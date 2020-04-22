@@ -14,7 +14,7 @@ screen = RowScreen(rows=[TwinBox(left_line_numbers=True, height=14),
 
 actions = [
     AppendAll(screen.code_boxes[0], py_code),
-    AppendAll(screen.code_boxes[1], py_code),
+    AppendAll(screen.code_boxes[1], con_code),
     AppendAll(screen.code_boxes[2], con_code),
 ]
 

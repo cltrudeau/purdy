@@ -291,9 +291,7 @@ class TwinBox:
         right = CodeBox(self, self.right_line_numbers, self.right_auto_scroll)
         screen.code_boxes.append(right)
 
-        pad = urwid.Padding(left, right=1)
-
-        twin = TwinContainer([pad, right])
+        twin = TwinContainer([left, right], dividechars=1)
 
         if self.height != 0:
             twin = (self.height, twin)
