@@ -73,7 +73,7 @@ class ScrollingIndicator(urwid.Frame):
         elif is_up and not focus:
             self.up.set_text('△')
         else:
-            self.up.set_text(' ')
+            self.down.set_text(' ')
 
     def set_down(self, is_down, focus):
         if is_down and focus:
@@ -82,6 +82,12 @@ class ScrollingIndicator(urwid.Frame):
             self.down.set_text('▽')
         else:
             self.down.set_text(' ')
+
+    def set_focus_only(self, focus):
+        if focus: 
+            self.up.set_text('▮')
+        else: 
+            self.up.set_text('▯')
 
 
 class ScrollingListBox(urwid.ListBox):
@@ -97,8 +103,11 @@ class ScrollingListBox(urwid.ListBox):
         #
         # set our scrolling indicators based on what is visible
         visible = self.ends_visible(size)
-        self.scroll_indicator.set_up('top' not in visible, focus)
-        self.scroll_indicator.set_down('bottom' not in visible, focus)
+        if 'top' in visible and 'bottom' in visible:
+            self.scroll_indicator.set_focus_only(focus)
+        else:
+            self.scroll_indicator.set_up('top' not in visible, focus)
+            self.scroll_indicator.set_down('bottom' not in visible, focus)
 
         return result
 
