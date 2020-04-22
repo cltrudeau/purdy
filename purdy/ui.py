@@ -317,8 +317,46 @@ class TwinBox:
 class RowScreen(Screen):
     """Inheritor of :class:`Screen`. This implementation supports
     specification of multiple rows of
-    :class:`purdy.widgets.CodeBox` objects.
+    :class:`purdy.widgets.CodeBox` objects. Pass multiple :class:`Box` and/or
+    :class:`TwinBox` objects in the :attr:`RowScreen.rows` attribute to
+    specify the appearance.
 
+    Example:
+
+    .. code-block:: python
+
+        screen = RowScreen(rows=[
+                TwinBox(left_line_numbers=True, height=8),
+                Box(auto_scroll=False)])
+
+        c1 = CodeFile('c1.py', 'py3')
+        c2 = CodeFile('c2.py', 'py3')
+        c3 = CodeFile('c3.py', 'py3')
+
+        actions = [
+            AppendAll(screen.code_boxes[0], c1),
+            AppendAll(screen.code_boxes[1], c2),
+            AppendAll(screen.code_boxes[2], c3),
+        ]
+
+        screen.run(actions)
+
+    The above would produce a screen with two rows, the frist row having two 
+    :class:`purdy.widgets.CodeBox` objects side by side, the second having a
+    single one. The top left box would have line numbers turned on, both top
+    boxes are 8 lines tall, and the bottom box has auto scrolling turned off.
+
+    The screen would be divided like this:
+
+    +-----------+-----------+
+    |           |           |
+    |           |           |
+    +-----------+-----------+
+    |                       |
+    |                       |
+    |                       |
+    |                       |
+    +-----------------------+
     """
     def __init__(self, conf_settings=None, rows=[]):
         """Constructor

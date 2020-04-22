@@ -2,6 +2,9 @@
 ===
 
 * add support for bash session lexer
+* add RowScreen type that can handle multiple rows and side-by-side pairs of
+boxes
+* add focus indicator to boxes without scroll indicators
 
 0.3
 ===
