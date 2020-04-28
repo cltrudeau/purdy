@@ -139,96 +139,6 @@ class BaseWindow(urwid.Pile):
                 else:
                     self.screen.loop.set_alarm_in(0, self.alarm)
 
-# -----------------------------------------------------------------------------
-
-class Screen:
-    """Manages the display and event loop for the slide show. All purdy
-    scripts need to create one of these or its children.
-
-    This class includes a single :class:`purdy.widgets.CodeBox` widget which 
-    can be accessed as :attr:`Screen.code_box`
-    """
-    def __init__(self, conf_settings=None, show_line_numbers=False,
-            auto_scroll=True):
-        """Constructor
-
-        :param conf_settings: a settings dictionary object. Defaults to 
-                              `None` which uses the default settings
-                              dictionary: :attr:`settings.settings`
-
-        :param show_line_numbers: True turns line numbers on inside the
-                                  associated code box. Defaults to False
-        :param auto_scroll: scroll the :class:`ui.CodeBox` down when new
-                            content is added to the bottom. Defaults to True
-        """
-        self.code_boxes = []
-        self.show_line_numbers = show_line_numbers
-        self.settings = conf_settings
-        self.auto_scroll = auto_scroll
-        if conf_settings is None:
-            self.settings = default_settings
-
-        self.movie_mode = self.settings['movie_mode']
-        if self.movie_mode != -1:
-            self.movie_mode = float(self.movie_mode) / 1000.0
-
-        self._build_boxes()
-        self._build_palette()
-
-        self.loop = urwid.MainLoop(self.base_window, palette)
-
-        if self.settings['colour'] == 256:
-            self.loop.screen.set_terminal_properties(colors=256)
-            self.loop.screen.reset_default_terminal_palette()
-
-    def _build_boxes(self):
-        box = CodeBox(self, self.show_line_numbers, self.auto_scroll)
-        self.code_boxes.append(box)
-        self.code_box = self.code_boxes[0]
-        self.base_window = BaseWindow(self, [box, ])
-
-    def _build_palette(self):
-        global palette, highlight_mapper
-
-        for token in TokenLookup.colours.keys():
-            # add the colour to the palette
-            palette.append( TokenLookup.get_colour_attribute(token) )
-
-            # add the highlight version of the colour to the palette
-            palette.append( TokenLookup.get_highlight_colour_attribute(token) )
-
-            # add a mapping between the colour and the highlight
-            highlight_mapper[str(token)] = str(token) + '_highlight'
-
-        # now append colour attributes that aren't for the tokens
-        palette.extend([
-            ('line_number', 'dark gray', '', '', 'dark gray', ''),
-            ('empty', '', '', '', '', ''),
-        ])
-
-        # add default map value
-        highlight_mapper[None] = 'highlight'
-
-    def run(self, actions):
-        """Calls the main display event loop. Does not return until the UI
-        exits."""
-        # store our display actions and setup the first one
-        self.actions = actions
-        self.actions[0].setup(self.settings)
-
-        # as soon as the loop is going invoke the next action, setup a
-        # callback
-        if self.movie_mode != -1:
-            # in movie mode we simulate the key presses, set the callback to
-            # start the process
-            self.loop.set_alarm_in(self.movie_mode, self.base_window.alarm)
-        else:
-            self.loop.set_alarm_in(0, self.base_window.alarm)
-
-        # call urwid's main loop, this code doesn't return until the loop
-        # exits!!!
-        self.loop.run()
-
 # =============================================================================
 # RowScreen
 # =============================================================================
@@ -314,7 +224,7 @@ class TwinBox:
         container.append(twin)
 
 
-class RowScreen(Screen):
+class RowScreen:
     """Inheritor of :class:`Screen`. This implementation supports
     specification of multiple rows of
     :class:`purdy.widgets.CodeBox` objects. Pass multiple :class:`Box` and/or
@@ -370,10 +280,26 @@ class RowScreen(Screen):
                      screen
         """
         self.rows = rows
-        super().__init__(conf_settings)
+        self.code_boxes = []
+        self.settings = conf_settings
+        if conf_settings is None:
+            self.settings = default_settings
+
+        self.movie_mode = self.settings['movie_mode']
+        if self.movie_mode != -1:
+            self.movie_mode = float(self.movie_mode) / 1000.0
+
+        self._build_boxes()
+        self._build_palette()
+
+        self.loop = urwid.MainLoop(self.base_window, palette)
+
+        if self.settings['colour'] == 256:
+            self.loop.screen.set_terminal_properties(colors=256)
+            self.loop.screen.reset_default_terminal_palette()
 
     def _build_boxes(self):
-        # override the default build, creating a code box for each specified
+        # create a code box for each specified in self.rows
         boxen = []
 
         for index, row in enumerate(self.rows):
@@ -386,10 +312,54 @@ class RowScreen(Screen):
 
         self.base_window = BaseWindow(self, boxen)
 
-# -----------------------------------------------------------------------------
+    def _build_palette(self):
+        global palette, highlight_mapper
+
+        for token in TokenLookup.colours.keys():
+            # add the colour to the palette
+            palette.append( TokenLookup.get_colour_attribute(token) )
+
+            # add the highlight version of the colour to the palette
+            palette.append( TokenLookup.get_highlight_colour_attribute(token) )
+
+            # add a mapping between the colour and the highlight
+            highlight_mapper[str(token)] = str(token) + '_highlight'
+
+        # now append colour attributes that aren't for the tokens
+        palette.extend([
+            ('line_number', 'dark gray', '', '', 'dark gray', ''),
+            ('empty', '', '', '', '', ''),
+        ])
+
+        # add default map value
+        highlight_mapper[None] = 'highlight'
+
+    def run(self, actions):
+        """Calls the main display event loop. Does not return until the UI
+        exits."""
+        # store our display actions and setup the first one
+        self.actions = actions
+        self.actions[0].setup(self.settings)
+
+        # as soon as the loop is going invoke the next action, setup a
+        # callback
+        if self.movie_mode != -1:
+            # in movie mode we simulate the key presses, set the callback to
+            # start the process
+            self.loop.set_alarm_in(self.movie_mode, self.base_window.alarm)
+        else:
+            self.loop.set_alarm_in(0, self.base_window.alarm)
+
+        # call urwid's main loop, this code doesn't return until the loop
+        # exits!!!
+        self.loop.run()
+
+# =============================================================================
+# Other Screens
+# =============================================================================
 
 class SplitScreen(RowScreen):
-    """Inheritor of :class:`Screen`. This implementation supports two 
+    """Convenience implementation of :class:`RowScreen` that supports two 
     :class:`CodeBox` instances, stacked vertically and separated by a dividing
     line. The code boxes are :attr:`SplitScreen.top_box` and
     :attr:`SplitScreen.bottom_box`. 
@@ -425,3 +395,62 @@ class SplitScreen(RowScreen):
 
         self.top_box = self.code_boxes[0]
         self.bottom_box = self.code_boxes[1]
+
+
+class Screen(RowScreen):
+    """Convenience implementation of :class:`RowScreen` that supports a single
+    :class:`CodeBox`.  The code box is available as 
+    :attr:`SplitScreen.code_box`.
+    """
+    def __init__(self, conf_settings=None, show_top_line_numbers=False,
+            top_auto_scroll=True, show_bottom_line_numbers=False, 
+            bottom_auto_scroll=True, top_height=0):
+        """Constructor
+
+        :param conf_settings: a settings dictionary object. Defaults to 
+                              `None` which uses the default settings
+                              dictionary: :attr:`settings.settings`
+
+        :param show_top_line_numbers: True turns line numbers on inside the
+                                      top code box. Defaults to False
+        :param top_auto_scroll: When True, the top :class:`ui.CodeBox` 
+                                automatically scrolls to newly added content.
+                                Defaults to True.
+        :param show_bottom_line_numbers: True turns line numbers on inside the
+                                         bottom code box. Defaults to False
+        :param bottom_auto_scroll: When True, the bottom :class:`ui.CodeBox` 
+                                automatically scrolls to newly added content.
+                                Defaults to True.
+        :param top_height: Number of lines the top box should be. A value of 0
+                           indicates top and bottom should be the same size.
+                           Defaults to 0.
+        """
+        # this existed before RowScreen, being kept for backwards
+        # compatibility
+        top = Box(show_top_line_numbers, top_auto_scroll, top_height)
+        bottom = Box(show_bottom_line_numbers, bottom_auto_scroll)
+        super().__init__(conf_settings, [top, bottom])
+
+        self.top_box = self.code_boxes[0]
+        self.bottom_box = self.code_boxes[1]
+
+
+    def __init__(self, conf_settings=None, show_line_numbers=False,
+            auto_scroll=True):
+        """Constructor
+
+        :param conf_settings: a settings dictionary object. Defaults to 
+                              `None` which uses the default settings
+                              dictionary: :attr:`settings.settings`
+
+        :param show_line_numbers: True turns line numbers on inside the
+                                  associated code box. Defaults to False
+        :param auto_scroll: scroll the :class:`ui.CodeBox` down when new
+                            content is added to the bottom. Defaults to True
+        """
+        # this existed before RowScreen, being kept for backwards
+        # compatibility
+        box = Box(show_line_numbers, auto_scroll)
+        super().__init__(conf_settings, [box, ])
+
+        self.code_box = self.code_boxes[0]
