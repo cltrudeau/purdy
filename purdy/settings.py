@@ -13,4 +13,7 @@ settings = {
 
     # xterm colour mode, anything but 256 gives 16 colour mode
     'colour':256,
+
+    # if True, stops Screen from running argparse
+    'deactivate_args':False,
 }

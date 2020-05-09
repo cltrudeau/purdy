@@ -2,8 +2,8 @@
 import argparse
 
 from purdy.cmd import filename_arg, general_args, rtf_args
-from purdy.content import Code
-from purdy.scribe import print_rtf
+from purdy.content import Code, Listing
+from purdy.scribe import print_rtf, range_set_to_list
 
 # =============================================================================
 
@@ -26,5 +26,17 @@ if __name__ == '__main__':
 
     ### Execute ###
     args = parser.parse_args()
-    code = Code(args.lexer, content_filename=args.filename)
-    print_rtf(code)
+
+    code = Code(lexer_name=args.lexer, filename=args.filename)
+    listing = Listing(code, starting_line_number=args.num)
+
+    if args.highlight:
+        for num in range_set_to_list(args.highlight):
+            listing.set_highlight(True, num, num)
+
+    bg = None
+    if args.background:
+        bg = args.background
+
+    listing.set_display('rtf')
+    print_rtf(listing, bg)

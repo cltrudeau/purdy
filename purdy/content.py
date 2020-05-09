@@ -112,7 +112,7 @@ class Listing:
         """Parses contents of a :class:`Code` object and appends it to this
         box."""
         lines = parse_source(code.source, code.lexer)
-        self.lines.extend(lines)
+        self.append_lines(lines)
 
     def append_lines(self, lines):
         new_lines = copy(lines)

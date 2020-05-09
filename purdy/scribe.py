@@ -68,6 +68,12 @@ def print_tokens(listing, colour=True):
 
 # -----------------------------------------------------------------------------
 
+def print_ansi(listing):
+    for row in listing.content():
+        print(row)
+
+# -----------------------------------------------------------------------------
+
 def print_html(listing, snippet=True):
     """Prints the code in an HTML representation.
 

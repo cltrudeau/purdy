@@ -1,12 +1,14 @@
 #!/usr/bin/env python
 import argparse
 
+from purdy.actions import Append, AppendTypewriter
 from purdy.cmd import (num_arg, filename_arg, highlight_arg, ansi_args, 
     rtf_args, general_args)
 from purdy.content import Code, Listing
-from purdy.scribe import (print_tokens, print_html, print_rtf,
+from purdy.scribe import (print_ansi, print_tokens, print_html, print_rtf,
     range_set_to_list)
 from purdy.settings import settings
+from purdy.ui import SimpleScreen
 
 # =============================================================================
 
@@ -25,37 +27,37 @@ code in the console, and is a wrapper to the subcommand of the same name.
 # "purdy" sub-command
 
 def sub_purdy(args):
-    pass
-#    ### "purdy" sub-command; uses urwid to do typewriter display of code
-#
-#    # calulcate our typing settings delays
-#    if args.delay:
-#        settings['delay'] = args.delay
-#    elif args.wpm:
-#        # in typing class, wpm calc is based on 5 letter words, change number of
-#        # words into letters per second then invert to get delay
-#        settings['delay'] = 1000 / (5 * args.wpm  / 60)
-#
-#    if args.variance:
-#        settings['delay_variance'] = args.variance
-#
-#    if args.x16:
-#        settings['colour'] = 16
-#
-#    # initialize our display screen using a single code listing box
-#    screen = Screen()
-#    code_box = screen.code_box
-#
-#    # read the code being displayed and create the appropriate action
-#    blob = CodeFile(args.filename, args.lexer)
-#
-#    if args.continuous:
-#        action = AppendAll(code_box, blob)
-#    else:
-#        action = AppendTypewriter(code_box, blob)
-#
-#    # --- All set, run it
-#    screen.run([action])
+    ### "purdy" sub-command; uses urwid to do typewriter display of code
+    settings['deactivate_args'] = True
+
+    # calulcate our typing settings delays
+    if args.delay:
+        settings['delay'] = args.delay
+    elif args.wpm:
+        # in typing class, wpm calc is based on 5 letter words, change number of
+        # words into letters per second then invert to get delay
+        settings['delay'] = 1000 / (5 * args.wpm  / 60)
+
+    if args.variance:
+        settings['delay_variance'] = args.variance
+
+    if args.x16:
+        settings['colour'] = 16
+
+    # initialize our display screen using a single code listing box
+    screen = SimpleScreen(settings=settings)
+    code_box = screen.code_box
+
+    # read the code being displayed and create the appropriate action
+    blob = Code(args.filename, lexer_name=args.lexer)
+
+    if args.continuous:
+        action = Append(code_box, blob)
+    else:
+        action = AppendTypewriter(code_box, blob)
+
+    # --- All set, run it
+    screen.run([action])
 
 # -----------------------------------------------------------------------------
 # "tokens" sub-command
@@ -72,8 +74,7 @@ def tokens(args):
 def sub_print(listing, args):
     ### 'print' sub-command: prints colourized code to screen 
     listing.set_display('ansi')
-    for row in listing.content():
-        print(row)
+    print_ansi(listing)
 
 # -----------------------------------------------------------------------------
 # "html" sub-command

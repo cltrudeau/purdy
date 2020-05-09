@@ -4,11 +4,11 @@
 
 import argparse
 
-from purdy.actions import AppendAll, AppendTypewriter
+from purdy.actions import Append, AppendTypewriter
 from purdy.cmd import version_arg, lexer_arg, filename_arg
-from purdy.content import CodeFile
+from purdy.content import Code
 from purdy.settings import settings
-from purdy.ui import Screen
+from purdy.ui import SimpleScreen
 
 # =============================================================================
 # Main
@@ -60,14 +60,15 @@ if __name__ == '__main__':
         settings['colour'] = 16
 
     # initialize our display screen using a single code listing box
-    screen = Screen()
+    settings['deactivate_args'] = True
+    screen = SimpleScreen(settings=settings)
     code_box = screen.code_box
 
     # read the code being displayed and create the appropriate action
-    blob = CodeFile(args.filename, args.lexer)
+    blob = Code(args.filename, lexer_name=args.lexer)
 
     if args.continuous:
-        action = AppendAll(code_box, blob)
+        action = Append(code_box, blob)
     else:
         action = AppendTypewriter(code_box, blob)
 

@@ -329,20 +329,20 @@ class Screen:
     |                       |
     +-----------------------+
     """
-    def __init__(self, conf_settings=None, rows=[]):
+    def __init__(self, settings=None, rows=[]):
         """Constructor
 
-        :param conf_settings: a settings dictionary object. Defaults to `None` 
-                              which uses the default settings dictionary: 
-                              :attr:`settings.settings`
+        :param settings: a settings dictionary object. Defaults to `None` which 
+                         uses the default settings dictionary: 
+                         :attr:`settings.settings`
         :param rows: a list containing one or more :class:`CodeBox` or 
                      :class:`TwinCodeBox` definitions, to specify the layout of 
                      the screen
         """
         self.rows = rows
         self.code_boxes = []
-        self.settings = conf_settings
-        if conf_settings is None:
+        self.settings = settings
+        if settings is None:
             self.settings = default_settings
 
         self.movie_mode = self.settings['movie_mode']
@@ -360,6 +360,9 @@ class Screen:
             self.loop.screen.reset_default_terminal_palette()
 
     def _get_args(self):
+        if self.settings['deactivate_args']:
+            return
+
         # Screen can be influenced by command line arguments
         parser = argparse.ArgumentParser(description=DESCRIPTION)
         parser.add_argument('--debugsteps', '--ds', action='store_true', 
@@ -391,7 +394,7 @@ class Screen:
         cells = Cell.group_steps_into_cells(steps)
         self.base_window.animation_manager.register(cells)
 
-        if self.args.debugsteps:
+        if hasattr(self, 'args') and self.args.debugsteps:
             for cell in self.base_window.animation_manager.cells:
                 print('Cell')
                 for step in cell.steps:
@@ -415,14 +418,14 @@ class SplitScreen(Screen):
     line. The code boxes are :attr:`SplitScreen.top` and
     :attr:`SplitScreen.bottom`. 
     """
-    def __init__(self, conf_settings=None, top_starting_line_number=-1, 
+    def __init__(self, settings=None, top_starting_line_number=-1, 
             top_auto_scroll=True, bottom_starting_line_number=-1,
             bottom_auto_scroll=True, top_height=0):
         """Constructor
 
-        :param conf_settings: a settings dictionary object. Defaults to 
-                              `None` which uses the default settings
-                              dictionary: :attr:`settings.settings`
+        :param settings: a settings dictionary object. Defaults to `None` which 
+                         uses the default settings dictionary: 
+                         :attr:`settings.settings`
 
         :param top_starting_line_number: starting line number for the top 
                                          code box
@@ -441,7 +444,7 @@ class SplitScreen(Screen):
         self.top = CodeBox(top_starting_line_number, top_auto_scroll, 
             top_height)
         self.bottom = CodeBox(bottom_starting_line_number, bottom_auto_scroll)
-        super().__init__(conf_settings, rows=[self.top, self.bottom])
+        super().__init__(settings, rows=[self.top, self.bottom])
 
 
 class SimpleScreen(Screen):
@@ -449,14 +452,13 @@ class SimpleScreen(Screen):
     :class:`CodeBox`.  The code box is available as 
     :attr:`SplitScreen.code_box`.
     """
-    def __init__(self, conf_settings=None, starting_line_number=-1, 
+    def __init__(self, settings=None, starting_line_number=-1, 
             auto_scroll=True):
         """Constructor
 
-        :param conf_settings: a settings dictionary object. Defaults to `None` 
-                              which uses the default settings dictionary: 
-                              :attr:`settings.settings`
-
+        :param settings: a settings dictionary object. Defaults to `None` which 
+                         uses the default settings dictionary: 
+                         :attr:`settings.settings`
         
         :param starting_line_number: starting line number for the created code
                                      box
@@ -464,4 +466,4 @@ class SimpleScreen(Screen):
                             scrolls to newly added content.  Defaults to True.
         """
         self.code_box = CodeBox(starting_line_number, auto_scroll)
-        super().__init__(conf_settings, [self.code_box])
+        super().__init__(settings, [self.code_box])
