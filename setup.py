@@ -34,6 +34,9 @@ SETUP_ARGS = dict(
         'urwid>=2.0.1',
         'colored>=1.4.2',
     ],
+    tests_require = [
+        'waelstow>=0.10.2',
+    ]
 )
 
 if __name__ == '__main__':

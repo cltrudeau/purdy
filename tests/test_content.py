@@ -5,7 +5,7 @@ from waelstow import capture_stdout
 
 from purdy.content import Code, Listing
 
-from base import (PurdyContentTest, py3_lexer, bash_lexer, PY_CODE_LINES,
+from tests.base import (PurdyContentTest, py3_lexer, bash_lexer, PY_CODE_LINES,
     BASH_CODE_LINES)
 
 # =============================================================================

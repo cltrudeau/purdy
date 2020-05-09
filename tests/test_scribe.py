@@ -6,7 +6,7 @@ from purdy.content import Code, Listing
 from purdy.scribe import (range_set_to_list, print_tokens, print_ansi,
     print_html, print_rtf)
 
-from base import (PurdyContentTest, py3_lexer, bash_lexer, PY_CODE_LINES,
+from tests.base import (PurdyContentTest, py3_lexer, bash_lexer, PY_CODE_LINES,
     BASH_CODE_LINES)
 
 # =============================================================================
