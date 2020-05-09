@@ -10,7 +10,7 @@ import argparse
 import urwid
 
 from purdy.animation.manager import AnimationManager
-from purdy.animation.cell import Cell
+from purdy.animation.cell import group_steps_into_cells
 from purdy.colour import UrwidColourizer
 from purdy.content import Listing
 from purdy.settings import settings as default_settings
@@ -142,13 +142,13 @@ class BaseWindow(urwid.Pile):
         return self.animation_manager.perform(key)
 
     def animation_alarm(self, loop, data):
-        self.animation_manager.animation_wake_up()
+        self.animation_manager.animation_alarm()
 
     def movie_alarm(self, loop, data):
-        self.animation_manager.movie_wake_up()
+        self.animation_manager.movie_alarm()
 
     def first_alarm(self, loop, data):
-        self.animation_manager.first_wake_up()
+        self.animation_manager.first_alarm()
 
 # =============================================================================
 # Screen
@@ -391,12 +391,12 @@ class Screen:
         for action in actions:
             steps.extend( action.steps() )
 
-        cells = Cell.group_steps_into_cells(steps)
+        cells = group_steps_into_cells(steps)
         self.base_window.animation_manager.register(cells)
 
         if hasattr(self, 'args') and self.args.debugsteps:
             for cell in self.base_window.animation_manager.cells:
-                print('Cell')
+                print(f'{cell.__class__.__name__}')
                 for step in cell.steps:
                     print('   step', step)
             exit()

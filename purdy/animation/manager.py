@@ -7,8 +7,6 @@ This module handles the slide rendering animation in the urwid purdy player
 """
 from enum import Enum
 
-from .cell import Cell
-
 # ==========================================================================
 # Animation Manager
 # ==========================================================================
@@ -26,36 +24,35 @@ class AnimationManager:
         self.index = -1
 
     def register(self, content):
-        """Register one or more :class:`purdy.animation.cell.Cell`
-        objects to be animated. 
+        """Register one or more "cell" classes from 
+        :mod:`purdy.animation.cell` objects to be animated. 
 
         :param content: a single Cell or iterable of them
         """
-        if isinstance(content, Cell):
-            self.cells.append(content)
-        else:
+        if isinstance(content, list) or isinstance(content, tuple):
             for cell in content:
                 self.cells.append(cell)
+        else:
+            self.cells.append(content)
 
     def _conditional_alarms(self, cell):
         # if we're in movie mode and the cell isn't doing a typewriter
         # animation, wake us up for the next animation
-        no_typewriter = cell.typewriter_alarm_handle is None
-        if no_typewriter and self.screen.movie_mode > -1:
+        if not cell.is_animating and self.screen.movie_mode > -1:
             self.screen.loop.set_alarm_in(self.screen.movie_mode, 
                 self.screen.base_window.movie_alarm)
 
-    def first_wake_up(self):
+    def first_alarm(self):
         self.state = self.State.ACTIVE
         self.forward()
 
-    def animation_wake_up(self):
+    def animation_alarm(self):
         self.state = self.State.ACTIVE
         cell = self.cells[self.index]
-        cell.typewriter_wake_up(self)
+        cell.animation_wake_up(self)
         self._conditional_alarms(cell)
 
-    def movie_wake_up(self):
+    def movie_alarm(self):
         self.State.ACTIVE
         self.forward()
         

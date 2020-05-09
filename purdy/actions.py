@@ -22,7 +22,7 @@ from copy import copy
 
 from pygments.token import Generic, Token
 
-from purdy.animation import cell
+from purdy.animation import steps as steplib
 from purdy.parser import CodePart, CodeLine, LEXERS, parse_source, token_is_a
 
 # =============================================================================
@@ -39,7 +39,7 @@ class Append:
 
     def steps(self):
         lines = parse_source(self.code.source, self.code.lexer)
-        steps = [cell.AddRows(self.code_box, lines), ]
+        steps = [steplib.AddRows(self.code_box, lines), ]
 
         return steps
 
@@ -56,7 +56,7 @@ class Insert:
 
     def steps(self):
         lines = parse_source(self.code.source, self.code.lexer)
-        steps = [cell.InsertRows(self.code_box, self.position, lines), ]
+        steps = [steplib.InsertRows(self.code_box, self.position, lines), ]
 
         return steps
 
@@ -72,7 +72,7 @@ class Replace:
 
     def steps(self):
         lines = parse_source(self.code.source, self.code.lexer)
-        steps = [cell.ReplaceRows(self.code_box, self.position, lines), ]
+        steps = [steplib.ReplaceRows(self.code_box, self.position, lines), ]
 
         return steps
 
@@ -86,7 +86,7 @@ class Remove:
         self.size = size
 
     def steps(self):
-        return [cell.RemoveRows(self.code_box, self.position, self.size), ]
+        return [steplib.RemoveRows(self.code_box, self.position, self.size), ]
 
 
 class Clear:
@@ -95,7 +95,7 @@ class Clear:
         self.code_box = code_box
 
     def steps(self):
-        return [cell.Clear(self.code_box), ]
+        return [steplib.Clear(self.code_box), ]
 
 # =============================================================================
 # Source Based Actions
@@ -111,7 +111,7 @@ class Suffix:
         self.source = source
 
     def steps(self):
-        return [cell.SuffixRow(self.code_box, self.position, self.source), ]
+        return [steplib.SuffixRow(self.code_box, self.position, self.source), ]
 
 # =============================================================================
 # Typewriter Actions
@@ -140,14 +140,14 @@ class TypewriterStep(TypewriterBase):
         if is_console and not token_is_a(first_token, Generic.Prompt):
             # in console mode only lines with prompts get typewriter
             # animation, everything else is just added directly
-            return [cell.InsertRows(self.code_box, position, line), ]
+            return [steplib.InsertRows(self.code_box, position, line), ]
 
         # --- Typewriter animation
         # insert a blank row first with contents of line changing what is on
         # it as animation continues
         dummy_parts = [CodePart(Token, ''), ]
         row_line = CodeLine(dummy_parts, self.code.lexer)
-        step = cell.InsertRows(self.code_box, position, row_line)
+        step = steplib.InsertRows(self.code_box, position, row_line)
         steps.append(step)
 
         current_parts = []
@@ -158,19 +158,19 @@ class TypewriterStep(TypewriterBase):
                 # dummy line with the whole contents
                 current_parts.append(part)
                 row_line = CodeLine(copy(current_parts), self.code.lexer)
-                step = cell.ReplaceRows(self.code_box, position, row_line)
+                step = steplib.ReplaceRows(self.code_box, position, row_line)
                 steps.append(step)
 
                 if part.token == Generic.Prompt:
                     # stop animation if this is a prompt, wait for keypress
-                    steps.append( cell.CellEnd() )
+                    steps.append( steplib.CellEnd() )
             elif count == 0 and token_is_a(part.token, Token.Text) and (
                     part.text.rstrip() == ''):
                 # first token is leading whitespace, don't animate it, just
                 # insert it
                 current_parts.append(part)
                 row_line = CodeLine(copy(current_parts), self.code.lexer)
-                step = cell.ReplaceRows(self.code_box, position, row_line)
+                step = steplib.ReplaceRows(self.code_box, position, row_line)
                 steps.append(step)
             else:
                 new_part = CodePart(part.token, '')
@@ -190,10 +190,11 @@ class TypewriterStep(TypewriterBase):
                         output_parts.append( CodePart(Token, '\u2588') )
 
                     row_line = CodeLine(output_parts, self.code.lexer)
-                    step = cell.ReplaceRows(self.code_box, position, row_line)
+                    step = steplib.ReplaceRows(self.code_box, position, 
+                        row_line)
                     steps.append(step)
 
-                    steps.append(cell.Sleep(self.delay_until_next_letter))
+                    steps.append(steplib.Sleep(self.delay_until_next_letter))
 
         return steps
 
@@ -246,7 +247,7 @@ class ReplaceTypewriter(TypewriterStep):
         lines = parse_source(self.code.source, self.code.lexer)
         for count, line in enumerate(lines):
             # remove old line
-            step = cell.RemoveRows(self.code_box, self.position + count)
+            step = steplib.RemoveRows(self.code_box, self.position + count)
             steps.append(step)
 
             # typewriter insert in place of removed line
@@ -273,8 +274,8 @@ class SuffixTypewriter(TypewriterBase):
                 cursor = True
 
             steps.extend([
-                cell.SuffixRow(self.code_box, self.position, letter, cursor),
-                cell.Sleep(self.delay_until_next_letter),
+                steplib.SuffixRow(self.code_box, self.position, letter, cursor),
+                steplib.Sleep(self.delay_until_next_letter),
             ])
 
         return steps
@@ -309,7 +310,7 @@ class Highlight:
             self.numbers = spec
 
     def steps(self):
-        return [ cell.HighlightLines(self.code_box, self.numbers,
+        return [steplib.HighlightLines(self.code_box, self.numbers,
             self.highlight_on) ]
 
 # =============================================================================
@@ -319,10 +320,19 @@ class Highlight:
 class Wait:
     """Causes the animations to wait for a key press before continuing."""
     def steps(self):
-        return [cell.CellEnd(), ]
+        return [steplib.CellEnd(), ]
 
 
 class StopMovie:
     """Causes the presentation :class:`purdy.ui.Screen` to exit movie mode"""
     def steps(self):
-        return [cell.StopMovie(), ]
+        return [steplib.StopMovie(), ]
+
+
+class Transition:
+    def __init__(self, code_box, code):
+        self.code_box = code_box
+        self.code = code
+
+    def steps(self):
+        return [steplib.Transition(self.code_box, self.code), ]

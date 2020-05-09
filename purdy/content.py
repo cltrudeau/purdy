@@ -208,9 +208,9 @@ class Listing:
         """
         result = []
         for line in self.lines:
-            result.append( self.colourizer.colourize(line) )
+            result.append( self.render_line(line) )
 
         return result
 
     def render_line(self, line):
-        return self.colourizer.colourize(line)
+        return line.render_line(self.colourizer)

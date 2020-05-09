@@ -107,6 +107,12 @@ def token_ancestor(token, ancestor_list):
 
 CodePart = namedtuple('CodePart', ['token', 'text'])
 
+
+class BlankCodeLine:
+    def render_line(self, colourizer):
+        return ''
+
+
 class CodeLine:
     def __init__(self, parts, lexer, line_number=-1, highlight=False):
         """Represents a displayed line of code.
@@ -134,6 +140,9 @@ class CodeLine:
 
     def __repr__(self):
         return self.__str__()
+
+    def render_line(self, colourizer):
+        return colourizer.colourize(self)
 
 
 def parse_source(source, lexer):
