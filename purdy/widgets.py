@@ -8,6 +8,10 @@ classes in :mod:`purdy.ui`.
 """
 import urwid
 
+import logging
+logging.basicConfig(filename='debug.log', level=logging.DEBUG)
+logger = logging.getLogger(__name__)
+
 # =============================================================================
 # Widgets
 # =============================================================================
@@ -80,6 +84,17 @@ class ScrollingListBox(urwid.ListBox):
             self.scroll_indicator.set_down('bottom' not in visible, focus)
 
         return result
+
+    def keypress(self, size, key):
+        if key == 'up' and self.focus_position == 0:
+            # don't want arrow up to change parent's focus, eat this key
+            return None
+
+        if key == 'down' and self.focus_position + 1 >= len(self.body):
+            # don't want arrow down to change parent's focus, eat this key
+            return None
+
+        return super().keypress(size, key)
 
 
 class CodeWidget(urwid.Columns):
