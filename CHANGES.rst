@@ -1,3 +1,11 @@
+1.0
+===
+
+* breaking change release
+* moved animation mechansim to be based on a queue, can now go forwards and
+backwards
+* signatures of Actions and Screens have changed
+
 0.4
 ===
 

@@ -2,27 +2,27 @@
 
 # Example code for showing a top with code and a bottom with console
 
-from purdy.actions import (AppendAll, AppendTypewriter, Highlight, StopMovie,
+from purdy.actions import (Append, AppendTypewriter, Highlight, StopMovie,
     Wait)
-from purdy.content import CodeFile
+from purdy.content import Code
 from purdy.settings import settings
 from purdy.ui import SplitScreen
 
 settings['movie_mode'] = 2
 
-py_code = CodeFile('../display_code/code.py', 'py3')
-con_code = CodeFile('../display_code/simple.repl', 'con')
+py_code = Code('../display_code/code.py')
+con_code = Code('../display_code/simple.repl')
 
-screen = SplitScreen(settings, show_top_line_numbers=True, top_height=35)
-py_box = screen.top_box
-con_box = screen.bottom_box
+screen = SplitScreen(settings, top_starting_line_number=10, top_height=35)
+py_box = screen.top
+con_box = screen.bottom
 
 actions = [
-    AppendAll(py_box, py_code),
+    Append(py_box, py_code),
     Wait(),
     AppendTypewriter(con_box, con_code),
     Wait(),
-    StopMovie(screen),
+    StopMovie(),
     Wait(),
     Highlight(py_box, 4, True),
     Wait(),

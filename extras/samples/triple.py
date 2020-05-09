@@ -2,20 +2,20 @@
 
 # Example code for showing a top with code and a bottom with console
 
-from purdy.actions import AppendAll
-from purdy.content import CodeFile
-from purdy.ui import RowScreen, Box
+from purdy.actions import Append
+from purdy.content import Code
+from purdy.ui import Screen, CodeBox
 
-py_code = CodeFile('../display_code/code.py', 'py3')
-con_code = CodeFile('../display_code/simple.repl', 'con')
+py_code = Code('../display_code/code.py')
+con_code = Code('../display_code/simple.repl')
 
-screen = RowScreen(rows=[Box(line_numbers=True), Box(height=7), 
-    Box(auto_scroll=False)])
+screen = Screen(rows=[CodeBox(starting_line_number=1), CodeBox(height=7), 
+    CodeBox(auto_scroll=False)])
 
 actions = [
-    AppendAll(screen.code_boxes[0], py_code),
-    AppendAll(screen.code_boxes[1], con_code),
-    AppendAll(screen.code_boxes[2], py_code),
+    Append(screen.code_boxes[0], py_code),
+    Append(screen.code_boxes[1], con_code),
+    Append(screen.code_boxes[2], py_code),
 ]
 
 screen.run(actions)

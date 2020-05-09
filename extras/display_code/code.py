@@ -1,3 +1,5 @@
+# Sample Code
+
 class Thing:
     bar = 1
 
@@ -9,12 +11,18 @@ class Thing:
 
         :param index: a parameter whose name is index
         """
-
         x = 0
         while(x != 0):
             # never get here
             for y in range(1, 10):
                 print('Unreachable')
+
+thing = Thing()
+thing.stuff(42)
+
+
+def do_nothing():
+    pass
 
 
 @decorated
@@ -25,3 +33,7 @@ def other_thing():
         print('More unreachable code')
     else:
         print('Redundant unreachable code')
+
+    do_nothing()
+
+    raise AttributeError()

@@ -3,22 +3,22 @@
 # Example code for programatically calling the purdy library and showing a
 # console based code snippet
 
-from purdy.actions import AppendAll, Highlight, Wait
-from purdy.content import CodeFile
+from purdy.actions import Append, Highlight, Wait
+from purdy.content import Code
 from purdy.settings import settings
-from purdy.ui import Screen
+from purdy.ui import SimpleScreen
 
 #settings['colour'] = 16
-screen = Screen(settings, show_line_numbers=True)
+screen = SimpleScreen(settings, starting_line_number=1)
 code_box = screen.code_box
-blob = CodeFile('../display_code/console2.repl', 'con')
+blob = Code('../display_code/console.repl')
 
 actions = [
-    AppendAll(code_box, blob),
+    Append(code_box, blob),
     Wait(),
-    Highlight(code_box, range(1, 45), True),
+    Highlight(code_box, range(5, 41), True),
     Wait(),
-    Highlight(code_box, range(1, 45), False),
+    Highlight(code_box, '5,6,10-20', False),
 ]
 
 screen.run(actions)

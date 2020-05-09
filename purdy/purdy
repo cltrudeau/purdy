@@ -4,10 +4,9 @@
 
 import argparse
 
-from purdy.__init__ import __version__
-
 from purdy.actions import AppendAll, AppendTypewriter
-from purdy.content import LEXERS, CodeFile
+from purdy.cmd import version_arg, lexer_arg, filename_arg
+from purdy.content import CodeFile
 from purdy.settings import settings
 from purdy.ui import Screen
 
@@ -20,10 +19,9 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser(description=('Displays a highlighted '
         'version of python text to the screen as if it is being typed'))
 
-    parser.add_argument('filename', help=('Name of file containing python to '
-        'parse'))
-    parser.add_argument('--version', action='version', 
-        version='%(prog)s {version}'.format(version=__version__ ))
+    filename_arg(parser)
+    version_arg(parser)
+    lexer_arg(parser)
 
     parser.add_argument('-c', '--continuous', action='store_true', 
         help=('Instead of prentending to type like a human, just dump the file '
@@ -31,11 +29,6 @@ if __name__ == '__main__':
 
     parser.add_argument('-x16', action='store_true', help=('Force 16 colour '
         'terminal mode in case 256 is not working to the screen'))
-
-    parser.add_argument('-l', '--lexer', choices=LEXERS.choices,
-        default=LEXERS.default_name, help=('Choose Pygments Lexer to use to '
-            'parse the content. Choices are "con" for console (default), or '
-            '"py3" for Python 3'))
 
     # set up the typing_delay / words_per_minute options
     group = parser.add_mutually_exclusive_group()

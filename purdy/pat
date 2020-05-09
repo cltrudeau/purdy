@@ -1,0 +1,30 @@
+#!/usr/bin/env python
+import argparse
+
+from purdy.cmd import ansi_args, filename_arg, general_args
+from purdy.content import Code
+from purdy.scribe import print_ansi
+
+# =============================================================================
+
+DESCRIPTION = """This command prints ANSI colourized versions of a file,
+parsing the file based on a limited number of pygments lexers. 'pat' is part
+of the 'purdy' library. A list of supported lexers is available in the help.
+If no lexer is specified the library attempts to determine which lexer to user
+automatically.
+"""
+
+# =============================================================================
+# Main
+# =============================================================================
+
+if __name__ == '__main__':
+    parser = argparse.ArgumentParser(description=DESCRIPTION)
+    filename_arg(parser)
+    general_args(parser)
+    ansi_args(parser)
+
+    ### Execute ###
+    args = parser.parse_args()
+    code = Code(args.lexer, content_filename=args.filename)
+    print_ansi(code)

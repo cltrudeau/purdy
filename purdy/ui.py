@@ -2,70 +2,113 @@
 UI (purdy.ui.py)
 ----------------
 
-Classes that manage presentation to the screen, the widgets for displaying
-code and the event loop for action management are defined in this module
-
+This module is the entry point for the Urwid based code viewer included in
+purdy.
 """
+import argparse
 
 import urwid
 
-from purdy.content import TokenLookup
+from purdy.animation.manager import AnimationManager
+from purdy.animation.cell import Cell
+from purdy.colour import UrwidColourizer
+from purdy.content import Listing
 from purdy.settings import settings as default_settings
-from purdy.widgets import CodeBox, DividingLine, TwinContainer
+from purdy.widgets import CodeWidget, DividingLine, TwinContainer
 
 # =============================================================================
-# Globals
 
-palette = []
-highlight_mapper = {}
+DESCRIPTION = """You can alter the behaviour of any script calling
+Screen.run() by passing in command line arguments."""
 
 # =============================================================================
 # Main Screen
 # =============================================================================
 
+class FocusWalker:
+    ### Urwid has no call for focusing on a widget, you have to use an index
+    # into its parent's container. The FocusWalker finds all of the CodeWidget
+    # objects, figures out which one is currently focused and allows for the
+    # previous and next item to be focused
+    class Node:
+        def __init__(self, position, parent=None, parent_position=0):
+            self.position = position
+            self.parent = parent
+            self.parent_position = parent_position
+
+    def __init__(self, root):
+        """Figures out the order things should be focused in. 
+
+        :param root: root container to look for CodeWidgets within
+        """
+        self.root = root
+        self.focused_index = 0
+        self.nodes = []
+
+        current_focus, _ = root.contents[root.focus_position]
+
+        # root is a Pile with either CodeWidgets or Columns in it, where
+        # the columns contain CodeWidgets
+        for position, content in enumerate(root.contents):
+            widget = content[0]
+            if isinstance(widget, CodeWidget):
+                if widget == current_focus:
+                    self.focused_index = len(self.nodes)
+
+                self.nodes.append( self.Node(position) )
+            elif isinstance(widget, urwid.Columns):
+                index = len(self.nodes)
+
+                self.nodes.append( self.Node(position, widget, 0) )
+                self.nodes.append( self.Node(position, widget, 1) )
+
+                if widget == current_focus:
+                    if widget.focus_position == 0:
+                        self.focused_index = index
+                    elif widget.focus_position == 1:
+                        self.focused_index = index + 1
+                    # else: shouldn't happen
+
+            # else: shouldn't happen
+
+    def focus_next(self):
+        # if we're the last item, loop to the next
+        position = self.focused_index + 1
+        if position >= len(self.nodes):
+            position = 0
+
+        self.set_focus(position)
+
+    def focus_prev(self):
+        # if we're the first item, loop to the next
+        position = self.focused_index - 1
+        if position < 0:
+            position = len(self.nodes) - 1
+
+        self.set_focus(position)
+
+    def set_focus(self, position):
+        # set the focus
+        node = self.nodes[position]
+        self.root.focus_position = node.position
+
+        if node.parent:
+            node.parent.focus_position = node.parent_position
+
+
 class BaseWindow(urwid.Pile):
     def __init__(self, screen, *args, **kwargs):
         self.screen = screen
+        self.animation_manager = AnimationManager(screen)
         super(BaseWindow, self).__init__(*args, **kwargs)
 
     def _next_focus(self):
-        ### switch focus to the next code box
-        widget, _ = self.contents[self.focus_position]
+        walker = FocusWalker(self)
+        walker.focus_next()
 
-        if isinstance(widget, TwinContainer):
-            # container is focused, try to shift focus inside of it
-            for i in range(widget.focus_position + 1, len(widget.contents)):
-                # loop through items to see if there is a next one
-                current, _ = widget.contents[i]
-                if getattr(current, 'tab_focusable', False):
-                    # found a tab-focusable item past the current focus
-                    # position in the container, set it to the focus and finish
-                    widget.focus_position = i
-                    return
-
-        # if you get here: widget wasn't a TwinContainer, or was one with its 
-        # last item focused,
-        for i in range(self.focus_position + 1, len(self.contents)):
-            # loop through the items in the pile try to find the next
-            # focusable
-            current, _ = self.contents[i]
-            if getattr(current, 'tab_focusable', False):
-                self.focus_position = i
-                if isinstance(current, TwinContainer):
-                    # set focus to first item in TwinContainer
-                    current.focus_position = 0
-                return
-
-        # if you get here then you've looped from focus point to end of pile
-        # start again from the beginning
-        for i in range(0, self.focus_position):
-            current, _ = self.contents[i]
-            if getattr(current, 'tab_focusable', False):
-                self.focus_position = i
-                if isinstance(current, TwinContainer):
-                    # set focus to first item in TwinContainer
-                    current.focus_position = 0
-                return
+    def _prev_focus(self):
+        walker = FocusWalker(self)
+        walker.focus_prev()
 
     def keypress(self, size, key):
         if key in ('q', 'Q'):
@@ -75,14 +118,17 @@ class BaseWindow(urwid.Pile):
             # let parent handle function keys
             return super(BaseWindow, self).keypress(size, key)
 
-        if key not in ('right', 'left'):
-            # we don't want to pass left/right to the children, we want it to
-            # act as "next action", everything else pass to the child to
-            # handle for scrolling etc
+        if key not in self.animation_manager.handled_keys: 
+            # handle keys not handled by the animation manager 
             result = super(BaseWindow, self).keypress(size, key)
             if result is None:
                 # keypress was handled by child, we're done
                 return None
+            # else: fall through if super().keypress() didn't deal with it
+
+        if self.screen.movie_mode > -1:
+            # Ignore other keypresses in movie mode
+            return None
 
         # --- at this point the keypress was not handled by the children, see
         # if we want to do anything with it
@@ -90,99 +136,83 @@ class BaseWindow(urwid.Pile):
             self._next_focus()
             return None
 
-        if not self.screen.actions:
-            # no actions left to do, ignore the keypress
-            return None
+        if key == 'shift tab':
+            self._prev_focus()
 
-        if self.screen.movie_mode != -1:
-            # in movie mode, ignore key press
-            return None
+        return self.animation_manager.perform(key)
 
-        self.next_action(key)
+    def animation_alarm(self, loop, data):
+        self.animation_manager.animation_wake_up()
 
-    def alarm(self, loop, data):
-        self.next_action()
+    def movie_alarm(self, loop, data):
+        self.animation_manager.movie_wake_up()
 
-    def next_action(self, key=None):
-        """Actions are triggered either by a key press or an alarm. This
-        method looks in the action queue and gets the tells the top most
-        action to take its next step.
-
-        :param key: the key that was pressed, or None if it was an alarm
-        """
-        try:
-            # tell the current action to do its thing
-            timer = self.screen.actions[0].next(key)
-
-            if timer != -1:
-                # positive value means set callback timer 
-                self.screen.loop.set_alarm_in(timer, self.alarm)
-            elif self.screen.movie_mode != -1:
-                # in movie mode we simulate the key presses, set the callback
-                self.screen.loop.set_alarm_in(self.screen.movie_mode, 
-                    self.alarm)
-
-        except StopIteration:
-            # action is done doing things, pop it off the queue
-            self.screen.actions.pop(0)
-
-            if self.screen.actions:
-                # there is another action in the action queue, set it up and
-                # then force a call back to its first step
-                self.screen.actions[0].setup(self.screen.settings)
-
-                if self.screen.movie_mode != -1:
-                    # in movie mode we simulate the key presses, set the 
-                    # callback
-                    self.screen.loop.set_alarm_in(self.screen.movie_mode, 
-                        self.alarm)
-                else:
-                    self.screen.loop.set_alarm_in(0, self.alarm)
+    def first_alarm(self, loop, data):
+        self.animation_manager.first_wake_up()
 
 # =============================================================================
-# RowScreen
+# Screen
 # =============================================================================
 
-class Box:
-    """Specifies a box to contain code, used by :class:`RowScreen`"""
-    def __init__(self, line_numbers=False, auto_scroll=True, height=0):
+class CodeBox:
+    """Specifies a box to contain code. :class:`Screen` uses these to
+    determine widget layout, subsequent actions are done within the context of 
+    this box. When :func:`CodeBox.build` is called by a :class:`Screen` class
+    a widget is built and this box is added to the screen.
+    """
+    def __init__(self, starting_line_number=-1, auto_scroll=True, height=0, 
+            compact=False):
         """Constructor
 
-        :param line_numbers: True turns line numbers on inside the 
-                             :class:`purdy.widgets.CodeBox` created by this
-                             specification. Defaults to False
+        :param starting_line_number: -1 means no line numbers, anything larger
+                                     will be the first line number displayed.
+                                     Defaults to -1
         :param auto_scroll: When True, :class:`purdy.widgets.CodeBox` created
                             by this specification automatically scrolls to
                             newly added content.  Defaults to True.
         :param height: Number of lines the row containing this box should be. 
                        A value of 0 indicates automatic spacing.  Defaults to 0.
+        :param compact: if False, the dividing line between this box and the 
+                        next has a 1-line empty boundary. Parameter is ignored
+                        if there is no item after this one in the rows=[]
+                        listing. Defaults to False
         """
-        self.line_numbers = line_numbers
-        self.auto_scroll = auto_scroll
         self.height = height
+        self.compact = compact
+        self.listing = Listing(starting_line_number=starting_line_number)
+
+        self.widget = CodeWidget(self, auto_scroll)
 
     def build(self, screen, container):
-        codebox = CodeBox(self, self.line_numbers, self.auto_scroll)
-        screen.code_boxes.append(codebox)
-        if self.height != 0:
-            codebox = (self.height, codebox)
+        self.screen = screen
+        screen.code_boxes.append(self)
 
-        container.append(codebox)
+        self.listing.set_display('urwid', self.widget)
+
+        if self.height == 0:
+            container.append(self.widget)
+        else:
+            # height was specified, return a tuple instead
+            container.append( (self.height, self.widget) )
 
 
-class TwinBox:
-    """Specifies two side-by-side boxes to contain code, used by 
-    :class:`RowScreen`
+class TwinCodeBox:
+    """Specifies two side-by-side CodeBoxes. The contained CodeBoxes can be
+    either accessed as twin.left and twin.right, or twin[0] and twin[1]. When
+    :func:`TwinCodeBox.build` is called, the widgets are created and added to 
+    the :attr:`Screen.code_boxes` list sequentially, i.e. a single
+    TwinCodeBox results in two CodeBox items in Screen's list.
     """
-    def __init__(self, left_line_numbers=False, left_auto_scroll=True, 
-        left_weight=1, right_line_numbers=False, right_auto_scroll=True, 
-        right_weight=1, height=0):
+    def __init__(self, left_starting_line_number=-1, left_auto_scroll=True, 
+            left_weight=1, right_starting_line_number=-1, 
+            right_auto_scroll=True, right_weight=1, height=0, compact=False):
         """Constructor
 
-        :param left_line_numbers:
-        :param right_line_numbers: True to show line numbers in the left and
-                                   right box created by this spec. Defaults to
-                                   False
+        :param left_starting_line_number:
+        :param right_starting_line_number: -1 to turn line numbers off, any
+                                           higher value is the first number
+                                           to display. Defaults to -1
+
         :param left_auto_scroll:
         :param right_auto_scroll: True to specify that scrolling happens
                                   automatically for the left and right boxes
@@ -199,49 +229,80 @@ class TwinBox:
 
         :param height: number of lines for the row this set of boxes is in. 
                        The default of 0 specifies automatic height
+        :param compact: if False, the dividing line between this box and the 
+                        next has a 1-line empty boundary. Parameter is ignored
+                        if there is no item after this one in the rows=[]
+                        listing. Defaults to False
         """
-        self.left_line_numbers = left_line_numbers
-        self.left_auto_scroll = left_auto_scroll
-        self.left_weight = left_weight
-        self.right_line_numbers = right_line_numbers
-        self.right_auto_scroll = right_auto_scroll
-        self.right_weight = right_weight
+        class Side:
+            pass
+
         self.height = height
+        self.compact = compact
+
+        left = Side()
+        left.weight = left_weight
+        left.box = CodeBox(left_starting_line_number, left_auto_scroll)
+        self.left = left
+
+        right = Side()
+        right.weight = right_weight
+        right.box = CodeBox(right_starting_line_number, right_auto_scroll)
+        self.right = right
 
     def build(self, screen, container):
-        left = CodeBox(self, self.left_line_numbers, self.left_auto_scroll)
-        screen.code_boxes.append(left)
-        left = ('weight', self.left_weight, left)
-        right = CodeBox(self, self.right_line_numbers, self.right_auto_scroll)
-        screen.code_boxes.append(right)
-        right = ('weight', self.right_weight, right)
+        self.screen = screen
 
-        twin = TwinContainer([left, right], dividechars=1)
+        # use CodeBox's build() method because we need to pack them into Urwid
+        # differently
+        screen.code_boxes.append(self.left.box)
+        self.left.box.listing.set_display('urwid', self.left.box.widget)
+
+        screen.code_boxes.append(self.right.box)
+        self.right.box.listing.set_display('urwid', self.right.box.widget)
+
+        # Combine the widgets from the CodeBoxes into a display container
+        render_left = ('weight', self.left.weight, self.left.box.widget)
+        render_right = ('weight', self.right.weight, self.right.box.widget)
+
+        twin = TwinContainer([render_left, render_right], dividechars=1)
 
         if self.height != 0:
             twin = (self.height, twin)
 
         container.append(twin)
 
+    def __getitem__(self, key):
+        if key == 0:
+            return self.left
 
-class RowScreen:
-    """Inheritor of :class:`Screen`. This implementation supports
-    specification of multiple rows of
-    :class:`purdy.widgets.CodeBox` objects. Pass multiple :class:`Box` and/or
-    :class:`TwinBox` objects in the :attr:`RowScreen.rows` attribute to
-    specify the appearance.
+        if key == 1:
+            return self.right
+
+        raise IndexError
+
+
+class Screen:
+    """Represents the main UI window for the TUI application. The layout is
+    specified by passing in one or more :class:`CodeBox` or
+    :class:`TwinCodeBox` objects to the constructor. Each box will have a
+    corresponding :class:`purdy.widgets.CodeWidget` inside of the UI for
+    displaying code.
 
     Example:
 
     .. code-block:: python
 
-        screen = RowScreen(rows=[
-                TwinBox(left_line_numbers=True, height=8),
-                Box(auto_scroll=False)])
+        from purdy.actions import AppendAll
+        from purdy.content import Code
+        from purdy.ui import Screen, CodeBox, TwinCodeBox
 
-        c1 = CodeFile('c1.py', 'py3')
-        c2 = CodeFile('c2.py', 'py3')
-        c3 = CodeFile('c3.py', 'py3')
+        screen = Screen(rows=[TwinCodeBox(height=8),
+                CodeBox(auto_scroll=False)])
+
+        c1 = Code(contents_filename='c1.py', starting_line_number=1)
+        c2 = Code(contents_filename='c2.py')
+        c3 = Code(contents_filename='c3.py')
 
         actions = [
             AppendAll(screen.code_boxes[0], c1),
@@ -251,8 +312,8 @@ class RowScreen:
 
         screen.run(actions)
 
-    The above would produce a screen with two rows, the frist row having two 
-    :class:`purdy.widgets.CodeBox` objects side by side, the second having a
+    The above would produce a screen with two rows, the first row having two 
+    :class:`purdy.widgets.CodeWidget` objects side by side, the second having a
     single one. The top left box would have line numbers turned on, both top
     boxes are 8 lines tall, and the bottom box has auto scrolling turned off.
 
@@ -271,13 +332,12 @@ class RowScreen:
     def __init__(self, conf_settings=None, rows=[]):
         """Constructor
 
-        :param conf_settings: a settings dictionary object. Defaults to 
-                              `None` which uses the default settings
-                              dictionary: :attr:`settings.settings`
-
-        :param rows: a list containing one or more :class:`Box` or 
-                     :class:`TwinBox` definitions, to specify the layout of the
-                     screen
+        :param conf_settings: a settings dictionary object. Defaults to `None` 
+                              which uses the default settings dictionary: 
+                              :attr:`settings.settings`
+        :param rows: a list containing one or more :class:`CodeBox` or 
+                     :class:`TwinCodeBox` definitions, to specify the layout of 
+                     the screen
         """
         self.rows = rows
         self.code_boxes = []
@@ -289,66 +349,57 @@ class RowScreen:
         if self.movie_mode != -1:
             self.movie_mode = float(self.movie_mode) / 1000.0
 
-        self._build_boxes()
-        self._build_palette()
-
+        self._get_args()
+        self._build_ui()
+        palette = UrwidColourizer.create_palette()
         self.loop = urwid.MainLoop(self.base_window, palette)
 
         if self.settings['colour'] == 256:
+            # don't confuse urwid's screen with ours
             self.loop.screen.set_terminal_properties(colors=256)
             self.loop.screen.reset_default_terminal_palette()
 
-    def _build_boxes(self):
-        # create a code box for each specified in self.rows
+    def _get_args(self):
+        # Screen can be influenced by command line arguments
+        parser = argparse.ArgumentParser(description=DESCRIPTION)
+        parser.add_argument('--debugsteps', '--ds', action='store_true', 
+            help='Print out the animation steps, grouped by Cell and exit')
+        self.args = parser.parse_args()
+
+    def _build_ui(self):
+        # create a code widget for each box specified in self.rows
         boxen = []
 
         for index, row in enumerate(self.rows):
             if index != 0:
                 # not the first row, add a divider before adding the next box
-                divider = (3, DividingLine())
+                compact = self.rows[index - 1].compact
+                divider = (3, DividingLine(compact))
                 boxen.append(divider)
 
             row.build(self, boxen)
 
         self.base_window = BaseWindow(self, boxen)
 
-    def _build_palette(self):
-        global palette, highlight_mapper
-
-        for token in TokenLookup.colours.keys():
-            # add the colour to the palette
-            palette.append( TokenLookup.get_colour_attribute(token) )
-
-            # add the highlight version of the colour to the palette
-            palette.append( TokenLookup.get_highlight_colour_attribute(token) )
-
-            # add a mapping between the colour and the highlight
-            highlight_mapper[str(token)] = str(token) + '_highlight'
-
-        # now append colour attributes that aren't for the tokens
-        palette.extend([
-            ('line_number', 'dark gray', '', '', 'dark gray', ''),
-            ('empty', '', '', '', '', ''),
-        ])
-
-        # add default map value
-        highlight_mapper[None] = 'highlight'
-
     def run(self, actions):
         """Calls the main display event loop. Does not return until the UI
         exits."""
-        # store our display actions and setup the first one
-        self.actions = actions
-        self.actions[0].setup(self.settings)
+        steps = []
+        for action in actions:
+            steps.extend( action.steps() )
 
-        # as soon as the loop is going invoke the next action, setup a
-        # callback
-        if self.movie_mode != -1:
-            # in movie mode we simulate the key presses, set the callback to
-            # start the process
-            self.loop.set_alarm_in(self.movie_mode, self.base_window.alarm)
-        else:
-            self.loop.set_alarm_in(0, self.base_window.alarm)
+        cells = Cell.group_steps_into_cells(steps)
+        self.base_window.animation_manager.register(cells)
+
+        if self.args.debugsteps:
+            for cell in self.base_window.animation_manager.cells:
+                print('Cell')
+                for step in cell.steps:
+                    print('   step', step)
+            exit()
+
+        # as soon as the loop is going invoke the first animation
+        self.loop.set_alarm_in(0, self.base_window.first_alarm)
 
         # call urwid's main loop, this code doesn't return until the loop
         # exits!!!
@@ -358,14 +409,14 @@ class RowScreen:
 # Other Screens
 # =============================================================================
 
-class SplitScreen(RowScreen):
+class SplitScreen(Screen):
     """Convenience implementation of :class:`RowScreen` that supports two 
     :class:`CodeBox` instances, stacked vertically and separated by a dividing
-    line. The code boxes are :attr:`SplitScreen.top_box` and
-    :attr:`SplitScreen.bottom_box`. 
+    line. The code boxes are :attr:`SplitScreen.top` and
+    :attr:`SplitScreen.bottom`. 
     """
-    def __init__(self, conf_settings=None, show_top_line_numbers=False,
-            top_auto_scroll=True, show_bottom_line_numbers=False, 
+    def __init__(self, conf_settings=None, top_starting_line_number=-1, 
+            top_auto_scroll=True, bottom_starting_line_number=-1,
             bottom_auto_scroll=True, top_height=0):
         """Constructor
 
@@ -373,13 +424,13 @@ class SplitScreen(RowScreen):
                               `None` which uses the default settings
                               dictionary: :attr:`settings.settings`
 
-        :param show_top_line_numbers: True turns line numbers on inside the
-                                      top code box. Defaults to False
+        :param top_starting_line_number: starting line number for the top 
+                                         code box
         :param top_auto_scroll: When True, the top :class:`ui.CodeBox` 
                                 automatically scrolls to newly added content.
                                 Defaults to True.
-        :param show_bottom_line_numbers: True turns line numbers on inside the
-                                         bottom code box. Defaults to False
+        :param bottom_starting_line_number: starting line number for the 
+                                            bottom code box
         :param bottom_auto_scroll: When True, the bottom :class:`ui.CodeBox` 
                                 automatically scrolls to newly added content.
                                 Defaults to True.
@@ -387,70 +438,30 @@ class SplitScreen(RowScreen):
                            indicates top and bottom should be the same size.
                            Defaults to 0.
         """
-        # this existed before RowScreen, being kept for backwards
-        # compatibility
-        top = Box(show_top_line_numbers, top_auto_scroll, top_height)
-        bottom = Box(show_bottom_line_numbers, bottom_auto_scroll)
-        super().__init__(conf_settings, [top, bottom])
-
-        self.top_box = self.code_boxes[0]
-        self.bottom_box = self.code_boxes[1]
+        self.top = CodeBox(top_starting_line_number, top_auto_scroll, 
+            top_height)
+        self.bottom = CodeBox(bottom_starting_line_number, bottom_auto_scroll)
+        super().__init__(conf_settings, rows=[self.top, self.bottom])
 
 
-class Screen(RowScreen):
+class SimpleScreen(Screen):
     """Convenience implementation of :class:`RowScreen` that supports a single
     :class:`CodeBox`.  The code box is available as 
     :attr:`SplitScreen.code_box`.
     """
-    def __init__(self, conf_settings=None, show_top_line_numbers=False,
-            top_auto_scroll=True, show_bottom_line_numbers=False, 
-            bottom_auto_scroll=True, top_height=0):
-        """Constructor
-
-        :param conf_settings: a settings dictionary object. Defaults to 
-                              `None` which uses the default settings
-                              dictionary: :attr:`settings.settings`
-
-        :param show_top_line_numbers: True turns line numbers on inside the
-                                      top code box. Defaults to False
-        :param top_auto_scroll: When True, the top :class:`ui.CodeBox` 
-                                automatically scrolls to newly added content.
-                                Defaults to True.
-        :param show_bottom_line_numbers: True turns line numbers on inside the
-                                         bottom code box. Defaults to False
-        :param bottom_auto_scroll: When True, the bottom :class:`ui.CodeBox` 
-                                automatically scrolls to newly added content.
-                                Defaults to True.
-        :param top_height: Number of lines the top box should be. A value of 0
-                           indicates top and bottom should be the same size.
-                           Defaults to 0.
-        """
-        # this existed before RowScreen, being kept for backwards
-        # compatibility
-        top = Box(show_top_line_numbers, top_auto_scroll, top_height)
-        bottom = Box(show_bottom_line_numbers, bottom_auto_scroll)
-        super().__init__(conf_settings, [top, bottom])
-
-        self.top_box = self.code_boxes[0]
-        self.bottom_box = self.code_boxes[1]
-
-
-    def __init__(self, conf_settings=None, show_line_numbers=False,
+    def __init__(self, conf_settings=None, starting_line_number=-1, 
             auto_scroll=True):
         """Constructor
 
-        :param conf_settings: a settings dictionary object. Defaults to 
-                              `None` which uses the default settings
-                              dictionary: :attr:`settings.settings`
+        :param conf_settings: a settings dictionary object. Defaults to `None` 
+                              which uses the default settings dictionary: 
+                              :attr:`settings.settings`
 
-        :param show_line_numbers: True turns line numbers on inside the
-                                  associated code box. Defaults to False
-        :param auto_scroll: scroll the :class:`ui.CodeBox` down when new
-                            content is added to the bottom. Defaults to True
+        
+        :param starting_line_number: starting line number for the created code
+                                     box
+        :param auto_scroll: When True, the class:`ui.CodeBox` automatically 
+                            scrolls to newly added content.  Defaults to True.
         """
-        # this existed before RowScreen, being kept for backwards
-        # compatibility
-        box = Box(show_line_numbers, auto_scroll)
-        super().__init__(conf_settings, [box, ])
-
-        self.code_box = self.code_boxes[0]
+        self.code_box = CodeBox(starting_line_number, auto_scroll)
+        super().__init__(conf_settings, [self.code_box])

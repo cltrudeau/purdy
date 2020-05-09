@@ -11,6 +11,6 @@ settings = {
     # (like 'delay' field
     'movie_mode':-1,
 
-    # xterm colour mode, anything but 256 gives default
+    # xterm colour mode, anything but 256 gives 16 colour mode
     'colour':256,
 }

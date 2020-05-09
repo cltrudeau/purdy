@@ -6,56 +6,26 @@ Widgets for displaying. These are called and managed through the Screen
 classes in :mod:`purdy.ui`.
 
 """
-
 import urwid
-
-from purdy.content import TokenLookup
 
 # =============================================================================
 # Widgets
 # =============================================================================
 
-class AppendableText(urwid.AttrMap):
-    ### Text-like widget that supports highlighting
-
-    def __init__(self, markup):
-        self.text_widget = urwid.Text('')
-        self.set_text(markup)
-        super(AppendableText, self).__init__(self.text_widget, 'empty')
-
-    def set_text(self, markup):
-        # urwid.Text supports three formats for markup: 1) plain text, 2)
-        # tuple of palette attribute name and text, or 3) a list contain items
-        # which are #1 or #2; to make things easier, convert it to a list
-        self.markup = markup
-        if isinstance(markup, str) or isinstance(markup, tuple):
-            self.markup = [markup]
-
-        self.text_widget.set_text(self.markup)
-
-    def append(self, markup):
-        self.markup.append(markup)
-        self.set_text(self.markup)
-
-    def set_highlight(self, highlight):
-        if highlight:
-            from purdy.ui import highlight_mapper
-            self.set_attr_map(highlight_mapper)
-        else:
-            self.set_attr_map({})
-
-# -----------------------------------------------------------------------------
-
 class DividingLine(urwid.Filler):
     tab_focusable = False
 
-    def __init__(self):
+    def __init__(self, compact=False):
         divider = urwid.Divider('-')
-        super(DividingLine, self).__init__(divider, valign='top', top=1, 
-            bottom=1)
+        margin = 1
+        if compact:
+            margin = 0
+
+        super(DividingLine, self).__init__(divider, valign='top', top=margin, 
+            bottom=margin)
 
 # -----------------------------------------------------------------------------
-# Code Box -- box that displays code
+# CodeWidget -- box that displays code
 
 class ScrollingIndicator(urwid.Frame):
     def __init__(self):
@@ -112,9 +82,11 @@ class ScrollingListBox(urwid.ListBox):
         return result
 
 
-class CodeBox(urwid.Columns):
-    """Widget that displays the code. Actions use the methods in this class to
-    change the text being displayed.
+class CodeWidget(urwid.Columns):
+    """Urwid widget that displays the code. This implements the methods of
+    :class:`purdy.content.RenderHook` and is registered against a
+    :class:`purdy.ui.CodeBox` and :class:`purdy.content.Listing`. As changes
+    are made to the listing they will be rendered this widget.
 
     The widget wraps an urwid ListBox, with each line in the box being a line
     of code. It also provides indiciators on the right side of the screen as
@@ -123,122 +95,137 @@ class CodeBox(urwid.Columns):
     active, the scroll area will also indicate which code box is focused. 
 
     The up and down arrows as well as the page-up and page-down buttons are
-    supported. If there are multiple code boxes, tab key will change the
+    supported. If there are multiple code widgets, tab key will change the
     focus.
-
-    Each line of the code box displays text through the :class:`urwid.Text`
-    widget. The methods in the this class for displaying content use urwid's
-    markup tuple for determing the appearance of text. If you are writing new
-    actions, you generally don't need to understand the markup language, just
-    pass in the :class:`CodeLine.markup <purdy.content.CodeLine>` 
-    attribute from the line in your :class:`Code <purdy.content.Code>` object.
     """
     tab_focusable = True
 
-    # CodeBox is ListBox of Text with code in it accompanied by a side bar
-    # with indicators about focus and scroll position
-    def __init__(self, screen, show_line_numbers, auto_scroll):
+    # CodeWidget is a Column collection containing a ListBox of Text for the
+    # code and a side bar with indicators about focus and scroll position
+    def __init__(self, screen, auto_scroll):
         """Constructor. These objects should only be constructed by a parent
         :class:`Screen` object.
 
         :param screen: the :class:`Screen` building this code box
-
-        :param show_line_numbers: True if this box is to display line numbers
         """
         self.screen = screen
-        self.show_line_numbers = show_line_numbers
-        self.line_number = 1
         self.auto_scroll = auto_scroll
-        self.body = urwid.SimpleListWalker([])
+        self.walker = urwid.SimpleListWalker([])
 
         scroller = ScrollingIndicator()
-        self.listbox = ScrollingListBox(scroller, self.body)
+        self.listbox = ScrollingListBox(scroller, self.walker)
 
         layout = [self.listbox, (1, scroller)]
 
-        super(CodeBox, self).__init__(layout)
+        super(CodeWidget, self).__init__(layout)
+
+    #--- RenderHook methods
+    def line_appended(self, listing, line):
+        markup = listing.render_line(line)
+        self.walker.contents.append( TextPlus(markup) )
+
+        if self.auto_scroll:
+            # if auto scrolling, change focus to end of list
+            position = len(self.walker.contents) - 1
+            self.listbox.set_focus(position)
+
+    def line_inserted(self, listing, position, line):
+        markup = listing.render_line(line)
+        index = position - 1
+        self.walker.contents.insert(index, TextPlus(markup))
+
+        if self.auto_scroll:
+            # if auto scrolling, change focus to last inserted item
+            self.listbox.set_focus(index)
+
+    def line_removed(self, listing, position):
+        del self.walker.contents[position - 1]
+
+    def line_changed(self, listing, position, line):
+        markup = listing.render_line(line)
+        index = position - 1
+        self.walker.contents[index].set_text(markup)
 
     def clear(self):
-        # clears the list and starts fresh
-        self.body.contents.clear() 
-
-    def get_markup(self, position):
-        """Returns the markup at the given position (removes any line numbers
-        first.
-
-        :returns: markup at the given position (1-indexed)
-        """
-        markup = self.body.contents[position - 1].markup
-
-        if self.show_line_numbers:
-            # remove the first tuple with the line number in it
-            markup = markup[1:]
-
-        return markup
-
-    # --- Add Lines
-    def add_line(self, markup=['']):
-        """Appends an empty line to the end of the code listing
-
-        :param markup: markup to put in the line, defaults to empty
-        """
-        self.add_line_at(len(self.body.contents) + 1, markup)
-
-    def add_line_at(self, position, markup=['']):
-        """Inserts a new empty line in the code box
-
-        :param position: line number to insert at (1-indexed), pushes any
-            existing content down; i.e. position=1 inserts at the top of the
-            list
-        :param markup: markup to put in the newly inserted line, defaults to
-                       empty
-        """
-        if self.show_line_numbers:
-            markup = [TokenLookup.line_number_markup(position), ] +  markup
-
-        self.body.contents.insert(position - 1, AppendableText(markup))
-
-        # scroll to the new content
-        if self.auto_scroll:
-            self.listbox.set_focus(position - 1)
-
-    def fix_line_numbers(self, position):
-        """Fixes line numbers after adding new lines to the code box"""
-        line_no = position
-        for widget in self.body.contents[line_no - 1:]:
-            markup = widget.markup
-
-            # this should only be called in show_line_numbers mode, so we can
-            # assume that the first part of the markup is the line number
-            # chunk
-            #
-            # re-build the markup, replacing the line number chunk with a new
-            # one
-            text = TokenLookup.line_number_markup(line_no)
-            new_markup = [text, ] + markup[1:]
-            widget.set_text(new_markup)
-
-            line_no += 1
-
-    # --- Change lines
-    def set_last_line(self, markup):
-        """Changes the last line in the code box to have the given markup 
-
-        :param markup: new markup tuple for the line
-        """
-        self.body.contents[-1].set_text(markup)
-
-    def set_line(self, position, markup):
-        """Changes the given line in the code box to have the given markup 
-
-        :param position: line number to change (1-indexed)
-        :param markup: new markup tuple for the line
-        """
-        if self.show_line_numbers:
-            markup = [TokenLookup.line_number_markup(position), ] + list(markup)
-
-        self.body.contents[position - 1].set_text(markup)
+        self.walker.contents.clear()
 
 
 class TwinContainer(urwid.Columns):
+    ### A column with the tab_focusable attribute so the BaseWindow class
+    # knows to do tab focus changes on it
     tab_focusable = True
+
+# -----------------------------------------------------------------------------
+
+class TextPlus(urwid.Text):
+    """Extended version of urwid.Text"""
+
+    @classmethod
+    def combine_markup(self, first, second, same_markup=False):
+        """Creates a new markup list combining the first and second piece of
+        markup. 
+
+        :param first: first markup to combine, may be text, tuple or list
+        :param second: second markup to combine, may be text, tuple or list
+        :param same_markup: if True, "second" parameter must be text and it is
+                            markup attributes are set the same as the last
+                            attributed text in "first". If "second" is not
+                            text this value is ignored
+        """
+        markup = []
+        if isinstance(first, list):
+            markup.extend(first)
+        else:
+            markup = [first, ]
+
+        if isinstance(second, list):
+            markup.extend(second)
+        else:
+            if isinstance(second, str) and same_markup:
+                # combine second with last item in first using the same markup
+                # attributes as that item
+                if isinstance(markup[-1], str):
+                    # last part of first is a string, just combine
+                    markup[-1] = markup[-1] + second
+                else:
+                    # last part of first is a tuple, create a new tuple with
+                    # the same attribute and combined text
+                    markup[-1] = (markup[-1][0], markup[-1][1] + second)
+            else:
+                # second is a tuple or same_markup == False, just append it
+                markup.append(second)
+
+        return markup
+
+    def get_markup(self):
+        """urwid.Text.get_text() returns the text and a run length encoding of
+        attributes, this method returns markup instead. The markup returned is
+        always in a list, even if the content of the widget is only text, the
+        result will be a list with a single text item.
+        """
+        markup = []
+        text, attrs = self.get_text()
+
+        start = 0
+        for attr in attrs:
+            name = attr[0]
+            size = attr[1]
+            chunk = text[start:start+size]
+            if name:
+                markup.append( (name, chunk) )
+            else:
+                markup.append( chunk )
+
+            start += size
+
+        return markup
+
+    def set_line_number(self, number):
+        markup = self.get_markup()
+        if not markup[0][0].startswith('line_number'):
+            # no line number in our markup, do nothing
+            return
+
+        # replace the value of the line number
+        markup[0] = (markup[0][0], str(number))
+        self.set_text(markup)
