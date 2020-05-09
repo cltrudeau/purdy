@@ -5,6 +5,7 @@
 * moved animation mechansim to be based on a queue, can now go forwards and
 backwards
 * signatures of Actions and Screens have changed
+* add tools for printing code in other formats such as RTF and HTML
 
 0.4
 ===

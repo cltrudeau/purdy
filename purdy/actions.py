@@ -164,6 +164,14 @@ class TypewriterStep(TypewriterBase):
                 if part.token == Generic.Prompt:
                     # stop animation if this is a prompt, wait for keypress
                     steps.append( cell.CellEnd() )
+            elif count == 0 and token_is_a(part.token, Token.Text) and (
+                    part.text.rstrip() == ''):
+                # first token is leading whitespace, don't animate it, just
+                # insert it
+                current_parts.append(part)
+                row_line = CodeLine(copy(current_parts), self.code.lexer)
+                step = cell.ReplaceRows(self.code_box, position, row_line)
+                steps.append(step)
             else:
                 new_part = CodePart(part.token, '')
                 current_parts.append(new_part)

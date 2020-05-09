@@ -9,6 +9,6 @@ settings['movie_mode'] = 200
 
 screen = SimpleScreen(settings)
 code_box = screen.code_box
-blob = Code('../display_code/console2.repl')
+blob = Code('../display_code/console.repl')
 action = AppendTypewriter(code_box, blob)
 screen.run([action])
