@@ -47,12 +47,6 @@ class LexerContainer:
     def detect_lexer(self, source):
         if source.startswith('>>> ') or '\n>>> ' in source:
             return self.get_lexer('con')
-        elif source.startswith('#!'):
-            first, _, _ = source.partition('\n')
-            if 'python' in first:
-                return self.get_lexer('py3')
-            elif any(item in first for item in ['/sh', '/bash']):
-                return self.get_lexer('bash')
         elif source.startswith('$ ') or '\n$ ' in source:
             return self.get_lexer('bash')
 

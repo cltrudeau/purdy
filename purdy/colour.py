@@ -25,6 +25,7 @@ class PlainColourizer:
             output.append( cls.line_number(code_line.line_number) )
 
         output.extend([part.text for part in code_line.parts])
+        return ''.join(output)
 
     @classmethod
     def line_number(cls, num):
