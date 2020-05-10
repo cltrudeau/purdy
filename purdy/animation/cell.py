@@ -9,7 +9,7 @@ rendering or undoing work to a :class:`purdy.widget.CodeBox`. Animating cells
 can partially render then wait for an alarm provided by the manager to continue
 rendering.
 """
-from copy import copy
+from copy import deepcopy
 from enum import Enum
 
 from purdy.animation import steps as steplib
@@ -163,7 +163,7 @@ class TransitionCell(AnimatingCellBase):
             # first time through, setup our append and undo lines
             self.position = 1
             self.code_lines = parse_source(self.code.source, self.code.lexer)
-            self.undo_lines = copy(self.code_box.listing.lines)
+            self.undo_lines = deepcopy(self.code_box.listing.lines)
 
             self.state = self.State.DELETING
             # intentional fall through
@@ -182,7 +182,7 @@ class TransitionCell(AnimatingCellBase):
         else: # state == APPENDING
             try:
                 line = self.code_lines.pop(0)
-                self.code_box.listing.append_lines([line, ])
+                self.code_box.listing.insert_lines(0, [line, ])
             except IndexError:
                 self.state = self.State.DONE
                 return
@@ -196,4 +196,4 @@ class TransitionCell(AnimatingCellBase):
     def undo(self, manager):
         self.state = self.State.BEFORE
         self.code_box.listing.clear()
-        self.code_box.listing.insert_lines(1, self.undo_lines)
+        self.code_box.listing.insert_lines(0, self.undo_lines)

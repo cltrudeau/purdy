@@ -4,7 +4,7 @@ Parser
 
 This contains methods and classes to manager parsing of code
 """
-from copy import copy
+from copy import deepcopy
 from collections import namedtuple
 
 from pygments.lexers import PythonConsoleLexer, PythonLexer, BashSessionLexer
@@ -119,7 +119,7 @@ class CodeLine:
         """
         # too many bugs caused by a change to the parts list after the
         # CodeLine was created, copy the damn thing so it is internal only
-        self.parts = copy(parts)       
+        self.parts = deepcopy(parts)       
         self.line_number = line_number
         self.highlight = highlight
         self.lexer = lexer
@@ -134,6 +134,21 @@ class CodeLine:
 
     def __repr__(self):
         return self.__str__()
+
+    def __eq__(self, other):
+        # for testing purposes we want a comparison of content values, not of
+        # the references
+        if self.line_number != other.line_number or \
+                self.highlight != other.highlight or \
+                self.lexer.__class__ != other.lexer.__class__:
+            return False
+
+        for x, part, in enumerate(self.parts):
+            if part.token != other.parts[x].token or \
+                    part.text != other.parts[x].text:
+                return False
+
+        return True
 
     def render_line(self, colourizer):
         return colourizer.colourize(self)

@@ -7,7 +7,7 @@ An animation is created through a series of steps that are executed together.
 A :class:`.cell.GroupCell` wraps these steps. When the user moves forwards and 
 backwards through the animations each cell is rendered or undone. This module 
 """
-from copy import copy
+from copy import deepcopy
 
 from pygments.token import String, Token
 
@@ -43,18 +43,6 @@ class BaseEditStep:
 # Line Insertion Steps
 # ---------------------------------------------------------------------------
 
-class AddRows(BaseEditStep):
-    def __str__(self):
-        return f'AddRows("{self.trunc_lines}")'
-
-    def render_step(self):
-        self.undo_position = len(self.code_box.listing.lines) + 1
-        self.code_box.listing.append_lines(self.lines)
-
-    def undo_step(self):
-        self.code_box.listing.remove_lines(self.undo_position, self.undo_size)
-
-
 class InsertRows(BaseEditStep):
     def __init__(self, code_box, position, lines):
         super().__init__(code_box, lines)
@@ -67,7 +55,36 @@ class InsertRows(BaseEditStep):
         self.code_box.listing.insert_lines(self.position, self.lines)
 
     def undo_step(self):
-        self.code_box.listing.remove_lines(self.position, self.undo_size)
+        position = self.position
+        if position == 0:
+            # insert 0 is signal for append, remove last n-lines 
+            position = -1 * self.undo_size
+
+        self.code_box.listing.remove_lines(position, self.undo_size)
+
+
+class Subprocess:
+    def __init__(self, code_box, cmd):
+        self.code_box = code_box
+        self.cmd = cmd
+
+    def render_step(self):
+        import subprocess
+
+        args = self.cmd.strip().split(' ')
+        result = subprocess.run(args, capture_output=True, text=True)
+
+        new_lines = []
+        for row in result.stdout.split('\n'):
+            part = CodePart(Token.Generic.Output, row)
+            new_lines.append( CodeLine([part, ], None) )
+
+        self.undo_position = len(self.code_box.listing.lines) + 1
+        self.undo_size = len(new_lines)
+        self.code_box.listing.insert_lines(0, new_lines)
+
+    def undo_step(self):
+        self.code_box.listing.remove_lines(self.undo_position, self.undo_size)
 
 # ---------------------------------------------------------------------------
 # Line Editing Steps
@@ -82,13 +99,10 @@ class ReplaceRows(BaseEditStep):
         return f'ReplaceRow("{self.trunc_lines}" @ {self.position})'
 
     def render_step(self):
-        self.undo_lines = []
+        self.undo_lines = self.code_box.listing.copy_lines(self.position,
+            self.undo_size)
+
         for count, line in enumerate(self.lines):
-            index = self.position - 1 + count
-
-            undo_line = copy(self.code_box.listing.lines[index])
-            self.undo_lines.append(undo_line)
-
             self.code_box.listing.replace_line(self.position + count, line)
 
     def undo_step(self):
@@ -140,13 +154,13 @@ class SuffixRow(BaseEditStep):
         return inside
 
     def render_step(self):
-        line = copy(self.code_box.listing.lines[self.position - 1])
+        line = deepcopy(self.code_box.listing.lines[self.position - 1])
         self.undo_line = line
 
         token = line.parts[-1][0]
         if self._inside_string(line):
             # inside a multi-line string, don't reparse, just append
-            parts = copy(line.parts)
+            parts = deepcopy(line.parts)
             parts[-1] = CodePart(token, parts[-1].text + self.source)
             replace_line = CodeLine(parts, line.lexer)
         else:
@@ -183,7 +197,7 @@ class RemoveRows:
         self.undo_lines = []
         for x in range(0, self.num):
             line = self.code_box.listing.lines[x + self.position - 1]
-            undo_line = copy(line)
+            undo_line = deepcopy(line)
             self.undo_lines.append(undo_line)
 
         self.code_box.listing.remove_lines(self.position, self.num)
@@ -199,13 +213,13 @@ class Clear:
     def render_step(self):
         self.undo_lines = []
         for line in self.code_box.listing.lines:
-            undo_line = copy(line)
+            undo_line = deepcopy(line)
             self.undo_lines.append(undo_line)
 
         self.code_box.listing.clear()
 
     def undo_step(self):
-        self.code_box.listing.insert_lines(1, self.undo_lines)
+        self.code_box.listing.insert_lines(0, self.undo_lines)
 
 # ---------------------------------------------------------------------------
 # Presentation Steps

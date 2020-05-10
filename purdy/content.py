@@ -5,7 +5,7 @@ Content
 Reperesntations of source code are found in this module.
 """
 import os
-from copy import copy
+from copy import deepcopy
 
 from purdy.colour import COLOURIZERS
 from purdy.parser import parse_source
@@ -46,9 +46,6 @@ class Code:
 # -----------------------------------------------------------------------------
 
 class RenderHook:
-    def line_appended(self, listing, line):
-        pass
-
     def line_inserted(self, listing, position, line):
         pass
 
@@ -86,7 +83,7 @@ class Listing:
                 self.append_code(code)
             else:
                 for item in code:
-                    self.append_code(code)
+                    self.append_code(item)
 
     def set_display(self, mode='plain', render_hook=None):
         """Code can be displayed using a variety of methods, from colourized
@@ -108,29 +105,50 @@ class Listing:
             self.render_hook = render_hook
 
     #--- Add/Remove Line Methods
+    def positive_position(self, position):
+        original = position
+        size = len(self.lines)
+
+        if position < 0:
+            position = size + position + 1
+
+        # check within bounds
+        if position <= 0 or position > size:
+            if original == 0:
+                raise IndexError('position is 1-indexed, 0 is invalid')
+
+            if original < 0:
+                raise IndexError( (f'position {original} translated to'
+                    f'{position}, is outside range 1-{size}') )
+
+            raise IndexError(f'position {position} outside range 1-{size}')
+
+        return position
+
     def append_code(self, code):
         """Parses contents of a :class:`Code` object and appends it to this
         box."""
         lines = parse_source(code.source, code.lexer)
-        self.append_lines(lines)
-
-    def append_lines(self, lines):
-        new_lines = copy(lines)
-
-        if self.starting_line_number != -1:
-            num = self.starting_line_number + len(self.lines)
-            for line in new_lines:
-                line.line_number = num
-                num += 1
-
-        self.lines.extend(new_lines)
-        for line in new_lines:
-            self.render_hook.line_appended(self, line)
+        self.insert_lines(0, lines)
 
     def insert_lines(self, position, lines):
+        """Inserts a line at the given position. Pushes content down, so
+        a line inserted at position 1 becomes the new first item.
+
+        :param position: 1-indexed position in the listing. Supports negative
+                         indexing and a special value of 0 to indicate
+                         appending to the list
+        :param lines: lines to insert
+        """
         # loop through lines and insert them, assigning a new line number if
         # needed
-        new_lines = copy(lines)
+        if position == 0:
+            # special case, insert becomes append
+            position = len(self.lines) + 1
+        else:
+            position = self.positive_position(position)
+
+        new_lines = deepcopy(lines)
 
         for count, line in enumerate(new_lines):
             if self.starting_line_number > -1:
@@ -149,14 +167,18 @@ class Listing:
     def replace_line(self, position, line):
         """Replaces the line at the given position with the given
         :class:`CodeLine` object"""
-        new_line = copy(line)
+        position = self.positive_position(position)
+
+        new_line = deepcopy(line)
         if self.starting_line_number != -1:
             new_line.line_number = position + self.starting_line_number - 1
 
         self.lines[position - 1] = new_line
         self.render_hook.line_changed(self, position, new_line)
 
-    def remove_lines(self, position, size):
+    def remove_lines(self, position, size=1):
+        position = self.positive_position(position)
+
         for x in range(1, size + 1):
             del self.lines[position - 1]
 
@@ -168,6 +190,21 @@ class Listing:
     def clear(self):
         self.lines = []
         self.render_hook.clear()
+
+    def copy_lines(self, position, size=1):
+        """Returns a copy of the lines for the given position and size
+
+        :param position: 1-index position in the listing, supports negative
+                         indexing
+        :param size: number of lines to return, defaults to 1
+        """
+        position = self.positive_position(position)
+        result = []
+
+        for count in range(0, size):
+            result.append( deepcopy(self.lines[position - 1 + count]) )
+
+        return result
 
     #--- Style Methods
 

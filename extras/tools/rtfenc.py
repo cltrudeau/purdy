@@ -42,6 +42,5 @@ text = ["Short string", "до свидáния", ("This is my test string. It ha
 "string, I just like the double dagger symbol ‡. Does anybody like 🐍's?"), ]
 
 for item in text:
-    breakpoint()
     encoded = rtf_encode(item)
     print(encoded)

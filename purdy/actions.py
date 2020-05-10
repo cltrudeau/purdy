@@ -18,7 +18,7 @@ Each action gets translated into a series of steps defined in the
 :mod:`purdy.animation` module.
 """
 import random
-from copy import copy
+from copy import deepcopy
 
 from pygments.token import Generic, Token
 
@@ -28,21 +28,6 @@ from purdy.parser import CodePart, CodeLine, LEXERS, parse_source, token_is_a
 # =============================================================================
 # Single Code Blob Actions
 # =============================================================================
-
-class Append:
-    """Adds the content of a :class:`purdy.content.Code` object to the end of
-    a :class:`purdy.ui.CodeBox`.
-    """
-    def __init__(self, code_box, code):
-        self.code_box = code_box
-        self.code = code
-
-    def steps(self):
-        lines = parse_source(self.code.source, self.code.lexer)
-        steps = [steplib.AddRows(self.code_box, lines), ]
-
-        return steps
-
 
 class Insert:
     """Inserts the content of a :class:`purdy.content.Code` object to a
@@ -59,6 +44,14 @@ class Insert:
         steps = [steplib.InsertRows(self.code_box, self.position, lines), ]
 
         return steps
+
+
+class Append(Insert):
+    """Adds the content of a :class:`purdy.content.Code` object to the end of
+    a :class:`purdy.ui.CodeBox`.
+    """
+    def __init__(self, code_box, code):
+        super().__init__(code_box, 0, code)
 
 
 class Replace:
@@ -113,6 +106,20 @@ class Suffix:
     def steps(self):
         return [steplib.SuffixRow(self.code_box, self.position, self.source), ]
 
+
+class Shell:
+    """Runs a shell command via subprocess. Does not display the command
+    (you're better off using a typewriter command to show it, then use this to
+    spit out the results).  Command and results are added to the
+    :class:`purdy.ui.CodeBox`.
+    """
+    def __init__(self, code_box, cmd):
+        self.code_box = code_box
+        self.cmd = cmd
+
+    def steps(self):
+        return [steplib.Subprocess(self.code_box, self.cmd), ]
+
 # =============================================================================
 # Typewriter Actions
 # =============================================================================
@@ -130,7 +137,7 @@ class TypewriterBase:
 
 
 class TypewriterStep(TypewriterBase):
-    def _line_to_steps(self, line, position):
+    def _line_to_steps(self, line, insert_pos, replace_pos):
         steps = []
 
         # --- Skip animation for "output" content
@@ -140,14 +147,14 @@ class TypewriterStep(TypewriterBase):
         if is_console and not token_is_a(first_token, Generic.Prompt):
             # in console mode only lines with prompts get typewriter
             # animation, everything else is just added directly
-            return [steplib.InsertRows(self.code_box, position, line), ]
+            return [steplib.InsertRows(self.code_box, insert_pos, line), ]
 
         # --- Typewriter animation
         # insert a blank row first with contents of line changing what is on
         # it as animation continues
         dummy_parts = [CodePart(Token, ''), ]
         row_line = CodeLine(dummy_parts, self.code.lexer)
-        step = steplib.InsertRows(self.code_box, position, row_line)
+        step = steplib.InsertRows(self.code_box, insert_pos, row_line)
         steps.append(step)
 
         current_parts = []
@@ -157,8 +164,8 @@ class TypewriterStep(TypewriterBase):
                 # part is a chunk that gets output all together, replace the
                 # dummy line with the whole contents
                 current_parts.append(part)
-                row_line = CodeLine(copy(current_parts), self.code.lexer)
-                step = steplib.ReplaceRows(self.code_box, position, row_line)
+                row_line = CodeLine(deepcopy(current_parts), self.code.lexer)
+                step = steplib.ReplaceRows(self.code_box, replace_pos, row_line)
                 steps.append(step)
 
                 if part.token == Generic.Prompt:
@@ -169,8 +176,8 @@ class TypewriterStep(TypewriterBase):
                 # first token is leading whitespace, don't animate it, just
                 # insert it
                 current_parts.append(part)
-                row_line = CodeLine(copy(current_parts), self.code.lexer)
-                step = steplib.ReplaceRows(self.code_box, position, row_line)
+                row_line = CodeLine(deepcopy(current_parts), self.code.lexer)
+                step = steplib.ReplaceRows(self.code_box, replace_pos, row_line)
                 steps.append(step)
             else:
                 new_part = CodePart(part.token, '')
@@ -181,7 +188,7 @@ class TypewriterStep(TypewriterBase):
                     typewriter += letter
                     new_part = CodePart(part.token, typewriter)
                     current_parts[-1] = new_part
-                    output_parts = copy(current_parts)
+                    output_parts = deepcopy(current_parts)
 
                     # If not last step in animation, add a cursor to the line
                     is_last_part = (count + 1 == num_parts)
@@ -190,7 +197,7 @@ class TypewriterStep(TypewriterBase):
                         output_parts.append( CodePart(Token, '\u2588') )
 
                     row_line = CodeLine(output_parts, self.code.lexer)
-                    step = steplib.ReplaceRows(self.code_box, position, 
+                    step = steplib.ReplaceRows(self.code_box, replace_pos, 
                         row_line)
                     steps.append(step)
 
@@ -204,7 +211,14 @@ class TypewriterStep(TypewriterBase):
 
         lines = parse_source(self.code.source, self.code.lexer)
         for count, line in enumerate(lines):
-            line_steps = self._line_to_steps(line, self.position + count)
+            if self.position == 0:
+                # Append to end
+                line_steps = self._line_to_steps(line, 0, -1)
+            else:
+                # Append to position
+                spot = self.position + count
+                line_steps = self._line_to_steps(line, spot, spot)
+
             steps.extend(line_steps)
 
         return steps
@@ -217,7 +231,7 @@ class AppendTypewriter(TypewriterStep):
     def __init__(self, code_box, code):
         self.code_box = code_box
         self.code = code
-        self.position = 1
+        self.position = 0
 
 
 class InsertTypewriter(TypewriterStep):
@@ -251,7 +265,8 @@ class ReplaceTypewriter(TypewriterStep):
             steps.append(step)
 
             # typewriter insert in place of removed line
-            line_steps = self._line_to_steps(line, self.position + count)
+            pos = self.position + count
+            line_steps = self._line_to_steps(line, pos, pos)
             steps.extend(line_steps)
 
         return steps

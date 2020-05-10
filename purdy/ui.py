@@ -16,6 +16,10 @@ from purdy.content import Listing
 from purdy.settings import settings as default_settings
 from purdy.widgets import CodeWidget, DividingLine, TwinContainer
 
+#import logging
+#logging.basicConfig(filename='debug.log', level=logging.DEBUG)
+#logger = logging.getLogger()
+
 # =============================================================================
 
 DESCRIPTION = """You can alter the behaviour of any script calling
@@ -387,6 +391,7 @@ class Screen:
     def run(self, actions):
         """Calls the main display event loop. Does not return until the UI
         exits."""
+        #logger.debug(55*'=')
         steps = []
         for action in actions:
             steps.extend( action.steps() )

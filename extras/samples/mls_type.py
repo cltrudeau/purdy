@@ -7,5 +7,10 @@ from purdy.ui import SimpleScreen
 screen = SimpleScreen()
 code_box = screen.code_box
 blob = Code('../display_code/mls.repl')
-action = AppendTypewriter(code_box, blob)
-screen.run([action])
+
+actions = [
+    AppendTypewriter(code_box, blob),
+    AppendTypewriter(code_box, blob),
+]
+
+screen.run(actions)

@@ -8,10 +8,6 @@ classes in :mod:`purdy.ui`.
 """
 import urwid
 
-import logging
-logging.basicConfig(filename='debug.log', level=logging.DEBUG)
-logger = logging.getLogger(__name__)
-
 # =============================================================================
 # Widgets
 # =============================================================================
@@ -135,19 +131,10 @@ class CodeWidget(urwid.Columns):
         super(CodeWidget, self).__init__(layout)
 
     #--- RenderHook methods
-    def line_appended(self, listing, line):
-        markup = listing.render_line(line)
-        self.walker.contents.append( TextPlus(markup) )
-
-        if self.auto_scroll:
-            # if auto scrolling, change focus to end of list
-            position = len(self.walker.contents) - 1
-            self.listbox.set_focus(position)
-
     def line_inserted(self, listing, position, line):
         markup = listing.render_line(line)
         index = position - 1
-        self.walker.contents.insert(index, TextPlus(markup))
+        self.walker.contents.insert(index, urwid.Text(markup))
 
         if self.auto_scroll:
             # if auto scrolling, change focus to last inserted item
@@ -169,78 +156,3 @@ class TwinContainer(urwid.Columns):
     ### A column with the tab_focusable attribute so the BaseWindow class
     # knows to do tab focus changes on it
     tab_focusable = True
-
-# -----------------------------------------------------------------------------
-
-class TextPlus(urwid.Text):
-    """Extended version of urwid.Text"""
-
-    @classmethod
-    def combine_markup(self, first, second, same_markup=False):
-        """Creates a new markup list combining the first and second piece of
-        markup. 
-
-        :param first: first markup to combine, may be text, tuple or list
-        :param second: second markup to combine, may be text, tuple or list
-        :param same_markup: if True, "second" parameter must be text and it is
-                            markup attributes are set the same as the last
-                            attributed text in "first". If "second" is not
-                            text this value is ignored
-        """
-        markup = []
-        if isinstance(first, list):
-            markup.extend(first)
-        else:
-            markup = [first, ]
-
-        if isinstance(second, list):
-            markup.extend(second)
-        else:
-            if isinstance(second, str) and same_markup:
-                # combine second with last item in first using the same markup
-                # attributes as that item
-                if isinstance(markup[-1], str):
-                    # last part of first is a string, just combine
-                    markup[-1] = markup[-1] + second
-                else:
-                    # last part of first is a tuple, create a new tuple with
-                    # the same attribute and combined text
-                    markup[-1] = (markup[-1][0], markup[-1][1] + second)
-            else:
-                # second is a tuple or same_markup == False, just append it
-                markup.append(second)
-
-        return markup
-
-    def get_markup(self):
-        """urwid.Text.get_text() returns the text and a run length encoding of
-        attributes, this method returns markup instead. The markup returned is
-        always in a list, even if the content of the widget is only text, the
-        result will be a list with a single text item.
-        """
-        markup = []
-        text, attrs = self.get_text()
-
-        start = 0
-        for attr in attrs:
-            name = attr[0]
-            size = attr[1]
-            chunk = text[start:start+size]
-            if name:
-                markup.append( (name, chunk) )
-            else:
-                markup.append( chunk )
-
-            start += size
-
-        return markup
-
-    def set_line_number(self, number):
-        markup = self.get_markup()
-        if not markup[0][0].startswith('line_number'):
-            # no line number in our markup, do nothing
-            return
-
-        # replace the value of the line number
-        markup[0] = (markup[0][0], str(number))
-        self.set_text(markup)
