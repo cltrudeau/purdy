@@ -3,7 +3,7 @@
 # Example code for programatically calling the purdy library and showing a
 # console based code snippet
 
-from purdy.actions import Shell, Wait, AppendTypewriter
+from purdy.actions import Shell, AppendTypewriter
 from purdy.content import Code
 from purdy.ui import SimpleScreen
 
@@ -20,4 +20,5 @@ actions = [
     Shell(code_box, "ls -la"),
 ]
 
-screen.run(actions)
+if __name__ == '__main__':
+    screen.run(actions)

@@ -32,4 +32,5 @@ actions = [
     Highlight(py_box, 4, False),
 ]
 
-screen.run(actions)
+if __name__ == '__main__':
+    screen.run(actions)

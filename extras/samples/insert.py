@@ -33,4 +33,5 @@ actions = [
     Insert(code_box, 8, blob4),
 ]
 
-screen.run(actions)
+if __name__ == '__main__':
+    screen.run(actions)

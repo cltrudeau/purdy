@@ -15,4 +15,5 @@ actions = [
     Transition(code_box, blob),
 ]
 
-screen.run(actions)
+if __name__ == '__main__':
+    screen.run(actions)

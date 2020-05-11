@@ -9,5 +9,9 @@ from purdy.ui import SimpleScreen
 
 screen = SimpleScreen()
 blob = Code('../display_code/console.repl')
-action = Append(screen.code_box, blob)
-screen.run([action])
+actions = [
+    Append(screen.code_box, blob),
+]
+
+if __name__ == '__main__':
+    screen.run(actions)

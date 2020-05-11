@@ -353,7 +353,6 @@ class Screen:
         if self.movie_mode != -1:
             self.movie_mode = float(self.movie_mode) / 1000.0
 
-        self._get_args()
         self._build_ui()
         palette = UrwidColourizer.create_palette()
         self.loop = urwid.MainLoop(self.base_window, palette)
@@ -388,16 +387,20 @@ class Screen:
 
         self.base_window = BaseWindow(self, boxen)
 
-    def run(self, actions):
-        """Calls the main display event loop. Does not return until the UI
-        exits."""
-        #logger.debug(55*'=')
+    def load_actions(self, actions):
         steps = []
         for action in actions:
             steps.extend( action.steps() )
 
         cells = group_steps_into_cells(steps)
         self.base_window.animation_manager.register(cells)
+
+    def run(self, actions):
+        """Calls the main display event loop. Does not return until the UI
+        exits."""
+        #logger.debug(55*'=')
+        self._get_args()
+        self.load_actions(actions)
 
         if hasattr(self, 'args') and self.args.debugsteps:
             for cell in self.base_window.animation_manager.cells:

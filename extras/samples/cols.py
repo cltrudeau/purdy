@@ -18,4 +18,5 @@ actions = [
     Append(screen.code_boxes[2], con_code),
 ]
 
-screen.run(actions)
+if __name__ == '__main__':
+    screen.run(actions)

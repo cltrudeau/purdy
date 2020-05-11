@@ -150,6 +150,17 @@ class CodeLine:
 
         return True
 
+    def _test_dict(self):
+        parts = []
+        for part in self.parts:
+            parts.append( [str(part.token), part.text, ] )
+
+        d = {
+            'parts':parts,
+        }
+
+        return d
+
     def render_line(self, colourizer):
         return colourizer.colourize(self)
 

@@ -1,0 +1,155 @@
+[
+  {
+    "GroupCell": {
+      "steps": [
+        {
+          "InsertRows": {
+            "lines": [
+              {
+                "parts": [
+                  [
+                    "Token.Keyword",
+                    "def"
+                  ],
+                  [
+                    "Token.Text",
+                    " "
+                  ],
+                  [
+                    "Token.Name.Function",
+                    "add"
+                  ],
+                  [
+                    "Token.Punctuation",
+                    "("
+                  ],
+                  [
+                    "Token.Name",
+                    "x"
+                  ],
+                  [
+                    "Token.Punctuation",
+                    ","
+                  ],
+                  [
+                    "Token.Text",
+                    " "
+                  ],
+                  [
+                    "Token.Name",
+                    "y"
+                  ],
+                  [
+                    "Token.Punctuation",
+                    ")"
+                  ],
+                  [
+                    "Token.Punctuation",
+                    ":"
+                  ]
+                ]
+              },
+              {
+                "parts": [
+                  [
+                    "Token.Text",
+                    "    "
+                  ],
+                  [
+                    "Token.Literal.String.Doc",
+                    "\"\"\"This is a doc string"
+                  ]
+                ]
+              },
+              {
+                "parts": [
+                  [
+                    "Token.Literal.String.Doc",
+                    ""
+                  ]
+                ]
+              },
+              {
+                "parts": [
+                  [
+                    "Token.Literal.String.Doc",
+                    "    :param x: first value to add"
+                  ]
+                ]
+              },
+              {
+                "parts": [
+                  [
+                    "Token.Literal.String.Doc",
+                    "    :param y: second value to add"
+                  ]
+                ]
+              },
+              {
+                "parts": [
+                  [
+                    "Token.Literal.String.Doc",
+                    ""
+                  ]
+                ]
+              },
+              {
+                "parts": [
+                  [
+                    "Token.Literal.String.Doc",
+                    "    :returns: x + y"
+                  ]
+                ]
+              },
+              {
+                "parts": [
+                  [
+                    "Token.Literal.String.Doc",
+                    "    \"\"\""
+                  ]
+                ]
+              },
+              {
+                "parts": [
+                  [
+                    "Token.Text",
+                    "    "
+                  ],
+                  [
+                    "Token.Keyword",
+                    "return"
+                  ],
+                  [
+                    "Token.Text",
+                    " "
+                  ],
+                  [
+                    "Token.Name",
+                    "x"
+                  ],
+                  [
+                    "Token.Text",
+                    " "
+                  ],
+                  [
+                    "Token.Operator",
+                    "+"
+                  ],
+                  [
+                    "Token.Text",
+                    " "
+                  ],
+                  [
+                    "Token.Name",
+                    "y"
+                  ]
+                ]
+              }
+            ],
+            "position": 0
+          }
+        }
+      ]
+    }
+  }
+]

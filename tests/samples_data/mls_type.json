@@ -1,0 +1,2162 @@
+[
+  {
+    "GroupCell": {
+      "steps": [
+        {
+          "InsertRows": {
+            "lines": [
+              {
+                "parts": [
+                  [
+                    "Token",
+                    ""
+                  ]
+                ]
+              }
+            ],
+            "position": 0
+          }
+        },
+        {
+          "ReplaceRows": {
+            "lines": [
+              {
+                "parts": [
+                  [
+                    "Token.Generic.Prompt",
+                    ">>> "
+                  ]
+                ]
+              }
+            ],
+            "position": -1
+          }
+        }
+      ]
+    }
+  },
+  {
+    "GroupCell": {
+      "steps": [
+        {
+          "ReplaceRows": {
+            "lines": [
+              {
+                "parts": [
+                  [
+                    "Token.Generic.Prompt",
+                    ">>> "
+                  ],
+                  [
+                    "Token.Name",
+                    "s"
+                  ],
+                  [
+                    "Token",
+                    "\u2588"
+                  ]
+                ]
+              }
+            ],
+            "position": -1
+          }
+        },
+        {
+          "Sleep": {}
+        },
+        {
+          "ReplaceRows": {
+            "lines": [
+              {
+                "parts": [
+                  [
+                    "Token.Generic.Prompt",
+                    ">>> "
+                  ],
+                  [
+                    "Token.Name",
+                    "s"
+                  ],
+                  [
+                    "Token.Text",
+                    " "
+                  ],
+                  [
+                    "Token",
+                    "\u2588"
+                  ]
+                ]
+              }
+            ],
+            "position": -1
+          }
+        },
+        {
+          "Sleep": {}
+        },
+        {
+          "ReplaceRows": {
+            "lines": [
+              {
+                "parts": [
+                  [
+                    "Token.Generic.Prompt",
+                    ">>> "
+                  ],
+                  [
+                    "Token.Name",
+                    "s"
+                  ],
+                  [
+                    "Token.Text",
+                    " "
+                  ],
+                  [
+                    "Token.Operator",
+                    "="
+                  ],
+                  [
+                    "Token",
+                    "\u2588"
+                  ]
+                ]
+              }
+            ],
+            "position": -1
+          }
+        },
+        {
+          "Sleep": {}
+        },
+        {
+          "ReplaceRows": {
+            "lines": [
+              {
+                "parts": [
+                  [
+                    "Token.Generic.Prompt",
+                    ">>> "
+                  ],
+                  [
+                    "Token.Name",
+                    "s"
+                  ],
+                  [
+                    "Token.Text",
+                    " "
+                  ],
+                  [
+                    "Token.Operator",
+                    "="
+                  ],
+                  [
+                    "Token.Text",
+                    " "
+                  ],
+                  [
+                    "Token",
+                    "\u2588"
+                  ]
+                ]
+              }
+            ],
+            "position": -1
+          }
+        },
+        {
+          "Sleep": {}
+        },
+        {
+          "ReplaceRows": {
+            "lines": [
+              {
+                "parts": [
+                  [
+                    "Token.Generic.Prompt",
+                    ">>> "
+                  ],
+                  [
+                    "Token.Name",
+                    "s"
+                  ],
+                  [
+                    "Token.Text",
+                    " "
+                  ],
+                  [
+                    "Token.Operator",
+                    "="
+                  ],
+                  [
+                    "Token.Text",
+                    " "
+                  ],
+                  [
+                    "Token.Literal.String.Double",
+                    "\""
+                  ],
+                  [
+                    "Token",
+                    "\u2588"
+                  ]
+                ]
+              }
+            ],
+            "position": -1
+          }
+        },
+        {
+          "Sleep": {}
+        },
+        {
+          "ReplaceRows": {
+            "lines": [
+              {
+                "parts": [
+                  [
+                    "Token.Generic.Prompt",
+                    ">>> "
+                  ],
+                  [
+                    "Token.Name",
+                    "s"
+                  ],
+                  [
+                    "Token.Text",
+                    " "
+                  ],
+                  [
+                    "Token.Operator",
+                    "="
+                  ],
+                  [
+                    "Token.Text",
+                    " "
+                  ],
+                  [
+                    "Token.Literal.String.Double",
+                    "\"\""
+                  ],
+                  [
+                    "Token",
+                    "\u2588"
+                  ]
+                ]
+              }
+            ],
+            "position": -1
+          }
+        },
+        {
+          "Sleep": {}
+        },
+        {
+          "ReplaceRows": {
+            "lines": [
+              {
+                "parts": [
+                  [
+                    "Token.Generic.Prompt",
+                    ">>> "
+                  ],
+                  [
+                    "Token.Name",
+                    "s"
+                  ],
+                  [
+                    "Token.Text",
+                    " "
+                  ],
+                  [
+                    "Token.Operator",
+                    "="
+                  ],
+                  [
+                    "Token.Text",
+                    " "
+                  ],
+                  [
+                    "Token.Literal.String.Double",
+                    "\"\"\""
+                  ]
+                ]
+              }
+            ],
+            "position": -1
+          }
+        },
+        {
+          "Sleep": {}
+        },
+        {
+          "InsertRows": {
+            "lines": [
+              {
+                "parts": [
+                  [
+                    "Token",
+                    ""
+                  ]
+                ]
+              }
+            ],
+            "position": 0
+          }
+        },
+        {
+          "ReplaceRows": {
+            "lines": [
+              {
+                "parts": [
+                  [
+                    "Token.Generic.Prompt",
+                    "... "
+                  ]
+                ]
+              }
+            ],
+            "position": -1
+          }
+        }
+      ]
+    }
+  },
+  {
+    "GroupCell": {
+      "steps": [
+        {
+          "ReplaceRows": {
+            "lines": [
+              {
+                "parts": [
+                  [
+                    "Token.Generic.Prompt",
+                    "... "
+                  ],
+                  [
+                    "Token.Literal.String.Double",
+                    "h"
+                  ],
+                  [
+                    "Token",
+                    "\u2588"
+                  ]
+                ]
+              }
+            ],
+            "position": -1
+          }
+        },
+        {
+          "Sleep": {}
+        },
+        {
+          "ReplaceRows": {
+            "lines": [
+              {
+                "parts": [
+                  [
+                    "Token.Generic.Prompt",
+                    "... "
+                  ],
+                  [
+                    "Token.Literal.String.Double",
+                    "he"
+                  ],
+                  [
+                    "Token",
+                    "\u2588"
+                  ]
+                ]
+              }
+            ],
+            "position": -1
+          }
+        },
+        {
+          "Sleep": {}
+        },
+        {
+          "ReplaceRows": {
+            "lines": [
+              {
+                "parts": [
+                  [
+                    "Token.Generic.Prompt",
+                    "... "
+                  ],
+                  [
+                    "Token.Literal.String.Double",
+                    "hel"
+                  ],
+                  [
+                    "Token",
+                    "\u2588"
+                  ]
+                ]
+              }
+            ],
+            "position": -1
+          }
+        },
+        {
+          "Sleep": {}
+        },
+        {
+          "ReplaceRows": {
+            "lines": [
+              {
+                "parts": [
+                  [
+                    "Token.Generic.Prompt",
+                    "... "
+                  ],
+                  [
+                    "Token.Literal.String.Double",
+                    "hell"
+                  ],
+                  [
+                    "Token",
+                    "\u2588"
+                  ]
+                ]
+              }
+            ],
+            "position": -1
+          }
+        },
+        {
+          "Sleep": {}
+        },
+        {
+          "ReplaceRows": {
+            "lines": [
+              {
+                "parts": [
+                  [
+                    "Token.Generic.Prompt",
+                    "... "
+                  ],
+                  [
+                    "Token.Literal.String.Double",
+                    "hello"
+                  ]
+                ]
+              }
+            ],
+            "position": -1
+          }
+        },
+        {
+          "Sleep": {}
+        },
+        {
+          "InsertRows": {
+            "lines": [
+              {
+                "parts": [
+                  [
+                    "Token",
+                    ""
+                  ]
+                ]
+              }
+            ],
+            "position": 0
+          }
+        },
+        {
+          "ReplaceRows": {
+            "lines": [
+              {
+                "parts": [
+                  [
+                    "Token.Generic.Prompt",
+                    "... "
+                  ]
+                ]
+              }
+            ],
+            "position": -1
+          }
+        }
+      ]
+    }
+  },
+  {
+    "GroupCell": {
+      "steps": [
+        {
+          "ReplaceRows": {
+            "lines": [
+              {
+                "parts": [
+                  [
+                    "Token.Generic.Prompt",
+                    "... "
+                  ],
+                  [
+                    "Token.Literal.String.Double",
+                    "t"
+                  ],
+                  [
+                    "Token",
+                    "\u2588"
+                  ]
+                ]
+              }
+            ],
+            "position": -1
+          }
+        },
+        {
+          "Sleep": {}
+        },
+        {
+          "ReplaceRows": {
+            "lines": [
+              {
+                "parts": [
+                  [
+                    "Token.Generic.Prompt",
+                    "... "
+                  ],
+                  [
+                    "Token.Literal.String.Double",
+                    "th"
+                  ],
+                  [
+                    "Token",
+                    "\u2588"
+                  ]
+                ]
+              }
+            ],
+            "position": -1
+          }
+        },
+        {
+          "Sleep": {}
+        },
+        {
+          "ReplaceRows": {
+            "lines": [
+              {
+                "parts": [
+                  [
+                    "Token.Generic.Prompt",
+                    "... "
+                  ],
+                  [
+                    "Token.Literal.String.Double",
+                    "the"
+                  ],
+                  [
+                    "Token",
+                    "\u2588"
+                  ]
+                ]
+              }
+            ],
+            "position": -1
+          }
+        },
+        {
+          "Sleep": {}
+        },
+        {
+          "ReplaceRows": {
+            "lines": [
+              {
+                "parts": [
+                  [
+                    "Token.Generic.Prompt",
+                    "... "
+                  ],
+                  [
+                    "Token.Literal.String.Double",
+                    "ther"
+                  ],
+                  [
+                    "Token",
+                    "\u2588"
+                  ]
+                ]
+              }
+            ],
+            "position": -1
+          }
+        },
+        {
+          "Sleep": {}
+        },
+        {
+          "ReplaceRows": {
+            "lines": [
+              {
+                "parts": [
+                  [
+                    "Token.Generic.Prompt",
+                    "... "
+                  ],
+                  [
+                    "Token.Literal.String.Double",
+                    "there"
+                  ]
+                ]
+              }
+            ],
+            "position": -1
+          }
+        },
+        {
+          "Sleep": {}
+        },
+        {
+          "InsertRows": {
+            "lines": [
+              {
+                "parts": [
+                  [
+                    "Token",
+                    ""
+                  ]
+                ]
+              }
+            ],
+            "position": 0
+          }
+        },
+        {
+          "ReplaceRows": {
+            "lines": [
+              {
+                "parts": [
+                  [
+                    "Token.Generic.Prompt",
+                    "... "
+                  ]
+                ]
+              }
+            ],
+            "position": -1
+          }
+        }
+      ]
+    }
+  },
+  {
+    "GroupCell": {
+      "steps": [
+        {
+          "ReplaceRows": {
+            "lines": [
+              {
+                "parts": [
+                  [
+                    "Token.Generic.Prompt",
+                    "... "
+                  ],
+                  [
+                    "Token.Literal.String.Double",
+                    "\""
+                  ],
+                  [
+                    "Token",
+                    "\u2588"
+                  ]
+                ]
+              }
+            ],
+            "position": -1
+          }
+        },
+        {
+          "Sleep": {}
+        },
+        {
+          "ReplaceRows": {
+            "lines": [
+              {
+                "parts": [
+                  [
+                    "Token.Generic.Prompt",
+                    "... "
+                  ],
+                  [
+                    "Token.Literal.String.Double",
+                    "\"\""
+                  ],
+                  [
+                    "Token",
+                    "\u2588"
+                  ]
+                ]
+              }
+            ],
+            "position": -1
+          }
+        },
+        {
+          "Sleep": {}
+        },
+        {
+          "ReplaceRows": {
+            "lines": [
+              {
+                "parts": [
+                  [
+                    "Token.Generic.Prompt",
+                    "... "
+                  ],
+                  [
+                    "Token.Literal.String.Double",
+                    "\"\"\""
+                  ]
+                ]
+              }
+            ],
+            "position": -1
+          }
+        },
+        {
+          "Sleep": {}
+        },
+        {
+          "InsertRows": {
+            "lines": [
+              {
+                "parts": [
+                  [
+                    "Token",
+                    ""
+                  ]
+                ]
+              }
+            ],
+            "position": 0
+          }
+        },
+        {
+          "ReplaceRows": {
+            "lines": [
+              {
+                "parts": [
+                  [
+                    "Token.Generic.Prompt",
+                    ">>> "
+                  ]
+                ]
+              }
+            ],
+            "position": -1
+          }
+        }
+      ]
+    }
+  },
+  {
+    "GroupCell": {
+      "steps": [
+        {
+          "ReplaceRows": {
+            "lines": [
+              {
+                "parts": [
+                  [
+                    "Token.Generic.Prompt",
+                    ">>> "
+                  ],
+                  [
+                    "Token.Keyword",
+                    "p"
+                  ],
+                  [
+                    "Token",
+                    "\u2588"
+                  ]
+                ]
+              }
+            ],
+            "position": -1
+          }
+        },
+        {
+          "Sleep": {}
+        },
+        {
+          "ReplaceRows": {
+            "lines": [
+              {
+                "parts": [
+                  [
+                    "Token.Generic.Prompt",
+                    ">>> "
+                  ],
+                  [
+                    "Token.Keyword",
+                    "pr"
+                  ],
+                  [
+                    "Token",
+                    "\u2588"
+                  ]
+                ]
+              }
+            ],
+            "position": -1
+          }
+        },
+        {
+          "Sleep": {}
+        },
+        {
+          "ReplaceRows": {
+            "lines": [
+              {
+                "parts": [
+                  [
+                    "Token.Generic.Prompt",
+                    ">>> "
+                  ],
+                  [
+                    "Token.Keyword",
+                    "pri"
+                  ],
+                  [
+                    "Token",
+                    "\u2588"
+                  ]
+                ]
+              }
+            ],
+            "position": -1
+          }
+        },
+        {
+          "Sleep": {}
+        },
+        {
+          "ReplaceRows": {
+            "lines": [
+              {
+                "parts": [
+                  [
+                    "Token.Generic.Prompt",
+                    ">>> "
+                  ],
+                  [
+                    "Token.Keyword",
+                    "prin"
+                  ],
+                  [
+                    "Token",
+                    "\u2588"
+                  ]
+                ]
+              }
+            ],
+            "position": -1
+          }
+        },
+        {
+          "Sleep": {}
+        },
+        {
+          "ReplaceRows": {
+            "lines": [
+              {
+                "parts": [
+                  [
+                    "Token.Generic.Prompt",
+                    ">>> "
+                  ],
+                  [
+                    "Token.Keyword",
+                    "print"
+                  ],
+                  [
+                    "Token",
+                    "\u2588"
+                  ]
+                ]
+              }
+            ],
+            "position": -1
+          }
+        },
+        {
+          "Sleep": {}
+        },
+        {
+          "ReplaceRows": {
+            "lines": [
+              {
+                "parts": [
+                  [
+                    "Token.Generic.Prompt",
+                    ">>> "
+                  ],
+                  [
+                    "Token.Keyword",
+                    "print"
+                  ],
+                  [
+                    "Token.Punctuation",
+                    "("
+                  ],
+                  [
+                    "Token",
+                    "\u2588"
+                  ]
+                ]
+              }
+            ],
+            "position": -1
+          }
+        },
+        {
+          "Sleep": {}
+        },
+        {
+          "ReplaceRows": {
+            "lines": [
+              {
+                "parts": [
+                  [
+                    "Token.Generic.Prompt",
+                    ">>> "
+                  ],
+                  [
+                    "Token.Keyword",
+                    "print"
+                  ],
+                  [
+                    "Token.Punctuation",
+                    "("
+                  ],
+                  [
+                    "Token.Name",
+                    "s"
+                  ],
+                  [
+                    "Token",
+                    "\u2588"
+                  ]
+                ]
+              }
+            ],
+            "position": -1
+          }
+        },
+        {
+          "Sleep": {}
+        },
+        {
+          "ReplaceRows": {
+            "lines": [
+              {
+                "parts": [
+                  [
+                    "Token.Generic.Prompt",
+                    ">>> "
+                  ],
+                  [
+                    "Token.Keyword",
+                    "print"
+                  ],
+                  [
+                    "Token.Punctuation",
+                    "("
+                  ],
+                  [
+                    "Token.Name",
+                    "s"
+                  ],
+                  [
+                    "Token.Punctuation",
+                    ")"
+                  ]
+                ]
+              }
+            ],
+            "position": -1
+          }
+        },
+        {
+          "Sleep": {}
+        },
+        {
+          "InsertRows": {
+            "lines": [
+              {
+                "parts": [
+                  [
+                    "Token.Generic.Output",
+                    ""
+                  ]
+                ]
+              }
+            ],
+            "position": 0
+          }
+        },
+        {
+          "InsertRows": {
+            "lines": [
+              {
+                "parts": [
+                  [
+                    "Token.Generic.Output",
+                    "hello"
+                  ]
+                ]
+              }
+            ],
+            "position": 0
+          }
+        },
+        {
+          "InsertRows": {
+            "lines": [
+              {
+                "parts": [
+                  [
+                    "Token.Generic.Output",
+                    "there"
+                  ]
+                ]
+              }
+            ],
+            "position": 0
+          }
+        },
+        {
+          "InsertRows": {
+            "lines": [
+              {
+                "parts": [
+                  [
+                    "Token.Generic.Output",
+                    ""
+                  ]
+                ]
+              }
+            ],
+            "position": 0
+          }
+        },
+        {
+          "InsertRows": {
+            "lines": [
+              {
+                "parts": [
+                  [
+                    "Token",
+                    ""
+                  ]
+                ]
+              }
+            ],
+            "position": 0
+          }
+        },
+        {
+          "ReplaceRows": {
+            "lines": [
+              {
+                "parts": [
+                  [
+                    "Token.Generic.Prompt",
+                    ">>> "
+                  ]
+                ]
+              }
+            ],
+            "position": -1
+          }
+        }
+      ]
+    }
+  },
+  {
+    "GroupCell": {
+      "steps": [
+        {
+          "InsertRows": {
+            "lines": [
+              {
+                "parts": [
+                  [
+                    "Token",
+                    ""
+                  ]
+                ]
+              }
+            ],
+            "position": 0
+          }
+        },
+        {
+          "ReplaceRows": {
+            "lines": [
+              {
+                "parts": [
+                  [
+                    "Token.Generic.Prompt",
+                    ">>> "
+                  ]
+                ]
+              }
+            ],
+            "position": -1
+          }
+        }
+      ]
+    }
+  },
+  {
+    "GroupCell": {
+      "steps": [
+        {
+          "ReplaceRows": {
+            "lines": [
+              {
+                "parts": [
+                  [
+                    "Token.Generic.Prompt",
+                    ">>> "
+                  ],
+                  [
+                    "Token.Name",
+                    "s"
+                  ],
+                  [
+                    "Token",
+                    "\u2588"
+                  ]
+                ]
+              }
+            ],
+            "position": -1
+          }
+        },
+        {
+          "Sleep": {}
+        },
+        {
+          "ReplaceRows": {
+            "lines": [
+              {
+                "parts": [
+                  [
+                    "Token.Generic.Prompt",
+                    ">>> "
+                  ],
+                  [
+                    "Token.Name",
+                    "s"
+                  ],
+                  [
+                    "Token.Text",
+                    " "
+                  ],
+                  [
+                    "Token",
+                    "\u2588"
+                  ]
+                ]
+              }
+            ],
+            "position": -1
+          }
+        },
+        {
+          "Sleep": {}
+        },
+        {
+          "ReplaceRows": {
+            "lines": [
+              {
+                "parts": [
+                  [
+                    "Token.Generic.Prompt",
+                    ">>> "
+                  ],
+                  [
+                    "Token.Name",
+                    "s"
+                  ],
+                  [
+                    "Token.Text",
+                    " "
+                  ],
+                  [
+                    "Token.Operator",
+                    "="
+                  ],
+                  [
+                    "Token",
+                    "\u2588"
+                  ]
+                ]
+              }
+            ],
+            "position": -1
+          }
+        },
+        {
+          "Sleep": {}
+        },
+        {
+          "ReplaceRows": {
+            "lines": [
+              {
+                "parts": [
+                  [
+                    "Token.Generic.Prompt",
+                    ">>> "
+                  ],
+                  [
+                    "Token.Name",
+                    "s"
+                  ],
+                  [
+                    "Token.Text",
+                    " "
+                  ],
+                  [
+                    "Token.Operator",
+                    "="
+                  ],
+                  [
+                    "Token.Text",
+                    " "
+                  ],
+                  [
+                    "Token",
+                    "\u2588"
+                  ]
+                ]
+              }
+            ],
+            "position": -1
+          }
+        },
+        {
+          "Sleep": {}
+        },
+        {
+          "ReplaceRows": {
+            "lines": [
+              {
+                "parts": [
+                  [
+                    "Token.Generic.Prompt",
+                    ">>> "
+                  ],
+                  [
+                    "Token.Name",
+                    "s"
+                  ],
+                  [
+                    "Token.Text",
+                    " "
+                  ],
+                  [
+                    "Token.Operator",
+                    "="
+                  ],
+                  [
+                    "Token.Text",
+                    " "
+                  ],
+                  [
+                    "Token.Literal.String.Double",
+                    "\""
+                  ],
+                  [
+                    "Token",
+                    "\u2588"
+                  ]
+                ]
+              }
+            ],
+            "position": -1
+          }
+        },
+        {
+          "Sleep": {}
+        },
+        {
+          "ReplaceRows": {
+            "lines": [
+              {
+                "parts": [
+                  [
+                    "Token.Generic.Prompt",
+                    ">>> "
+                  ],
+                  [
+                    "Token.Name",
+                    "s"
+                  ],
+                  [
+                    "Token.Text",
+                    " "
+                  ],
+                  [
+                    "Token.Operator",
+                    "="
+                  ],
+                  [
+                    "Token.Text",
+                    " "
+                  ],
+                  [
+                    "Token.Literal.String.Double",
+                    "\"\""
+                  ],
+                  [
+                    "Token",
+                    "\u2588"
+                  ]
+                ]
+              }
+            ],
+            "position": -1
+          }
+        },
+        {
+          "Sleep": {}
+        },
+        {
+          "ReplaceRows": {
+            "lines": [
+              {
+                "parts": [
+                  [
+                    "Token.Generic.Prompt",
+                    ">>> "
+                  ],
+                  [
+                    "Token.Name",
+                    "s"
+                  ],
+                  [
+                    "Token.Text",
+                    " "
+                  ],
+                  [
+                    "Token.Operator",
+                    "="
+                  ],
+                  [
+                    "Token.Text",
+                    " "
+                  ],
+                  [
+                    "Token.Literal.String.Double",
+                    "\"\"\""
+                  ]
+                ]
+              }
+            ],
+            "position": -1
+          }
+        },
+        {
+          "Sleep": {}
+        },
+        {
+          "InsertRows": {
+            "lines": [
+              {
+                "parts": [
+                  [
+                    "Token",
+                    ""
+                  ]
+                ]
+              }
+            ],
+            "position": 0
+          }
+        },
+        {
+          "ReplaceRows": {
+            "lines": [
+              {
+                "parts": [
+                  [
+                    "Token.Generic.Prompt",
+                    "... "
+                  ]
+                ]
+              }
+            ],
+            "position": -1
+          }
+        }
+      ]
+    }
+  },
+  {
+    "GroupCell": {
+      "steps": [
+        {
+          "ReplaceRows": {
+            "lines": [
+              {
+                "parts": [
+                  [
+                    "Token.Generic.Prompt",
+                    "... "
+                  ],
+                  [
+                    "Token.Literal.String.Double",
+                    "h"
+                  ],
+                  [
+                    "Token",
+                    "\u2588"
+                  ]
+                ]
+              }
+            ],
+            "position": -1
+          }
+        },
+        {
+          "Sleep": {}
+        },
+        {
+          "ReplaceRows": {
+            "lines": [
+              {
+                "parts": [
+                  [
+                    "Token.Generic.Prompt",
+                    "... "
+                  ],
+                  [
+                    "Token.Literal.String.Double",
+                    "he"
+                  ],
+                  [
+                    "Token",
+                    "\u2588"
+                  ]
+                ]
+              }
+            ],
+            "position": -1
+          }
+        },
+        {
+          "Sleep": {}
+        },
+        {
+          "ReplaceRows": {
+            "lines": [
+              {
+                "parts": [
+                  [
+                    "Token.Generic.Prompt",
+                    "... "
+                  ],
+                  [
+                    "Token.Literal.String.Double",
+                    "hel"
+                  ],
+                  [
+                    "Token",
+                    "\u2588"
+                  ]
+                ]
+              }
+            ],
+            "position": -1
+          }
+        },
+        {
+          "Sleep": {}
+        },
+        {
+          "ReplaceRows": {
+            "lines": [
+              {
+                "parts": [
+                  [
+                    "Token.Generic.Prompt",
+                    "... "
+                  ],
+                  [
+                    "Token.Literal.String.Double",
+                    "hell"
+                  ],
+                  [
+                    "Token",
+                    "\u2588"
+                  ]
+                ]
+              }
+            ],
+            "position": -1
+          }
+        },
+        {
+          "Sleep": {}
+        },
+        {
+          "ReplaceRows": {
+            "lines": [
+              {
+                "parts": [
+                  [
+                    "Token.Generic.Prompt",
+                    "... "
+                  ],
+                  [
+                    "Token.Literal.String.Double",
+                    "hello"
+                  ]
+                ]
+              }
+            ],
+            "position": -1
+          }
+        },
+        {
+          "Sleep": {}
+        },
+        {
+          "InsertRows": {
+            "lines": [
+              {
+                "parts": [
+                  [
+                    "Token",
+                    ""
+                  ]
+                ]
+              }
+            ],
+            "position": 0
+          }
+        },
+        {
+          "ReplaceRows": {
+            "lines": [
+              {
+                "parts": [
+                  [
+                    "Token.Generic.Prompt",
+                    "... "
+                  ]
+                ]
+              }
+            ],
+            "position": -1
+          }
+        }
+      ]
+    }
+  },
+  {
+    "GroupCell": {
+      "steps": [
+        {
+          "ReplaceRows": {
+            "lines": [
+              {
+                "parts": [
+                  [
+                    "Token.Generic.Prompt",
+                    "... "
+                  ],
+                  [
+                    "Token.Literal.String.Double",
+                    "t"
+                  ],
+                  [
+                    "Token",
+                    "\u2588"
+                  ]
+                ]
+              }
+            ],
+            "position": -1
+          }
+        },
+        {
+          "Sleep": {}
+        },
+        {
+          "ReplaceRows": {
+            "lines": [
+              {
+                "parts": [
+                  [
+                    "Token.Generic.Prompt",
+                    "... "
+                  ],
+                  [
+                    "Token.Literal.String.Double",
+                    "th"
+                  ],
+                  [
+                    "Token",
+                    "\u2588"
+                  ]
+                ]
+              }
+            ],
+            "position": -1
+          }
+        },
+        {
+          "Sleep": {}
+        },
+        {
+          "ReplaceRows": {
+            "lines": [
+              {
+                "parts": [
+                  [
+                    "Token.Generic.Prompt",
+                    "... "
+                  ],
+                  [
+                    "Token.Literal.String.Double",
+                    "the"
+                  ],
+                  [
+                    "Token",
+                    "\u2588"
+                  ]
+                ]
+              }
+            ],
+            "position": -1
+          }
+        },
+        {
+          "Sleep": {}
+        },
+        {
+          "ReplaceRows": {
+            "lines": [
+              {
+                "parts": [
+                  [
+                    "Token.Generic.Prompt",
+                    "... "
+                  ],
+                  [
+                    "Token.Literal.String.Double",
+                    "ther"
+                  ],
+                  [
+                    "Token",
+                    "\u2588"
+                  ]
+                ]
+              }
+            ],
+            "position": -1
+          }
+        },
+        {
+          "Sleep": {}
+        },
+        {
+          "ReplaceRows": {
+            "lines": [
+              {
+                "parts": [
+                  [
+                    "Token.Generic.Prompt",
+                    "... "
+                  ],
+                  [
+                    "Token.Literal.String.Double",
+                    "there"
+                  ]
+                ]
+              }
+            ],
+            "position": -1
+          }
+        },
+        {
+          "Sleep": {}
+        },
+        {
+          "InsertRows": {
+            "lines": [
+              {
+                "parts": [
+                  [
+                    "Token",
+                    ""
+                  ]
+                ]
+              }
+            ],
+            "position": 0
+          }
+        },
+        {
+          "ReplaceRows": {
+            "lines": [
+              {
+                "parts": [
+                  [
+                    "Token.Generic.Prompt",
+                    "... "
+                  ]
+                ]
+              }
+            ],
+            "position": -1
+          }
+        }
+      ]
+    }
+  },
+  {
+    "GroupCell": {
+      "steps": [
+        {
+          "ReplaceRows": {
+            "lines": [
+              {
+                "parts": [
+                  [
+                    "Token.Generic.Prompt",
+                    "... "
+                  ],
+                  [
+                    "Token.Literal.String.Double",
+                    "\""
+                  ],
+                  [
+                    "Token",
+                    "\u2588"
+                  ]
+                ]
+              }
+            ],
+            "position": -1
+          }
+        },
+        {
+          "Sleep": {}
+        },
+        {
+          "ReplaceRows": {
+            "lines": [
+              {
+                "parts": [
+                  [
+                    "Token.Generic.Prompt",
+                    "... "
+                  ],
+                  [
+                    "Token.Literal.String.Double",
+                    "\"\""
+                  ],
+                  [
+                    "Token",
+                    "\u2588"
+                  ]
+                ]
+              }
+            ],
+            "position": -1
+          }
+        },
+        {
+          "Sleep": {}
+        },
+        {
+          "ReplaceRows": {
+            "lines": [
+              {
+                "parts": [
+                  [
+                    "Token.Generic.Prompt",
+                    "... "
+                  ],
+                  [
+                    "Token.Literal.String.Double",
+                    "\"\"\""
+                  ]
+                ]
+              }
+            ],
+            "position": -1
+          }
+        },
+        {
+          "Sleep": {}
+        },
+        {
+          "InsertRows": {
+            "lines": [
+              {
+                "parts": [
+                  [
+                    "Token",
+                    ""
+                  ]
+                ]
+              }
+            ],
+            "position": 0
+          }
+        },
+        {
+          "ReplaceRows": {
+            "lines": [
+              {
+                "parts": [
+                  [
+                    "Token.Generic.Prompt",
+                    ">>> "
+                  ]
+                ]
+              }
+            ],
+            "position": -1
+          }
+        }
+      ]
+    }
+  },
+  {
+    "GroupCell": {
+      "steps": [
+        {
+          "ReplaceRows": {
+            "lines": [
+              {
+                "parts": [
+                  [
+                    "Token.Generic.Prompt",
+                    ">>> "
+                  ],
+                  [
+                    "Token.Keyword",
+                    "p"
+                  ],
+                  [
+                    "Token",
+                    "\u2588"
+                  ]
+                ]
+              }
+            ],
+            "position": -1
+          }
+        },
+        {
+          "Sleep": {}
+        },
+        {
+          "ReplaceRows": {
+            "lines": [
+              {
+                "parts": [
+                  [
+                    "Token.Generic.Prompt",
+                    ">>> "
+                  ],
+                  [
+                    "Token.Keyword",
+                    "pr"
+                  ],
+                  [
+                    "Token",
+                    "\u2588"
+                  ]
+                ]
+              }
+            ],
+            "position": -1
+          }
+        },
+        {
+          "Sleep": {}
+        },
+        {
+          "ReplaceRows": {
+            "lines": [
+              {
+                "parts": [
+                  [
+                    "Token.Generic.Prompt",
+                    ">>> "
+                  ],
+                  [
+                    "Token.Keyword",
+                    "pri"
+                  ],
+                  [
+                    "Token",
+                    "\u2588"
+                  ]
+                ]
+              }
+            ],
+            "position": -1
+          }
+        },
+        {
+          "Sleep": {}
+        },
+        {
+          "ReplaceRows": {
+            "lines": [
+              {
+                "parts": [
+                  [
+                    "Token.Generic.Prompt",
+                    ">>> "
+                  ],
+                  [
+                    "Token.Keyword",
+                    "prin"
+                  ],
+                  [
+                    "Token",
+                    "\u2588"
+                  ]
+                ]
+              }
+            ],
+            "position": -1
+          }
+        },
+        {
+          "Sleep": {}
+        },
+        {
+          "ReplaceRows": {
+            "lines": [
+              {
+                "parts": [
+                  [
+                    "Token.Generic.Prompt",
+                    ">>> "
+                  ],
+                  [
+                    "Token.Keyword",
+                    "print"
+                  ],
+                  [
+                    "Token",
+                    "\u2588"
+                  ]
+                ]
+              }
+            ],
+            "position": -1
+          }
+        },
+        {
+          "Sleep": {}
+        },
+        {
+          "ReplaceRows": {
+            "lines": [
+              {
+                "parts": [
+                  [
+                    "Token.Generic.Prompt",
+                    ">>> "
+                  ],
+                  [
+                    "Token.Keyword",
+                    "print"
+                  ],
+                  [
+                    "Token.Punctuation",
+                    "("
+                  ],
+                  [
+                    "Token",
+                    "\u2588"
+                  ]
+                ]
+              }
+            ],
+            "position": -1
+          }
+        },
+        {
+          "Sleep": {}
+        },
+        {
+          "ReplaceRows": {
+            "lines": [
+              {
+                "parts": [
+                  [
+                    "Token.Generic.Prompt",
+                    ">>> "
+                  ],
+                  [
+                    "Token.Keyword",
+                    "print"
+                  ],
+                  [
+                    "Token.Punctuation",
+                    "("
+                  ],
+                  [
+                    "Token.Name",
+                    "s"
+                  ],
+                  [
+                    "Token",
+                    "\u2588"
+                  ]
+                ]
+              }
+            ],
+            "position": -1
+          }
+        },
+        {
+          "Sleep": {}
+        },
+        {
+          "ReplaceRows": {
+            "lines": [
+              {
+                "parts": [
+                  [
+                    "Token.Generic.Prompt",
+                    ">>> "
+                  ],
+                  [
+                    "Token.Keyword",
+                    "print"
+                  ],
+                  [
+                    "Token.Punctuation",
+                    "("
+                  ],
+                  [
+                    "Token.Name",
+                    "s"
+                  ],
+                  [
+                    "Token.Punctuation",
+                    ")"
+                  ]
+                ]
+              }
+            ],
+            "position": -1
+          }
+        },
+        {
+          "Sleep": {}
+        },
+        {
+          "InsertRows": {
+            "lines": [
+              {
+                "parts": [
+                  [
+                    "Token.Generic.Output",
+                    ""
+                  ]
+                ]
+              }
+            ],
+            "position": 0
+          }
+        },
+        {
+          "InsertRows": {
+            "lines": [
+              {
+                "parts": [
+                  [
+                    "Token.Generic.Output",
+                    "hello"
+                  ]
+                ]
+              }
+            ],
+            "position": 0
+          }
+        },
+        {
+          "InsertRows": {
+            "lines": [
+              {
+                "parts": [
+                  [
+                    "Token.Generic.Output",
+                    "there"
+                  ]
+                ]
+              }
+            ],
+            "position": 0
+          }
+        },
+        {
+          "InsertRows": {
+            "lines": [
+              {
+                "parts": [
+                  [
+                    "Token.Generic.Output",
+                    ""
+                  ]
+                ]
+              }
+            ],
+            "position": 0
+          }
+        },
+        {
+          "InsertRows": {
+            "lines": [
+              {
+                "parts": [
+                  [
+                    "Token",
+                    ""
+                  ]
+                ]
+              }
+            ],
+            "position": 0
+          }
+        },
+        {
+          "ReplaceRows": {
+            "lines": [
+              {
+                "parts": [
+                  [
+                    "Token.Generic.Prompt",
+                    ">>> "
+                  ]
+                ]
+              }
+            ],
+            "position": -1
+          }
+        }
+      ]
+    }
+  }
+]

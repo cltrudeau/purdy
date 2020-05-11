@@ -39,11 +39,32 @@ class BaseEditStep:
         # else len(self.lines) > 1:
         return f'[{self.lines[0]}...]'
 
+    def _test_dict(self):
+        d = {
+            f'{self.__class__.__name__}': {
+                'lines':[line._test_dict() for line in self.lines],
+            }
+        }
+
+        return d
+
+
+class PositionTestMixin:
+    def _test_dict(self):
+        d = {
+            f'{self.__class__.__name__}': {
+                'lines':[line._test_dict() for line in self.lines],
+                'position':self.position,
+            }
+        }
+
+        return d
+
 # ---------------------------------------------------------------------------
 # Line Insertion Steps
 # ---------------------------------------------------------------------------
 
-class InsertRows(BaseEditStep):
+class InsertRows(PositionTestMixin, BaseEditStep):
     def __init__(self, code_box, position, lines):
         super().__init__(code_box, lines)
         self.position = position
@@ -68,6 +89,13 @@ class Subprocess:
         self.code_box = code_box
         self.cmd = cmd
 
+    def _test_dict(self):
+        d = {
+            'Subprocess': { 'cmd':self.cmd, }
+        }
+
+        return d
+
     def render_step(self):
         import subprocess
 
@@ -90,7 +118,7 @@ class Subprocess:
 # Line Editing Steps
 # ---------------------------------------------------------------------------
 
-class ReplaceRows(BaseEditStep):
+class ReplaceRows(PositionTestMixin, BaseEditStep):
     def __init__(self, code_box, position, lines):
         super().__init__(code_box, lines)
         self.position = position
@@ -119,6 +147,17 @@ class SuffixRow(BaseEditStep):
 
     def __str__(self):
         return f'SuffixRow("{self.source}" @ {self.position})'
+
+    def _test_dict(self):
+        d = {
+            'SuffixRow': {
+                'position':self.position,
+                'source':self.source,
+                'cursor':self.cursor,
+            }
+        }
+
+        return d
 
     def _inside_string(self, line):
         # Returns True if appending something to the end of this line will be
@@ -193,6 +232,16 @@ class RemoveRows:
     def __str__(self):
         return f'RemoveRows({self.position} for {self.num})'
 
+    def _test_dict(self):
+        d = {
+            'RemoveRows': {
+                'position':self.position,
+                'num':self.num,
+            }
+        }
+
+        return d
+
     def render_step(self):
         self.undo_lines = []
         for x in range(0, self.num):
@@ -209,6 +258,13 @@ class RemoveRows:
 class Clear:
     def __init__(self, code_box):
         self.code_box = code_box
+
+    def _test_dict(self):
+        d = {
+            'Clear': {}
+        }
+
+        return d
 
     def render_step(self):
         self.undo_lines = []
@@ -237,6 +293,16 @@ class HighlightLines:
     def __str__(self):
         return f'HighlightLines("{self.numbers}", {self.highlight_on})'
 
+    def _test_dict(self):
+        d = {
+            'HighlightLines': {
+                'numbers':str(self.numbers),
+                'highlight_on':self.highlight_on,
+            }
+        }
+
+        return d
+
     def _set_highlight(self, highlight_value):
         for num in self.numbers:
             self.code_box.listing.set_highlight(highlight_value, num, num)
@@ -258,6 +324,15 @@ class Sleep:
     def __str__(self):
         return f'Sleep("{self.time}")'
 
+    def _test_dict(self):
+        # Do not serialize the time parameter, it is random and will fail the
+        # next comparison
+        d = {
+            'Sleep': {}
+        }
+
+        return d
+
 
 class CellEnd:
     pass
@@ -274,6 +349,12 @@ class StopMovieException(Exception):
 
 
 class StopMovie:
+    def _test_dict(self):
+        d = {
+            'StopMovie': {},
+        }
+
+        return d
     def render_step(self):
         raise StopMovieException()
 

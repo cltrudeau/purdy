@@ -21,4 +21,5 @@ actions = [
     Highlight(code_box, '5,6,10-20', False),
 ]
 
-screen.run(actions)
+if __name__ == '__main__':
+    screen.run(actions)

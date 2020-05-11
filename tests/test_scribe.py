@@ -60,14 +60,15 @@ class TestScribe(PurdyContentTest):
         self.file_compare('print_rtf_nobg.out', print_rtf, listing)
         self.file_compare('print_rtf_bg.out', print_rtf, listing, 'ccc')
 
-    def __test_generate(self):
-        ### This stub code is used to generate data files to compare against
-        code = Code(text=self.py_source, lexer_name='py3')
-        listing = Listing(code)
-        listing.set_display('rtf')
-
-        with capture_stdout() as captured:
-            print_rtf(listing, 'ccc')
-
-            with open('print_rtf_bg.out', 'w') as f:
-                f.write(captured.getvalue())
+# commented out for pyflakes
+#    def __test_generate(self):
+#        ### This stub code is used to generate data files to compare against
+#        code = Code(text=self.py_source, lexer_name='py3')
+#        listing = Listing(code)
+#        listing.set_display('rtf')
+#
+#        with capture_stdout() as captured:
+#            print_rtf(listing, 'ccc')
+#
+#            with open('print_rtf_bg.out', 'w') as f:
+#                f.write(captured.getvalue())

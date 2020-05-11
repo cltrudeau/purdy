@@ -66,4 +66,5 @@ actions.extend([
     ReplaceTypewriter(bottom, 2, blob2),
 ])
 
-screen.run(actions)
+if __name__ == '__main__':
+    screen.run(actions)
