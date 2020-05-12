@@ -1,9 +1,10 @@
 """
 Parser
--------
+======
 
 This contains methods and classes to manager parsing of code
 """
+
 from copy import deepcopy
 from collections import namedtuple
 
@@ -18,6 +19,14 @@ LexerHolder = namedtuple('LexerHolder', ['name', 'lexer', 'description',
     'is_console'])
 
 class LexerContainer:
+    """Contains lexers used to parse code. The lexers are referenced by a
+    name. Supported lexers are:
+
+    * `con` -- Python console 
+    * `py3` -- Python 3 code
+    * `bash` -- Bash console
+
+    """
     def __init__(self):
         holders = [
             LexerHolder('con',  PythonConsoleLexer(), 'Python Console', True), 

@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 """
 Animation Steps
----------------
+===============
 
 An animation is created through a series of steps that are executed together.
 A :class:`.cell.GroupCell` wraps these steps. When the user moves forwards and 

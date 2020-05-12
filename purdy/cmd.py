@@ -1,6 +1,7 @@
 """
 Command Line Tools
-------------------
+==================
+
 Several of the command line tools have common arguments and needs. This file 
 defines helper functions so these are defined once.
 """

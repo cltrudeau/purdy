@@ -1,6 +1,6 @@
 """
 Scribe Module (purdy.scribe.py)
--------------------------------
+===============================
 
 Methods for transforming code into different representations on stdout.
 """
@@ -34,12 +34,13 @@ def range_set_to_list(text):
 # =============================================================================
 
 def print_tokens(listing, colour=True):
-    """Prints each line in a :class:`Code` object with a coloured background,
-    then prints the parsed tokens inside that line
+    """Prints each line in a :class:`purdy.content.Code` object with a
+    coloured background, then prints the parsed tokens inside that line
 
-    :param listing: :class:`Listing` object containing code to print
-    :param colour: set to True to print out using ANSI colour. Defaults to
-    True
+    :param listing: :class:`purdy.content.Listing` object containing code to
+                    print
+
+    :param colour: set to True to print out using ANSI colour. Defaults to True
     """
     for line in listing.lines:
         text = line.text

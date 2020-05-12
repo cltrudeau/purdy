@@ -1,6 +1,6 @@
 """
 Actions
--------
+=======
 
 Library users specify a series of actions that turn into the presentation
 animations in the Urwid client.  An action is similar to a slide in a slide
@@ -33,6 +33,17 @@ class Insert:
     """Inserts the content of a :class:`purdy.content.Code` object to a
     specified line in a :class:`purdy.ui.CodeBox`. Pushes content down, 
     inserting at "1" is the beginning of the list. Position is 1-indexed
+
+    :param code_box: the :class:`purdy.ui.CodeBox` instance to insert code
+                     into
+
+    :param position: line number to insert code at. Position is 1-indexed.
+                     Content is pushed down, so a value of "1" inserts at the
+                     beginning. Negative indicies are supported. A value of
+                     "0" will append the code to the bottom.
+
+    :param code: a :class:`purdy.content.Code` object containing the source
+                 code to insert.
     """
     def __init__(self, code_box, position, code):
         self.code_box = code_box
@@ -49,6 +60,12 @@ class Insert:
 class Append(Insert):
     """Adds the content of a :class:`purdy.content.Code` object to the end of
     a :class:`purdy.ui.CodeBox`.
+
+    :param code_box: the :class:`purdy.ui.CodeBox` instance to insert code
+                     into
+
+    :param code: a :class:`purdy.content.Code` object containing the source
+                 code to insert.
     """
     def __init__(self, code_box, code):
         super().__init__(code_box, 0, code)
@@ -57,6 +74,15 @@ class Append(Insert):
 class Replace:
     """Replaces one or more lines of a :class:`purdy.ui.CodeBox` using the
     content of a :class:`purdy.content.Code` object.
+
+    :param code_box: the :class:`purdy.ui.CodeBox` instance where the code is
+                     to be replaced 
+
+    :param position: line number to replace the code at. Position is 1-indexed.
+                     Negative indicies are supported. 
+
+    :param code: a :class:`purdy.content.Code` object containing the source
+                 code to insert.
     """
     def __init__(self, code_box, position, code):
         self.code_box = code_box
@@ -72,6 +98,14 @@ class Replace:
 
 class Remove:
     """Removes one or more lines of a :class:`purdy.ui.CodeBox`.
+
+    :param code_box: the :class:`purdy.ui.CodeBox` instance where the code is
+                     to be replaced 
+
+    :param position: line number to replace the code at. Position is 1-indexed.
+                     Negative indicies are supported. 
+
+    :param size: number of lines to remove.
     """
     def __init__(self, code_box, position, size):
         self.code_box = code_box
@@ -83,7 +117,11 @@ class Remove:
 
 
 class Clear:
-    """Clears the contents of a :class:`purdy.ui.CodeBox`."""
+    """Clears the contents of a :class:`purdy.ui.CodeBox`.
+
+    :param code_box: the :class:`purdy.ui.CodeBox` instance where the code is
+                     to be replaced 
+    """
     def __init__(self, code_box):
         self.code_box = code_box
 
@@ -97,6 +135,14 @@ class Clear:
 class Suffix:
     """Adds the provided text to the end of an existing line in a
     :class:`purdy.ui.CodeBox`.
+
+    :param code_box: the :class:`purdy.ui.CodeBox` instance where the code is
+                     to be appended 
+
+    :param position: line number to replace the code at. Position is 1-indexed.
+                     Negative indicies are supported. 
+
+    :param source: string containing content to append to the line
     """
     def __init__(self, code_box, position, source):
         self.code_box = code_box
@@ -112,6 +158,12 @@ class Shell:
     (you're better off using a typewriter command to show it, then use this to
     spit out the results).  Command and results are added to the
     :class:`purdy.ui.CodeBox`.
+
+    :param code_box: the :class:`purdy.ui.CodeBox` instance where the code is
+                     to be appended 
+
+    :param cmd: string containing the shell command and its paramters.
+                Example: ``ls -la``.
     """
     def __init__(self, code_box, cmd):
         self.code_box = code_box
@@ -226,8 +278,15 @@ class TypewriterStep(TypewriterBase):
 
 class AppendTypewriter(TypewriterStep):
     """Adds the content of a :class:`purdy.content.Code` object to a
-    :class:`purdy.ui.CodeBox`.
+    :class:`purdy.ui.CodeBox` using the typewriter animation. 
+
+    :param code_box: the :class:`purdy.ui.CodeBox` instance to append code
+                     into
+
+    :param code: a :class:`purdy.content.Code` object containing the source
+                 code to insert.
     """
+
     def __init__(self, code_box, code):
         self.code_box = code_box
         self.code = code
@@ -235,8 +294,17 @@ class AppendTypewriter(TypewriterStep):
 
 
 class InsertTypewriter(TypewriterStep):
-    """Insert the content of a :class:`purdy.content.Code` object at the given
-    position into a :class:`purdy.ui.CodeBox` using a typewriter animation.
+    """Inserts the contents of a :class:`purdy.content.Code` object at the
+    given position using the typewriter animation.
+
+    :param code_box: the :class:`purdy.ui.CodeBox` instance to append code
+                     into
+
+    :param position: line number to insert the code at. Position is 1-indexed.
+                     Negative indicies are supported. 
+
+    :param code: a :class:`purdy.content.Code` object containing the source
+                 code to insert.
     """
     def __init__(self, code_box, position, code):
         self.code_box = code_box
@@ -247,6 +315,15 @@ class InsertTypewriter(TypewriterStep):
 class ReplaceTypewriter(TypewriterStep):
     """Replaces one or more lines in a :class:`CodeBox` with the contents of a 
     :class:`purdy.ui.CodeBox` using a typewriter animation.
+
+    :param code_box: the :class:`purdy.ui.CodeBox` instance to append code
+                     into
+
+    :param position: line number to insert the code at. Position is 1-indexed.
+                     Negative indicies are supported. 
+
+    :param code: a :class:`purdy.content.Code` object containing the source
+                 code to insert.
     """
     def __init__(self, code_box, position, code):
         self.code_box = code_box
@@ -273,8 +350,16 @@ class ReplaceTypewriter(TypewriterStep):
 
 
 class SuffixTypewriter(TypewriterBase):
-    """Adds the provided text to the end of an existing line in using a
-    typewriter animation :class:`purdy.ui.CodeBox`.
+    """Adds the provided text to the end of an existing line in a
+    :class:`purdy.ui.CodeBox` using a typewriter animation.
+
+    :param code_box: the :class:`purdy.ui.CodeBox` instance to append code
+                     into
+
+    :param position: line number to insert the code at. Position is 1-indexed.
+                     Negative indicies are supported. 
+
+    :param source: a string to be appended to the given line
     """
     def __init__(self, code_box, position, source):
         self.code_box = code_box
@@ -300,20 +385,18 @@ class SuffixTypewriter(TypewriterBase):
 # =============================================================================
 
 class Highlight:
-    """Cause one or more lines of code to have highlighting turned on or
-    off"""
+    """Cause one or more lines of code to have highlighting turned on or off
 
+    :param code_box: :class:`purdy.ui.CodeBox` to perform on
+
+    :param spec: either a string containing comma separated and/or hyphen
+                 separated integers (e.g. "1,3,7-9") or a list of integers
+                 specifying the lines in the code box to highlight. Line
+                 numbers are 1-indexed
+
+    :param highlight_on: True to turn highligthing on, False to turn it off
+    """
     def __init__(self, code_box, spec, highlight_on):
-        """Constructor
-
-        :param code_box: CodeBox to perform on
-        :param spec: either a string containing comma separated and/or hyphen
-                     separated integers (e.g. "1,3,7-9") or a list of integers
-                     specifying the lines in the code box to highlight. Line
-                     numbers are 1-indexed
-        :param highlight_on: True to turn highligthing on, False to turn it
-                             off
-        """
         self.code_box = code_box
         self.highlight_on = highlight_on
 
@@ -329,7 +412,17 @@ class Highlight:
             self.highlight_on) ]
 
 class Fold:
-    """Folds code"""
+    """Folds code by replacing one or more lines with a vertical elipses
+    symbol.
+
+
+    :param code_box: the :class:`purdy.ui.CodeBox` instance to modify
+
+    :param position: line number to begin the fold at. Position is 1-indexed.
+
+    :param end: line number to finish the folding at, inclusive. A value of -1
+                can be used to fold to the end of the box. Defaults to -1.
+    """
     def __init__(self, code_box, position, end=-1):
         self.code_box = code_box
         self.position = position
@@ -343,7 +436,9 @@ class Fold:
 # =============================================================================
 
 class Wait:
-    """Causes the animations to wait for a key press before continuing."""
+    """Causes the animations to wait for a `right arrow` key press before 
+    continuing.
+    """
     def steps(self):
         return [steplib.CellEnd(), ]
 
@@ -355,6 +450,15 @@ class StopMovie:
 
 
 class Transition:
+    """Replaces the contents of a :class:`purdy.ui.CodeBox` with new content,
+    doing a wipe animation from top to bottom.
+
+    :param code_box: the :class:`purdy.ui.CodeBox` instance to perform the
+                     transition on
+
+    :param code: a :class:`purdy.content.Code` object containing the source
+                 code replacing the existing content
+    """
     def __init__(self, code_box, code):
         self.code_box = code_box
         self.code = code

@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 """
 Animation Cells
----------------
+===============
 
 A Cell represents an animation used by the
 :class:`purdy.animation.manager.AnimationManager`. A Cell is responsible for

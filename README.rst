@@ -1,5 +1,7 @@
+*****
 Purdy
 *****
+
 
 During talks or screencasts I don't want to be typing code, it is too error
 prone and too likely to mess up my speaking flow. **Purdy** is both a set of
@@ -34,7 +36,8 @@ you can press "q" to quit.
 
 
 Purdy Programs
-==============
+##############
+
 
 The following programs come with the `purdy` library:
 
@@ -53,7 +56,7 @@ More information can be found in the :ref:`program-documentation`.
 
 
 Purdy Library
-=============
+#############
 
 The ``purdy`` script is fairly simple. You can create more complex animations
 by writing programs using the purdy library. Custom programs can have split
@@ -62,7 +65,7 @@ be found in the  :ref:`library-documentation`.
 
 
 Installation
-============
+############
 
 .. code-block:: bash
 
@@ -70,7 +73,7 @@ Installation
 
 
 Supports
-========
+########
 
 Purdy has been tested with Python 3.7. Terminal control is done with the
 `Urwid <http://urwid.org/>`_ library. Parsing and tokenization is
@@ -79,7 +82,7 @@ execellent and I'm grateful they're publically available.
 
 
 Docs & Source
-=============
+#############
 
 Docs: http://purdy.readthedocs.io/en/latest/
 

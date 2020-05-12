@@ -1,6 +1,6 @@
 """
 Colour Module (purdy.colour.py)
--------------------------------
+===============================
 
 Contains classes to convert tokens to colour according to the various
 supported renderers.

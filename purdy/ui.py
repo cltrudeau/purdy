@@ -1,9 +1,10 @@
 """
 UI (purdy.ui.py)
-----------------
+================
 
 This module is the entry point for the Urwid based code viewer included in
-purdy.
+purdy. All programs using the purdy library need to create a :class:`Screen`
+object or one of its children.
 """
 import argparse
 
@@ -41,10 +42,10 @@ class FocusWalker:
             self.parent_position = parent_position
 
     def __init__(self, root):
-        """Figures out the order things should be focused in. 
-
-        :param root: root container to look for CodeWidgets within
-        """
+        ### Figures out the order things should be focused in. 
+        #
+        # :param root: root container to look for CodeWidgets within
+        #
         self.root = root
         self.focused_index = 0
         self.nodes = []
@@ -293,6 +294,13 @@ class Screen:
     corresponding :class:`purdy.widgets.CodeWidget` inside of the UI for
     displaying code.
 
+    :param settings: a settings dictionary object. Defaults to `None` which 
+                     uses the default settings dictionary: 
+                     :attr:`settings.settings`
+    :param rows: a list containing one or more :class:`CodeBox` or 
+                 :class:`TwinCodeBox` definitions, to specify the layout of 
+                 the screen
+
     Example:
 
     .. code-block:: python
@@ -334,15 +342,6 @@ class Screen:
     +-----------------------+
     """
     def __init__(self, settings=None, rows=[]):
-        """Constructor
-
-        :param settings: a settings dictionary object. Defaults to `None` which 
-                         uses the default settings dictionary: 
-                         :attr:`settings.settings`
-        :param rows: a list containing one or more :class:`CodeBox` or 
-                     :class:`TwinCodeBox` definitions, to specify the layout of 
-                     the screen
-        """
         self.rows = rows
         self.code_boxes = []
         self.settings = settings
@@ -421,34 +420,32 @@ class Screen:
 # =============================================================================
 
 class SplitScreen(Screen):
-    """Convenience implementation of :class:`RowScreen` that supports two 
+    """Convenience implementation of :class:`Screen` that supports two 
     :class:`CodeBox` instances, stacked vertically and separated by a dividing
     line. The code boxes are :attr:`SplitScreen.top` and
     :attr:`SplitScreen.bottom`. 
+
+    :param settings: a settings dictionary object. Defaults to `None` which 
+                     uses the default settings dictionary: 
+                     :attr:`settings.settings`
+
+    :param top_starting_line_number: starting line number for the top 
+                                     code box
+    :param top_auto_scroll: When True, the top :class:`ui.CodeBox` 
+                            automatically scrolls to newly added content.
+                            Defaults to True.
+    :param bottom_starting_line_number: starting line number for the 
+                                        bottom code box
+    :param bottom_auto_scroll: When True, the bottom :class:`ui.CodeBox` 
+                            automatically scrolls to newly added content.
+                            Defaults to True.
+    :param top_height: Number of lines the top box should be. A value of 0
+                       indicates top and bottom should be the same size.
+                       Defaults to 0.
     """
     def __init__(self, settings=None, top_starting_line_number=-1, 
             top_auto_scroll=True, bottom_starting_line_number=-1,
             bottom_auto_scroll=True, top_height=0):
-        """Constructor
-
-        :param settings: a settings dictionary object. Defaults to `None` which 
-                         uses the default settings dictionary: 
-                         :attr:`settings.settings`
-
-        :param top_starting_line_number: starting line number for the top 
-                                         code box
-        :param top_auto_scroll: When True, the top :class:`ui.CodeBox` 
-                                automatically scrolls to newly added content.
-                                Defaults to True.
-        :param bottom_starting_line_number: starting line number for the 
-                                            bottom code box
-        :param bottom_auto_scroll: When True, the bottom :class:`ui.CodeBox` 
-                                automatically scrolls to newly added content.
-                                Defaults to True.
-        :param top_height: Number of lines the top box should be. A value of 0
-                           indicates top and bottom should be the same size.
-                           Defaults to 0.
-        """
         self.top = CodeBox(top_starting_line_number, top_auto_scroll, 
             top_height)
         self.bottom = CodeBox(bottom_starting_line_number, bottom_auto_scroll)
@@ -456,22 +453,24 @@ class SplitScreen(Screen):
 
 
 class SimpleScreen(Screen):
-    """Convenience implementation of :class:`RowScreen` that supports a single
+    """Convenience implementation of :class:`Screen` that supports a single
     :class:`CodeBox`.  The code box is available as 
-    :attr:`SplitScreen.code_box`.
+    :attr:`SimpleScreen.code_box`.
+
+    :param settings: a settings dictionary object. Defaults to `None` which 
+                     uses the default settings dictionary: 
+                     :attr:`settings.settings`
+    
+    :param starting_line_number: starting line number for the created code
+                                 box
+    :param auto_scroll: When True, the class:`ui.CodeBox` automatically 
+                        scrolls to newly added content.  Defaults to True.
     """
     def __init__(self, settings=None, starting_line_number=-1, 
             auto_scroll=True):
-        """Constructor
-
-        :param settings: a settings dictionary object. Defaults to `None` which 
-                         uses the default settings dictionary: 
-                         :attr:`settings.settings`
-        
-        :param starting_line_number: starting line number for the created code
-                                     box
-        :param auto_scroll: When True, the class:`ui.CodeBox` automatically 
-                            scrolls to newly added content.  Defaults to True.
-        """
+        """Foo man chooo"""
         self.code_box = CodeBox(starting_line_number, auto_scroll)
         super().__init__(settings, [self.code_box])
+
+    def thing(self):
+        pass

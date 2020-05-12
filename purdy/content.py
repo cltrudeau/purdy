@@ -1,6 +1,6 @@
 """
 Content
--------
+=======
 
 Reperesntations of source code are found in this module.
 """
@@ -13,18 +13,20 @@ from purdy.parser import FoldedCodeLine, parse_source
 # =============================================================================
 
 class Code:
-    """Represents source code from the user."""
+    """Represents source code from the user.
+
+    :param filename: name of a file to read for content. If both this and 
+                     `text` is given, `filename` is used first
+
+    :param text: a string containing code
+
+    :param lexer_name: name of lexer to use to tokenize the code, defaults to 
+                       'detect', attempting to auto detect the type of
+                       content. See :class:`purdy.parser.LexerContainer` for a
+                       list of available lexers.
+    """
 
     def __init__(self, filename='', text='', lexer_name='detect'):
-        """Constructor
-
-        :param filename: name of a file to read for content. If both this and 
-                         `text` is given, `filename` is used first
-        :param text: a string containing code
-        :param lexer_name: name of lexer to use to tokenize the code, defaults
-                           to 'detect', attempting to auto detect the type of
-                           content
-        """
         self.source = ''
 
         if filename:

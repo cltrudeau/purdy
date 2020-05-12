@@ -1,3 +1,11 @@
+"""
+Settings (purdy.settings.py)
+============================
+
+Defines the default settings for :class:`purdy.ui.Screen` objects, can be
+overridden by passing an altered dictionary into the Screen's constructor. 
+"""
+
 settings = {
     # delay between characters appearing on screen (in milliseconds)
     'delay':130,

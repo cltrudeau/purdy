@@ -1,10 +1,12 @@
 .. _program-documentation:
 
 Command Line Program Documentation
-==================================
+##################################
 
-`purdy` Command
----------------
+
+``purdy`` Command
+=================
+
 
 .. argparse::
     :filename: ../purdy/purdy
@@ -12,8 +14,8 @@ Command Line Program Documentation
     :prog: purdy
 
 
-`pat` Command
--------------
+``pat`` Command
+===============
 
 .. argparse::
     :filename: ../purdy/pat
@@ -21,8 +23,8 @@ Command Line Program Documentation
     :prog: pat
 
 
-`prat` Command
---------------
+``prat`` Command
+================
 
 .. argparse::
     :filename: ../purdy/prat
@@ -30,8 +32,8 @@ Command Line Program Documentation
     :prog: prat
 
 
-`subpurdy` Command
-------------------
+``subpurdy`` Command
+====================
 
 .. argparse::
     :filename: ../purdy/subpurdy

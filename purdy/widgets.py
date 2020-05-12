@@ -1,6 +1,6 @@
 """
 Wigets (purdy.wigets.py)
-------------------------
+========================
 
 Widgets for displaying. These are called and managed through the Screen
 classes in :mod:`purdy.ui`.

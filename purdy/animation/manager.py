@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 """
 Animation Management
---------------------
+====================
 
 This module handles the slide rendering animation in the urwid purdy player
 """
