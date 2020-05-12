@@ -18,12 +18,12 @@ automatically.
 # Main
 # =============================================================================
 
-if __name__ == '__main__':
-    parser = argparse.ArgumentParser(description=DESCRIPTION)
-    filename_arg(parser)
-    general_args(parser)
-    rtf_args(parser)
+parser = argparse.ArgumentParser(description=DESCRIPTION)
+filename_arg(parser)
+general_args(parser)
+rtf_args(parser)
 
+if __name__ == '__main__':
     ### Execute ###
     args = parser.parse_args()
 

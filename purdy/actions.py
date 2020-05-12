@@ -328,6 +328,16 @@ class Highlight:
         return [steplib.HighlightLines(self.code_box, self.numbers,
             self.highlight_on) ]
 
+class Fold:
+    """Folds code"""
+    def __init__(self, code_box, position, end=-1):
+        self.code_box = code_box
+        self.position = position
+        self.end = end
+
+    def steps(self):
+        return [steplib.FoldLines(self.code_box, self.position, self.end)]
+
 # =============================================================================
 # Control Actions
 # =============================================================================

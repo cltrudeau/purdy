@@ -1,6 +1,8 @@
 #!/usr/bin/env python
 
-# Example code for showing a top with code and a bottom with console
+### Example purdy library code
+#
+# Demonstrates movie mode and the StopMovie action interrupting it
 
 from purdy.actions import (Append, AppendTypewriter, Highlight, StopMovie,
     Wait)

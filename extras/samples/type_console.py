@@ -1,5 +1,9 @@
 #!/usr/bin/env python
 
+### Example purdy library code
+#
+# Demonstrates typewrite animation with a colourized Python REPL session
+
 from purdy.actions import AppendTypewriter
 from purdy.content import Code
 from purdy.ui import SimpleScreen

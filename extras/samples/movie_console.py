@@ -1,5 +1,9 @@
 #!/usr/bin/env python
 
+### Example purdy library code
+#
+# Demonstrates movie mode
+
 from purdy.actions import AppendTypewriter
 from purdy.settings import settings
 from purdy.content import Code

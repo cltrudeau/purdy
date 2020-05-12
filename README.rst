@@ -1,10 +1,23 @@
-purdy
+Purdy
 *****
 
 During talks or screencasts I don't want to be typing code, it is too error
-prone and too likely to mess up my speaking flow. "purdy" takes snippets of
-code and displays them to a terminal using Pygments colourization. It listens
-for input and shows a line as if it is being typed each time you press enter.
+prone and too likely to mess up my speaking flow. **Purdy** is both a set of
+:ref:`programs <program-documentation>` and a 
+:ref:`library <library-documentation>` to display colourized code in a series of
+animations.
+
+The ``purdy`` command takes one of a Python program, a Python REPL console file
+or a Bash console file. Source code is presented to the screen as if typing.
+For console files, the typing pauses at a prompt, waiting for interaction. 
+Prompts are:  
+
+* ``>>>`` or ``...`` for Python REPL
+* ``$`` for Bash console
+
+If the program is paused at a prompt, pressing the **right** arrow will
+continue. Typing animation can be skipped over by pressing the letter "s"
+instead. Animation can be undone by pressing the **left** arrow.
 
 Example Usage:
 
@@ -12,10 +25,7 @@ Example Usage:
 
     $ purdy code-snippet.py
 
-Running the above command will clear the console and start typing the code
-snippet. Output is paused when it sees a REPL prompt (">>> "). Pressing any
-key (except "q") will continue the typing. Lines starting with a prompt mimic
-typing, lines not on a prompt are output immediately.
+The result looks like this:
 
 .. image:: screenshot.gif
 
@@ -23,38 +33,32 @@ Once the code has been displayed, further key presses are ignored. At any time
 you can press "q" to quit.
 
 
-Command Line Options
-====================
+Purdy Programs
+==============
 
--c, --continuous
-    Instead of waiting for key presses, display the whole file
+The following programs come with the `purdy` library:
 
--x16
-    purdy defaults to using 256 colour mode in the terminal. This flag forces
-    it to use 16 colour mode
+* ``purdy`` -- Animated display that looks like a program is being typed to the
+  screen.
+* ``pat`` -- "purdy cat", prints ANSI colourized source.
+* ``prat`` -- "purdy RTF cat", prints colourized source in RTF document format.
+  Particularly useful for copying to a clipboard and pasting full colourized
+  source into a document. On OS X `prat <filename> | pbcopy` will put the
+  output directly to the clipboard.
+* ``subpurdy`` -- Full set of commands to control Purdy. Sub-commands dictate 
+  behaviour. Does a variety of code presentation. Includes ANSI, RTF, HTML
+  output as well as the typewriter animations.
 
--l, --lexer
-    Default lexer is Python Console lexer ('con'), using this parameter you
-    can also change it to a Python 3 code lexer ('py3')
+More information can be found in the :ref:`program-documentation`.
 
--d, --delay DELAY
-    change the amount of delay between "typed" letters. Defaults to 130ms.
-    Value given in milliseconds. Mutually exclusive with the "--wpm" option
 
--w, --wpm WPM
-    specify the typing speed in Words Per Minute. Mutually exclusive with the
-    "--delay" option
+Purdy Library
+=============
 
---variance VARIANCE
-    to make the typing look more real a random value of plus or minus
-    "VARIANCE" is added to the typing delay.  Default value for this is 30ms.
-    Value given in milliseconds.
-
---version
-    Display pgraom version and exit
-
---help
-    Display help information
+The ``purdy`` script is fairly simple. You can create more complex animations
+by writing programs using the purdy library. Custom programs can have split
+screens, highlighting lines, slide transitions and more.  More information can
+be found in the  :ref:`library-documentation`.
 
 
 Installation
@@ -65,18 +69,13 @@ Installation
     $ pip install purdy
 
 
-Coding With Purdy
-=================
-
-The "purdy" script is fairly simple. You can also create programs using the
-purdy library. Your programs can have much more complicated interactions,
-including having split screens, highlighting lines and more. 
-
-
 Supports
 ========
 
-purdy has been tested with Python 3.7
+Purdy has been tested with Python 3.7. Terminal control is done with the
+`Urwid <http://urwid.org/>`_ library. Parsing and tokenization is
+done through `Pygments <https://pygments.org/>`_. Both libraries are
+execellent and I'm grateful they're publically available.
 
 
 Docs & Source

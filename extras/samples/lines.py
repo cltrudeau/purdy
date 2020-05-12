@@ -1,7 +1,9 @@
 #!/usr/bin/env python
 
-# Example code for programatically calling the purdy library and showing a
-# console based code snippet
+### Example purdy library code
+#
+# Demonstrates appending strings to the end of existing lines as well as
+# replacing lines. Both done with and without the typewriter animation.
 
 from purdy.actions import (Append, Wait, Suffix, SuffixTypewriter,
     Replace, ReplaceTypewriter)

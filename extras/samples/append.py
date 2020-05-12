@@ -1,7 +1,9 @@
 #!/usr/bin/env python
 
-# Example code for programatically calling the purdy library and showing a
-# console based code snippet
+### Example purdy library code
+#
+# Appends the same colourized Python REPL session to the screen multiple
+# times, waiting for a keypress between each
 
 from purdy.actions import Append, Wait
 from purdy.content import Code

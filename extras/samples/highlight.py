@@ -1,7 +1,8 @@
 #!/usr/bin/env python
 
-# Example code for programatically calling the purdy library and showing a
-# console based code snippet
+### Example purdy library code
+#
+# Demonstrates highlighting and unhighlighting lines of code
 
 from purdy.actions import Append, Highlight, Wait
 from purdy.content import Code

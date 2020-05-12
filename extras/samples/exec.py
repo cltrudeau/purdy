@@ -1,7 +1,8 @@
 #!/usr/bin/env python
 
-# Example code for programatically calling the purdy library and showing a
-# console based code snippet
+### Example purdy library code
+#
+# Demonstrates the Shell action that runs a subprocess and returns the result
 
 from purdy.actions import Shell, AppendTypewriter
 from purdy.content import Code

@@ -8,7 +8,7 @@ supported renderers.
 from pygments.token import Keyword, Name, Comment, String, Error, \
     Number, Operator, Generic, Token, Whitespace, Punctuation
 
-from purdy.parser import token_ancestor
+from purdy.parser import FoldedCodeLine, token_ancestor
 
 # =============================================================================
 # Plain Colourizer
@@ -20,6 +20,9 @@ class PlainColourizer:
 
         :param code_line: a :class:`CodeLine` object to process
         """
+        if isinstance(code_line, FoldedCodeLine):
+            return '⋮'
+
         output = []
         if code_line.line_number != -1:
             output.append( cls.line_number(code_line.line_number) )
@@ -75,6 +78,11 @@ class ANSIColourizer:
 
         :param code_line: a :class:`CodeLine` object to colourize
         """
+        if isinstance(code_line, FoldedCodeLine):
+            fg = colored.fg('white')
+            bold = colored.attr('bold')
+            return f'    {fg}{bold}⋮{cls.reset}'
+
         ancestor_list = cls.colours.keys()
 
         bg = ''
@@ -142,6 +150,9 @@ class HTMLColourizer:
 
         :param code_line: a :class:`CodeLine` object to colourize
         """
+        if isinstance(code_line, FoldedCodeLine):
+            return '<span style="color: #000; font-weight: bold;">⋮</span>'
+
         ancestor_list = cls.colours.keys()
 
         output = []
@@ -308,6 +319,9 @@ class RTFColourizer:
 
         :param code_line: a :class:`CodeLine`   object to colourize
         """
+        if isinstance(code_line, FoldedCodeLine):
+            return '\\cf0 ⋮'
+
         ancestor_list = cls.colours.keys()
 
         output = []
@@ -383,6 +397,7 @@ class UrwidColourizer:
 
         # add miscellaneous other palette items
         palette.extend([
+            ('folded', 'white', '', '', 'white', ''),
             ('line_number', 'dark gray', '', '', 'dark gray', ''),
             ('empty', '', '', '', '', ''),
             ('empty_highlight', '', 'light gray', '', '', 'g23'),
@@ -407,6 +422,9 @@ class UrwidColourizer:
 
         :param code_line: a :class:`CodeLine`   object to colourize
         """
+        if isinstance(code_line, FoldedCodeLine):
+            return ('folded', '     ⋮')
+
         ancestor_list = cls.colours.keys()
 
         output = []

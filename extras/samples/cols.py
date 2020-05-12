@@ -1,6 +1,8 @@
 #!/usr/bin/env python
 
-# Example code for showing a top with code and a bottom with console
+### Example purdy library code
+#
+# Shows a split screen session with two code boxes on top and a third below.
 
 from purdy.actions import Append
 from purdy.content import Code

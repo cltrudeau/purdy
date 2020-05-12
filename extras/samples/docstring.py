@@ -1,7 +1,9 @@
 #!/usr/bin/env python
 
-# Example code for programatically calling the purdy library and showing a
-# console based code snippet
+### Example purdy library code
+#
+# Displays a function with a multi-line doc string (these can be tricky to
+# parse, want to make sure each line is colourized as a string)
 
 from purdy.actions import Append
 from purdy.content import Code

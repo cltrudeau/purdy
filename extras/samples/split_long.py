@@ -1,6 +1,8 @@
 #!/usr/bin/env python
 
-# Example code for showing a top with code and a bottom with console
+### Example purdy library code
+#
+# Demonstrates a split screen with content that exceeds the window size
 
 from purdy.actions import Append
 from purdy.content import Code

@@ -1,5 +1,10 @@
 #!/usr/bin/env python
 
+### Example purdy library code
+#
+# Example of a multi-line string in a Python REPL session using the typewriter
+# animation.
+
 from purdy.actions import AppendTypewriter
 from purdy.content import Code
 from purdy.ui import SimpleScreen

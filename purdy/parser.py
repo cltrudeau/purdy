@@ -107,6 +107,20 @@ class BlankCodeLine:
         return ''
 
 
+class FoldedCodeLine:
+    def __init__(self, size):
+        self.size = size
+
+    def __eq__(self, other):
+        if self.size == other.size:
+            return True
+
+        return False
+
+    def render_line(self, colourizer):
+        return colourizer.colourize(self)
+
+
 class CodeLine:
     def __init__(self, parts, lexer, line_number=-1, highlight=False):
         """Represents a displayed line of code.
@@ -115,14 +129,15 @@ class CodeLine:
         :param parts: list of :code:`CodePart` objects that correspond to 
                        this line of code
         :param line_number: line number for the line, -1 for off (default)
-        :param highlight: True if this line is currently highlighted
+        :param highlight: True if this line is currently highlighted. Defaults
+                          to False.
         """
         # too many bugs caused by a change to the parts list after the
         # CodeLine was created, copy the damn thing so it is internal only
         self.parts = deepcopy(parts)       
+        self.lexer = lexer
         self.line_number = line_number
         self.highlight = highlight
-        self.lexer = lexer
 
         self.text = ''.join([part.text for part in parts])
 

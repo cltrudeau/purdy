@@ -8,7 +8,7 @@ import os
 from copy import deepcopy
 
 from purdy.colour import COLOURIZERS
-from purdy.parser import parse_source
+from purdy.parser import FoldedCodeLine, parse_source
 
 # =============================================================================
 
@@ -159,10 +159,7 @@ class Listing:
             self.render_hook.line_inserted(self, position + count, line)
 
         if self.starting_line_number > -1:
-            # reset line numbers after insertion: 
-            #    => position + 1 + len(lines) - 1
-            num = position + len(new_lines)
-            self.reset_line_numbers(num)
+            self.reset_line_numbers()
 
     def replace_line(self, position, line):
         """Replaces the line at the given position with the given
@@ -185,7 +182,7 @@ class Listing:
             self.render_hook.line_removed(self, position)
 
         if self.starting_line_number > -1:
-            self.reset_line_numbers(position)
+            self.reset_line_numbers()
 
     def clear(self):
         self.lines = []
@@ -205,6 +202,25 @@ class Listing:
             result.append( deepcopy(self.lines[position - 1 + count]) )
 
         return result
+
+    def fold_lines(self, start, end):
+        """Call this method to replace one or more lines with a vertical
+        elipses, i.e. a fold of the code. 
+
+        :param start: line number of the listing to start code folding on. 
+                      1-indexed.
+        :param end: line number to fold until, inclusive (1-indexed).
+        """
+        size = end - start + 1
+
+        replace_line = FoldedCodeLine(size)
+        self.lines[start - 1] = replace_line
+        self.render_hook.line_changed(self, start, replace_line)
+
+        if size > 1:
+            #remove rest of lines in fold, line numbers will be fixed when
+            # remove_lines() calls reset_line_numbers()
+            self.remove_lines(start + 1, size - 1)
 
     #--- Style Methods
 
@@ -228,15 +244,28 @@ class Listing:
             line.highlight = highlight
             self.render_hook.line_changed(self, index, line)
 
-    def reset_line_numbers(self, position):
-        """Reset the line numbers, starting at the given parameter
+    def reset_line_numbers(self):
+        """Reset the line numbers."""
+        # Because of code folding possibly advancing the numbering, have to
+        # check the whole listing
+        current_position = 1
+        line_number = self.starting_line_number
 
-        :param position: positon to start fixing the line numbers at
-        """
-        for count, line in enumerate(self.lines[position - 1:]):
-            current_position = position + count
-            line.line_number = self.starting_line_number + current_position - 1
-            self.render_hook.line_changed(self, current_position, line)
+        if isinstance(self.lines[0], FoldedCodeLine):
+            line_number = self.starting_line_number + self.lines[0].size
+
+        for line in self.lines:
+            if not isinstance(line, FoldedCodeLine) and \
+                    line.line_number != line_number:
+                # changing the line number, trigger the hook
+                line.line_number = line_number
+                self.render_hook.line_changed(self, current_position, line)
+
+            current_position += 1
+            if isinstance(line, FoldedCodeLine):
+                line_number += line.size
+            else:
+                line_number += 1
 
     #--- Export methods
     def content(self):

@@ -1,7 +1,8 @@
 #!/usr/bin/env python
 
-# Example code for programatically calling the purdy library and showing a
-# console based code snippet
+### Example purdy library code
+#
+# Uses the typewriter animation to display a bash console session
 
 from purdy.actions import AppendTypewriter
 from purdy.content import Code

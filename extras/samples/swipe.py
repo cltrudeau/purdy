@@ -1,5 +1,9 @@
 #!/usr/bin/env python
 
+### Example purdy library code
+#
+# Demonstrates the slide transition animation
+
 from purdy.actions import Append, Wait, Transition
 from purdy.content import Code
 from purdy.ui import SimpleScreen

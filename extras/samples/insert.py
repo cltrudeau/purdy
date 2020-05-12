@@ -1,7 +1,8 @@
 #!/usr/bin/env python
 
-# Example code for programatically calling the purdy library and showing a
-# console based code snippet
+### Example purdy library code
+#
+# Demonstrates inserting lines of code with and without typewriter animation
 
 from purdy.actions import Append, Insert, Wait, InsertTypewriter
 from purdy.content import Code

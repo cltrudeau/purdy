@@ -313,6 +313,44 @@ class HighlightLines:
     def undo_step(self):
         self._set_highlight(not self.highlight_on)
 
+
+class FoldLines:
+    def __init__(self, code_box, position, end):
+        self.code_box = code_box
+        self.position = position
+        self.end = end
+
+    def __str__(self):
+        return f'FoldLines({self.position}, {self.end})'
+
+    def _test_dict(self):
+        d = {
+            'FoldLines':{
+                'position':self.position,
+                'end':self.end,
+            }
+        }
+        return d
+
+    def render_step(self):
+        self.undo_lines = []
+
+        start = self.position - 1
+        last = self.end
+        if self.end == -1:
+            last = len(self.code_box.listing.lines)
+
+        for line in self.code_box.listing.lines[start:last]:
+            undo_line = deepcopy(line)
+            self.undo_lines.append(undo_line)
+
+        self.code_box.listing.fold_lines(self.position, last)
+
+    def undo_step(self):
+        self.code_box.listing.insert_lines(self.position, self.undo_lines)
+        self.code_box.listing.remove_lines(self.position + len(self.undo_lines),
+            1)
+
 # ---------------------------------------------------------------------------
 # Control Steps
 # ---------------------------------------------------------------------------

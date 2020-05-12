@@ -4,7 +4,7 @@ from unittest.mock import patch, mock_open, Mock, call
 from pygments.token import Token
 
 from purdy.content import Code, Listing
-from purdy.parser import CodeLine, CodePart
+from purdy.parser import CodeLine, CodePart, FoldedCodeLine
 
 from tests.base import (PurdyContentTest, py3_lexer, PY_CODE_LINES,
     BASH_CODE_LINES)
@@ -80,7 +80,7 @@ class TestContent(PurdyContentTest):
 
         #---Test line numbering
         listing.starting_line_number = 10
-        listing.reset_line_numbers(1)
+        listing.reset_line_numbers()
         for count, line in enumerate(listing.lines):
             self.assertEqual(count + 10, line.line_number)
 
@@ -342,3 +342,43 @@ class TestContent(PurdyContentTest):
 
         result = listing.copy_lines(2, 2)
         self.assert_line_text('BC', result)
+
+    def test_fold_lines(self):
+        mock_hook, listing = self.hooked_listing()
+
+        #---Typical usage, folding some lines
+        listing.fold_lines(4, 6)
+
+        self.assertEqual(5, len(listing.lines))
+        self.assertEqual(10, listing.lines[0].line_number)
+        self.assertEqual(11, listing.lines[1].line_number)
+        self.assertEqual(12, listing.lines[2].line_number)
+        self.assertEqual(16, listing.lines[4].line_number)
+
+        self.assertTrue( isinstance(listing.lines[3], FoldedCodeLine) )
+
+        # Verify hooks
+        calls = [ 
+            call(listing, 5),
+            call(listing, 5),
+        ]
+        mock_hook.line_removed.assert_has_calls(calls)
+        mock_hook.line_changed.assert_called_once()
+
+        #---Fold testing different positions and parms
+
+        # First line
+        listing = Listing(starting_line_number=10)
+        listing.insert_lines(0, alpha_lines(4))
+
+        listing.fold_lines(1, 2)
+        self.assertEqual( FoldedCodeLine(2), listing.lines[0])
+        self.assert_line_text('CD', listing.lines[1:])
+
+        # One line
+        listing = Listing(starting_line_number=10)
+        listing.insert_lines(0, alpha_lines(4))
+
+        listing.fold_lines(1, 1)
+        self.assertEqual( FoldedCodeLine(1), listing.lines[0])
+        self.assert_line_text('BCD', listing.lines[1:])

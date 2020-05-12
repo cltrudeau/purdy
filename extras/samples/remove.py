@@ -1,5 +1,9 @@
 #!/usr/bin/env python
 
+### Example purdy library code
+#
+# Demonstrates removing lines of code
+
 from purdy.actions import Append, Wait, Remove
 from purdy.content import Code
 from purdy.ui import SimpleScreen

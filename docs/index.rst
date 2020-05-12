@@ -9,8 +9,9 @@ Contents
     :maxdepth: 2
 
     self
-    prog
-    modules
+    programs
+    library
+    implementation
 
 
 Indices and tables

@@ -113,76 +113,76 @@ def printable(args):
 # Main
 # =============================================================================
 
+parser = argparse.ArgumentParser(description=DESCRIPTION)
+
+# === Common flags ===
+general_args(parser)
+
+# === Subcommands ===
+subparsers = parser.add_subparsers(title='subcommands', dest='command')
+subparsers.required = True
+
+# --- purdy cmd
+sub = subparsers.add_parser('purdy', help=('Display code in a interactive '
+    'console window. Code is written to the screen as if it is being '
+    'typed'))
+sub.set_defaults(func=sub_purdy)
+
+sub.add_argument('-c', '--continuous', action='store_true', 
+    help=('Instead of prentending to type like a human, just dump the file '
+    'to the screen'))
+
+sub.add_argument('-x16', action='store_true', help=('Force 16 colour '
+    'terminal mode in case 256 is not working to the screen'))
+
+# set up the typing_delay / words_per_minute options
+group = sub.add_mutually_exclusive_group()
+group.add_argument('-d', '--delay', type=int, 
+    help=('Amount of time between each letter when in typewriter mode. '
+        'Specified in milliseconds. Defaults to %sms' % settings['delay'] ))
+group.add_argument('-w', '--wpm', type=int, help=('Number of words per '
+    'minute that the typing speed should look like'))
+sub.add_argument('--variance', type=int,
+    help=('To make the typing look more real there is a variance in the '
+        'delay between keystrokes. This value, in milliseconds is how '
+        'much to go over or under the delay by. Defaults to +/- 30ms'))
+
+# --- tokens cmd
+sub = subparsers.add_parser('tokens', help=('Prints out each line in a '
+    'file with the corresponding tokens indented beneath it'))
+sub.set_defaults(func=tokens)
+
+sub.add_argument('--blackandwhite', '--bw', help=('By default code lines '
+    'are highlighted using ANSI colour. This flag turns this off.'), 
+    action='store_true')
+
+# --- print cmd
+sub = subparsers.add_parser('print', help=('Prints code to screen using '
+    'colourized ANSI escape sequences'))
+sub.set_defaults(func=printable, subfunc=sub_print)
+ansi_args(sub)
+
+# --- html cmd
+sub = subparsers.add_parser('html', help=('Prints code to screen formatted '
+    'as an HTML div'))
+sub.set_defaults(func=printable, subfunc=html)
+num_arg(sub)
+highlight_arg(sub)
+
+sub.add_argument('--full', help=('By default only a snippet of HTML is '
+    'displayed inside a <div>. This flag produces a full HTML document.'),
+    action='store_true')
+
+# --- rtf cmd
+sub = subparsers.add_parser('rtf', help=('Prints code to screen formatted '
+    'as an RTF document'))
+sub.set_defaults(func=printable, subfunc=rtf)
+rtf_args(sub)
+
+# === Positional filename argument common to all subs
+filename_arg(parser)
+
 if __name__ == '__main__':
-    parser = argparse.ArgumentParser(description=DESCRIPTION)
-
-    # === Common flags ===
-    general_args(parser)
-
-    # === Subcommands ===
-    subparsers = parser.add_subparsers(title='subcommands', dest='command')
-    subparsers.required = True
-
-    # --- purdy cmd
-    sub = subparsers.add_parser('purdy', help=('Display code in a interactive '
-        'console window. Code is written to the screen as if it is being '
-        'typed'))
-    sub.set_defaults(func=sub_purdy)
-
-    sub.add_argument('-c', '--continuous', action='store_true', 
-        help=('Instead of prentending to type like a human, just dump the file '
-        'to the screen'))
-
-    sub.add_argument('-x16', action='store_true', help=('Force 16 colour '
-        'terminal mode in case 256 is not working to the screen'))
-
-    # set up the typing_delay / words_per_minute options
-    group = sub.add_mutually_exclusive_group()
-    group.add_argument('-d', '--delay', type=int, 
-        help=('Amount of time between each letter when in typewriter mode. '
-            'Specified in milliseconds. Defaults to %sms' % settings['delay'] ))
-    group.add_argument('-w', '--wpm', type=int, help=('Number of words per '
-        'minute that the typing speed should look like'))
-    sub.add_argument('--variance', type=int,
-        help=('To make the typing look more real there is a variance in the '
-            'delay between keystrokes. This value, in milliseconds is how '
-            'much to go over or under the delay by. Defaults to +/- 30ms'))
-
-    # --- tokens cmd
-    sub = subparsers.add_parser('tokens', help=('Prints out each line in a '
-        'file with the corresponding tokens indented beneath it'))
-    sub.set_defaults(func=tokens)
-
-    sub.add_argument('--blackandwhite', '--bw', help=('By default code lines '
-        'are highlighted using ANSI colour. This flag turns this off.'), 
-        action='store_true')
-
-    # --- print cmd
-    sub = subparsers.add_parser('print', help=('Prints code to screen using '
-        'colourized ANSI escape sequences'))
-    sub.set_defaults(func=printable, subfunc=sub_print)
-    ansi_args(sub)
-
-    # --- html cmd
-    sub = subparsers.add_parser('html', help=('Prints code to screen formatted '
-        'as an HTML div'))
-    sub.set_defaults(func=printable, subfunc=html)
-    num_arg(sub)
-    highlight_arg(sub)
-
-    sub.add_argument('--full', help=('By default only a snippet of HTML is '
-        'displayed inside a <div>. This flag produces a full HTML document.'),
-        action='store_true')
-
-    # --- rtf cmd
-    sub = subparsers.add_parser('rtf', help=('Prints code to screen formatted '
-        'as an RTF document'))
-    sub.set_defaults(func=printable, subfunc=rtf)
-    rtf_args(sub)
-
-    # === Positional filename argument common to all subs
-    filename_arg(parser)
-
     ### Execute ###
     args = parser.parse_args()
     args.func(args)

@@ -1,5 +1,10 @@
 #!/usr/bin/env python
 
+### Example purdy library code
+#
+# Demonstrates replacing the code in a code box by clearing it and appending
+# new code
+
 from purdy.actions import Append, Clear, Wait
 from purdy.content import Code
 from purdy.ui import SimpleScreen
