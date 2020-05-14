@@ -8,6 +8,7 @@ from tests.capture_sample import load_samples_module
 
 class TestSamples(TestCase):
     def test_samples(self):
+        self.maxDiff = None
         samples = ['all_console', 'append', 'bash_console', 'cols', 
             'docstring', 'exec', 'highlight', 'insert', 'lines', 'mixed', 
             'mls_type', 'movie_console', 'remove', 'replace', 'split_long', 
@@ -28,6 +29,9 @@ class TestSamples(TestCase):
             results = []
             for cell in module.screen.base_window.animation_manager.cells:
                 results.append( cell._test_dict() )
+
+            with open('last_output.json', 'w') as f:
+                json.dump(results, f, indent=2)
 
             self.assertEqual(expected, results, 
                 msg=f'Compare failed for {sample}' )

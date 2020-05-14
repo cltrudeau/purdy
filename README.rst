@@ -5,9 +5,7 @@ Purdy
 
 During talks or screencasts I don't want to be typing code, it is too error
 prone and too likely to mess up my speaking flow. **Purdy** is both a set of
-:ref:`programs <program-documentation>` and a 
-:ref:`library <library-documentation>` to display colourized code in a series of
-animations.
+programs and a library to display colourized code in a series of animations.
 
 The ``purdy`` command takes one of a Python program, a Python REPL console file
 or a Bash console file. Source code is presented to the screen as if typing.
@@ -52,7 +50,7 @@ The following programs come with the `purdy` library:
   behaviour. Does a variety of code presentation. Includes ANSI, RTF, HTML
   output as well as the typewriter animations.
 
-More information can be found in the :ref:`program-documentation`.
+More information can be found in the Command Line Program Documentation.
 
 
 Purdy Library
@@ -61,7 +59,7 @@ Purdy Library
 The ``purdy`` script is fairly simple. You can create more complex animations
 by writing programs using the purdy library. Custom programs can have split
 screens, highlighting lines, slide transitions and more.  More information can
-be found in the  :ref:`library-documentation`.
+be found in the Library Documentation.
 
 
 Installation

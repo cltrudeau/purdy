@@ -171,7 +171,7 @@ class TransitionCell(AnimatingCellBase):
 
         return d
 
-    def render(self, manager):
+    def render(self, manager, skip=False):
         if self.state == self.State.DONE:
             return
 

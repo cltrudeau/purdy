@@ -1,9 +1,15 @@
+1.0.1
+=====
+
+* bug fix: crash when fast-forward called on Transtion due to missing skip
+  parameter
+
 1.0
 ===
 
 * breaking change release
 * moved animation mechansim to be based on a queue, can now go forwards and
-backwards
+  backwards
 * signatures of Actions and Screens have changed
 * add tools for printing code in other formats such as RTF and HTML
 
@@ -12,7 +18,7 @@ backwards
 
 * add support for bash session lexer
 * add RowScreen type that can handle multiple rows and side-by-side pairs of
-boxes
+  boxes
 * add focus indicator to boxes without scroll indicators
 
 0.3
