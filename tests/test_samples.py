@@ -10,9 +10,9 @@ class TestSamples(TestCase):
     def test_samples(self):
         self.maxDiff = None
         samples = ['all_console', 'append', 'bash_console', 'cols', 
-            'docstring', 'exec', 'highlight', 'insert', 'lines', 'mixed', 
-            'mls_type', 'movie_console', 'remove', 'replace', 'split_long', 
-            'swipe', 'tall', 'triple', 'type_console', ]
+            'docstring', 'exec', 'fold', 'highlight', 'insert', 'lines', 
+            'mixed', 'mls_type', 'movie_console', 'remove', 'replace', 
+            'split_long', 'swipe', 'tall', 'triple', 'type_console', ]
 
         sample_data = Path(__file__).parent / 'samples_data'
 

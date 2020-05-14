@@ -253,7 +253,7 @@ class Listing:
         current_position = 1
         line_number = self.starting_line_number
 
-        if isinstance(self.lines[0], FoldedCodeLine):
+        if len(self.lines) > 0 and isinstance(self.lines[0], FoldedCodeLine):
             line_number = self.starting_line_number + self.lines[0].size
 
         for line in self.lines:

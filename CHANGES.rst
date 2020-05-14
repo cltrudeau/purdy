@@ -1,3 +1,10 @@
+1.0.2
+=====
+
+* bug fix: crash when Fold is called without a Wait immediately afterwards,
+  urwid was caching a focus position and trying to set it to a line that
+  wasn't there anymore
+
 1.0.1
 =====
 

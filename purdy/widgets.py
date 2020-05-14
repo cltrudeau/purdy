@@ -8,6 +8,10 @@ classes in :mod:`purdy.ui`.
 """
 import urwid
 
+import logging
+logging.basicConfig(filename='debug.log', level=logging.DEBUG)
+logger = logging.getLogger()
+
 # =============================================================================
 # Widgets
 # =============================================================================
@@ -142,6 +146,13 @@ class CodeWidget(urwid.Columns):
 
     def line_removed(self, listing, position):
         del self.walker.contents[position - 1]
+
+        # urwid crashes if the focus is set outside of the range and you
+        # try to do other operations to the box before returning to the
+        # event loop, fix this by setting the focus to the last item
+        size = len(self.walker.contents)
+        if size > 0:
+            self.listbox.set_focus(size - 1)
 
     def line_changed(self, listing, position, line):
         markup = listing.render_line(line)
