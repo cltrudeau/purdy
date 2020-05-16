@@ -8,10 +8,6 @@ classes in :mod:`purdy.ui`.
 """
 import urwid
 
-import logging
-logging.basicConfig(filename='debug.log', level=logging.DEBUG)
-logger = logging.getLogger()
-
 # =============================================================================
 # Widgets
 # =============================================================================
