@@ -15,6 +15,9 @@ from enum import Enum
 from purdy.animation import steps as steplib
 from purdy.parser import BlankCodeLine, parse_source
 
+import logging
+logger = logging.getLogger()
+
 # ===========================================================================
 # Cell Factory
 # ===========================================================================
@@ -172,9 +175,11 @@ class TransitionCell(AnimatingCellBase):
         return d
 
     def render(self, manager, skip=False):
+        logger.debug('Tran.render(), %s', self.state)
         if self.state == self.State.DONE:
             return
 
+        manager.state = manager.State.SLEEPING
         delay = self.DELAY
         if self.state == self.State.BEFORE:
             # first time through, setup our append and undo lines
@@ -185,27 +190,34 @@ class TransitionCell(AnimatingCellBase):
             self.state = self.State.DELETING
             # intentional fall through
 
-        if self.state == self.State.DELETING:
-            if self.position >= len(self.code_box.listing.lines):
-                # wiped everything, delete the empty boxes and go into append 
-                # mode
-                self.code_box.listing.clear()
-                self.state = self.State.APPENDING
-                delay = self.BETWEEN_DELAY
-            else:
-                line = BlankCodeLine()
-                self.code_box.listing.replace_line(self.position, line)
-                self.position += 1
-        else: # state == APPENDING
-            try:
-                line = self.code_lines.pop(0)
-                self.code_box.listing.insert_lines(0, [line, ])
-            except IndexError:
-                self.state = self.State.DONE
-                return
+
+        # If we're in skip mode, need to keep doing the work
+        while True:
+            if self.state == self.State.DELETING:
+                if self.position >= len(self.code_box.listing.lines):
+                    # wiped everything, delete the empty boxes and go into
+                    # append mode
+                    self.code_box.listing.clear()
+                    self.state = self.State.APPENDING
+                    delay = self.BETWEEN_DELAY
+                else:
+                    line = BlankCodeLine()
+                    self.code_box.listing.replace_line(self.position, line)
+                    self.position += 1
+            else: # state == APPENDING
+                try:
+                    line = self.code_lines.pop(0)
+                    self.code_box.listing.insert_lines(0, [line, ])
+                except IndexError:
+                    manager.state = manager.State.ACTIVE
+                    self.state = self.State.DONE
+                    return
+
+            if not skip:
+                # Not skipping, do the loop only once and get out
+                break
 
         # ask to be woken back up for the next step
-        manager.state = manager.State.SLEEPING
         self.animation_alarm_handle = manager.screen.set_alarm(
             'animation_alarm', delay)
 
