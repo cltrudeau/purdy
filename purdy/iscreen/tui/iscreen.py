@@ -9,7 +9,6 @@ import urwid
 
 from purdy.colour import UrwidColourizer
 from purdy.iscreen.tui.widgets import CodeWidget, DividingLine, TwinContainer
-from purdy.ui import CodeBox
 
 #import logging
 #logging.basicConfig(filename='debug.log', level=logging.DEBUG)
