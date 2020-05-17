@@ -45,7 +45,7 @@ class AnimationManager:
         if not cell.is_animating and self.screen.movie_mode > -1:
             self.screen.set_alarm('movie_alarm', self.screen.movie_mode)
 
-    def first_alarm(self):
+    def auto_forward_alarm(self):
         self.state = self.State.ACTIVE
         self.forward()
 
@@ -83,7 +83,9 @@ class AnimationManager:
         self.index += 1
         cell = self.cells[self.index]
         cell.render(self)
-        self._conditional_alarms(cell)
+
+        if not cell.auto_forward:
+            self._conditional_alarms(cell)
 
     def fast_forward(self):
         if self.index + 1 >= len(self.cells):

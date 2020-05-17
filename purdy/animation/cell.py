@@ -86,6 +86,8 @@ class GroupCell(AnimatingCellBase):
     together. Implements animation alarms so the manager can do timed call
     backs into the group and continue rendering.
     """
+    auto_forward = False
+
     def __init__(self):
         self.steps = []
         self.index = 0
@@ -152,6 +154,7 @@ class GroupCell(AnimatingCellBase):
 class TransitionCell(AnimatingCellBase):
     DELAY = 0.05
     BETWEEN_DELAY = 0.3
+    auto_forward = True
 
     class State(Enum):
         BEFORE = 0
@@ -211,6 +214,7 @@ class TransitionCell(AnimatingCellBase):
                 except IndexError:
                     manager.state = manager.State.ACTIVE
                     self.state = self.State.DONE
+                    manager.screen.set_alarm('auto_forward_alarm', 0)
                     return
 
             if not skip:

@@ -17,6 +17,7 @@ actions = [
     Append(code_box, blob2),
     Wait(),
     Transition(code_box, blob),
+    Append(code_box, blob2),
 ]
 
 if __name__ == '__main__':

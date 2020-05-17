@@ -141,8 +141,8 @@ class BaseWindow(urwid.Pile):
     def movie_alarm(self, loop, data):
         self.animation_manager.movie_alarm()
 
-    def first_alarm(self, loop, data):
-        self.animation_manager.first_alarm()
+    def auto_forward_alarm(self, loop, data):
+        self.animation_manager.auto_forward_alarm()
 
 # =============================================================================
 # Screen
@@ -259,7 +259,7 @@ class TUIScreen:
             self.loop.screen.reset_default_terminal_palette()
 
         # as soon as the loop is going invoke the first animation
-        self.loop.set_alarm_in(0, self.base_window.first_alarm)
+        self.loop.set_alarm_in(0, self.base_window.auto_forward_alarm)
 
         # call urwid's main loop, this code doesn't return until the loop
         # exits!!!
