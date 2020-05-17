@@ -465,3 +465,18 @@ class Transition:
 
     def steps(self):
         return [steplib.Transition(self.code_box, self.code), ]
+
+
+class Sleep:
+    """Causes animations to pause for the given amount of time. Note that this
+    action happens within a cell, so is considered part of the group of
+    animation steps done together. For example if Append + Sleep + Append is 
+    part of the same cell it is all done/undone together.
+
+    :param time: amount of time to sleep given in seconds, floats allowed
+    """
+    def __init__(self, time):
+        self.time = time
+
+    def steps(self):
+        return [steplib.Sleep(self.time), ]
