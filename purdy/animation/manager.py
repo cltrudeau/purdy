@@ -39,8 +39,7 @@ class AnimationManager:
         # if we're in movie mode and the cell isn't doing a typewriter
         # animation, wake us up for the next animation
         if not cell.is_animating and self.screen.movie_mode > -1:
-            self.screen.loop.set_alarm_in(self.screen.movie_mode, 
-                self.screen.base_window.movie_alarm)
+            self.screen.set_alarm('movie_alarm', self.screen.movie_mode)
 
     def first_alarm(self):
         self.state = self.State.ACTIVE

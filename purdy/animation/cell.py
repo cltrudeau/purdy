@@ -68,7 +68,7 @@ class AnimatingCellBase:
 
     def interrupt(self, manager):
         # interrupted during an animation sequence, remove the timer
-        manager.screen.loop.remove_alarm(self.animation_alarm_handle)
+        manager.screen.remove_alarm(self.animation_alarm_handle)
 
         self.animation_alarm_handle = None
         manager.state = manager.State.ACTIVE
@@ -117,9 +117,9 @@ class GroupCell(AnimatingCellBase):
                     continue
                 else:
                     manager.state = manager.State.SLEEPING
-                    loop = manager.screen.loop
-                    self.animation_alarm_handle = loop.set_alarm_in(step.time, 
-                            manager.screen.base_window.animation_alarm)
+                    self.animation_alarm_handle = manager.screen.set_alarm(
+                        'animation_alarm', step.time)
+
                     self.index += 1
                     return
 
@@ -206,9 +206,8 @@ class TransitionCell(AnimatingCellBase):
 
         # ask to be woken back up for the next step
         manager.state = manager.State.SLEEPING
-        loop = manager.screen.loop
-        self.animation_alarm_handle = loop.set_alarm_in(delay,
-            manager.screen.base_window.animation_alarm)
+        self.animation_alarm_handle = manager.screen.set_alarm(
+            'animation_alarm', delay)
 
     def undo(self, manager):
         self.state = self.State.BEFORE

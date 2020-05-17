@@ -2,158 +2,41 @@
 UI (purdy.ui.py)
 ================
 
-This module is the entry point for the Urwid based code viewer included in
-purdy. All programs using the purdy library need to create a :class:`Screen`
-object or one of its children.
+This module is the entry point for the code viewers. It is a lightweight proxy
+to implementation of a screen. Screen implementations are found in
+:mod:`purdy.iscreen`.  All programs using the purdy library need to create a
+:class:`Screen` object or one of its children. The factory in this module
+determines which actual implementation is loaded.
 """
 import argparse
 
-import urwid
-
 from purdy.animation.manager import AnimationManager
 from purdy.animation.cell import group_steps_into_cells
-from purdy.colour import UrwidColourizer
 from purdy.content import Listing
 from purdy.settings import settings as default_settings
-from purdy.widgets import CodeWidget, DividingLine, TwinContainer
-
-#import logging
-#logging.basicConfig(filename='debug.log', level=logging.DEBUG)
-#logger = logging.getLogger()
 
 # =============================================================================
 
 DESCRIPTION = """You can alter the behaviour of any script calling
 Screen.run() by passing in command line arguments."""
 
-# =============================================================================
-# Main Screen
-# =============================================================================
+class Factory:
+    name = 'tui'
+    iscreen = None
 
-class FocusWalker:
-    ### Urwid has no call for focusing on a widget, you have to use an index
-    # into its parent's container. The FocusWalker finds all of the CodeWidget
-    # objects, figures out which one is currently focused and allows for the
-    # previous and next item to be focused
-    class Node:
-        def __init__(self, position, parent=None, parent_position=0):
-            self.position = position
-            self.parent = parent
-            self.parent_position = parent_position
+    @classmethod
+    def get_iscreen(cls, parent_screen):
+        if cls.iscreen:
+            return cls.iscreen
 
-    def __init__(self, root):
-        ### Figures out the order things should be focused in. 
-        #
-        # :param root: root container to look for CodeWidgets within
-        #
-        self.root = root
-        self.focused_index = 0
-        self.nodes = []
-
-        current_focus, _ = root.contents[root.focus_position]
-
-        # root is a Pile with either CodeWidgets or Columns in it, where
-        # the columns contain CodeWidgets
-        for position, content in enumerate(root.contents):
-            widget = content[0]
-            if isinstance(widget, CodeWidget):
-                if widget == current_focus:
-                    self.focused_index = len(self.nodes)
-
-                self.nodes.append( self.Node(position) )
-            elif isinstance(widget, urwid.Columns):
-                index = len(self.nodes)
-
-                self.nodes.append( self.Node(position, widget, 0) )
-                self.nodes.append( self.Node(position, widget, 1) )
-
-                if widget == current_focus:
-                    if widget.focus_position == 0:
-                        self.focused_index = index
-                    elif widget.focus_position == 1:
-                        self.focused_index = index + 1
-                    # else: shouldn't happen
-
-            # else: shouldn't happen
-
-    def focus_next(self):
-        # if we're the last item, loop to the next
-        position = self.focused_index + 1
-        if position >= len(self.nodes):
-            position = 0
-
-        self.set_focus(position)
-
-    def focus_prev(self):
-        # if we're the first item, loop to the next
-        position = self.focused_index - 1
-        if position < 0:
-            position = len(self.nodes) - 1
-
-        self.set_focus(position)
-
-    def set_focus(self, position):
-        # set the focus
-        node = self.nodes[position]
-        self.root.focus_position = node.position
-
-        if node.parent:
-            node.parent.focus_position = node.parent_position
-
-
-class BaseWindow(urwid.Pile):
-    def __init__(self, screen, *args, **kwargs):
-        self.screen = screen
-        self.animation_manager = AnimationManager(screen)
-        super(BaseWindow, self).__init__(*args, **kwargs)
-
-    def _next_focus(self):
-        walker = FocusWalker(self)
-        walker.focus_next()
-
-    def _prev_focus(self):
-        walker = FocusWalker(self)
-        walker.focus_prev()
-
-    def keypress(self, size, key):
-        if key in ('q', 'Q'):
-            raise urwid.ExitMainLoop()
-
-        if key in ('f1', 'f2', 'f3', 'f4', 'f5', 'f6', 'f7', 'f8', 'f9', 'f10'):
-            # let parent handle function keys
-            return super(BaseWindow, self).keypress(size, key)
-
-        if key not in self.animation_manager.handled_keys: 
-            # handle keys not handled by the animation manager 
-            result = super(BaseWindow, self).keypress(size, key)
-            if result is None:
-                # keypress was handled by child, we're done
-                return None
-            # else: fall through if super().keypress() didn't deal with it
-
-        if self.screen.movie_mode > -1:
-            # Ignore other keypresses in movie mode
-            return None
-
-        # --- at this point the keypress was not handled by the children, see
-        # if we want to do anything with it
-        if key == 'tab':
-            self._next_focus()
-            return None
-
-        if key == 'shift tab':
-            self._prev_focus()
-
-        return self.animation_manager.perform(key)
-
-    def animation_alarm(self, loop, data):
-        self.animation_manager.animation_alarm()
-
-    def movie_alarm(self, loop, data):
-        self.animation_manager.movie_alarm()
-
-    def first_alarm(self, loop, data):
-        self.animation_manager.first_alarm()
+        if cls.name == 'tui':
+            from purdy.iscreen.tui.iscreen import TUIScreen
+            cls.iscreen = TUIScreen(parent_screen)
+            return cls.iscreen
+        else:
+            from purdy.iscreen.virtual.iscreen import virtual_screen
+            cls.iscreen = virtual_screen(parent_screen)
+            return cls.iscreen
 
 # =============================================================================
 # Screen
@@ -182,23 +65,18 @@ class CodeBox:
                         if there is no item after this one in the rows=[]
                         listing. Defaults to False
         """
+        self.starting_line_number = starting_line_number
+        self.auto_scroll = auto_scroll
         self.height = height
         self.compact = compact
         self.listing = Listing(starting_line_number=starting_line_number)
 
-        self.widget = CodeWidget(self, auto_scroll)
-
-    def build(self, screen, container):
+    def setup(self, screen):
         self.screen = screen
-        screen.code_boxes.append(self)
+        self.screen.code_boxes.append(self)
 
-        self.listing.set_display('urwid', self.widget)
-
-        if self.height == 0:
-            container.append(self.widget)
-        else:
-            # height was specified, return a tuple instead
-            container.append( (self.height, self.widget) )
+    def build(self, screen):
+        self.screen.iscreen.add_code_box(self)
 
 
 class TwinCodeBox:
@@ -207,84 +85,63 @@ class TwinCodeBox:
     :func:`TwinCodeBox.build` is called, the widgets are created and added to 
     the :attr:`Screen.code_boxes` list sequentially, i.e. a single
     TwinCodeBox results in two CodeBox items in Screen's list.
+
+    :param left_starting_line_number:
+    :param right_starting_line_number: -1 to turn line numbers off, any higher 
+                                       value is the first number to display. 
+                                       Defaults to -1
+
+    :param left_auto_scroll:
+    :param right_auto_scroll: True to specify that scrolling happens
+                              automatically for the left and right boxes
+                              created by this spec. Defaults to True.
+
+    :param left_weight:
+    :param right_weight: relative weights for the widths of the columns, if the 
+                          values are the same then the columns are the same
+                          width, otherwise the widths are formed based on the
+                          ratio of left:right. Example: left_weight=2,
+                          right_weight=1 means the left side will be twice the
+                          width of the right side. Both values default to 1.
+
+    :param height: number of lines for the row this set of boxes is in.  The 
+                   default of 0 specifies automatic height
+
+    :param compact: if False, the dividing line between this box and the next 
+                    has a 1-line empty boundary. Parameter is ignored if there
+                    is no item after this one in the rows=[] listing. Defaults
+                    to False
     """
     def __init__(self, left_starting_line_number=-1, left_auto_scroll=True, 
             left_weight=1, right_starting_line_number=-1, 
             right_auto_scroll=True, right_weight=1, height=0, compact=False):
-        """Constructor
 
-        :param left_starting_line_number:
-        :param right_starting_line_number: -1 to turn line numbers off, any
-                                           higher value is the first number
-                                           to display. Defaults to -1
-
-        :param left_auto_scroll:
-        :param right_auto_scroll: True to specify that scrolling happens
-                                  automatically for the left and right boxes
-                                  created by this spec. Defaults to True.
-
-        :param left_weight:
-        :param right_weight: relative weights for the widths of the columns,
-                             if the values are the same then the columns are
-                             the same width, otherwise the widths are formed
-                             based on the ratio of left:right. Example:
-                             left_weight=2, right_weight=1 means the left side
-                             will be twice the width of the right side. Both
-                             values default to 1.
-
-        :param height: number of lines for the row this set of boxes is in. 
-                       The default of 0 specifies automatic height
-        :param compact: if False, the dividing line between this box and the 
-                        next has a 1-line empty boundary. Parameter is ignored
-                        if there is no item after this one in the rows=[]
-                        listing. Defaults to False
-        """
-        class Side:
-            pass
-
+        self.left_starting_line_number = left_starting_line_number
+        self.left_auto_scroll = left_auto_scroll
+        self.left_weight = left_weight
+        self.right_starting_line_number = right_starting_line_number
+        self.right_auto_scroll = right_auto_scroll
+        self.right_weight = right_weight
         self.height = height
         self.compact = compact
 
-        left = Side()
-        left.weight = left_weight
-        left.box = CodeBox(left_starting_line_number, left_auto_scroll)
-        self.left = left
+    def setup(self, screen):
+        class Side:
+            pass
 
-        right = Side()
-        right.weight = right_weight
-        right.box = CodeBox(right_starting_line_number, right_auto_scroll)
-        self.right = right
-
-    def build(self, screen, container):
         self.screen = screen
+        self.left = Side()
+        self.left.code_box = CodeBox(self.left_starting_line_number,
+            self.left_auto_scroll)
+        self.screen.code_boxes.append(self.left.code_box)
 
-        # use CodeBox's build() method because we need to pack them into Urwid
-        # differently
-        screen.code_boxes.append(self.left.box)
-        self.left.box.listing.set_display('urwid', self.left.box.widget)
+        self.right = Side()
+        self.right.code_box = CodeBox(self.right_starting_line_number,
+            self.right_auto_scroll)
+        self.screen.code_boxes.append(self.right.code_box)
 
-        screen.code_boxes.append(self.right.box)
-        self.right.box.listing.set_display('urwid', self.right.box.widget)
-
-        # Combine the widgets from the CodeBoxes into a display container
-        render_left = ('weight', self.left.weight, self.left.box.widget)
-        render_right = ('weight', self.right.weight, self.right.box.widget)
-
-        twin = TwinContainer([render_left, render_right], dividechars=1)
-
-        if self.height != 0:
-            twin = (self.height, twin)
-
-        container.append(twin)
-
-    def __getitem__(self, key):
-        if key == 0:
-            return self.left
-
-        if key == 1:
-            return self.right
-
-        raise IndexError
+    def build(self, screen):
+        self.screen.iscreen.add_twin_code_box(self)
 
 
 class Screen:
@@ -344,6 +201,8 @@ class Screen:
     def __init__(self, settings=None, rows=[]):
         self.rows = rows
         self.code_boxes = []
+        self.concrete_boxes = []
+
         self.settings = settings
         if settings is None:
             self.settings = default_settings
@@ -352,14 +211,10 @@ class Screen:
         if self.movie_mode != -1:
             self.movie_mode = float(self.movie_mode) / 1000.0
 
-        self._build_ui()
-        palette = UrwidColourizer.create_palette()
-        self.loop = urwid.MainLoop(self.base_window, palette)
+        self.animation_manager = AnimationManager(self)
 
-        if self.settings['colour'] == 256:
-            # don't confuse urwid's screen with ours
-            self.loop.screen.set_terminal_properties(colors=256)
-            self.loop.screen.reset_default_terminal_palette()
+        for row in self.rows:
+            row.setup(self)
 
     def _get_args(self):
         if self.settings['deactivate_args']:
@@ -371,49 +226,42 @@ class Screen:
             help='Print out the animation steps, grouped by Cell and exit')
         self.args = parser.parse_args()
 
-    def _build_ui(self):
-        # create a code widget for each box specified in self.rows
-        boxen = []
-
-        for index, row in enumerate(self.rows):
-            if index != 0:
-                # not the first row, add a divider before adding the next box
-                compact = self.rows[index - 1].compact
-                divider = (3, DividingLine(compact))
-                boxen.append(divider)
-
-            row.build(self, boxen)
-
-        self.base_window = BaseWindow(self, boxen)
-
     def load_actions(self, actions):
         steps = []
         for action in actions:
             steps.extend( action.steps() )
 
         cells = group_steps_into_cells(steps)
-        self.base_window.animation_manager.register(cells)
+        self.animation_manager.register(cells)
+
+    def set_alarm(self, handler, when):
+        return self.iscreen.set_alarm(handler, when)
+
+    def remove_alarm(self, alarm_handle):
+        self.iscreen.remove_alarm(alarm_handle)
 
     def run(self, actions):
         """Calls the main display event loop. Does not return until the UI
         exits."""
         #logger.debug(55*'=')
         self._get_args()
+
+        # Create concrete instances of iscreen an boxes
+        self.iscreen = Factory.get_iscreen(self)
+        for row in self.rows:
+            row.build(self)
+
+        # Process the actions
         self.load_actions(actions)
 
         if hasattr(self, 'args') and self.args.debugsteps:
-            for cell in self.base_window.animation_manager.cells:
+            for cell in self.animation_manager.cells:
                 print(f'{cell.__class__.__name__}')
                 for step in cell.steps:
                     print('   step', step)
             exit()
 
-        # as soon as the loop is going invoke the first animation
-        self.loop.set_alarm_in(0, self.base_window.first_alarm)
-
-        # call urwid's main loop, this code doesn't return until the loop
-        # exits!!!
-        self.loop.run()
+        self.iscreen.run()
 
 # =============================================================================
 # Other Screens
