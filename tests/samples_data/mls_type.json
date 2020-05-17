@@ -768,7 +768,7 @@
                     ">>> "
                   ],
                   [
-                    "Token.Keyword",
+                    "Token.Name.Builtin",
                     "p"
                   ],
                   [
@@ -794,7 +794,7 @@
                     ">>> "
                   ],
                   [
-                    "Token.Keyword",
+                    "Token.Name.Builtin",
                     "pr"
                   ],
                   [
@@ -820,7 +820,7 @@
                     ">>> "
                   ],
                   [
-                    "Token.Keyword",
+                    "Token.Name.Builtin",
                     "pri"
                   ],
                   [
@@ -846,7 +846,7 @@
                     ">>> "
                   ],
                   [
-                    "Token.Keyword",
+                    "Token.Name.Builtin",
                     "prin"
                   ],
                   [
@@ -872,7 +872,7 @@
                     ">>> "
                   ],
                   [
-                    "Token.Keyword",
+                    "Token.Name.Builtin",
                     "print"
                   ],
                   [
@@ -898,7 +898,7 @@
                     ">>> "
                   ],
                   [
-                    "Token.Keyword",
+                    "Token.Name.Builtin",
                     "print"
                   ],
                   [
@@ -928,7 +928,7 @@
                     ">>> "
                   ],
                   [
-                    "Token.Keyword",
+                    "Token.Name.Builtin",
                     "print"
                   ],
                   [
@@ -962,7 +962,7 @@
                     ">>> "
                   ],
                   [
-                    "Token.Keyword",
+                    "Token.Name.Builtin",
                     "print"
                   ],
                   [
@@ -1848,7 +1848,7 @@
                     ">>> "
                   ],
                   [
-                    "Token.Keyword",
+                    "Token.Name.Builtin",
                     "p"
                   ],
                   [
@@ -1874,7 +1874,7 @@
                     ">>> "
                   ],
                   [
-                    "Token.Keyword",
+                    "Token.Name.Builtin",
                     "pr"
                   ],
                   [
@@ -1900,7 +1900,7 @@
                     ">>> "
                   ],
                   [
-                    "Token.Keyword",
+                    "Token.Name.Builtin",
                     "pri"
                   ],
                   [
@@ -1926,7 +1926,7 @@
                     ">>> "
                   ],
                   [
-                    "Token.Keyword",
+                    "Token.Name.Builtin",
                     "prin"
                   ],
                   [
@@ -1952,7 +1952,7 @@
                     ">>> "
                   ],
                   [
-                    "Token.Keyword",
+                    "Token.Name.Builtin",
                     "print"
                   ],
                   [
@@ -1978,7 +1978,7 @@
                     ">>> "
                   ],
                   [
-                    "Token.Keyword",
+                    "Token.Name.Builtin",
                     "print"
                   ],
                   [
@@ -2008,7 +2008,7 @@
                     ">>> "
                   ],
                   [
-                    "Token.Keyword",
+                    "Token.Name.Builtin",
                     "print"
                   ],
                   [
@@ -2042,7 +2042,7 @@
                     ">>> "
                   ],
                   [
-                    "Token.Keyword",
+                    "Token.Name.Builtin",
                     "print"
                   ],
                   [

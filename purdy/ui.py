@@ -12,6 +12,7 @@ import argparse
 
 from purdy.animation.manager import AnimationManager
 from purdy.animation.cell import group_steps_into_cells
+from purdy.cmd import background_arg
 from purdy.content import Listing
 from purdy.settings import settings as default_settings
 
@@ -23,6 +24,7 @@ Screen.run() by passing in command line arguments."""
 class Factory:
     name = 'tui'
     iscreen = None
+    parms = {}
 
     @classmethod
     def get_iscreen(cls, parent_screen):
@@ -31,11 +33,11 @@ class Factory:
 
         if cls.name == 'tui':
             from purdy.iscreen.tui.iscreen import TUIScreen
-            cls.iscreen = TUIScreen(parent_screen)
+            cls.iscreen = TUIScreen(parent_screen, **cls.parms)
             return cls.iscreen
         else:
-            from purdy.iscreen.virtual.iscreen import virtual_screen
-            cls.iscreen = virtual_screen(parent_screen)
+            from purdy.iscreen.virtual.iscreen import VirtualScreen
+            cls.iscreen = VirtualScreen(parent_screen, **cls.parms)
             return cls.iscreen
 
 # =============================================================================
@@ -217,13 +219,29 @@ class Screen:
             row.setup(self)
 
     def _get_args(self):
+        class Dummy:
+            pass
+
         if self.settings['deactivate_args']:
+            self.args = Dummy()
+            self.args.debugsteps = False
+            self.args.export = False
+            self.args.export_rtf = False
             return
 
         # Screen can be influenced by command line arguments
         parser = argparse.ArgumentParser(description=DESCRIPTION)
         parser.add_argument('--debugsteps', '--ds', action='store_true', 
             help='Print out the animation steps, grouped by Cell and exit')
+
+        parser.add_argument('--export', action='store_true', 
+            help='Print out the results of the actions')
+
+        parser.add_argument('--exportrtf', action='store_true', 
+            help='Print out the results of the actions in RTF format')
+
+        background_arg(parser)
+
         self.args = parser.parse_args()
 
     def load_actions(self, actions):
@@ -245,6 +263,13 @@ class Screen:
         exits."""
         #logger.debug(55*'=')
         self._get_args()
+ 
+        if self.args.export:
+            Factory.name = 'virtual'
+
+        if self.args.exportrtf:
+            Factory.name = 'virtual'
+            Factory.parms = {'rtf':True}
 
         # Create concrete instances of iscreen an boxes
         self.iscreen = Factory.get_iscreen(self)
@@ -254,7 +279,7 @@ class Screen:
         # Process the actions
         self.load_actions(actions)
 
-        if hasattr(self, 'args') and self.args.debugsteps:
+        if self.args.debugsteps:
             for cell in self.animation_manager.cells:
                 print(f'{cell.__class__.__name__}')
                 for step in cell.steps:

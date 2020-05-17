@@ -7,9 +7,9 @@ This module handles the slide rendering animation in the urwid purdy player
 """
 from enum import Enum
 
-import logging
-logging.basicConfig(filename='debug.log', level=logging.DEBUG)
-logger = logging.getLogger()
+#import logging
+#logging.basicConfig(filename='debug.log', level=logging.DEBUG)
+#logger = logging.getLogger()
 
 # ==========================================================================
 # Animation Manager
@@ -60,7 +60,6 @@ class AnimationManager:
         self.forward()
         
     def perform(self, key):
-        logger.debug('AM.perform(%s), %s', key, self.state)
         if key == 's' and self.state == self.State.SLEEPING:
             self.interrupt()
             return
@@ -95,7 +94,6 @@ class AnimationManager:
         self.cells[self.index].render(self, skip=True)
 
     def interrupt(self):
-        logger.debug('AM.interrupt(), %s', self.cells[self.index])
         self.cells[self.index].interrupt(self)
 
     def backward(self):

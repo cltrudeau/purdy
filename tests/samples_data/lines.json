@@ -196,7 +196,7 @@
                     "        "
                   ],
                   [
-                    "Token.Keyword",
+                    "Token.Name.Builtin",
                     "print"
                   ],
                   [

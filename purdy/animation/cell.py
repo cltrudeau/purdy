@@ -15,8 +15,8 @@ from enum import Enum
 from purdy.animation import steps as steplib
 from purdy.parser import BlankCodeLine, parse_source
 
-import logging
-logger = logging.getLogger()
+#import logging
+#logger = logging.getLogger()
 
 # ===========================================================================
 # Cell Factory
@@ -178,7 +178,6 @@ class TransitionCell(AnimatingCellBase):
         return d
 
     def render(self, manager, skip=False):
-        logger.debug('Tran.render(), %s', self.state)
         if self.state == self.State.DONE:
             return
 

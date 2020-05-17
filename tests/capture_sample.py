@@ -32,7 +32,7 @@ def capture(module_name):
     module.screen.load_actions(module.actions)
 
     results = []
-    for cell in module.screen.base_window.animation_manager.cells:
+    for cell in module.screen.animation_manager.cells:
         results.append( cell._test_dict() )
 
     with open('cells.json', 'w') as f:

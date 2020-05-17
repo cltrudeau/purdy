@@ -217,7 +217,7 @@ class TUIScreen:
                           this concrete implementation
 
     """
-    def __init__(self, parent_screen):
+    def __init__(self, parent_screen, **kwargs):
         self.parent_screen = parent_screen
         self.widgets = []
 

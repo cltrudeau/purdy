@@ -156,7 +156,7 @@
                     ">>> "
                   ],
                   [
-                    "Token.Name.Builtin.Pseudo",
+                    "Token.Keyword.Constant",
                     "None"
                   ],
                   [
@@ -508,7 +508,7 @@
                     "    "
                   ],
                   [
-                    "Token.Keyword",
+                    "Token.Name.Builtin",
                     "print"
                   ],
                   [
@@ -1136,7 +1136,7 @@
                     "("
                   ],
                   [
-                    "Token.Name.Builtin.Pseudo",
+                    "Token.Keyword.Constant",
                     "True"
                   ],
                   [

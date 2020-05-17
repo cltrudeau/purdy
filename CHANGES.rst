@@ -1,62 +1,68 @@
-1.0.3
+1.1.0
 =====
 
-* remove debug statement
+* Refactored how screens work, they're now a proxy for an implementation
+  inside of "purdy.iscreen". The Urwid code viewer now lives in
+  "purdy.iscreen.tui" and a new viewer has been added that does text export
+* Added Sleep action
+* Tranistion actions are now skippable
+* Transition actions don't automatically trigger a Wait anymore, you have to
+  call Wait explicitly
 
 1.0.2
 =====
 
-* bug fix: crash when Fold is called without a Wait immediately afterwards,
+* Bug fix: crash when Fold is called without a Wait immediately afterwards,
   urwid was caching a focus position and trying to set it to a line that
   wasn't there anymore
 
 1.0.1
 =====
 
-* bug fix: crash when fast-forward called on Transtion due to missing skip
+* Bug fix: crash when fast-forward called on Transtion due to missing skip
   parameter
 
 1.0
 ===
 
-* breaking change release
-* moved animation mechansim to be based on a queue, can now go forwards and
+* Breaking change release
+* Moved animation mechansim to be based on a queue, can now go forwards and
   backwards
-* signatures of Actions and Screens have changed
-* add tools for printing code in other formats such as RTF and HTML
+* Signatures of Actions and Screens have changed
+* Add tools for printing code in other formats such as RTF and HTML
 
 0.4
 ===
 
-* add support for bash session lexer
-* add RowScreen type that can handle multiple rows and side-by-side pairs of
+* Add support for bash session lexer
+* Add RowScreen type that can handle multiple rows and side-by-side pairs of
   boxes
-* add focus indicator to boxes without scroll indicators
+* Add focus indicator to boxes without scroll indicators
 
 0.3
 ===
 
-* added tool that uses coloured lexer to print code to console
-* added auto scrolling feature for the CodeBox containers
-* added new actions for inserting and editing lines
+* Added tool that uses coloured lexer to print code to console
+* Added auto scrolling feature for the CodeBox containers
+* Added new actions for inserting and editing lines
 
 0.2
 ===
 
-* purdy can now be used as a library as well as a standalone script
-* added Python code lexer 
-* added scrollbar indicators
-* added SplitScreen
-* added line number support
-* added highlighting of lines
+* Purdy can now be used as a library as well as a standalone script
+* Added Python code lexer 
+* Added scrollbar indicators
+* Added SplitScreen
+* Added line number support
+* Added highlighting of lines
 
 
 0.1.1
 =====
 
-* patched documentation
+* Patched documentation
 
 0.1
 ===
 
-* initial release to pypi
+* Initial release to pypi

@@ -2432,7 +2432,7 @@
                     ">>> "
                   ],
                   [
-                    "Token.Name.Builtin.Pseudo",
+                    "Token.Keyword.Constant",
                     "N"
                   ],
                   [
@@ -2458,7 +2458,7 @@
                     ">>> "
                   ],
                   [
-                    "Token.Name.Builtin.Pseudo",
+                    "Token.Keyword.Constant",
                     "No"
                   ],
                   [
@@ -2484,7 +2484,7 @@
                     ">>> "
                   ],
                   [
-                    "Token.Name.Builtin.Pseudo",
+                    "Token.Keyword.Constant",
                     "Non"
                   ],
                   [
@@ -2510,7 +2510,7 @@
                     ">>> "
                   ],
                   [
-                    "Token.Name.Builtin.Pseudo",
+                    "Token.Keyword.Constant",
                     "None"
                   ],
                   [
@@ -2536,37 +2536,7 @@
                     ">>> "
                   ],
                   [
-                    "Token.Name.Builtin.Pseudo",
-                    "None"
-                  ],
-                  [
-                    "Token.Text",
-                    " "
-                  ],
-                  [
-                    "Token",
-                    "\u2588"
-                  ]
-                ]
-              }
-            ],
-            "position": -1
-          }
-        },
-        {
-          "Sleep": {}
-        },
-        {
-          "ReplaceRows": {
-            "lines": [
-              {
-                "parts": [
-                  [
-                    "Token.Generic.Prompt",
-                    ">>> "
-                  ],
-                  [
-                    "Token.Name.Builtin.Pseudo",
+                    "Token.Keyword.Constant",
                     "None"
                   ],
                   [
@@ -2574,10 +2544,6 @@
                     " "
                   ],
                   [
-                    "Token.Operator",
-                    "<"
-                  ],
-                  [
                     "Token",
                     "\u2588"
                   ]
@@ -2600,7 +2566,7 @@
                     ">>> "
                   ],
                   [
-                    "Token.Name.Builtin.Pseudo",
+                    "Token.Keyword.Constant",
                     "None"
                   ],
                   [
@@ -2612,6 +2578,40 @@
                     "<"
                   ],
                   [
+                    "Token",
+                    "\u2588"
+                  ]
+                ]
+              }
+            ],
+            "position": -1
+          }
+        },
+        {
+          "Sleep": {}
+        },
+        {
+          "ReplaceRows": {
+            "lines": [
+              {
+                "parts": [
+                  [
+                    "Token.Generic.Prompt",
+                    ">>> "
+                  ],
+                  [
+                    "Token.Keyword.Constant",
+                    "None"
+                  ],
+                  [
+                    "Token.Text",
+                    " "
+                  ],
+                  [
+                    "Token.Operator",
+                    "<"
+                  ],
+                  [
                     "Token.Text",
                     " "
                   ],
@@ -2638,7 +2638,7 @@
                     ">>> "
                   ],
                   [
-                    "Token.Name.Builtin.Pseudo",
+                    "Token.Keyword.Constant",
                     "None"
                   ],
                   [
@@ -2680,7 +2680,7 @@
                     ">>> "
                   ],
                   [
-                    "Token.Name.Builtin.Pseudo",
+                    "Token.Keyword.Constant",
                     "None"
                   ],
                   [
@@ -2726,7 +2726,7 @@
                     ">>> "
                   ],
                   [
-                    "Token.Name.Builtin.Pseudo",
+                    "Token.Keyword.Constant",
                     "None"
                   ],
                   [
@@ -5095,7 +5095,7 @@
                     "    "
                   ],
                   [
-                    "Token.Keyword",
+                    "Token.Name.Builtin",
                     "p"
                   ],
                   [
@@ -5125,7 +5125,7 @@
                     "    "
                   ],
                   [
-                    "Token.Keyword",
+                    "Token.Name.Builtin",
                     "pr"
                   ],
                   [
@@ -5155,7 +5155,7 @@
                     "    "
                   ],
                   [
-                    "Token.Keyword",
+                    "Token.Name.Builtin",
                     "pri"
                   ],
                   [
@@ -5185,7 +5185,7 @@
                     "    "
                   ],
                   [
-                    "Token.Keyword",
+                    "Token.Name.Builtin",
                     "prin"
                   ],
                   [
@@ -5215,7 +5215,7 @@
                     "    "
                   ],
                   [
-                    "Token.Keyword",
+                    "Token.Name.Builtin",
                     "print"
                   ],
                   [
@@ -5245,7 +5245,7 @@
                     "    "
                   ],
                   [
-                    "Token.Keyword",
+                    "Token.Name.Builtin",
                     "print"
                   ],
                   [
@@ -5279,7 +5279,7 @@
                     "    "
                   ],
                   [
-                    "Token.Keyword",
+                    "Token.Name.Builtin",
                     "print"
                   ],
                   [
@@ -5317,7 +5317,7 @@
                     "    "
                   ],
                   [
-                    "Token.Keyword",
+                    "Token.Name.Builtin",
                     "print"
                   ],
                   [
@@ -16750,7 +16750,7 @@
                     "("
                   ],
                   [
-                    "Token.Name.Builtin.Pseudo",
+                    "Token.Keyword.Constant",
                     "T"
                   ],
                   [
@@ -16788,7 +16788,7 @@
                     "("
                   ],
                   [
-                    "Token.Name.Builtin.Pseudo",
+                    "Token.Keyword.Constant",
                     "Tr"
                   ],
                   [
@@ -16826,7 +16826,7 @@
                     "("
                   ],
                   [
-                    "Token.Name.Builtin.Pseudo",
+                    "Token.Keyword.Constant",
                     "Tru"
                   ],
                   [
@@ -16864,7 +16864,7 @@
                     "("
                   ],
                   [
-                    "Token.Name.Builtin.Pseudo",
+                    "Token.Keyword.Constant",
                     "True"
                   ],
                   [
@@ -16902,7 +16902,7 @@
                     "("
                   ],
                   [
-                    "Token.Name.Builtin.Pseudo",
+                    "Token.Keyword.Constant",
                     "True"
                   ],
                   [
@@ -16944,7 +16944,7 @@
                     "("
                   ],
                   [
-                    "Token.Name.Builtin.Pseudo",
+                    "Token.Keyword.Constant",
                     "True"
                   ],
                   [
