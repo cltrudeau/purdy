@@ -11,6 +11,7 @@ Contents
     self
     programs
     library
+    samples
     implementation
 
 

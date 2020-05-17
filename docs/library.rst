@@ -44,14 +44,8 @@ Every purdy library program needs to create a
 controls the display.  :class:`Screen <purdy.ui.Screen>` and its children 
 provide one or more :class:`CodeBox <purdy.ui.CodeBox>` objects which is a
 widget on the screen that displays code. You combine a series of 
-:mod:`purdy.ui.actions` to display and alter the code.
-
-
-Sample Code
-===========
-
-Sample code can be found in the "extras/samples" directory of the repository:
-https://github.com/cltrudeau/purdy/tree/master/extras/samples
+:mod:`purdy.ui.actions` to display and alter the code. View more examples in
+the :ref:`code-samples` section.
 
 ---------------------------------------------------------------------------
 

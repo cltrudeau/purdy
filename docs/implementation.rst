@@ -27,5 +27,11 @@ purdy library.
 .. automodule:: purdy.scribe
     :members:
 
-.. automodule:: purdy.widgets
+.. automodule:: purdy.iscreen.tui.iscreen
+    :members:
+
+.. automodule:: purdy.iscreen.tui.widgets
+    :members:
+
+.. automodule:: purdy.iscreen.virtual.iscreen
     :members:

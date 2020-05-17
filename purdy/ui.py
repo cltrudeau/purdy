@@ -199,6 +199,20 @@ class Screen:
     |                       |
     |                       |
     +-----------------------+
+
+    Command Line Parameters
+    -----------------------
+
+    Unless "deactivate_args" is set to True in :mod:`purdy.settings` (False by
+    default), Screen will also parse command line arguments. This allows
+    scripts calling the library to change their behaviour with switches. 
+
+    Supported switches are:
+
+    * **--debugsteps** Print out the animation steps, grouped by Cell and exit
+    * **--export** Print out the results of the actions
+    * **--exportrtf** Print out the results of the actions in RTF format
+
     """
     def __init__(self, settings=None, rows=[]):
         self.rows = rows
