@@ -240,7 +240,7 @@ class Screen:
             self.args = Dummy()
             self.args.debugsteps = False
             self.args.export = False
-            self.args.export_rtf = False
+            self.args.exportrtf = False
             return
 
         # Screen can be influenced by command line arguments

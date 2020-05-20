@@ -1,3 +1,9 @@
+1.1.1
+=====
+
+* Bug fix: purdy cmd wasn't launching properly due to type-o in fake args
+
+
 1.1.0
 =====
 
