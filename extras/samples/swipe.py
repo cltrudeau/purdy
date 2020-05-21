@@ -12,11 +12,16 @@ screen = SimpleScreen(starting_line_number=10)
 code_box = screen.code_box
 blob = Code('../display_code/simple.repl')
 blob2 = Code('../display_code/traceback.repl')
+blob3 = Code('../display_code/decorator.repl')
 
 actions = [
     Append(code_box, blob2),
     Wait(),
     Transition(code_box, blob),
+    Append(code_box, blob2),
+    Wait(),
+    Transition(code_box, blob3), # Test Wait after Transition
+    Wait(),
     Append(code_box, blob2),
 ]
 

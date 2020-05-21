@@ -296,6 +296,9 @@ class Screen:
         if self.args.debugsteps:
             for cell in self.animation_manager.cells:
                 print(f'{cell.__class__.__name__}')
+                from purdy.animation.cell import TransitionCell
+                if isinstance(cell, TransitionCell):
+                    print('   => auto_forward', cell.auto_forward)
                 for step in cell.steps:
                     print('   step', step)
             exit()

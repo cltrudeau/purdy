@@ -32,10 +32,17 @@ def group_steps_into_cells(steps):
     """
     cells = []
     cell = None
+    previous_step = None
     for step in steps:
         if isinstance(step, steplib.CellEnd):
             if cell:
                 cells.append(cell)
+
+            if isinstance(previous_step, steplib.Transition):
+                # By default Transition automatically goes to next step, a
+                # wait is ignored because Transition itself is a cell, in this
+                # case need to change the behaviour of Transition
+                cells[-1].auto_forward = False
 
             cell = None
         elif isinstance(step, steplib.Transition):
@@ -43,6 +50,7 @@ def group_steps_into_cells(steps):
                 cells.append(cell)
 
             cell = TransitionCell(step.code_box, step.code)
+
             cells.append(cell)
             cell = None
         else:
@@ -50,6 +58,8 @@ def group_steps_into_cells(steps):
                 cell = GroupCell()
 
             cell.steps.append(step)
+
+        previous_step = step
 
     if cell and len(cell.steps) > 0:
         cells.append(cell)
@@ -154,7 +164,6 @@ class GroupCell(AnimatingCellBase):
 class TransitionCell(AnimatingCellBase):
     DELAY = 0.05
     BETWEEN_DELAY = 0.3
-    auto_forward = True
 
     class State(Enum):
         BEFORE = 0
@@ -167,6 +176,7 @@ class TransitionCell(AnimatingCellBase):
         self.code = code
         self.state = self.State.BEFORE
         self.steps = []
+        self.auto_forward = True
 
     def _test_dict(self):
         d = {
@@ -213,7 +223,8 @@ class TransitionCell(AnimatingCellBase):
                 except IndexError:
                     manager.state = manager.State.ACTIVE
                     self.state = self.State.DONE
-                    manager.screen.set_alarm('auto_forward_alarm', 0)
+                    if self.auto_forward:
+                        manager.screen.set_alarm('auto_forward_alarm', 0)
                     return
 
             if not skip:
