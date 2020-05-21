@@ -217,7 +217,7 @@ class TUIScreen:
                           this concrete implementation
 
     """
-    def __init__(self, parent_screen, **kwargs):
+    def __init__(self, parent_screen):
         self.parent_screen = parent_screen
         self.widgets = []
 
@@ -250,8 +250,17 @@ class TUIScreen:
         """Calls the main display event loop. Does not return until the UI
         exits."""
         self.base_window = BaseWindow(self, self.widgets)
+        window = self.base_window
+        if self.parent_screen.args.maxheight:
+            # Force a maximum height on the window, put the BaseWindow in a
+            # container and fill anything that is bigger than max
+            window = urwid.Pile([
+                (int(self.parent_screen.args.maxheight), self.base_window),
+                urwid.SolidFill('X'),
+            ])
+
         palette = UrwidColourizer.create_palette()
-        self.loop = urwid.MainLoop(self.base_window, palette)
+        self.loop = urwid.MainLoop(window, palette)
 
         if self.parent_screen.settings['colour'] == 256:
             # don't confuse urwid's screen with ours

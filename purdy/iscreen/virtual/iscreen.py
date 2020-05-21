@@ -44,15 +44,14 @@ class VirtualScreen:
                           this concrete implementation
 
     """
-    def __init__(self, parent_screen, **kwargs):
+    def __init__(self, parent_screen):
         self.parent_screen = parent_screen
         self.widgets = {}
         self.mode = 'plain'
-
-        if kwargs.get('rtf', False):
+        if parent_screen.args.exportrtf:
             self.mode = 'rtf'
 
-        self.background_colour = kwargs.get('background', None)
+        self.background_colour = parent_screen.args.background
 
 
     def add_code_box(self, code_box):

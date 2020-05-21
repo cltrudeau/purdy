@@ -24,7 +24,6 @@ Screen.run() by passing in command line arguments."""
 class Factory:
     name = 'tui'
     iscreen = None
-    parms = {}
 
     @classmethod
     def get_iscreen(cls, parent_screen):
@@ -33,11 +32,11 @@ class Factory:
 
         if cls.name == 'tui':
             from purdy.iscreen.tui.iscreen import TUIScreen
-            cls.iscreen = TUIScreen(parent_screen, **cls.parms)
+            cls.iscreen = TUIScreen(parent_screen)
             return cls.iscreen
         else:
             from purdy.iscreen.virtual.iscreen import VirtualScreen
-            cls.iscreen = VirtualScreen(parent_screen, **cls.parms)
+            cls.iscreen = VirtualScreen(parent_screen)
             return cls.iscreen
 
 # =============================================================================
@@ -236,13 +235,6 @@ class Screen:
         class Dummy:
             pass
 
-        if self.settings['deactivate_args']:
-            self.args = Dummy()
-            self.args.debugsteps = False
-            self.args.export = False
-            self.args.exportrtf = False
-            return
-
         # Screen can be influenced by command line arguments
         parser = argparse.ArgumentParser(description=DESCRIPTION)
         parser.add_argument('--debugsteps', '--ds', action='store_true', 
@@ -254,9 +246,17 @@ class Screen:
         parser.add_argument('--exportrtf', action='store_true', 
             help='Print out the results of the actions in RTF format')
 
+        parser.add_argument('--maxheight', help=('Sets a maximum screen '
+            'height for the TUI screen viewer. Ignored if not in TUI mode.'))
+
         background_arg(parser)
 
-        self.args = parser.parse_args()
+        if self.settings['deactivate_args']:
+            # Ignore whatever was passed in on command line because of the
+            # settings
+            self.args = parser.parse_args([])
+        else:
+            self.args = parser.parse_args()
 
     def load_actions(self, actions):
         steps = []
@@ -278,12 +278,8 @@ class Screen:
         #logger.debug(55*'=')
         self._get_args()
  
-        if self.args.export:
+        if self.args.export or self.args.exportrtf:
             Factory.name = 'virtual'
-
-        if self.args.exportrtf:
-            Factory.name = 'virtual'
-            Factory.parms = {'rtf':True}
 
         # Create concrete instances of iscreen an boxes
         self.iscreen = Factory.get_iscreen(self)
