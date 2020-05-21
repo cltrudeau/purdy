@@ -24,6 +24,7 @@ from pygments.token import Generic, Token
 
 from purdy.animation import steps as steplib
 from purdy.parser import CodePart, CodeLine, LEXERS, parse_source, token_is_a
+from purdy.scribe import range_set_to_list
 
 # =============================================================================
 # Single Code Blob Actions
@@ -401,8 +402,6 @@ class Highlight:
         self.highlight_on = highlight_on
 
         if isinstance(spec, str):
-            from purdy.scribe import range_set_to_list
-
             self.numbers = range_set_to_list(spec)
         else:
             self.numbers = spec
@@ -410,6 +409,45 @@ class Highlight:
     def steps(self):
         return [steplib.HighlightLines(self.code_box, self.numbers,
             self.highlight_on) ]
+
+
+class HighlightChain:
+    """A common pattern with highlighting lines is to turn a highlight on for
+    some set of lines, then turn it off and turn it on for more lines. This is
+    a convenience wrapper to the :class:`Highlight` action, turning items on
+    and off in series.
+
+    :param code_box: :class:`purdy.ui.CodeBox` to perform series of highlight on
+
+    :param spec_list: a list of highlight specs (see :class:`Highlight` for
+                      details on a spec)
+    """
+    def __init__(self, code_box, spec_list):
+        self.code_box = code_box
+        self.spec_list = spec_list
+
+    def steps(self):
+        all_steps = []
+        previous_numbers = None
+        for spec in self.spec_list:
+            if isinstance(spec, str):
+                numbers = range_set_to_list(spec)
+            else:
+                numbers = spec
+
+            if previous_numbers:
+                all_steps.append( steplib.HighlightLines(self.code_box, 
+                    previous_numbers, False) )
+
+            all_steps.extend([ 
+                steplib.HighlightLines(self.code_box, numbers, True),
+                steplib.CellEnd()
+            ])
+
+            previous_numbers = numbers
+
+        return all_steps
+
 
 class Fold:
     """Folds code by replacing one or more lines with a vertical elipses

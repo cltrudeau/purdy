@@ -1,3 +1,9 @@
+1.2.0
+=====
+
+* Added HighlightChain action
+
+
 1.1.1
 =====
 
