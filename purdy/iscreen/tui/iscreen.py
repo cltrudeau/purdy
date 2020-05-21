@@ -10,10 +10,6 @@ import urwid
 from purdy.colour import UrwidColourizer
 from purdy.iscreen.tui.widgets import CodeWidget, DividingLine, TwinContainer
 
-#import logging
-#logging.basicConfig(filename='debug.log', level=logging.DEBUG)
-#logger = logging.getLogger()
-
 # =============================================================================
 # Window Management
 # =============================================================================

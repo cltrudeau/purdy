@@ -13,6 +13,9 @@ from pygments.token import String, Token
 
 from purdy.parser import CodeLine, CodePart, token_is_a, parse_source
 
+import logging
+logger = logging.getLogger()
+
 # ===========================================================================
 # Animation Steps
 # ===========================================================================
@@ -76,6 +79,7 @@ class InsertRows(PositionTestMixin, BaseEditStep):
         self.code_box.listing.insert_lines(self.position, self.lines)
 
     def undo_step(self):
+        logger.debug('InsertRows.undo_step() pos:%s', self.position)
         position = self.position
         if position == 0:
             # insert 0 is signal for append, remove last n-lines 
@@ -377,9 +381,10 @@ class CellEnd:
 
 
 class Transition:
-    def __init__(self, code_box, code):
+    def __init__(self, code_box, code=None, code_box_to_copy=None):
         self.code_box = code_box
         self.code = code
+        self.code_box_to_copy = code_box_to_copy
 
 
 class StopMovieException(Exception):

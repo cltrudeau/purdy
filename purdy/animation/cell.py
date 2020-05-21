@@ -15,8 +15,8 @@ from enum import Enum
 from purdy.animation import steps as steplib
 from purdy.parser import BlankCodeLine, parse_source
 
-#import logging
-#logger = logging.getLogger()
+import logging
+logger = logging.getLogger()
 
 # ===========================================================================
 # Cell Factory
@@ -49,7 +49,8 @@ def group_steps_into_cells(steps):
             if cell:
                 cells.append(cell)
 
-            cell = TransitionCell(step.code_box, step.code)
+            cell = TransitionCell(step.code_box, step.code,
+                step.code_box_to_copy)
 
             cells.append(cell)
             cell = None
@@ -144,6 +145,11 @@ class GroupCell(AnimatingCellBase):
                 manager.screen.movie_mode = -1
 
     def undo(self, manager):
+        logger.debug('GroupCell.undo() index:%s #steps:%s', self.index, 
+            len(self.steps))
+        for step in self.steps:
+            logger.debug('   =>%s', step)
+
         if len(self.steps) == 0:
             # badly formed action sequences that result in an empty cell would
             # cause a crash, just do nothing
@@ -154,10 +160,14 @@ class GroupCell(AnimatingCellBase):
         if self.index >= len(self.steps):
             self.index = len(self.steps) - 1
 
+        logger.debug('    -------')
         for x in range(self.index, -1, -1):
+            logger.debug('   x:%s', x)
             self.index = x
             step = self.steps[x]
+            logger.debug('   step:%s', step)
             if not isinstance(step, steplib.Sleep):
+                logger.debug('   !Sleep, undoing step')
                 step.undo_step()
 
 
@@ -171,17 +181,24 @@ class TransitionCell(AnimatingCellBase):
         APPENDING = 2
         DONE = 3
 
-    def __init__(self, code_box, code):
+    def __init__(self, code_box, code, code_box_to_copy):
         self.code_box = code_box
         self.code = code
+        self.code_box_to_copy = code_box_to_copy
         self.state = self.State.BEFORE
         self.steps = []
         self.auto_forward = True
 
     def _test_dict(self):
+        has_copy_box = self.code_box_to_copy is not None
+        code = None
+        if self.code:
+            code = self.code.source
+
         d = {
             'TransitionCell': {
-                'code':f'{self.code.source}',
+                'code':f'{code}',
+                'has_copy_box':self.code_box_to_copy is not None,
             }
         }
 
@@ -196,12 +213,16 @@ class TransitionCell(AnimatingCellBase):
         if self.state == self.State.BEFORE:
             # first time through, setup our append and undo lines
             self.position = 1
-            self.code_lines = parse_source(self.code.source, self.code.lexer)
-            self.undo_lines = deepcopy(self.code_box.listing.lines)
 
+            if self.code:
+                self.code_lines = parse_source(self.code.source, 
+                    self.code.lexer)
+            elif self.code_box_to_copy:
+                self.code_lines = deepcopy(self.code_box_to_copy.listing.lines)
+
+            self.undo_lines = deepcopy(self.code_box.listing.lines)
             self.state = self.State.DELETING
             # intentional fall through
-
 
         # If we're in skip mode, need to keep doing the work
         while True:
@@ -236,6 +257,10 @@ class TransitionCell(AnimatingCellBase):
             'animation_alarm', delay)
 
     def undo(self, manager):
+        logger.debug('Transition.undo()')
+        for line in self.undo_lines:
+            logger.debug('   =>%s', line)
+
         self.state = self.State.BEFORE
         self.code_box.listing.clear()
         self.code_box.listing.insert_lines(0, self.undo_lines)

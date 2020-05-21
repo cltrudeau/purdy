@@ -495,14 +495,39 @@ class Transition:
                      transition on
 
     :param code: a :class:`purdy.content.Code` object containing the source
-                 code replacing the existing content
+                 code replacing the existing content. Should not be used at
+                 the same time as code_box_to_copy parameter.
+
+    :param code_box_to_copy: a code box containing rendered code to copy into
+                             this one to display. This is typically a 
+                             :class:`VirtualCodeBox`. Should not be used at
+                             the same time as code parameter.
     """
-    def __init__(self, code_box, code):
+    def __init__(self, code_box, code=None, code_box_to_copy=None):
         self.code_box = code_box
         self.code = code
+        self.code_box_to_copy = code_box_to_copy
 
     def steps(self):
-        return [steplib.Transition(self.code_box, self.code), ]
+        return [steplib.Transition(self.code_box, self.code, 
+            self.code_box_to_copy), ]
+
+
+class TransitionCodeBox:
+    """Replaces the contents of a :class:`purdy.ui.CodeBox` with new content,
+    doing a wipe animation from top to bottom. New content is copied out of an
+    existing code box -- likely a :class:`purdy.ui.VirtualCodeBox`.
+
+    :param code_box: the :class:`purdy.ui.CodeBox` instance to perform the
+                     transition on
+
+    """
+    def __init__(self, code_box, code_box_to_copy):
+        self.code_box = code_box
+        self.code_box_to_copy = code_box_to_copy
+
+    def steps(self):
+        return [steplib.TransitionCopy(self.code_box, self.code_box_to_copy), ]
 
 
 class Sleep:

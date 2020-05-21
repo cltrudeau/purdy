@@ -7,35 +7,11 @@ making the final result available.
 """
 
 from purdy.colour import RTFColourizer
+from purdy.ui import VirtualCodeWidget
 
 # =============================================================================
 # Screen
 # =============================================================================
-
-class CodeWidget:
-    """Container for lines of code. This is a very simple implementation,
-    wrapping a list of the lines.
-    """
-    def __init__(self):
-        self.lines = []
-
-    #--- RenderHook methods
-    def line_inserted(self, listing, position, line):
-        content = listing.render_line(line)
-        index = position - 1
-        self.lines.insert(index, content)
-
-    def line_removed(self, listing, position):
-        del self.lines[position - 1]
-
-    def line_changed(self, listing, position, line):
-        content = listing.render_line(line)
-        index = position - 1
-        self.lines[index] = content
-
-    def clear(self):
-        self.lines = []
-
 
 class VirtualScreen:
     """Concrete, Urwid based implementation of a screen.
@@ -53,18 +29,17 @@ class VirtualScreen:
 
         self.background_colour = parent_screen.args.background
 
-
     def add_code_box(self, code_box):
-        widget = CodeWidget()
+        widget = VirtualCodeWidget()
         self.widgets[code_box] = widget
         code_box.listing.set_display(self.mode, widget)
 
     def add_twin_code_box(self, twin_code_box):
-        widget = CodeWidget()
+        widget = VirtualCodeWidget()
         self.widgets[twin_code_box.left.code_box] = widget
         twin_code_box.left.code_box.listing.set_display(self.mode, widget)
 
-        widget = CodeWidget()
+        widget = VirtualCodeWidget()
         self.widgets[twin_code_box.right.code_box] = widget
         twin_code_box.right.code_box.listing.set_display(self.mode, widget)
 

@@ -16,6 +16,10 @@ from purdy.cmd import background_arg
 from purdy.content import Listing
 from purdy.settings import settings as default_settings
 
+import logging
+logging.basicConfig(filename='debug.log', level=logging.DEBUG)
+logger = logging.getLogger()
+
 # =============================================================================
 
 DESCRIPTION = """You can alter the behaviour of any script calling
@@ -43,29 +47,84 @@ class Factory:
 # Screen
 # =============================================================================
 
+class VirtualCodeWidget:
+    """Render hook implementation used with the :class:`VirtualCodeBox`.
+    """
+    def __init__(self):
+        self.lines = []
+
+    #--- RenderHook methods
+    def line_inserted(self, listing, position, line):
+        content = listing.render_line(line)
+        index = position - 1
+        self.lines.insert(index, content)
+
+    def line_removed(self, listing, position):
+        del self.lines[position - 1]
+
+    def line_changed(self, listing, position, line):
+        content = listing.render_line(line)
+        index = position - 1
+        self.lines[index] = content
+
+    def clear(self):
+        self.lines = []
+
+
+class VirtualCodeBox:
+    """Specifies a box to contain code. This implementation is not meant to be
+    associated with a :class:`Screen`. Used for "rendering" off screen,
+    manipulating code either for export or copying to a concrete code box
+    later
+
+    :param starting_line_number: -1 means no line numbers, anything larger will 
+                                 be the first line number displayed.  Defaults 
+                                 to -1
+    """
+    def __init__(self, starting_line_number=-1, display_mode='plain'):
+        self.starting_line_number = starting_line_number
+        self.listing = Listing(starting_line_number=starting_line_number)
+        self.widget = VirtualCodeWidget()
+
+        self.listing.set_display(display_mode, self.widget)
+
+    def perform_actions(self, actions):
+        """Performs the list of actions on the code in the box. Done separtely
+        from the main event loop so it has no interactions like Wait,
+        typewriters, etc. Everything is done in fast-forward mode.
+
+        :param actions: list of actions to perfrom on the code in this box
+        """
+        for action in actions:
+            for step in action.steps():
+                step.render_step()
+
+# -----------------------------------------------------------------------------
+
 class CodeBox:
     """Specifies a box to contain code. :class:`Screen` uses these to
     determine widget layout, subsequent actions are done within the context of 
     this box. When :func:`CodeBox.build` is called by a :class:`Screen` class
     a widget is built and this box is added to the screen.
+
+    :param starting_line_number: -1 means no line numbers, anything larger will 
+                                 be the first line number displayed.  Defaults 
+                                 to -1
+
+    :param auto_scroll: When True, :class:`purdy.widgets.CodeBox` created by 
+                        this specification automatically scrolls to newly added 
+                        content.  Defaults to True.
+
+    :param height: Number of lines the row containing this box should be.  A 
+                   value of 0 indicates automatic spacing.  Defaults to 0.
+
+    :param compact: if False, the dividing line between this box and the next 
+                    has a 1-line empty boundary. Parameter is ignored if there 
+                    is no item after this one in the rows=[] listing. Defaults 
+                    to False
     """
     def __init__(self, starting_line_number=-1, auto_scroll=True, height=0, 
             compact=False):
-        """Constructor
-
-        :param starting_line_number: -1 means no line numbers, anything larger
-                                     will be the first line number displayed.
-                                     Defaults to -1
-        :param auto_scroll: When True, :class:`purdy.widgets.CodeBox` created
-                            by this specification automatically scrolls to
-                            newly added content.  Defaults to True.
-        :param height: Number of lines the row containing this box should be. 
-                       A value of 0 indicates automatic spacing.  Defaults to 0.
-        :param compact: if False, the dividing line between this box and the 
-                        next has a 1-line empty boundary. Parameter is ignored
-                        if there is no item after this one in the rows=[]
-                        listing. Defaults to False
-        """
         self.starting_line_number = starting_line_number
         self.auto_scroll = auto_scroll
         self.height = height

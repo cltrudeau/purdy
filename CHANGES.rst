@@ -2,6 +2,8 @@
 =====
 
 * Added HighlightChain action
+* Added VirtualCodeBox and ability to copy a VCB into a real code box through
+  a Transition action
 
 
 1.1.1
