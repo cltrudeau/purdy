@@ -1,4 +1,13 @@
 [
+  "=== Actions ===",
+  "actions.Append(\">>> numbers = [6,...\")",
+  "actions.Wait()",
+  "actions.Clear()",
+  "actions.Append(\">>> None < \"3\"\nTr...\")",
+  "=== Steps ===",
+  "steps.InsertRow(\"[CodeLine(\">>> numbers = [6, 3, 9, 1]\")...]\" @ 0)",
+  "steps.Clear()",
+  "steps.InsertRow(\"[CodeLine(\">>> None < \"3\"\")...]\" @ 0)",
   "=== Forward ===",
   {
     "code_box": "CodeBox(id=1)",

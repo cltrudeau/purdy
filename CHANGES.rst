@@ -4,6 +4,8 @@
 * Added HighlightChain action
 * Added VirtualCodeBox and ability to copy a VCB into a real code box through
   a Transition action
+* Used the iscreen mechanism introduced in the last release to create a better
+  test harness
 
 
 1.1.1

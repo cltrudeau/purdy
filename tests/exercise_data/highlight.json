@@ -1,4 +1,14 @@
 [
+  "=== Actions ===",
+  "actions.Append(\">>> # This is a c...\")",
+  "actions.Wait()",
+  "actions.Highlight(range(5, 41), True)",
+  "actions.Wait()",
+  "actions.Highlight([5, 6, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20], False)",
+  "=== Steps ===",
+  "steps.InsertRow(\"[CodeLine(\">>> # This is a comment\")...]\" @ 0)",
+  "steps.HighlightLines(\"range(5, 41)\", True)",
+  "steps.HighlightLines(\"[5, 6, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20]\", False)",
   "=== Forward ===",
   {
     "code_box": "CodeBox(id=1)",

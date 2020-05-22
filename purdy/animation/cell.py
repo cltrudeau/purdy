@@ -108,15 +108,6 @@ class GroupCell(AnimatingCellBase):
         step_string = ','.join([str(step) for step in self.steps])
         return 'GroupCell(steps=[' + step_string + '])'
 
-    def _test_dict(self):
-        d = {
-            'GroupCell': {
-                'steps':[step._test_dict() for step in self.steps],
-            }
-        }
-
-        return d
-
     def render(self, manager, skip=False):
         if len(self.steps) == 0 or self.index >= len(self.steps):
             # badly formed action sequences that result in an empty cell would
@@ -188,21 +179,6 @@ class TransitionCell(AnimatingCellBase):
         self.state = self.State.BEFORE
         self.steps = []
         self.auto_forward = True
-
-    def _test_dict(self):
-        has_copy_box = self.code_box_to_copy is not None
-        code = None
-        if self.code:
-            code = self.code.source
-
-        d = {
-            'TransitionCell': {
-                'code':f'{code}',
-                'has_copy_box':self.code_box_to_copy is not None,
-            }
-        }
-
-        return d
 
     def render(self, manager, skip=False):
         if self.state == self.State.DONE:

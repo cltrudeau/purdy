@@ -1,4 +1,12 @@
 [
+  "=== Actions ===",
+  "actions.Append(\"# Sample Code\n\ncl...\")",
+  "actions.Append(\">>> numbers = [6,...\")",
+  "actions.Append(\"# Sample Code\n\ncl...\")",
+  "=== Steps ===",
+  "steps.InsertRow(\"[CodeLine(\"# Sample Code\")...]\" @ 0)",
+  "steps.InsertRow(\"[CodeLine(\">>> numbers = [6, 3, 9, 1]\")...]\" @ 0)",
+  "steps.InsertRow(\"[CodeLine(\"# Sample Code\")...]\" @ 0)",
   "=== Forward ===",
   {
     "code_box": "CodeBox(id=1)",

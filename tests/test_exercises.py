@@ -22,7 +22,7 @@ class TestExercises(TestCase):
             with open(filename) as f:
                 expected = json.load(f)
 
-            # load the module and turn the actions in to _test_dict's
+            # load the module and run the actions using the ExerciseScreen
             pages = run_exercise(exercise)
 
             try:

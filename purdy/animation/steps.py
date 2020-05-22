@@ -13,9 +13,6 @@ from pygments.token import String, Token
 
 from purdy.parser import CodeLine, CodePart, token_is_a, parse_source
 
-import logging
-logger = logging.getLogger()
-
 # ===========================================================================
 # Animation Steps
 # ===========================================================================
@@ -42,44 +39,22 @@ class BaseEditStep:
         # else len(self.lines) > 1:
         return f'[{self.lines[0]}...]'
 
-    def _test_dict(self):
-        d = {
-            f'{self.__class__.__name__}': {
-                'lines':[line._test_dict() for line in self.lines],
-            }
-        }
-
-        return d
-
-
-class PositionTestMixin:
-    def _test_dict(self):
-        d = {
-            f'{self.__class__.__name__}': {
-                'lines':[line._test_dict() for line in self.lines],
-                'position':self.position,
-            }
-        }
-
-        return d
-
 # ---------------------------------------------------------------------------
 # Line Insertion Steps
 # ---------------------------------------------------------------------------
 
-class InsertRows(PositionTestMixin, BaseEditStep):
+class InsertRows(BaseEditStep):
     def __init__(self, code_box, position, lines):
         super().__init__(code_box, lines)
         self.position = position
 
     def __str__(self):
-        return f'InsertRow("{self.trunc_lines}" @ {self.position})'
+        return f'steps.InsertRow("{self.trunc_lines}" @ {self.position})'
 
     def render_step(self):
         self.code_box.listing.insert_lines(self.position, self.lines)
 
     def undo_step(self):
-        logger.debug('InsertRows.undo_step() pos:%s', self.position)
         position = self.position
         if position == 0:
             # insert 0 is signal for append, remove last n-lines 
@@ -93,12 +68,8 @@ class Subprocess:
         self.code_box = code_box
         self.cmd = cmd
 
-    def _test_dict(self):
-        d = {
-            'Subprocess': { 'cmd':self.cmd, }
-        }
-
-        return d
+    def __str__(self):
+        return f'steps.Subprocess("{self.cmd}")'
 
     def render_step(self):
         import subprocess
@@ -122,13 +93,13 @@ class Subprocess:
 # Line Editing Steps
 # ---------------------------------------------------------------------------
 
-class ReplaceRows(PositionTestMixin, BaseEditStep):
+class ReplaceRows(BaseEditStep):
     def __init__(self, code_box, position, lines):
         super().__init__(code_box, lines)
         self.position = position
 
     def __str__(self):
-        return f'ReplaceRow("{self.trunc_lines}" @ {self.position})'
+        return f'steps.ReplaceRow("{self.trunc_lines}" @ {self.position})'
 
     def render_step(self):
         self.undo_lines = self.code_box.listing.copy_lines(self.position,
@@ -150,18 +121,7 @@ class SuffixRow(BaseEditStep):
         self.cursor = cursor
 
     def __str__(self):
-        return f'SuffixRow("{self.source}" @ {self.position})'
-
-    def _test_dict(self):
-        d = {
-            'SuffixRow': {
-                'position':self.position,
-                'source':self.source,
-                'cursor':self.cursor,
-            }
-        }
-
-        return d
+        return f'steps.SuffixRow("{self.source}" @ {self.position})'
 
     def _inside_string(self, line):
         # Returns True if appending something to the end of this line will be
@@ -234,17 +194,7 @@ class RemoveRows:
         self.num = num
 
     def __str__(self):
-        return f'RemoveRows({self.position} for {self.num})'
-
-    def _test_dict(self):
-        d = {
-            'RemoveRows': {
-                'position':self.position,
-                'num':self.num,
-            }
-        }
-
-        return d
+        return f'steps.RemoveRows({self.position} for {self.num})'
 
     def render_step(self):
         self.undo_lines = []
@@ -263,12 +213,8 @@ class Clear:
     def __init__(self, code_box):
         self.code_box = code_box
 
-    def _test_dict(self):
-        d = {
-            'Clear': {}
-        }
-
-        return d
+    def __str__(self):
+        return 'steps.Clear()'
 
     def render_step(self):
         self.undo_lines = []
@@ -295,17 +241,7 @@ class HighlightLines:
         self.highlight_on = highlight_on
 
     def __str__(self):
-        return f'HighlightLines("{self.numbers}", {self.highlight_on})'
-
-    def _test_dict(self):
-        d = {
-            'HighlightLines': {
-                'numbers':str(self.numbers),
-                'highlight_on':self.highlight_on,
-            }
-        }
-
-        return d
+        return f'steps.HighlightLines("{self.numbers}", {self.highlight_on})'
 
     def _set_highlight(self, highlight_value):
         for num in self.numbers:
@@ -325,16 +261,7 @@ class FoldLines:
         self.end = end
 
     def __str__(self):
-        return f'FoldLines({self.position}, {self.end})'
-
-    def _test_dict(self):
-        d = {
-            'FoldLines':{
-                'position':self.position,
-                'end':self.end,
-            }
-        }
-        return d
+        return f'steps.FoldLines({self.position}, {self.end})'
 
     def render_step(self):
         self.undo_lines = []
@@ -364,16 +291,7 @@ class Sleep:
         self.time = time
 
     def __str__(self):
-        return f'Sleep("{self.time}")'
-
-    def _test_dict(self):
-        # Do not serialize the time parameter, it is random and will fail the
-        # next comparison
-        d = {
-            'Sleep': {}
-        }
-
-        return d
+        return f'steps.Sleep()'
 
 
 class CellEnd:
@@ -386,18 +304,29 @@ class Transition:
         self.code = code
         self.code_box_to_copy = code_box_to_copy
 
+    def __str__(self):
+        # Import here to avoid circular import
+        from purdy.actions import condense
+        code_content = ''
+        if self.code:
+            code_content = condense(self.code.source)
+
+        copy_content = ''
+        if self.code_box_to_copy:
+            lines = [str(line) for line in self.code_box_to_copy.listing.lines]
+            copy_content = condense('\n'.join(lines))
+
+        return f'steps.Transition("{code_content}", "{copy_content}")'
+
 
 class StopMovieException(Exception):
     pass
 
 
 class StopMovie:
-    def _test_dict(self):
-        d = {
-            'StopMovie': {},
-        }
+    def __str__(self):
+        return 'steps.StopMovie()'
 
-        return d
     def render_step(self):
         raise StopMovieException()
 

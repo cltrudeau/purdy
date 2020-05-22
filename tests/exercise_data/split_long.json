@@ -1,4 +1,10 @@
 [
+  "=== Actions ===",
+  "actions.Append(\">>> # This is a c...\")",
+  "actions.Append(\">>> # This is a c...\")",
+  "=== Steps ===",
+  "steps.InsertRow(\"[CodeLine(\">>> # This is a comment\")...]\" @ 0)",
+  "steps.InsertRow(\"[CodeLine(\">>> # This is a comment\")...]\" @ 0)",
   "=== Forward ===",
   {
     "code_box": "CodeBox(id=1)",

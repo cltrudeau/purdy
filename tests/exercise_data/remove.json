@@ -1,4 +1,17 @@
 [
+  "=== Actions ===",
+  "actions.Append(\"# Sample Code\n\ncl...\")",
+  "actions.Wait()",
+  "actions.Remove(10, \"4\")",
+  "actions.Wait()",
+  "actions.Remove(12, \"1\")",
+  "actions.Wait()",
+  "actions.Remove(15, \"3\")",
+  "=== Steps ===",
+  "steps.InsertRow(\"[CodeLine(\"# Sample Code\")...]\" @ 0)",
+  "steps.RemoveRows(10 for 4)",
+  "steps.RemoveRows(12 for 1)",
+  "steps.RemoveRows(15 for 3)",
   "=== Forward ===",
   {
     "code_box": "CodeBox(id=1)",

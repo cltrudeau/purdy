@@ -101,6 +101,15 @@ class ExerciseScreen:
         """Runs the actions on the code listings."""
         manager = self.parent_screen.animation_manager
         # Run through the steps forward, then backwards then forward again
+        self.flipbook.pages.append('=== Actions ===')
+        for action in self.parent_screen.actions:
+            self.flipbook.pages.append(str(action))
+
+        self.flipbook.pages.append('=== Steps ===')
+        for cell in manager.cells:
+            for step in cell.steps:
+                self.flipbook.pages.append(str(step))
+
         self.flipbook.pages.append('=== Forward ===')
         for cell in manager.cells:
             cell.render(manager, skip=True)

@@ -27,6 +27,18 @@ from purdy.parser import CodePart, CodeLine, LEXERS, parse_source, token_is_a
 from purdy.scribe import range_set_to_list
 
 # =============================================================================
+
+def condense(value):
+    if not value:
+        return ''
+
+    content = deepcopy(value)
+    if len(content) >= 20:
+        content = content[0:17] + '...'
+
+    return content
+
+# =============================================================================
 # Single Code Blob Actions
 # =============================================================================
 
@@ -51,6 +63,10 @@ class Insert:
         self.code = code
         self.position = position
 
+    def __str__(self):
+        content = condense(self.code.source)
+        return f'actions.Insert({self.position}, "{content}")'
+
     def steps(self):
         lines = parse_source(self.code.source, self.code.lexer)
         steps = [steplib.InsertRows(self.code_box, self.position, lines), ]
@@ -71,6 +87,10 @@ class Append(Insert):
     def __init__(self, code_box, code):
         super().__init__(code_box, 0, code)
 
+    def __str__(self):
+        content = condense(self.code.source)
+        return f'actions.Append("{content}")'
+
 
 class Replace:
     """Replaces one or more lines of a :class:`purdy.ui.CodeBox` using the
@@ -89,6 +109,10 @@ class Replace:
         self.code_box = code_box
         self.code = code
         self.position = position
+
+    def __str__(self):
+        content = condense(self.code.source)
+        return f'actions.Replace({self.position}, "{content}")'
 
     def steps(self):
         lines = parse_source(self.code.source, self.code.lexer)
@@ -113,6 +137,9 @@ class Remove:
         self.position = position
         self.size = size
 
+    def __str__(self):
+        return f'actions.Remove({self.position}, "{self.size}")'
+
     def steps(self):
         return [steplib.RemoveRows(self.code_box, self.position, self.size), ]
 
@@ -125,6 +152,9 @@ class Clear:
     """
     def __init__(self, code_box):
         self.code_box = code_box
+
+    def __str__(self):
+        return f'actions.Clear()'
 
     def steps(self):
         return [steplib.Clear(self.code_box), ]
@@ -150,6 +180,9 @@ class Suffix:
         self.position = position
         self.source = source
 
+    def __str__(self):
+        return f'actions.Suffix({self.position}, "{self.source}")'
+
     def steps(self):
         return [steplib.SuffixRow(self.code_box, self.position, self.source), ]
 
@@ -169,6 +202,9 @@ class Shell:
     def __init__(self, code_box, cmd):
         self.code_box = code_box
         self.cmd = cmd
+
+    def __str__(self):
+        return f'actions.Suffix("{self.cmd}")'
 
     def steps(self):
         return [steplib.Subprocess(self.code_box, self.cmd), ]
@@ -293,6 +329,9 @@ class AppendTypewriter(TypewriterStep):
         self.code = code
         self.position = 0
 
+    def __str__(self):
+        content = condense(self.code.source)
+        return f'actions.AppendTypewriter("{content}")'
 
 class InsertTypewriter(TypewriterStep):
     """Inserts the contents of a :class:`purdy.content.Code` object at the
@@ -312,6 +351,9 @@ class InsertTypewriter(TypewriterStep):
         self.code = code
         self.position = position
 
+    def __str__(self):
+        content = condense(self.code.source)
+        return f'actions.InsertTypewriter({self.position}, "{content}")'
 
 class ReplaceTypewriter(TypewriterStep):
     """Replaces one or more lines in a :class:`CodeBox` with the contents of a 
@@ -330,6 +372,10 @@ class ReplaceTypewriter(TypewriterStep):
         self.code_box = code_box
         self.code = code
         self.position = position
+
+    def __str__(self):
+        content = condense(self.code.source)
+        return f'actions.ReplaceTypewriter({self.position}, "{content}")'
 
     def steps(self):
         # Override TypewriterStep, need to remove the line before inserting a
@@ -366,6 +412,9 @@ class SuffixTypewriter(TypewriterBase):
         self.code_box = code_box
         self.position = position
         self.source = source
+
+    def __str__(self):
+        return f'actions.SuffixTypewriter({self.position}, "{self.source}")'
 
     def steps(self):
         steps = []
@@ -406,6 +455,9 @@ class Highlight:
         else:
             self.numbers = spec
 
+    def __str__(self):
+        return f'actions.Highlight({self.numbers}, {self.highlight_on})'
+
     def steps(self):
         return [steplib.HighlightLines(self.code_box, self.numbers,
             self.highlight_on) ]
@@ -425,6 +477,9 @@ class HighlightChain:
     def __init__(self, code_box, spec_list):
         self.code_box = code_box
         self.spec_list = spec_list
+
+    def __str__(self):
+        return f'actions.Highlight({self.spec_list}, {self.highlight_on})'
 
     def steps(self):
         all_steps = []
@@ -466,6 +521,9 @@ class Fold:
         self.position = position
         self.end = end
 
+    def __str__(self):
+        return f'actions.Fold({self.position}, {self.end})'
+
     def steps(self):
         return [steplib.FoldLines(self.code_box, self.position, self.end)]
 
@@ -477,12 +535,18 @@ class Wait:
     """Causes the animations to wait for a `right arrow` key press before 
     continuing.
     """
+    def __str__(self):
+        return f'actions.Wait()'
+
     def steps(self):
         return [steplib.CellEnd(), ]
 
 
 class StopMovie:
     """Causes the presentation :class:`purdy.ui.Screen` to exit movie mode"""
+    def __str__(self):
+        return f'actions.StopMovie()'
+
     def steps(self):
         return [steplib.StopMovie(), ]
 
@@ -508,26 +572,21 @@ class Transition:
         self.code = code
         self.code_box_to_copy = code_box_to_copy
 
+    def __str__(self):
+        code_content = ''
+        if self.code:
+            code_content = condense(self.code.source)
+
+        copy_content = ''
+        if self.code_box_to_copy:
+            lines = [str(line) for line in self.code_box_to_copy.listing.lines]
+            copy_content = condense('\n'.join(lines))
+
+        return f'actions.Transition("{code_content}", "{copy_content}")'
+
     def steps(self):
         return [steplib.Transition(self.code_box, self.code, 
             self.code_box_to_copy), ]
-
-
-class TransitionCodeBox:
-    """Replaces the contents of a :class:`purdy.ui.CodeBox` with new content,
-    doing a wipe animation from top to bottom. New content is copied out of an
-    existing code box -- likely a :class:`purdy.ui.VirtualCodeBox`.
-
-    :param code_box: the :class:`purdy.ui.CodeBox` instance to perform the
-                     transition on
-
-    """
-    def __init__(self, code_box, code_box_to_copy):
-        self.code_box = code_box
-        self.code_box_to_copy = code_box_to_copy
-
-    def steps(self):
-        return [steplib.TransitionCopy(self.code_box, self.code_box_to_copy), ]
 
 
 class Sleep:
@@ -540,6 +599,9 @@ class Sleep:
     """
     def __init__(self, time):
         self.time = time
+
+    def __str__(self):
+        return 'actions.Sleep'
 
     def steps(self):
         return [steplib.Sleep(self.time), ]

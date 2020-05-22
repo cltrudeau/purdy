@@ -47,7 +47,9 @@ def background_arg(parser):
     parser.add_argument('--background', '--bg', help=('Change the background '
         'colour of the document. When using the --highlight option, you '
         'you should also set a background colour, otherwise the background '
-        'will turn white due to how RTF supports colouring.'))
+        'will turn white due to how RTF supports colouring. Format of the '
+        'colour is like an HTML colour, e.g. #c1b455, without the leading '
+        '#'))
 
 # =============================================================================
 # Meta Argument Builders

@@ -312,6 +312,12 @@ class RTFColourizer:
         cls.highlight = '\\cb13 %s \\cb14'
 
     @classmethod
+    def reset_background_colour(cls):
+        """When testing, need to put the class back in its original state."""
+        cls.rtf_header = RTFHeaders.preamble + RTFHeaders.color_table + \
+            RTFHeaders.font_spec
+
+    @classmethod
     def colourize(cls, code_line):
         """Returns a text string with RTF style tags. RTF uses a colour table,
         this styling assumes you're using the same colour table, available in

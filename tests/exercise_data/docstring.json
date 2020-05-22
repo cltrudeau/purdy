@@ -1,4 +1,8 @@
 [
+  "=== Actions ===",
+  "actions.Append(\"def add(x, y):\n  ...\")",
+  "=== Steps ===",
+  "steps.InsertRow(\"[CodeLine(\"def add(x, y):\")...]\" @ 0)",
   "=== Forward ===",
   {
     "code_box": "CodeBox(id=1)",

@@ -1,4 +1,17 @@
 [
+  "=== Actions ===",
+  "actions.Append(\">>> None < \"3\"\nTr...\")",
+  "actions.Wait()",
+  "actions.Transition(\">>> numbers = [6,...\", \"\")",
+  "actions.Append(\">>> None < \"3\"\nTr...\")",
+  "actions.Wait()",
+  "actions.Transition(\"\", \"CodeLine(\" 20 >>>...\")",
+  "actions.Wait()",
+  "actions.Append(\">>> None < \"3\"\nTr...\")",
+  "=== Steps ===",
+  "steps.InsertRow(\"[CodeLine(\">>> None < \"3\"\")...]\" @ 0)",
+  "steps.InsertRow(\"[CodeLine(\">>> None < \"3\"\")...]\" @ 0)",
+  "steps.InsertRow(\"[CodeLine(\">>> None < \"3\"\")...]\" @ 0)",
   "=== Forward ===",
   {
     "code_box": "CodeBox(id=1)",

@@ -23,8 +23,7 @@ filename_arg(parser)
 general_args(parser)
 ansi_args(parser)
 
-if __name__ == '__main__':
-    ### Execute ###
+def main():
     args = parser.parse_args()
 
     code = Code(lexer_name=args.lexer, filename=args.filename)
@@ -36,3 +35,6 @@ if __name__ == '__main__':
 
     listing.set_display('ansi')
     print_ansi(listing)
+
+if __name__ == '__main__':
+    main()

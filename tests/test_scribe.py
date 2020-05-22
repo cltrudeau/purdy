@@ -3,6 +3,7 @@ from pathlib import Path
 from waelstow import capture_stdout
 
 from purdy.content import Code, Listing
+from purdy.colour import RTFColourizer
 from purdy.scribe import (range_set_to_list, print_tokens, print_ansi,
     print_html, print_rtf)
 
@@ -31,7 +32,8 @@ class TestScribe(PurdyContentTest):
             filename = Path(__file__).parent / f'data/{datafile}'
             with open(filename.resolve()) as f:
                 expected = f.read()
-                self.assertEqual(expected, captured.getvalue())
+
+        self.assertEqual(expected, captured.getvalue())
 
     def test_tokens(self):
         code = Code(text=self.py_source, lexer_name='py3')
@@ -54,6 +56,7 @@ class TestScribe(PurdyContentTest):
         self.file_compare('print_html_full.out', print_html, listing, False)
 
     def test_rtf(self):
+        RTFColourizer.reset_background_colour()
         code = Code(text=self.py_source, lexer_name='py3')
         listing = Listing(code)
         listing.set_display('rtf')
