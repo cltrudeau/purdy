@@ -1,7 +1,6 @@
 import importlib, sys
 from importlib.machinery import SourceFileLoader
 
-from copy import deepcopy
 from pathlib import Path
 from unittest import TestCase
 
@@ -84,8 +83,6 @@ def load_command(mod_name):
 
 class TestCommands(TestCase):
     def test_pat(self):
-        original_args = deepcopy(sys.argv)
-
         display_code = Path(__file__).parent / \
             '../extras/display_code/decorator.repl'
         display_code = str(display_code.resolve())
@@ -104,7 +101,6 @@ class TestCommands(TestCase):
 
     def test_prat(self):
         RTFColourizer.reset_background_colour()
-        original_args = deepcopy(sys.argv)
 
         display_code = Path(__file__).parent / \
             '../extras/display_code/decorator.repl'

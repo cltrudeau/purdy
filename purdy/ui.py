@@ -16,9 +16,9 @@ from purdy.cmd import background_arg
 from purdy.content import Listing
 from purdy.settings import settings as default_settings
 
-import logging
-logging.basicConfig(filename='debug.log', level=logging.DEBUG)
-logger = logging.getLogger()
+#import logging
+#logging.basicConfig(filename='debug.log', level=logging.DEBUG)
+#logger = logging.getLogger()
 
 # =============================================================================
 

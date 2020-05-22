@@ -75,7 +75,13 @@ class Subprocess:
         import subprocess
 
         args = self.cmd.strip().split(' ')
-        result = subprocess.run(args, capture_output=True, text=True)
+        
+        # subprocess 3.7 command is easier to understand, replace code with
+        # whats in comment when py3.6 support is dropped
+        #
+        #result = subprocess.run(args, capture_output=True, text=True)
+        result = subprocess.run(args, stdout=subprocess.PIPE,
+            stderr=subprocess.PIPE, universal_newlines=True)
 
         new_lines = []
         for row in result.stdout.split('\n'):
@@ -291,7 +297,7 @@ class Sleep:
         self.time = time
 
     def __str__(self):
-        return f'steps.Sleep()'
+        return 'steps.Sleep()'
 
 
 class CellEnd:

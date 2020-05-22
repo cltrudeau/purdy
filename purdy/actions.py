@@ -154,7 +154,7 @@ class Clear:
         self.code_box = code_box
 
     def __str__(self):
-        return f'actions.Clear()'
+        return 'actions.Clear()'
 
     def steps(self):
         return [steplib.Clear(self.code_box), ]
@@ -536,7 +536,7 @@ class Wait:
     continuing.
     """
     def __str__(self):
-        return f'actions.Wait()'
+        return 'actions.Wait()'
 
     def steps(self):
         return [steplib.CellEnd(), ]
@@ -545,7 +545,7 @@ class Wait:
 class StopMovie:
     """Causes the presentation :class:`purdy.ui.Screen` to exit movie mode"""
     def __str__(self):
-        return f'actions.StopMovie()'
+        return 'actions.StopMovie()'
 
     def steps(self):
         return [steplib.StopMovie(), ]
