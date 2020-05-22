@@ -11,14 +11,17 @@ from purdy.ui import SimpleScreen
 screen = SimpleScreen()
 code_box = screen.code_box
 
-blob = Code(text="$ ls")
-blob2 = Code(text="$ ls -la")
+cmd1 = 'echo "hello there"'
+cmd2 = 'echo "it is a nice day today"'
+
+blob = Code(text=f'$ {cmd1}')
+blob2 = Code(text=f'$ {cmd2}')
 
 actions = [
     AppendTypewriter(code_box, blob),
-    Shell(code_box, "ls"),
+    Shell(code_box, cmd1),
     AppendTypewriter(code_box, blob2),
-    Shell(code_box, "ls -la"),
+    Shell(code_box, cmd2),
 ]
 
 if __name__ == '__main__':

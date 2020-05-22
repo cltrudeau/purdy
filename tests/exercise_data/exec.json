@@ -1,0 +1,860 @@
+[
+  "=== Forward ===",
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "insert:1",
+    "content": ""
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:1",
+    "content": "$"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:1",
+    "content": "$ \u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:1",
+    "content": "$ e\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:1",
+    "content": "$ ec\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:1",
+    "content": "$ ech\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:1",
+    "content": "$ echo\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:1",
+    "content": "$ echo \u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:1",
+    "content": "$ echo \"\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:1",
+    "content": "$ echo \"h\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:1",
+    "content": "$ echo \"he\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:1",
+    "content": "$ echo \"hel\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:1",
+    "content": "$ echo \"hell\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:1",
+    "content": "$ echo \"hello\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:1",
+    "content": "$ echo \"hello \u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:1",
+    "content": "$ echo \"hello t\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:1",
+    "content": "$ echo \"hello th\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:1",
+    "content": "$ echo \"hello the\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:1",
+    "content": "$ echo \"hello ther\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:1",
+    "content": "$ echo \"hello there\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:1",
+    "content": "$ echo \"hello there\""
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "insert:2",
+    "content": "\"hello there\""
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "insert:3",
+    "content": ""
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "insert:4",
+    "content": ""
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:4",
+    "content": "$"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:4",
+    "content": "$ \u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:4",
+    "content": "$ e\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:4",
+    "content": "$ ec\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:4",
+    "content": "$ ech\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:4",
+    "content": "$ echo\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:4",
+    "content": "$ echo \u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:4",
+    "content": "$ echo \"\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:4",
+    "content": "$ echo \"i\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:4",
+    "content": "$ echo \"it\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:4",
+    "content": "$ echo \"it \u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:4",
+    "content": "$ echo \"it i\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:4",
+    "content": "$ echo \"it is\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:4",
+    "content": "$ echo \"it is \u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:4",
+    "content": "$ echo \"it is a\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:4",
+    "content": "$ echo \"it is a \u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:4",
+    "content": "$ echo \"it is a n\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:4",
+    "content": "$ echo \"it is a ni\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:4",
+    "content": "$ echo \"it is a nic\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:4",
+    "content": "$ echo \"it is a nice\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:4",
+    "content": "$ echo \"it is a nice \u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:4",
+    "content": "$ echo \"it is a nice d\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:4",
+    "content": "$ echo \"it is a nice da\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:4",
+    "content": "$ echo \"it is a nice day\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:4",
+    "content": "$ echo \"it is a nice day \u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:4",
+    "content": "$ echo \"it is a nice day t\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:4",
+    "content": "$ echo \"it is a nice day to\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:4",
+    "content": "$ echo \"it is a nice day tod\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:4",
+    "content": "$ echo \"it is a nice day toda\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:4",
+    "content": "$ echo \"it is a nice day today\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:4",
+    "content": "$ echo \"it is a nice day today\""
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "insert:5",
+    "content": "\"it is a nice day today\""
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "insert:6",
+    "content": ""
+  },
+  "=== Backward ===",
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "remove:5",
+    "content": ""
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "remove:5",
+    "content": ""
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:4",
+    "content": "$ echo \"it is a nice day today\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:4",
+    "content": "$ echo \"it is a nice day toda\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:4",
+    "content": "$ echo \"it is a nice day tod\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:4",
+    "content": "$ echo \"it is a nice day to\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:4",
+    "content": "$ echo \"it is a nice day t\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:4",
+    "content": "$ echo \"it is a nice day \u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:4",
+    "content": "$ echo \"it is a nice day\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:4",
+    "content": "$ echo \"it is a nice da\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:4",
+    "content": "$ echo \"it is a nice d\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:4",
+    "content": "$ echo \"it is a nice \u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:4",
+    "content": "$ echo \"it is a nice\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:4",
+    "content": "$ echo \"it is a nic\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:4",
+    "content": "$ echo \"it is a ni\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:4",
+    "content": "$ echo \"it is a n\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:4",
+    "content": "$ echo \"it is a \u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:4",
+    "content": "$ echo \"it is a\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:4",
+    "content": "$ echo \"it is \u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:4",
+    "content": "$ echo \"it is\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:4",
+    "content": "$ echo \"it i\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:4",
+    "content": "$ echo \"it \u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:4",
+    "content": "$ echo \"it\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:4",
+    "content": "$ echo \"i\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:4",
+    "content": "$ echo \"\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:4",
+    "content": "$ echo \u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:4",
+    "content": "$ echo\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:4",
+    "content": "$ ech\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:4",
+    "content": "$ ec\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:4",
+    "content": "$ e\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:4",
+    "content": "$ \u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:4",
+    "content": "$"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:4",
+    "content": ""
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "remove:4",
+    "content": ""
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "remove:2",
+    "content": ""
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "remove:2",
+    "content": ""
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:1",
+    "content": "$ echo \"hello there\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:1",
+    "content": "$ echo \"hello ther\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:1",
+    "content": "$ echo \"hello the\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:1",
+    "content": "$ echo \"hello th\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:1",
+    "content": "$ echo \"hello t\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:1",
+    "content": "$ echo \"hello \u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:1",
+    "content": "$ echo \"hello\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:1",
+    "content": "$ echo \"hell\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:1",
+    "content": "$ echo \"hel\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:1",
+    "content": "$ echo \"he\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:1",
+    "content": "$ echo \"h\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:1",
+    "content": "$ echo \"\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:1",
+    "content": "$ echo \u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:1",
+    "content": "$ echo\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:1",
+    "content": "$ ech\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:1",
+    "content": "$ ec\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:1",
+    "content": "$ e\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:1",
+    "content": "$ \u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:1",
+    "content": "$"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:1",
+    "content": ""
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "remove:1",
+    "content": ""
+  },
+  "=== Forward ===",
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "insert:1",
+    "content": ""
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:1",
+    "content": "$"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:1",
+    "content": "$ \u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:1",
+    "content": "$ e\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:1",
+    "content": "$ ec\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:1",
+    "content": "$ ech\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:1",
+    "content": "$ echo\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:1",
+    "content": "$ echo \u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:1",
+    "content": "$ echo \"\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:1",
+    "content": "$ echo \"h\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:1",
+    "content": "$ echo \"he\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:1",
+    "content": "$ echo \"hel\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:1",
+    "content": "$ echo \"hell\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:1",
+    "content": "$ echo \"hello\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:1",
+    "content": "$ echo \"hello \u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:1",
+    "content": "$ echo \"hello t\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:1",
+    "content": "$ echo \"hello th\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:1",
+    "content": "$ echo \"hello the\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:1",
+    "content": "$ echo \"hello ther\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:1",
+    "content": "$ echo \"hello there\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:1",
+    "content": "$ echo \"hello there\""
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "insert:2",
+    "content": "\"hello there\""
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "insert:3",
+    "content": ""
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "insert:4",
+    "content": ""
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:4",
+    "content": "$"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:4",
+    "content": "$ \u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:4",
+    "content": "$ e\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:4",
+    "content": "$ ec\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:4",
+    "content": "$ ech\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:4",
+    "content": "$ echo\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:4",
+    "content": "$ echo \u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:4",
+    "content": "$ echo \"\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:4",
+    "content": "$ echo \"i\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:4",
+    "content": "$ echo \"it\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:4",
+    "content": "$ echo \"it \u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:4",
+    "content": "$ echo \"it i\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:4",
+    "content": "$ echo \"it is\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:4",
+    "content": "$ echo \"it is \u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:4",
+    "content": "$ echo \"it is a\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:4",
+    "content": "$ echo \"it is a \u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:4",
+    "content": "$ echo \"it is a n\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:4",
+    "content": "$ echo \"it is a ni\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:4",
+    "content": "$ echo \"it is a nic\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:4",
+    "content": "$ echo \"it is a nice\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:4",
+    "content": "$ echo \"it is a nice \u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:4",
+    "content": "$ echo \"it is a nice d\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:4",
+    "content": "$ echo \"it is a nice da\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:4",
+    "content": "$ echo \"it is a nice day\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:4",
+    "content": "$ echo \"it is a nice day \u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:4",
+    "content": "$ echo \"it is a nice day t\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:4",
+    "content": "$ echo \"it is a nice day to\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:4",
+    "content": "$ echo \"it is a nice day tod\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:4",
+    "content": "$ echo \"it is a nice day toda\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:4",
+    "content": "$ echo \"it is a nice day today\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:4",
+    "content": "$ echo \"it is a nice day today\""
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "insert:5",
+    "content": "\"it is a nice day today\""
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "insert:6",
+    "content": ""
+  }
+]

@@ -1,0 +1,1325 @@
+[
+  "=== Forward ===",
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "insert:1",
+    "content": ">>> # This is a comment"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "insert:2",
+    "content": ">>> numbers = [6, 3, 9, 1]"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "insert:3",
+    "content": ">>> "
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "insert:4",
+    "content": ">>> sorted(numbers)"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "insert:5",
+    "content": "[1, 3, 6, 9]"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "insert:6",
+    "content": ">>> numbers"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "insert:7",
+    "content": "[6, 3, 9, 1]"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "insert:8",
+    "content": ">>> None < \"3\""
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "insert:9",
+    "content": "Traceback (most recent call last):"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "insert:10",
+    "content": "  File \"<stdin>\", line 1, in <module>"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "insert:11",
+    "content": "TypeError: '<' not supported between instances of 'NoneType' and 'str'"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "insert:12",
+    "content": ">>> for x in [1, 2, 3]"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "insert:13",
+    "content": "  File \"<stdin>\", line 1"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "insert:14",
+    "content": "    for x in [1, 2, 3]"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "insert:15",
+    "content": "                     ^"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "insert:16",
+    "content": "SyntaxError: invalid syntax"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "insert:17",
+    "content": ">>> for x in [1, 2, 3]:"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "insert:18",
+    "content": "...     print(x)"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "insert:19",
+    "content": "... "
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "insert:20",
+    "content": "1"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "insert:21",
+    "content": "2"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "insert:22",
+    "content": "3"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "insert:23",
+    "content": ">>> def foo(a, b):"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "insert:24",
+    "content": "...     pass"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "insert:25",
+    "content": "... "
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "insert:26",
+    "content": ">>> class Foo(object):"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "insert:27",
+    "content": "...     BAR = 12"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "insert:28",
+    "content": "..."
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "insert:29",
+    "content": "...     def bar(self):"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "insert:30",
+    "content": "...         pass"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "insert:31",
+    "content": ">>> @decorated"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "insert:32",
+    "content": "... def thing(a, b, c):"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "insert:33",
+    "content": "...     numbers = [1, 2, 3, 0.2, 0x12]"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "insert:34",
+    "content": "...     x = sorted(numbers)"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "insert:35",
+    "content": "... "
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "insert:36",
+    "content": "...     raise AttributeError('string' + \"string\")"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "insert:37",
+    "content": "... "
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "insert:38",
+    "content": "...     for x in range(1, 10):"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "insert:39",
+    "content": "...         while(True):"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "insert:40",
+    "content": "...             try:"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "insert:41",
+    "content": "...                b = numbers[0]"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "insert:42",
+    "content": "...             except IndexError:"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "insert:43",
+    "content": "...                break"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "insert:44",
+    "content": "... "
+  },
+  {
+    "code_box": "CodeBox(id=2)",
+    "change_type": "insert:1",
+    "content": ">>> # This is a comment"
+  },
+  {
+    "code_box": "CodeBox(id=2)",
+    "change_type": "insert:2",
+    "content": ">>> numbers = [6, 3, 9, 1]"
+  },
+  {
+    "code_box": "CodeBox(id=2)",
+    "change_type": "insert:3",
+    "content": ">>> "
+  },
+  {
+    "code_box": "CodeBox(id=2)",
+    "change_type": "insert:4",
+    "content": ">>> sorted(numbers)"
+  },
+  {
+    "code_box": "CodeBox(id=2)",
+    "change_type": "insert:5",
+    "content": "[1, 3, 6, 9]"
+  },
+  {
+    "code_box": "CodeBox(id=2)",
+    "change_type": "insert:6",
+    "content": ">>> numbers"
+  },
+  {
+    "code_box": "CodeBox(id=2)",
+    "change_type": "insert:7",
+    "content": "[6, 3, 9, 1]"
+  },
+  {
+    "code_box": "CodeBox(id=2)",
+    "change_type": "insert:8",
+    "content": ">>> None < \"3\""
+  },
+  {
+    "code_box": "CodeBox(id=2)",
+    "change_type": "insert:9",
+    "content": "Traceback (most recent call last):"
+  },
+  {
+    "code_box": "CodeBox(id=2)",
+    "change_type": "insert:10",
+    "content": "  File \"<stdin>\", line 1, in <module>"
+  },
+  {
+    "code_box": "CodeBox(id=2)",
+    "change_type": "insert:11",
+    "content": "TypeError: '<' not supported between instances of 'NoneType' and 'str'"
+  },
+  {
+    "code_box": "CodeBox(id=2)",
+    "change_type": "insert:12",
+    "content": ">>> for x in [1, 2, 3]"
+  },
+  {
+    "code_box": "CodeBox(id=2)",
+    "change_type": "insert:13",
+    "content": "  File \"<stdin>\", line 1"
+  },
+  {
+    "code_box": "CodeBox(id=2)",
+    "change_type": "insert:14",
+    "content": "    for x in [1, 2, 3]"
+  },
+  {
+    "code_box": "CodeBox(id=2)",
+    "change_type": "insert:15",
+    "content": "                     ^"
+  },
+  {
+    "code_box": "CodeBox(id=2)",
+    "change_type": "insert:16",
+    "content": "SyntaxError: invalid syntax"
+  },
+  {
+    "code_box": "CodeBox(id=2)",
+    "change_type": "insert:17",
+    "content": ">>> for x in [1, 2, 3]:"
+  },
+  {
+    "code_box": "CodeBox(id=2)",
+    "change_type": "insert:18",
+    "content": "...     print(x)"
+  },
+  {
+    "code_box": "CodeBox(id=2)",
+    "change_type": "insert:19",
+    "content": "... "
+  },
+  {
+    "code_box": "CodeBox(id=2)",
+    "change_type": "insert:20",
+    "content": "1"
+  },
+  {
+    "code_box": "CodeBox(id=2)",
+    "change_type": "insert:21",
+    "content": "2"
+  },
+  {
+    "code_box": "CodeBox(id=2)",
+    "change_type": "insert:22",
+    "content": "3"
+  },
+  {
+    "code_box": "CodeBox(id=2)",
+    "change_type": "insert:23",
+    "content": ">>> def foo(a, b):"
+  },
+  {
+    "code_box": "CodeBox(id=2)",
+    "change_type": "insert:24",
+    "content": "...     pass"
+  },
+  {
+    "code_box": "CodeBox(id=2)",
+    "change_type": "insert:25",
+    "content": "... "
+  },
+  {
+    "code_box": "CodeBox(id=2)",
+    "change_type": "insert:26",
+    "content": ">>> class Foo(object):"
+  },
+  {
+    "code_box": "CodeBox(id=2)",
+    "change_type": "insert:27",
+    "content": "...     BAR = 12"
+  },
+  {
+    "code_box": "CodeBox(id=2)",
+    "change_type": "insert:28",
+    "content": "..."
+  },
+  {
+    "code_box": "CodeBox(id=2)",
+    "change_type": "insert:29",
+    "content": "...     def bar(self):"
+  },
+  {
+    "code_box": "CodeBox(id=2)",
+    "change_type": "insert:30",
+    "content": "...         pass"
+  },
+  {
+    "code_box": "CodeBox(id=2)",
+    "change_type": "insert:31",
+    "content": ">>> @decorated"
+  },
+  {
+    "code_box": "CodeBox(id=2)",
+    "change_type": "insert:32",
+    "content": "... def thing(a, b, c):"
+  },
+  {
+    "code_box": "CodeBox(id=2)",
+    "change_type": "insert:33",
+    "content": "...     numbers = [1, 2, 3, 0.2, 0x12]"
+  },
+  {
+    "code_box": "CodeBox(id=2)",
+    "change_type": "insert:34",
+    "content": "...     x = sorted(numbers)"
+  },
+  {
+    "code_box": "CodeBox(id=2)",
+    "change_type": "insert:35",
+    "content": "... "
+  },
+  {
+    "code_box": "CodeBox(id=2)",
+    "change_type": "insert:36",
+    "content": "...     raise AttributeError('string' + \"string\")"
+  },
+  {
+    "code_box": "CodeBox(id=2)",
+    "change_type": "insert:37",
+    "content": "... "
+  },
+  {
+    "code_box": "CodeBox(id=2)",
+    "change_type": "insert:38",
+    "content": "...     for x in range(1, 10):"
+  },
+  {
+    "code_box": "CodeBox(id=2)",
+    "change_type": "insert:39",
+    "content": "...         while(True):"
+  },
+  {
+    "code_box": "CodeBox(id=2)",
+    "change_type": "insert:40",
+    "content": "...             try:"
+  },
+  {
+    "code_box": "CodeBox(id=2)",
+    "change_type": "insert:41",
+    "content": "...                b = numbers[0]"
+  },
+  {
+    "code_box": "CodeBox(id=2)",
+    "change_type": "insert:42",
+    "content": "...             except IndexError:"
+  },
+  {
+    "code_box": "CodeBox(id=2)",
+    "change_type": "insert:43",
+    "content": "...                break"
+  },
+  {
+    "code_box": "CodeBox(id=2)",
+    "change_type": "insert:44",
+    "content": "... "
+  },
+  "=== Backward ===",
+  {
+    "code_box": "CodeBox(id=2)",
+    "change_type": "remove:1",
+    "content": ""
+  },
+  {
+    "code_box": "CodeBox(id=2)",
+    "change_type": "remove:1",
+    "content": ""
+  },
+  {
+    "code_box": "CodeBox(id=2)",
+    "change_type": "remove:1",
+    "content": ""
+  },
+  {
+    "code_box": "CodeBox(id=2)",
+    "change_type": "remove:1",
+    "content": ""
+  },
+  {
+    "code_box": "CodeBox(id=2)",
+    "change_type": "remove:1",
+    "content": ""
+  },
+  {
+    "code_box": "CodeBox(id=2)",
+    "change_type": "remove:1",
+    "content": ""
+  },
+  {
+    "code_box": "CodeBox(id=2)",
+    "change_type": "remove:1",
+    "content": ""
+  },
+  {
+    "code_box": "CodeBox(id=2)",
+    "change_type": "remove:1",
+    "content": ""
+  },
+  {
+    "code_box": "CodeBox(id=2)",
+    "change_type": "remove:1",
+    "content": ""
+  },
+  {
+    "code_box": "CodeBox(id=2)",
+    "change_type": "remove:1",
+    "content": ""
+  },
+  {
+    "code_box": "CodeBox(id=2)",
+    "change_type": "remove:1",
+    "content": ""
+  },
+  {
+    "code_box": "CodeBox(id=2)",
+    "change_type": "remove:1",
+    "content": ""
+  },
+  {
+    "code_box": "CodeBox(id=2)",
+    "change_type": "remove:1",
+    "content": ""
+  },
+  {
+    "code_box": "CodeBox(id=2)",
+    "change_type": "remove:1",
+    "content": ""
+  },
+  {
+    "code_box": "CodeBox(id=2)",
+    "change_type": "remove:1",
+    "content": ""
+  },
+  {
+    "code_box": "CodeBox(id=2)",
+    "change_type": "remove:1",
+    "content": ""
+  },
+  {
+    "code_box": "CodeBox(id=2)",
+    "change_type": "remove:1",
+    "content": ""
+  },
+  {
+    "code_box": "CodeBox(id=2)",
+    "change_type": "remove:1",
+    "content": ""
+  },
+  {
+    "code_box": "CodeBox(id=2)",
+    "change_type": "remove:1",
+    "content": ""
+  },
+  {
+    "code_box": "CodeBox(id=2)",
+    "change_type": "remove:1",
+    "content": ""
+  },
+  {
+    "code_box": "CodeBox(id=2)",
+    "change_type": "remove:1",
+    "content": ""
+  },
+  {
+    "code_box": "CodeBox(id=2)",
+    "change_type": "remove:1",
+    "content": ""
+  },
+  {
+    "code_box": "CodeBox(id=2)",
+    "change_type": "remove:1",
+    "content": ""
+  },
+  {
+    "code_box": "CodeBox(id=2)",
+    "change_type": "remove:1",
+    "content": ""
+  },
+  {
+    "code_box": "CodeBox(id=2)",
+    "change_type": "remove:1",
+    "content": ""
+  },
+  {
+    "code_box": "CodeBox(id=2)",
+    "change_type": "remove:1",
+    "content": ""
+  },
+  {
+    "code_box": "CodeBox(id=2)",
+    "change_type": "remove:1",
+    "content": ""
+  },
+  {
+    "code_box": "CodeBox(id=2)",
+    "change_type": "remove:1",
+    "content": ""
+  },
+  {
+    "code_box": "CodeBox(id=2)",
+    "change_type": "remove:1",
+    "content": ""
+  },
+  {
+    "code_box": "CodeBox(id=2)",
+    "change_type": "remove:1",
+    "content": ""
+  },
+  {
+    "code_box": "CodeBox(id=2)",
+    "change_type": "remove:1",
+    "content": ""
+  },
+  {
+    "code_box": "CodeBox(id=2)",
+    "change_type": "remove:1",
+    "content": ""
+  },
+  {
+    "code_box": "CodeBox(id=2)",
+    "change_type": "remove:1",
+    "content": ""
+  },
+  {
+    "code_box": "CodeBox(id=2)",
+    "change_type": "remove:1",
+    "content": ""
+  },
+  {
+    "code_box": "CodeBox(id=2)",
+    "change_type": "remove:1",
+    "content": ""
+  },
+  {
+    "code_box": "CodeBox(id=2)",
+    "change_type": "remove:1",
+    "content": ""
+  },
+  {
+    "code_box": "CodeBox(id=2)",
+    "change_type": "remove:1",
+    "content": ""
+  },
+  {
+    "code_box": "CodeBox(id=2)",
+    "change_type": "remove:1",
+    "content": ""
+  },
+  {
+    "code_box": "CodeBox(id=2)",
+    "change_type": "remove:1",
+    "content": ""
+  },
+  {
+    "code_box": "CodeBox(id=2)",
+    "change_type": "remove:1",
+    "content": ""
+  },
+  {
+    "code_box": "CodeBox(id=2)",
+    "change_type": "remove:1",
+    "content": ""
+  },
+  {
+    "code_box": "CodeBox(id=2)",
+    "change_type": "remove:1",
+    "content": ""
+  },
+  {
+    "code_box": "CodeBox(id=2)",
+    "change_type": "remove:1",
+    "content": ""
+  },
+  {
+    "code_box": "CodeBox(id=2)",
+    "change_type": "remove:1",
+    "content": ""
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "remove:1",
+    "content": ""
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "remove:1",
+    "content": ""
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "remove:1",
+    "content": ""
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "remove:1",
+    "content": ""
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "remove:1",
+    "content": ""
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "remove:1",
+    "content": ""
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "remove:1",
+    "content": ""
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "remove:1",
+    "content": ""
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "remove:1",
+    "content": ""
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "remove:1",
+    "content": ""
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "remove:1",
+    "content": ""
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "remove:1",
+    "content": ""
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "remove:1",
+    "content": ""
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "remove:1",
+    "content": ""
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "remove:1",
+    "content": ""
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "remove:1",
+    "content": ""
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "remove:1",
+    "content": ""
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "remove:1",
+    "content": ""
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "remove:1",
+    "content": ""
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "remove:1",
+    "content": ""
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "remove:1",
+    "content": ""
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "remove:1",
+    "content": ""
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "remove:1",
+    "content": ""
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "remove:1",
+    "content": ""
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "remove:1",
+    "content": ""
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "remove:1",
+    "content": ""
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "remove:1",
+    "content": ""
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "remove:1",
+    "content": ""
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "remove:1",
+    "content": ""
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "remove:1",
+    "content": ""
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "remove:1",
+    "content": ""
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "remove:1",
+    "content": ""
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "remove:1",
+    "content": ""
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "remove:1",
+    "content": ""
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "remove:1",
+    "content": ""
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "remove:1",
+    "content": ""
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "remove:1",
+    "content": ""
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "remove:1",
+    "content": ""
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "remove:1",
+    "content": ""
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "remove:1",
+    "content": ""
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "remove:1",
+    "content": ""
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "remove:1",
+    "content": ""
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "remove:1",
+    "content": ""
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "remove:1",
+    "content": ""
+  },
+  "=== Forward ===",
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "insert:1",
+    "content": ">>> # This is a comment"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "insert:2",
+    "content": ">>> numbers = [6, 3, 9, 1]"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "insert:3",
+    "content": ">>> "
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "insert:4",
+    "content": ">>> sorted(numbers)"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "insert:5",
+    "content": "[1, 3, 6, 9]"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "insert:6",
+    "content": ">>> numbers"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "insert:7",
+    "content": "[6, 3, 9, 1]"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "insert:8",
+    "content": ">>> None < \"3\""
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "insert:9",
+    "content": "Traceback (most recent call last):"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "insert:10",
+    "content": "  File \"<stdin>\", line 1, in <module>"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "insert:11",
+    "content": "TypeError: '<' not supported between instances of 'NoneType' and 'str'"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "insert:12",
+    "content": ">>> for x in [1, 2, 3]"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "insert:13",
+    "content": "  File \"<stdin>\", line 1"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "insert:14",
+    "content": "    for x in [1, 2, 3]"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "insert:15",
+    "content": "                     ^"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "insert:16",
+    "content": "SyntaxError: invalid syntax"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "insert:17",
+    "content": ">>> for x in [1, 2, 3]:"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "insert:18",
+    "content": "...     print(x)"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "insert:19",
+    "content": "... "
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "insert:20",
+    "content": "1"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "insert:21",
+    "content": "2"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "insert:22",
+    "content": "3"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "insert:23",
+    "content": ">>> def foo(a, b):"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "insert:24",
+    "content": "...     pass"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "insert:25",
+    "content": "... "
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "insert:26",
+    "content": ">>> class Foo(object):"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "insert:27",
+    "content": "...     BAR = 12"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "insert:28",
+    "content": "..."
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "insert:29",
+    "content": "...     def bar(self):"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "insert:30",
+    "content": "...         pass"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "insert:31",
+    "content": ">>> @decorated"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "insert:32",
+    "content": "... def thing(a, b, c):"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "insert:33",
+    "content": "...     numbers = [1, 2, 3, 0.2, 0x12]"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "insert:34",
+    "content": "...     x = sorted(numbers)"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "insert:35",
+    "content": "... "
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "insert:36",
+    "content": "...     raise AttributeError('string' + \"string\")"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "insert:37",
+    "content": "... "
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "insert:38",
+    "content": "...     for x in range(1, 10):"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "insert:39",
+    "content": "...         while(True):"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "insert:40",
+    "content": "...             try:"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "insert:41",
+    "content": "...                b = numbers[0]"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "insert:42",
+    "content": "...             except IndexError:"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "insert:43",
+    "content": "...                break"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "insert:44",
+    "content": "... "
+  },
+  {
+    "code_box": "CodeBox(id=2)",
+    "change_type": "insert:1",
+    "content": ">>> # This is a comment"
+  },
+  {
+    "code_box": "CodeBox(id=2)",
+    "change_type": "insert:2",
+    "content": ">>> numbers = [6, 3, 9, 1]"
+  },
+  {
+    "code_box": "CodeBox(id=2)",
+    "change_type": "insert:3",
+    "content": ">>> "
+  },
+  {
+    "code_box": "CodeBox(id=2)",
+    "change_type": "insert:4",
+    "content": ">>> sorted(numbers)"
+  },
+  {
+    "code_box": "CodeBox(id=2)",
+    "change_type": "insert:5",
+    "content": "[1, 3, 6, 9]"
+  },
+  {
+    "code_box": "CodeBox(id=2)",
+    "change_type": "insert:6",
+    "content": ">>> numbers"
+  },
+  {
+    "code_box": "CodeBox(id=2)",
+    "change_type": "insert:7",
+    "content": "[6, 3, 9, 1]"
+  },
+  {
+    "code_box": "CodeBox(id=2)",
+    "change_type": "insert:8",
+    "content": ">>> None < \"3\""
+  },
+  {
+    "code_box": "CodeBox(id=2)",
+    "change_type": "insert:9",
+    "content": "Traceback (most recent call last):"
+  },
+  {
+    "code_box": "CodeBox(id=2)",
+    "change_type": "insert:10",
+    "content": "  File \"<stdin>\", line 1, in <module>"
+  },
+  {
+    "code_box": "CodeBox(id=2)",
+    "change_type": "insert:11",
+    "content": "TypeError: '<' not supported between instances of 'NoneType' and 'str'"
+  },
+  {
+    "code_box": "CodeBox(id=2)",
+    "change_type": "insert:12",
+    "content": ">>> for x in [1, 2, 3]"
+  },
+  {
+    "code_box": "CodeBox(id=2)",
+    "change_type": "insert:13",
+    "content": "  File \"<stdin>\", line 1"
+  },
+  {
+    "code_box": "CodeBox(id=2)",
+    "change_type": "insert:14",
+    "content": "    for x in [1, 2, 3]"
+  },
+  {
+    "code_box": "CodeBox(id=2)",
+    "change_type": "insert:15",
+    "content": "                     ^"
+  },
+  {
+    "code_box": "CodeBox(id=2)",
+    "change_type": "insert:16",
+    "content": "SyntaxError: invalid syntax"
+  },
+  {
+    "code_box": "CodeBox(id=2)",
+    "change_type": "insert:17",
+    "content": ">>> for x in [1, 2, 3]:"
+  },
+  {
+    "code_box": "CodeBox(id=2)",
+    "change_type": "insert:18",
+    "content": "...     print(x)"
+  },
+  {
+    "code_box": "CodeBox(id=2)",
+    "change_type": "insert:19",
+    "content": "... "
+  },
+  {
+    "code_box": "CodeBox(id=2)",
+    "change_type": "insert:20",
+    "content": "1"
+  },
+  {
+    "code_box": "CodeBox(id=2)",
+    "change_type": "insert:21",
+    "content": "2"
+  },
+  {
+    "code_box": "CodeBox(id=2)",
+    "change_type": "insert:22",
+    "content": "3"
+  },
+  {
+    "code_box": "CodeBox(id=2)",
+    "change_type": "insert:23",
+    "content": ">>> def foo(a, b):"
+  },
+  {
+    "code_box": "CodeBox(id=2)",
+    "change_type": "insert:24",
+    "content": "...     pass"
+  },
+  {
+    "code_box": "CodeBox(id=2)",
+    "change_type": "insert:25",
+    "content": "... "
+  },
+  {
+    "code_box": "CodeBox(id=2)",
+    "change_type": "insert:26",
+    "content": ">>> class Foo(object):"
+  },
+  {
+    "code_box": "CodeBox(id=2)",
+    "change_type": "insert:27",
+    "content": "...     BAR = 12"
+  },
+  {
+    "code_box": "CodeBox(id=2)",
+    "change_type": "insert:28",
+    "content": "..."
+  },
+  {
+    "code_box": "CodeBox(id=2)",
+    "change_type": "insert:29",
+    "content": "...     def bar(self):"
+  },
+  {
+    "code_box": "CodeBox(id=2)",
+    "change_type": "insert:30",
+    "content": "...         pass"
+  },
+  {
+    "code_box": "CodeBox(id=2)",
+    "change_type": "insert:31",
+    "content": ">>> @decorated"
+  },
+  {
+    "code_box": "CodeBox(id=2)",
+    "change_type": "insert:32",
+    "content": "... def thing(a, b, c):"
+  },
+  {
+    "code_box": "CodeBox(id=2)",
+    "change_type": "insert:33",
+    "content": "...     numbers = [1, 2, 3, 0.2, 0x12]"
+  },
+  {
+    "code_box": "CodeBox(id=2)",
+    "change_type": "insert:34",
+    "content": "...     x = sorted(numbers)"
+  },
+  {
+    "code_box": "CodeBox(id=2)",
+    "change_type": "insert:35",
+    "content": "... "
+  },
+  {
+    "code_box": "CodeBox(id=2)",
+    "change_type": "insert:36",
+    "content": "...     raise AttributeError('string' + \"string\")"
+  },
+  {
+    "code_box": "CodeBox(id=2)",
+    "change_type": "insert:37",
+    "content": "... "
+  },
+  {
+    "code_box": "CodeBox(id=2)",
+    "change_type": "insert:38",
+    "content": "...     for x in range(1, 10):"
+  },
+  {
+    "code_box": "CodeBox(id=2)",
+    "change_type": "insert:39",
+    "content": "...         while(True):"
+  },
+  {
+    "code_box": "CodeBox(id=2)",
+    "change_type": "insert:40",
+    "content": "...             try:"
+  },
+  {
+    "code_box": "CodeBox(id=2)",
+    "change_type": "insert:41",
+    "content": "...                b = numbers[0]"
+  },
+  {
+    "code_box": "CodeBox(id=2)",
+    "change_type": "insert:42",
+    "content": "...             except IndexError:"
+  },
+  {
+    "code_box": "CodeBox(id=2)",
+    "change_type": "insert:43",
+    "content": "...                break"
+  },
+  {
+    "code_box": "CodeBox(id=2)",
+    "change_type": "insert:44",
+    "content": "... "
+  }
+]

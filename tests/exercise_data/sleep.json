@@ -1,0 +1,215 @@
+[
+  "=== Forward ===",
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "insert:1",
+    "content": " 10 >>> numbers = [6, 3, 9, 1]"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "insert:2",
+    "content": " 11 >>> sorted(numbers)"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "insert:3",
+    "content": " 12 [1, 3, 6, 9]"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "insert:4",
+    "content": " 13 >>> def foo(a, b):"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "insert:5",
+    "content": " 14 ...     pass"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "insert:6",
+    "content": " 15 ... "
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "insert:7",
+    "content": " 16 >>> "
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "insert:8",
+    "content": " 17 >>> numbers = [6, 3, 9, 1]"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "insert:9",
+    "content": " 18 >>> sorted(numbers)"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "insert:10",
+    "content": " 19 [1, 3, 6, 9]"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "insert:11",
+    "content": " 20 >>> def foo(a, b):"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "insert:12",
+    "content": " 21 ...     pass"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "insert:13",
+    "content": " 22 ... "
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "insert:14",
+    "content": " 23 >>> "
+  },
+  "=== Backward ===",
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "remove:8",
+    "content": ""
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "remove:8",
+    "content": ""
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "remove:8",
+    "content": ""
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "remove:8",
+    "content": ""
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "remove:8",
+    "content": ""
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "remove:8",
+    "content": ""
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "remove:8",
+    "content": ""
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "remove:1",
+    "content": ""
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "remove:1",
+    "content": ""
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "remove:1",
+    "content": ""
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "remove:1",
+    "content": ""
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "remove:1",
+    "content": ""
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "remove:1",
+    "content": ""
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "remove:1",
+    "content": ""
+  },
+  "=== Forward ===",
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "insert:1",
+    "content": " 10 >>> numbers = [6, 3, 9, 1]"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "insert:2",
+    "content": " 11 >>> sorted(numbers)"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "insert:3",
+    "content": " 12 [1, 3, 6, 9]"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "insert:4",
+    "content": " 13 >>> def foo(a, b):"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "insert:5",
+    "content": " 14 ...     pass"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "insert:6",
+    "content": " 15 ... "
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "insert:7",
+    "content": " 16 >>> "
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "insert:8",
+    "content": " 17 >>> numbers = [6, 3, 9, 1]"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "insert:9",
+    "content": " 18 >>> sorted(numbers)"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "insert:10",
+    "content": " 19 [1, 3, 6, 9]"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "insert:11",
+    "content": " 20 >>> def foo(a, b):"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "insert:12",
+    "content": " 21 ...     pass"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "insert:13",
+    "content": " 22 ... "
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "insert:14",
+    "content": " 23 >>> "
+  }
+]

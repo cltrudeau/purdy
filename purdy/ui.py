@@ -30,18 +30,16 @@ class Factory:
     iscreen = None
 
     @classmethod
-    def get_iscreen(cls, parent_screen):
-        if cls.iscreen:
-            return cls.iscreen
-
+    def get_iscreen_class(cls):
         if cls.name == 'tui':
             from purdy.iscreen.tui.iscreen import TUIScreen
-            cls.iscreen = TUIScreen(parent_screen)
-            return cls.iscreen
-        else:
+            return TUIScreen
+        elif cls.name == 'virtual':
             from purdy.iscreen.virtual.iscreen import VirtualScreen
-            cls.iscreen = VirtualScreen(parent_screen)
-            return cls.iscreen
+            return VirtualScreen
+        elif cls.name == 'exercise':
+            from purdy.iscreen.exercise.iscreen import ExerciseScreen
+            return ExerciseScreen
 
 # =============================================================================
 # Screen
@@ -341,7 +339,8 @@ class Screen:
             Factory.name = 'virtual'
 
         # Create concrete instances of iscreen an boxes
-        self.iscreen = Factory.get_iscreen(self)
+        klass = Factory.get_iscreen_class()
+        self.iscreen = klass(self)
         for row in self.rows:
             row.build(self)
 
@@ -351,9 +350,6 @@ class Screen:
         if self.args.debugsteps:
             for cell in self.animation_manager.cells:
                 print(f'{cell.__class__.__name__}')
-                from purdy.animation.cell import TransitionCell
-                if isinstance(cell, TransitionCell):
-                    print('   => auto_forward', cell.auto_forward)
                 for step in cell.steps:
                     print('   step', step)
             exit()

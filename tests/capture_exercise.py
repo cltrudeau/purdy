@@ -25,25 +25,39 @@ def load_samples_module(mod_name):
 
     return module
 
+def run_exercise(module_name):
+    from purdy.settings import settings
+    settings['deactivate_args'] = True
 
-def capture(module_name):
     module = load_samples_module(module_name)
 
-    module.screen.load_actions(module.actions)
+    # Set up to use the ExerciseScreen implementation
+    from purdy.ui import Factory
+    Factory.name = 'exercise'
 
-    results = []
-    for cell in module.screen.animation_manager.cells:
-        results.append( cell._test_dict() )
+    if Factory.iscreen:
+        # This has been called before in the same session (Factory is a
+        # singleton), clear out the flipbook so it is empty
+        Factory.iscreen.flipbook.pages = []
 
-    with open('cells.json', 'w') as f:
-        json.dump(results, f, indent=2)
+    module.screen.run(module.actions)
+
+    return module.screen.iscreen.flipbook.pages
+
+
+def capture(module_name):
+    pages = run_exercise(module_name)
+
+    with open('flipbook.json', 'w') as f:
+        json.dump(pages, f, indent=2)
 
 
 if __name__ == '__main__':
     import argparse
     parser = argparse.ArgumentParser(description=('Captures the Cells used in '
-        'the named sample program. Utility for creating Cell repr files to be '
-        'used in testing. File must global variables "screen" and "actions".'))
+        'the named sample program. Uses the ExerciseScreen mechanism that '
+        'captures each change in a series of flip book pages. '
+        'File must use global variables "screen" and "actions".'))
 
     parser.add_argument('module_name', help=('Name of module to load. Expects '
         'corresponding <module_name>.py file in the extras/samples directory'))
