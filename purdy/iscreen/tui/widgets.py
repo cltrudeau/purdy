@@ -15,14 +15,10 @@ import urwid
 class DividingLine(urwid.Filler):
     tab_focusable = False
 
-    def __init__(self, compact=False):
+    def __init__(self):
         divider = urwid.Divider('-')
-        margin = 1
-        if compact:
-            margin = 0
 
-        super(DividingLine, self).__init__(divider, valign='top', top=margin, 
-            bottom=margin)
+        super(DividingLine, self).__init__(divider)
 
 # -----------------------------------------------------------------------------
 # CodeWidget -- box that displays code

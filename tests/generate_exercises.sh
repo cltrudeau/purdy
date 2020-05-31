@@ -15,6 +15,10 @@ echo "cols"
 ./capture_exercise.py cols
 mv flipbook.json exercise_data/cols.json
 
+echo "compact"
+./capture_exercise.py compact
+mv flipbook.json exercise_data/compact.json
+
 echo "docstring"
 ./capture_exercise.py docstring
 mv flipbook.json exercise_data/docstring.json

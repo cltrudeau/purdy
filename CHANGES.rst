@@ -1,3 +1,9 @@
+1.2.1
+=====
+
+* Fix bug where the compact parameter on CodeBox wasn't working
+* Add parameter to SplitScreen to support the compact parameter in its top box
+
 1.2.0
 =====
 

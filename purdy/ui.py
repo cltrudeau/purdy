@@ -373,23 +373,30 @@ class SplitScreen(Screen):
 
     :param top_starting_line_number: starting line number for the top 
                                      code box
+
     :param top_auto_scroll: When True, the top :class:`ui.CodeBox` 
                             automatically scrolls to newly added content.
                             Defaults to True.
+
     :param bottom_starting_line_number: starting line number for the 
                                         bottom code box
+
     :param bottom_auto_scroll: When True, the bottom :class:`ui.CodeBox` 
                             automatically scrolls to newly added content.
                             Defaults to True.
+
     :param top_height: Number of lines the top box should be. A value of 0
                        indicates top and bottom should be the same size.
                        Defaults to 0.
+
+    :param compact: True if for the dividing line between the top and bottom 
+                    screens is to have no margin. Defaults to False
     """
     def __init__(self, settings=None, top_starting_line_number=-1, 
             top_auto_scroll=True, bottom_starting_line_number=-1,
-            bottom_auto_scroll=True, top_height=0):
+            bottom_auto_scroll=True, top_height=0, compact=False):
         self.top = CodeBox(top_starting_line_number, top_auto_scroll, 
-            top_height)
+            top_height, compact=compact)
         self.bottom = CodeBox(bottom_starting_line_number, bottom_auto_scroll)
         super().__init__(settings, rows=[self.top, self.bottom])
 

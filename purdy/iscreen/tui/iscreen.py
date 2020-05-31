@@ -222,7 +222,11 @@ class TUIScreen:
         if size > 0:
             # not the first box, add a dividing line
             compact = self.parent_screen.code_boxes[size - 1].compact
-            divider = (3, DividingLine(compact))
+            div_height = 3
+            if compact:
+                div_height = 1
+
+            divider = (div_height, DividingLine())
             self.widgets.append(divider)
 
         box = constructor(code_box)
