@@ -4,6 +4,7 @@ pudb==2019.2
 pyflakes==2.2.0
 Pygments==2.6.1
 Sphinx==2.2.0
+sphinx-argparse==0.2.5
 sphinx-rtd-theme==0.4.3
 tox==3.14.6
 twine==2.0.0
