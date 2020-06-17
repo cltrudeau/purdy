@@ -1,8 +1,8 @@
-1.2.2
+1.2.3
 =====
 
 * moved command line scripts out of the module, it appeared to be messing up
-  readthedocs
+  readthedocs, should have no impact on installation 
 
 1.2.1
 =====
