@@ -9,7 +9,7 @@ Command Line Program Documentation
 
 
 .. argparse::
-    :filename: ../purdy/purdy
+    :filename: ../bin/purdy
     :func: parser
     :prog: purdy
 
@@ -18,7 +18,7 @@ Command Line Program Documentation
 ===============
 
 .. argparse::
-    :filename: ../purdy/pat
+    :filename: ../bin/pat
     :func: parser
     :prog: pat
 
@@ -27,7 +27,7 @@ Command Line Program Documentation
 ================
 
 .. argparse::
-    :filename: ../purdy/prat
+    :filename: ../bin/prat
     :func: parser
     :prog: prat
 
@@ -36,6 +36,6 @@ Command Line Program Documentation
 ====================
 
 .. argparse::
-    :filename: ../purdy/subpurdy
+    :filename: ../bin/subpurdy
     :func: parser
     :prog: subpurdy
