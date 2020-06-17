@@ -65,10 +65,10 @@ PRAT_EXPECTED = """{\\rtf1\\ansi\\ansicpg1252
 # =============================================================================
 
 def load_command(mod_name):
-    purdy = Path(__file__).resolve()
-    purdy = purdy.parent.parent / 'purdy'
-    purdy = purdy.resolve()
-    filename = str(purdy / mod_name)
+    test_file = Path(__file__).resolve()
+    scripts = test_file.parent.parent / 'bin'
+    scripts = scripts.resolve()
+    filename = str(scripts / mod_name)
 
     # Load the file as if it were a module
     loader = SourceFileLoader(mod_name, filename)
