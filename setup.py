@@ -28,7 +28,7 @@ SETUP_ARGS = dict(
     ],
     keywords='code display',
     py_modules = ['purdy',],
-    scripts=['purdy/purdy', 'purdy/subpurdy', 'purdy/pat', 'purdy/prat'],
+    scripts=['bin/purdy', 'bin/subpurdy', 'bin/pat', 'bin/prat'],
     install_requires = [
         'Pygments>=2.6.1',
         'urwid>=2.0.1',

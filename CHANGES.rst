@@ -1,3 +1,9 @@
+1.2.2
+=====
+
+* moved command line scripts out of the module, it appeared to be messing up
+  readthedocs
+
 1.2.1
 =====
 
