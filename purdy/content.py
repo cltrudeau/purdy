@@ -37,7 +37,7 @@ class Code:
         if text:
             self.source += text
 
-        self.source = self.source.rstrip('n')
+        self.source = self.source.rstrip('\n')
 
         from purdy.parser import LEXERS
         if lexer_name == 'detect':

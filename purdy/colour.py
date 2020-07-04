@@ -208,7 +208,13 @@ def rtf_encode(text):
 
         if num <= 127:
             # regular ascii
-            output.append(chr(num))
+            letter = chr(num)
+
+            # RTF uses backslash, so it needs to be escaped
+            if letter == '\\':
+                output.append('\\\\')
+            else:
+                output.append(letter)
         elif num <= 256:
             # extended ascii, use hex notation
             output.append(f"\\'{num:2x}" )

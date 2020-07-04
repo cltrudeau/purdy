@@ -42,6 +42,8 @@ PY_CODE_LINES = [
         CodePart(Token.Text, ' '),
         CodePart(Token.Literal.String.Single, "'"),
         CodePart(Token.Literal.String.Single, 'Thing'),
+        CodePart(Token.Literal.String.Single, '\\'),
+        CodePart(Token.Literal.String.Single, 'Stuff'),
         CodePart(Token.Literal.String.Single, "'"),
     ], py3_lexer),
 ]

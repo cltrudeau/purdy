@@ -16,7 +16,7 @@ def foo():
     Token.Literal.String.Doc:     Doc string
     """
     Token.Literal.String.Doc:     """
-    bar = 'Thing'
+    bar = 'Thing\Stuff'
     Token.Text:     
     Token.Name: bar
     Token.Text:  
@@ -24,4 +24,6 @@ def foo():
     Token.Text:  
     Token.Literal.String.Single: '
     Token.Literal.String.Single: Thing
+    Token.Literal.String.Single: \
+    Token.Literal.String.Single: Stuff
     Token.Literal.String.Single: '

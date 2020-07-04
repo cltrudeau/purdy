@@ -63,15 +63,60 @@ class TestScribe(PurdyContentTest):
         self.file_compare('print_rtf_nobg.out', print_rtf, listing)
         self.file_compare('print_rtf_bg.out', print_rtf, listing, 'ccc')
 
-# commented out for pyflakes
-#    def __test_generate(self):
+# Uncomment to regenerate a data file
+#    def test_generate(self):
+#        print('*** Generating data files')
+#
 #        ### This stub code is used to generate data files to compare against
 #        code = Code(text=self.py_source, lexer_name='py3')
 #        listing = Listing(code)
-#        listing.set_display('rtf')
 #
-#        with capture_stdout() as captured:
-#            print_rtf(listing, 'ccc')
+#        config = {
+#            #'print_tokens_ansi.out':[
+#            #    None,
+#            #    print_tokens, 
+#            #    [True, ],
+#            #],
+#            #'print_tokens_bw.out':[
+#            #    None,
+#            #    print_tokens, 
+#            #    [False, ],
+#            #],
+#            #'print_ansi.out':[
+#            #    'ansi',
+#            #    print_ansi, 
+#            #    [],
+#            #],
+#            #'print_rtf_nobg.out':[
+#            #    'rtf',
+#            #    print_rtf, 
+#            #    [],
+#            #],
+#            #'print_rtf_bg.out':[
+#            #    'rtf',
+#            #    print_rtf, 
+#            #    ['ccc', ],
+#            #],
+#            #'print_html_snippet.out':[
+#            #    'html',
+#            #    print_html, 
+#            #    [True],
+#            #],
+#            #'print_html_full.out':[
+#            #    'html',
+#            #    print_html, 
+#            #    [False],
+#            #],
+#        }
 #
-#            with open('print_rtf_bg.out', 'w') as f:
-#                f.write(captured.getvalue())
+#        for filename, parms in config.items():
+#            print('    => generating', filename)
+#            with capture_stdout() as captured:
+#                if parms[0]:
+#                    listing.set_display(parms[0])
+#
+#                fn = parms[1]
+#                fn(listing, *parms[2])
+#
+#                with open(filename, 'w') as f:
+#                    f.write(captured.getvalue())

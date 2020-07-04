@@ -1,3 +1,9 @@
+1.2.4
+=====
+
+* fix bug in RTF formats where backslashes weren't escaped properly
+
+
 1.2.3
 =====
 
