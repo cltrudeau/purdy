@@ -5,7 +5,7 @@
 import argparse
 
 from purdy.actions import Append, AppendTypewriter
-from purdy.cmd import version_arg, lexer_arg, filename_arg
+from purdy.cmd import version_arg, lexer_arg, filename_arg, max_height_arg
 from purdy.content import Code
 from purdy.settings import settings
 from purdy.ui import SimpleScreen
@@ -21,6 +21,7 @@ parser = argparse.ArgumentParser(description=('Displays a highlighted '
 filename_arg(parser)
 version_arg(parser)
 lexer_arg(parser)
+max_height_arg(parser)
 
 parser.add_argument('-c', '--continuous', action='store_true', 
     help=('Instead of prentending to type like a human, just dump the file '
@@ -61,7 +62,7 @@ if __name__ == '__main__':
 
     # initialize our display screen using a single code listing box
     settings['deactivate_args'] = True
-    screen = SimpleScreen(settings=settings)
+    screen = SimpleScreen(settings=settings, max_height=args.maxheight)
     code_box = screen.code_box
 
     # read the code being displayed and create the appropriate action

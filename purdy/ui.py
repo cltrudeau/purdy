@@ -12,7 +12,7 @@ import argparse
 
 from purdy.animation.manager import AnimationManager
 from purdy.animation.cell import group_steps_into_cells
-from purdy.cmd import background_arg
+from purdy.cmd import background_arg, max_height_arg
 from purdy.content import Listing
 from purdy.settings import settings as default_settings
 
@@ -212,9 +212,13 @@ class Screen:
     :param settings: a settings dictionary object. Defaults to `None` which 
                      uses the default settings dictionary: 
                      :attr:`settings.settings`
+
     :param rows: a list containing one or more :class:`CodeBox` or 
                  :class:`TwinCodeBox` definitions, to specify the layout of 
                  the screen
+
+    :param max_height: maximum display height in TUI mode, defaults to 0,
+                       meaning no max
 
     Example:
 
@@ -270,8 +274,9 @@ class Screen:
     * **--exportrtf** Print out the results of the actions in RTF format
 
     """
-    def __init__(self, settings=None, rows=[]):
+    def __init__(self, settings=None, rows=[], max_height=0):
         self.rows = rows
+        self.max_height = max_height
         self.code_boxes = []
         self.concrete_boxes = []
 
@@ -303,10 +308,8 @@ class Screen:
         parser.add_argument('--exportrtf', action='store_true', 
             help='Print out the results of the actions in RTF format')
 
-        parser.add_argument('--maxheight', help=('Sets a maximum screen '
-            'height for the TUI screen viewer. Ignored if not in TUI mode.'))
-
         background_arg(parser)
+        max_height_arg(parser)
 
         if self.settings['deactivate_args']:
             # Ignore whatever was passed in on command line because of the
@@ -314,6 +317,8 @@ class Screen:
             self.args = parser.parse_args([])
         else:
             self.args = parser.parse_args()
+            if self.args.maxheight:
+                self.max_height = self.args.maxheight
 
     def load_actions(self, actions):
         steps = []
@@ -391,14 +396,19 @@ class SplitScreen(Screen):
 
     :param compact: True if for the dividing line between the top and bottom 
                     screens is to have no margin. Defaults to False
+
+    :param max_height: maximum display height in TUI mode, defaults to 0,
+                       meaning no max
     """
     def __init__(self, settings=None, top_starting_line_number=-1, 
             top_auto_scroll=True, bottom_starting_line_number=-1,
-            bottom_auto_scroll=True, top_height=0, compact=False):
+            bottom_auto_scroll=True, top_height=0, compact=False, 
+            max_height=0):
         self.top = CodeBox(top_starting_line_number, top_auto_scroll, 
             top_height, compact=compact)
         self.bottom = CodeBox(bottom_starting_line_number, bottom_auto_scroll)
-        super().__init__(settings, rows=[self.top, self.bottom])
+        super().__init__(settings, rows=[self.top, self.bottom], 
+            max_height=max_height)
 
 
 class SimpleScreen(Screen):
@@ -414,12 +424,15 @@ class SimpleScreen(Screen):
                                  box
     :param auto_scroll: When True, the class:`ui.CodeBox` automatically 
                         scrolls to newly added content.  Defaults to True.
+
+    :param max_height: maximum display height in TUI mode, defaults to 0,
+                       meaning no max
     """
     def __init__(self, settings=None, starting_line_number=-1, 
-            auto_scroll=True):
+            auto_scroll=True, max_height=0):
         """Foo man chooo"""
         self.code_box = CodeBox(starting_line_number, auto_scroll)
-        super().__init__(settings, [self.code_box])
+        super().__init__(settings, [self.code_box], max_height=max_height)
 
     def thing(self):
         pass

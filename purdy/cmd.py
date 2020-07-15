@@ -16,6 +16,11 @@ LEXER_HELP = ('Name of lexer to use to parse the file. Choices are: '
 # Argument Builders for argparse
 # =============================================================================
 
+def max_height_arg(parser):
+    parser.add_argument('--maxheight', help=('Sets a maximum screen height '
+        'for the TUI screen viewer. Ignored if not in TUI mode.'), type=int, 
+        default=0)
+
 def num_arg(parser):
     parser.add_argument('--num', help=('Display line numbers with code '
         'starting with the value given here'), type=int, default=-1)

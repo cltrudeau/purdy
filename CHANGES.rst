@@ -1,3 +1,9 @@
+1.2.5
+=====
+
+* hidden max_height feature was made accessible in the bin/purdy command line
+
+
 1.2.4
 =====
 

@@ -251,12 +251,12 @@ class TUIScreen:
         exits."""
         self.base_window = BaseWindow(self, self.widgets)
         window = self.base_window
-        if self.parent_screen.args.maxheight:
+        if self.parent_screen.max_height:
             # Force a maximum height on the window, put the BaseWindow in a
             # container and fill anything that is bigger than max
             window = urwid.Pile([
-                (int(self.parent_screen.args.maxheight), self.base_window),
-                urwid.SolidFill('X'),
+                (int(self.parent_screen.max_height), self.base_window),
+                urwid.SolidFill(' '),
             ])
 
         palette = UrwidColourizer.create_palette()

@@ -11,8 +11,9 @@ class TestExercises(TestCase):
         #self.maxDiff = None
         exercises = ['all_console', 'append', 'bash_console', 'cols', 
             'docstring', 'exec', 'fold', 'highlight', 'insert', 'lines', 
-            'mixed', 'mls_type', 'movie_console', 'remove', 'replace', 
-            'split_long', 'swipe', 'tall', 'triple', 'type_console', ]
+            'maxheight', 'mixed', 'mls_type', 'movie_console', 'remove', 
+            'replace', 'split_long', 'swipe', 'tall', 'triple', 
+            'type_console', ]
 
         exercise_data = Path(__file__).parent / 'exercise_data'
 

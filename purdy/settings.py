@@ -24,4 +24,7 @@ settings = {
 
     # if True, stops Screen from running argparse
     'deactivate_args':False,
+
+    # max height for presentation, only works in TUI mode, 0 == no max
+    'max_height':0,
 }
