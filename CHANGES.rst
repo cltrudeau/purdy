@@ -1,3 +1,9 @@
+1.3.0
+=====
+
+* Code objects now support a custom lexer: with a little extra code you can
+now use any Pygments lexer to parse your little heart out
+
 1.2.5
 =====
 

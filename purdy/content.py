@@ -24,9 +24,12 @@ class Code:
                        'detect', attempting to auto detect the type of
                        content. See :class:`purdy.parser.LexerContainer` for a
                        list of available lexers.
+    :param lexer_holder: if lexer_name is "custom" this parameter is expected
+                         to contain a purdy.parser.LexerHolder object.
     """
 
-    def __init__(self, filename='', text='', lexer_name='detect'):
+    def __init__(self, filename='', text='', lexer_name='detect', 
+            lexer_holder=None):
         self.source = ''
 
         if filename:
@@ -42,6 +45,9 @@ class Code:
         from purdy.parser import LEXERS
         if lexer_name == 'detect':
             self.lexer = LEXERS.detect_lexer(self.source)
+        elif lexer_name == 'custom':
+            LEXERS.add_custom_lexer(lexer_holder)
+            self.lexer = lexer_holder.lexer
         else:
             self.lexer = LEXERS.get_lexer(lexer_name)
 

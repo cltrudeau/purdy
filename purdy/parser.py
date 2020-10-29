@@ -61,6 +61,11 @@ class LexerContainer:
 
         return self.get_lexer('py3')
 
+    def add_custom_lexer(self, lexer_holder):
+        self._lexers[lexer_holder.name] = lexer_holder
+        self._reverse_lookup[lexer_holder.lexer.__class__] = lexer_holder
+
+
 LEXERS = LexerContainer()
 
 # -----------------------------------------------------------------------------
