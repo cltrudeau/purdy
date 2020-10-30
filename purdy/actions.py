@@ -605,3 +605,26 @@ class Sleep:
 
     def steps(self):
         return [steplib.Sleep(self.time), ]
+
+
+class RunFunction:
+    """Calls the function passed in, allowing the execution of code during the
+    playing of actions.
+
+    :param fn: function to be called
+    :param undo: function to be called when this Action is undone, can be None
+    :param *args, **kwargs: any remaining arguments are passed to the
+                            functions when they are called
+    """
+    def __init__(self, fn, undo, *args, **kwargs):
+        self.fn = fn
+        self.undo = undo
+        self.fn_args = args
+        self.fn_kwargs = kwargs
+
+    def __str__(self):
+        return 'actions.RunFunction'
+
+    def steps(self):
+        return [steplib.RunFunction(self.fn, self.undo, self.fn_args,
+            self.fn_kwargs), ]

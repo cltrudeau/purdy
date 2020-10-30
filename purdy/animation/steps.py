@@ -338,3 +338,21 @@ class StopMovie:
 
     def undo_step(self):
         pass
+
+
+class RunFunction:
+    def __init__(self, fn, undo, *args, **kwargs):
+        self.fn = fn
+        self.undo = undo
+        self.fn_args = args
+        self.fn_kwargs = kwargs
+
+    def __str__(self):
+        return 'steps.RunFunction()'
+
+    def render_step(self):
+        self.fn(*self.fn_args, **self.fn_kwargs)
+
+    def undo_step(self):
+        if self.undo is not None:
+            self.undo(*self.fn_args, **self.fn_kwargs)
