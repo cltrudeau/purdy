@@ -1,3 +1,10 @@
+1.4.0
+=====
+
+* Added methods to the Code object so you can manipulate the source before it
+is rendered. You can add, remove and change lines; remove double spaces; and
+if the source is python show only a subset like a given function
+
 1.3.0
 =====
 

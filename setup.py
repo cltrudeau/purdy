@@ -33,6 +33,7 @@ SETUP_ARGS = dict(
     py_modules = ['purdy',],
     scripts=['bin/purdy', 'bin/subpurdy', 'bin/pat', 'bin/prat'],
     install_requires = [
+        'asttokens>=2.0.4',
         'Pygments>=2.6.1',
         'urwid>=2.0.1',
         'colored>=1.4.2',

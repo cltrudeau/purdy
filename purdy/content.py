@@ -4,7 +4,7 @@ Content
 
 Reperesntations of source code are found in this module.
 """
-import os
+import ast, asttokens, os
 from copy import deepcopy
 
 from purdy.colour import COLOURIZERS
@@ -50,6 +50,132 @@ class Code:
             self.lexer = lexer_holder.lexer
         else:
             self.lexer = LEXERS.get_lexer(lexer_name)
+
+    def remove_double_blanks(self, trim_whitespace=True):
+        """Removes the second of two blanks in a row. If trim_whitespace is
+        True (default) a line with only whitespace is considered blank,
+        otherwise it only looks for \\n"""
+        lines = self.source.split('\n')
+        output = []
+
+        previous = 'asdf'
+        for line in lines:
+            if trim_whitespace \
+                    and previous.strip() == '' and line.strip() == '':
+                continue
+            else:
+                if previous == '' and line == '':
+                    continue
+
+            output.append(line)
+            previous = line
+
+        self.source = '\n'.join(output)
+
+    def remove_lines(self, line_no, count=1):
+        """Removes one or more lines from the source listing.
+
+        :param line_no: number of the line to remove, 1-indexed
+        :param count: number of lines to remove, defaults to 1
+        """
+        lines = self.source.split('\n')
+        start = line_no - 1
+        end = start + count
+        del lines[start:end]
+        self.source = '\n'.join(lines)
+
+    def replace_line(self, line_no, content):
+        """Replaces the given line with new content
+
+        :param line_no: number of the line to replace, 1-indexed
+        :param content: content to replace it with 
+        """
+        lines = self.source.split('\n')
+        lines[line_no + 1] = content
+        self.source = '\n'.join(lines)
+
+    def inline_replace(self, line_no, pos, content):
+        """Replaces the contents of a line starting at pos with the new
+        content
+
+        :param line_no: number of the line to replace, 1-indexed
+        :param pos: position number to start the replacement at, 1-indexed
+        :param content: content to replace with 
+        """
+        lines = self.source.split('\n')
+        lines[line_no + 1] = lines[line_no + 1][:pos - 1]
+        lines[line_no + 1] += content
+        self.source = '\n'.join(lines)
+
+    def _descend_ast(self, atok, parent, local_name, name_parts):
+        for node in ast.iter_child_nodes(parent):
+            if node.__class__ in [ast.FunctionDef, ast.ClassDef] \
+                    and node.name == local_name:
+                if len(name_parts) == 0:
+                    # Found the node, return the code
+                    return atok.get_text(node) + "\n"
+
+                # Found a function or class, but looking for a child of it
+                return self._descend_ast(atok, node, name_parts[0],
+                    name_parts[1:])
+
+            if node.__class__ == ast.Assign and \
+                    node.first_token.string == local_name and \
+                    len(name_parts) == 0:
+                return atok.get_text(node) + "\n"
+
+        return ''
+
+    def insert_line(self, line_no, content):
+        """Inserts the given line into the source, pushing the content down
+        from the given line number
+
+        :param line_no: number of the line to insert at, 1-indexed
+        :param content: content to insert
+        """
+        lines = self.source.split('\n')
+        lines.insert(line_no - 1, content)
+        self.source = '\n'.join(lines)
+
+
+    def python_portion(self, name):
+        """Treates the source in this object as Python and then finds either
+        the named function, class, or assigned variable and replaces the 
+        source with only the found item. 
+
+        .. warning:: If the named item is not found your source will be empty!
+
+        :param name: dot notated name of a function or class. Examples:
+                     `Foo.bar` would find the `bar` method of class `Foo` or
+                     an inner function named `bar` in a function named `Foo`
+        """
+        atok = asttokens.ASTTokens(self.source, parse=True)
+        name_parts = name.split('.')
+        self.source = self._descend_ast(atok, atok.tree, name_parts[0],
+            name_parts[1:])
+
+    def left_justify(self):
+        """Removes a consistent amount of leading whitespace from the front of
+        each line so that at least one line is left-justified.
+
+        .. warning:: will not work with mixed tabs and spaces
+        """
+        lines = self.source.split('\n')
+        leads = [len(line) - len(line.lstrip()) for line in lines if \
+            len(line.strip())]
+        if not leads:
+            # only blank lines, do nothing
+            return
+
+        min_lead = min(leads)
+        output = []
+        for line in lines:
+            if len(line.lstrip()):
+                output.append(line[min_lead:])
+            else:
+                output.append(line)
+
+        self.source = '\n'.join(output)
 
 # -----------------------------------------------------------------------------
 
