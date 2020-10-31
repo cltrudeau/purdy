@@ -1,3 +1,9 @@
+1.?.?
+=====
+
+* Add better error handling to the load action sequence
+
+
 1.4.0
 =====
 

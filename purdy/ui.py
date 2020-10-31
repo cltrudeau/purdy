@@ -8,7 +8,7 @@ to implementation of a screen. Screen implementations are found in
 :class:`Screen` object or one of its children. The factory in this module
 determines which actual implementation is loaded.
 """
-import argparse
+import argparse, sys
 
 from purdy.animation.manager import AnimationManager
 from purdy.animation.cell import group_steps_into_cells
@@ -322,8 +322,14 @@ class Screen:
 
     def load_actions(self, actions):
         steps = []
-        for action in actions:
-            steps.extend( action.steps() )
+        for (index, action) in enumerate(actions):
+            try:
+                steps.extend( action.steps() )
+            except:
+                tb = sys.exc_info()[2]
+                raise RuntimeError( ('An exception occurred while loading '
+                    f'action #{index+1}: {action.__class__.__name__}'
+                    )).with_traceback(tb)
 
         cells = group_steps_into_cells(steps)
         self.animation_manager.register(cells)
