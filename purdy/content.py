@@ -24,13 +24,18 @@ class Code:
                        'detect', attempting to auto detect the type of
                        content. See :class:`purdy.parser.LexerContainer` for a
                        list of available lexers.
+
     :param lexer_holder: if lexer_name is "custom" this parameter is expected
                          to contain a purdy.parser.LexerHolder object.
+
+    :param palette: name of colourizer palette to use during colouring,
+                    defaults to 'code', which should handle most cases.
     """
 
     def __init__(self, filename='', text='', lexer_name='detect', 
-            lexer_holder=None):
+            lexer_holder=None, palette='code'):
         self.source = ''
+        self.palette = palette
 
         if filename:
             filename = os.path.abspath(filename)
@@ -208,16 +213,20 @@ class Listing:
         """
         self.starting_line_number = starting_line_number
 
-        self.colourizer = COLOURIZERS['plain']
+        self.palette = 'code'
         self.render_hook = RenderHook()
         self.lines = []
 
         if code:
             if isinstance(code, Code):
+                self.palette = code.palette
                 self.append_code(code)
             else:
+                self.palette = code[0].palette
                 for item in code:
                     self.append_code(item)
+
+        self.colourizer = COLOURIZERS['plain'](self.palette)
 
     def set_display(self, mode='plain', render_hook=None):
         """Code can be displayed using a variety of methods, from colourized
@@ -225,15 +234,14 @@ class Listing:
         how rendering is done.
 
         :param mode: a key from :attr:`purdy.colour.COLOURIZERS` indicating
-                     which colourizer routine is used to coulour the source in
+                     which colourizer routine is used to colour the source in
                      this box. Defaults to 'plain'.
         :param render_hook: an optional hook the box calls when actions are
                             done on the box. Used by the TUI client so that
                             when something changes in the it is reflected in
                             the TUI.
         """
-        if mode:
-            self.colourizer = COLOURIZERS[mode]
+        self.colourizer = COLOURIZERS[mode](self.palette)
 
         if render_hook:
             self.render_hook = render_hook

@@ -3,11 +3,14 @@ from pathlib import Path
 from waelstow import capture_stdout
 
 from purdy.content import Code, Listing
-from purdy.colour import RTFColourizer
+from purdy.colour import COLOURIZERS
+
 from purdy.scribe import (range_set_to_list, print_tokens, print_ansi,
     print_html, print_rtf)
 
 from tests.base import PurdyContentTest
+
+RTFColourizer = COLOURIZERS['rtf']('code')
 
 # =============================================================================
 

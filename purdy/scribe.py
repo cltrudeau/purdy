@@ -6,7 +6,9 @@ Methods for transforming code into different representations on stdout.
 """
 from colored import fg, bg, attr
 
-from purdy.colour import RTFColourizer
+from purdy.colour import COLOURIZERS
+
+RTFColourizer = COLOURIZERS['rtf']
 
 # =============================================================================
 # Utility Methods
@@ -113,9 +115,9 @@ def print_rtf(listing, background_colour=None):
     :param listing: :class:`Listing` object containing code to print
     """
     if background_colour:
-        RTFColourizer.set_background_colour(background_colour)
+        listing.colourizer.set_background_colour(background_colour)
 
-    output = [RTFColourizer.rtf_header, ]
+    output = [listing.colourizer.rtf_header, ]
 
     for row in listing.content():
         output.append(row)

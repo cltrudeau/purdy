@@ -7,8 +7,10 @@ constructed by :class:`purdy.ui.Screen` depending on its factory.
 """
 import urwid
 
-from purdy.colour import UrwidColourizer
+from purdy.colour import COLOURIZERS
 from purdy.iscreen.tui.widgets import CodeWidget, DividingLine, TwinContainer
+
+UrwidColourizer = COLOURIZERS['urwid']
 
 # =============================================================================
 # Window Management
@@ -259,7 +261,7 @@ class TUIScreen:
                 urwid.SolidFill(' '),
             ])
 
-        palette = UrwidColourizer.create_palette()
+        palette = UrwidColourizer.create_urwid_palette()
         self.loop = urwid.MainLoop(window, palette)
 
         if self.parent_screen.settings['colour'] == 256:

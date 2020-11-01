@@ -6,7 +6,9 @@ from unittest import TestCase
 
 from waelstow import capture_stdout
 
-from purdy.colour import RTFColourizer
+from purdy.colour import COLOURIZERS
+
+RTFColourizer = COLOURIZERS['rtf']('code')
 
 # =============================================================================
 
