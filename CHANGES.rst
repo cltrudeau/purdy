@@ -1,8 +1,12 @@
-1.?.?
+1.5.0
 =====
 
+* Changed how the wrapper to the pygments lexers work, the wrapper is now
+responsible for choosing the palette to go with the colourizer, this means
+custom colourizers for things that aren't code like (HTML, XML) can now have
+different palettes from code
+* Custom lexer now supports named palettes
 * Add better error handling to the load action sequence
-
 
 1.4.0
 =====

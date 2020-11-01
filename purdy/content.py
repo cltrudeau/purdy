@@ -74,6 +74,7 @@ class Code:
             previous = line
 
         self.source = '\n'.join(output)
+        return self
 
     def remove_lines(self, line_no, count=1):
         """Removes one or more lines from the source listing.
@@ -86,6 +87,7 @@ class Code:
         end = start + count
         del lines[start:end]
         self.source = '\n'.join(lines)
+        return self
 
     def replace_line(self, line_no, content):
         """Replaces the given line with new content
@@ -96,6 +98,7 @@ class Code:
         lines = self.source.split('\n')
         lines[line_no + 1] = content
         self.source = '\n'.join(lines)
+        return self
 
     def inline_replace(self, line_no, pos, content):
         """Replaces the contents of a line starting at pos with the new
@@ -109,6 +112,19 @@ class Code:
         lines[line_no + 1] = lines[line_no + 1][:pos - 1]
         lines[line_no + 1] += content
         self.source = '\n'.join(lines)
+        return self
+
+    def insert_line(self, line_no, content):
+        """Inserts the given line into the source, pushing the content down
+        from the given line number
+
+        :param line_no: number of the line to insert at, 1-indexed
+        :param content: content to insert
+        """
+        lines = self.source.split('\n')
+        lines.insert(line_no - 1, content)
+        self.source = '\n'.join(lines)
+        return self
 
     def _descend_ast(self, atok, parent, local_name, name_parts):
         for node in ast.iter_child_nodes(parent):
@@ -129,18 +145,6 @@ class Code:
 
         return ''
 
-    def insert_line(self, line_no, content):
-        """Inserts the given line into the source, pushing the content down
-        from the given line number
-
-        :param line_no: number of the line to insert at, 1-indexed
-        :param content: content to insert
-        """
-        lines = self.source.split('\n')
-        lines.insert(line_no - 1, content)
-        self.source = '\n'.join(lines)
-
-
     def python_portion(self, name):
         """Treates the source in this object as Python and then finds either
         the named function, class, or assigned variable and replaces the 
@@ -156,6 +160,7 @@ class Code:
         name_parts = name.split('.')
         self.source = self._descend_ast(atok, atok.tree, name_parts[0],
             name_parts[1:])
+        return self
 
     def left_justify(self):
         """Removes a consistent amount of leading whitespace from the front of
@@ -179,6 +184,29 @@ class Code:
                 output.append(line)
 
         self.source = '\n'.join(output)
+        return self
+
+    def fold_lines(self, start, end):
+        """Call this method to replace one or more lines with a vertical
+        elipses, i.e. a fold of the code. 
+
+        :param start: line number of the listing to start code folding on. 
+                      1-indexed.
+        :param end: line number to fold until, inclusive (1-indexed).
+        """
+        lines = self.source.split('\n')
+
+        self.source = '\n'.join(lines)
+
+        size = end - start + 1
+        lines[start - 1] = '⋮'
+
+        if size > 1:
+            del lines[start:end]
+
+        self.source = '\n'.join(lines)
+
+        return self
 
 # -----------------------------------------------------------------------------
 
