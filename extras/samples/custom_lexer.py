@@ -6,7 +6,7 @@
 
 from purdy.actions import Append
 from purdy.content import Code
-from purdy.parser import LexerHolder
+from purdy.parser import PurdyLexer
 from purdy.ui import SimpleScreen
 
 from pygments.lexers.javascript import JavascriptLexer
@@ -14,9 +14,9 @@ from pygments.lexers.javascript import JavascriptLexer
 screen = SimpleScreen()
 code_box = screen.code_box
 
-lexer_holder = LexerHolder('js', JavascriptLexer(), 'Javascript', False)
+lexer = PurdyLexer('js', 'Javascript', JavascriptLexer, False, 'code')
 blob = Code('../display_code/ugly.js', lexer_name='custom',
-    lexer_holder=lexer_holder)
+    purdy_lexer=lexer)
 
 actions = [
     Append(code_box, blob),

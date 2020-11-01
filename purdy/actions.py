@@ -23,7 +23,7 @@ from copy import deepcopy
 from pygments.token import Generic, Token
 
 from purdy.animation import steps as steplib
-from purdy.parser import CodePart, CodeLine, LEXERS, parse_source, token_is_a
+from purdy.parser import CodePart, CodeLine, parse_source, token_is_a
 from purdy.scribe import range_set_to_list
 
 # =============================================================================
@@ -231,7 +231,7 @@ class TypewriterStep(TypewriterBase):
 
         # --- Skip animation for "output" content
         first_token = line.parts[0].token
-        is_console = LEXERS.is_lexer_console(self.code.lexer)
+        is_console = self.code.lexer.is_console
 
         if is_console and not token_is_a(first_token, Generic.Prompt):
             # in console mode only lines with prompts get typewriter

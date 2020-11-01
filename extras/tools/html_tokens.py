@@ -20,7 +20,8 @@ with open(args.files[0]) as f:
     contents = f.read()
 
 for token, text in lexer.get_tokens(contents):
+    first = ord(text[0])
     if text == '\n':
         text = '\\n'
 
-    print('%s: %s' % (token, text))
+    print('%s: %s %0x' % (token, text, first))

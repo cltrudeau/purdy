@@ -6,11 +6,11 @@ Several of the command line tools have common arguments and needs. This file
 defines helper functions so these are defined once.
 """
 from purdy.__init__ import __version__
-from purdy.parser import LEXERS
+from purdy.parser import PurdyLexer
 
 LEXER_HELP = ('Name of lexer to use to parse the file. Choices are: ' 
-    f'{LEXERS.choices}. If no choice given, attempts to determine the result '
-    'automatically. If it cannot detect it, it assumes Python 3.')
+    f'{PurdyLexer.choices()}. If no choice given, attempts to determine the '
+    'result automatically. If it cannot detect it, it assumes Python 3.')
 
 # =============================================================================
 # Argument Builders for argparse
@@ -27,7 +27,7 @@ def num_arg(parser):
 
 
 def lexer_arg(parser):
-    parser.add_argument('-l', '--lexer', choices=LEXERS.names,
+    parser.add_argument('-l', '--lexer', choices=PurdyLexer.names(),
         default='detect', help=LEXER_HELP)
 
 

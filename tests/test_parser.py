@@ -2,7 +2,7 @@ from unittest import TestCase
 
 from pygments.token import Token
 
-from purdy.parser import (LEXERS, BlankCodeLine, CodeLine, CodePart, 
+from purdy.parser import (PurdyLexer, BlankCodeLine, CodeLine, CodePart, 
     token_is_a, token_ancestor)
 
 # =============================================================================
@@ -25,7 +25,7 @@ hello
 class TestParser(TestCase):
     def test_lexer_container(self):
         #--- Test the names property
-        names = list(LEXERS.names)
+        names = list(PurdyLexer.names())
         self.assertEqual(3, len(names))
         names = set(names)
 
@@ -33,35 +33,22 @@ class TestParser(TestCase):
         self.assertEqual(expected, names)
 
         #--- Test the choices property
-        choices = LEXERS.choices.split(',')
+        choices = PurdyLexer.choices().split(',')
         self.assertEqual(3, len(choices))
 
-        self.assertIn('"py3" (Python 3)', LEXERS.choices)
-        self.assertIn('"con" (Python Console)', LEXERS.choices)
-        self.assertIn('"bash" (Bash Console)', LEXERS.choices)
-
-        #--- Test is_console attributes
-        lexer = LEXERS.get_lexer('con')
-        self.assertTrue(LEXERS.is_lexer_console(lexer))
-
-        lexer = LEXERS.get_lexer('py3')
-        self.assertFalse(LEXERS.is_lexer_console(lexer))
-
-        lexer = LEXERS.get_lexer('bash')
-        self.assertTrue(LEXERS.is_lexer_console(lexer))
+        self.assertIn('"py3" (Python 3 Source)', PurdyLexer.choices())
+        self.assertIn('"con" (Python 3 Console)', PurdyLexer.choices())
+        self.assertIn('"bash" (Bash Console)', PurdyLexer.choices())
 
         #--- Test lexer detection
-        lexer = LEXERS.detect_lexer(PYCON_SOURCE)
-        expected = LEXERS.get_lexer('con')
-        self.assertEqual(expected, lexer)
+        lexer = PurdyLexer.factory_from_source(PYCON_SOURCE)
+        self.assertEqual('con', lexer.name)
 
-        lexer = LEXERS.detect_lexer(PY_SCRIPT)
-        expected = LEXERS.get_lexer('py3')
-        self.assertEqual(expected, lexer)
+        lexer = PurdyLexer.factory_from_source(PY_SCRIPT)
+        self.assertEqual('py3', lexer.name)
 
-        lexer = LEXERS.detect_lexer(BASHCON_SOURCE)
-        expected = LEXERS.get_lexer('bash')
-        self.assertEqual(expected, lexer)
+        lexer = PurdyLexer.factory_from_source(BASHCON_SOURCE)
+        self.assertEqual('bash', lexer.name)
 
     def test_tokens(self):
 
@@ -84,7 +71,7 @@ class TestParser(TestCase):
         blank = BlankCodeLine()
         self.assertEqual('', blank.render_line(None))
 
-        lexer = LEXERS.get_lexer('py3')
+        lexer = PurdyLexer.factory_from_name('py3')
         line = CodeLine([CodePart(Token.Text, 'foo'), ], lexer, line_number=10)
 
         expected = 'CodeLine(" 10 foo")'

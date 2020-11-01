@@ -6,8 +6,10 @@ This module mimics a code viewer, running through the requested actions and
 making the final result available.
 """
 
-from purdy.colour import RTFColourizer
+from purdy.colour import COLOURIZERS
 from purdy.ui import VirtualCodeWidget
+
+RTFColourizer = COLOURIZERS['rtf']
 
 # =============================================================================
 # Screen

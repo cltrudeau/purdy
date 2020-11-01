@@ -11,7 +11,8 @@ from copy import deepcopy
 
 from pygments.token import String, Token
 
-from purdy.parser import CodeLine, CodePart, token_is_a, parse_source
+from purdy.parser import (CodeLine, CodePart, token_is_a, parse_source,
+    PurdyLexer)
 
 # ===========================================================================
 # Animation Steps
@@ -83,10 +84,12 @@ class Subprocess:
         result = subprocess.run(args, stdout=subprocess.PIPE,
             stderr=subprocess.PIPE, universal_newlines=True)
 
+        lexer = PurdyLexer.factory_from_name('con')
+
         new_lines = []
         for row in result.stdout.split('\n'):
             part = CodePart(Token.Generic.Output, row)
-            new_lines.append( CodeLine([part, ], None) )
+            new_lines.append( CodeLine([part, ], lexer) )
 
         self.undo_position = len(self.code_box.listing.lines) + 1
         self.undo_size = len(new_lines)

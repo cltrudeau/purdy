@@ -1,7 +1,6 @@
 from pygments.token import Keyword, Name, Comment, String, Error, \
     Number, Operator, Generic, Token, Whitespace, Punctuation
 
-from .base import BaseColourizer
 from purdy.parser import FoldedCodeLine, token_ancestor
 
 # =============================================================================
@@ -51,6 +50,7 @@ def rtf_encode(text):
 
     return ''.join(output)
 
+# -----------------------------------------------------------------------------
 
 class RTFHeaders:
     preamble = r"""{\rtf1\ansi\ansicpg1252
@@ -72,43 +72,55 @@ class RTFHeaders:
 
     font_spec = r'\f0\fs28' + '\n'
 
+# -----------------------------------------------------------------------------
 
-class RTFColourizer(BaseColourizer):
+_code_palette = {
+    Token:              '\\cf0 %s\n',
+    Whitespace:         '\\cf0 %s\n',
+    Comment:            '\\i \\cf2 %s\n\\i0\n',
+    Keyword:            '\\b \\cf3 %s\n\\b0\n',
+    Operator:           '\\b \\cf4 %s\n\\b0\n', 
+    Name:               '\\cf5 %s\n',
+    Name.Builtin:       '\\cf6 %s\n', 
+    Name.Function:      '\\cf5 %s\n',
+    Name.Class:         '\\cf5 %s\n',
+    Name.Exception:     '\\b \\cf7 %s\n\\b0\n', 
+    Name.Decorator:     '\\b \\cf8 %s\n\\b0\n', 
+    Name.Variable:      '\\cf0 %s\n',
+    Name.Constant:      '\\cf0 %s\n',
+    Name.Attribute:     '\\cf0 %s\n',
+    Name.Tag:           '\\cf0 %s\n',
+    Punctuation:        '\\b \\cf5 %s\n\\b0\n', 
+    String:             '\\cf9 %s\n', 
+    String.Doc:         '\\i \\cf2 %s\n \\i0', 
+    Number:             '\\b \cf10 %s\n \\b0', 
+    Generic.Prompt:     '\\cf2 %s\n',
+    Generic.Error:      '\\cf11 %s\n',
+    Generic.Traceback:  '\\b \cf12 %s\n\\b0\n', 
+    Error:              '\\cf11 %s\n',
+}
+
+_xml_palette = dict(_code_palette)
+_xml_palette.update({
+    Name.Attribute: '\\b \\cf3 %s\n\\b0\n',
+    Name.Tag:       '\\cf6 %s\n', 
+    Keyword:        '\\cf6 %s\n', 
+    Punctuation:    '\\cf6 %s\n', 
+})
+
+class RTFColourizer:
     palettes = {
-        'code':{
-            Token:              '\\cf0 %s\n',
-            Whitespace:         '\\cf0 %s\n',
-            Comment:            '\\i \\cf2 %s\n\\i0\n',
-            Keyword:            '\\b \\cf3 %s\n\\b0\n',
-            Operator:           '\\b \\cf4 %s\n\\b0\n', 
-            Name:               '\\cf5 %s\n',
-            Name.Builtin:       '\\cf6 %s\n', 
-            Name.Function:      '\\cf5 %s\n',
-            Name.Class:         '\\cf5 %s\n',
-            Name.Exception:     '\\b \\cf7 %s\n\\b0\n', 
-            Name.Decorator:     '\\b \\cf8 %s\n\\b0\n', 
-            Name.Variable:      '\\cf0 %s\n',
-            Name.Constant:      '\\cf0 %s\n',
-            Name.Attribute:     '\\cf0 %s\n',
-            Name.Tag:           '\\cf0 %s\n',
-            Punctuation:        '\\b \\cf5 %s\n\\b0\n', 
-            String:             '\\cf9 %s\n', 
-            String.Doc:         '\\i \\cf2 %s\n \\i0', 
-            Number:             '\\b \cf10 %s\n \\b0', 
-            Generic.Prompt:     '\\cf2 %s\n',
-            Generic.Error:      '\\cf11 %s\n',
-            Generic.Traceback:  '\\b \cf12 %s\n\\b0\n', 
-        },
+        'code':_code_palette,
+        'xml':_xml_palette,
     }
 
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        self.rtf_header = RTFHeaders.preamble + RTFHeaders.color_table + \
-            RTFHeaders.font_spec
+    rtf_header = RTFHeaders.preamble + RTFHeaders.color_table + \
+        RTFHeaders.font_spec
 
-        self.highlight = '\\cb13 %s \\cb1'
+    highlight = '\\cb13 %s \\cb1'
 
-    def set_background_colour(self, colour):
+    @classmethod
+    def set_background_colour(cls, colour):
         """RTF doesn't really support turning background colours off, once you
         have a background colour it can only set the whole doc to something
         else. This makes highlighting weird if your background colour isn't
@@ -134,17 +146,19 @@ class RTFColourizer(BaseColourizer):
 
         # update the header to include the new background colour and the
         # highlight spec to use it
-        self.rtf_header = RTFHeaders.preamble + \
+        cls.rtf_header = RTFHeaders.preamble + \
             RTFHeaders.color_table_background_template % bg + \
             RTFHeaders.font_spec + '\\cb14 \n'
-        self.highlight = '\\cb13 %s \\cb14'
+        cls.highlight = '\\cb13 %s \\cb14'
 
-    def reset_background_colour(self):
+    @classmethod
+    def reset_background_colour(cls):
         """When testing, need to put the class back in its original state."""
-        self.rtf_header = RTFHeaders.preamble + RTFHeaders.color_table + \
+        cls.rtf_header = RTFHeaders.preamble + RTFHeaders.color_table + \
             RTFHeaders.font_spec
 
-    def colourize(self, code_line):
+    @classmethod
+    def colourize(cls, code_line):
         """Returns a text string with RTF style tags. RTF uses a colour table,
         this styling assumes you're using the same colour table, available in
         the header in :attr:`RTFColourizer.rtf_header`.
@@ -154,24 +168,26 @@ class RTFColourizer(BaseColourizer):
         if isinstance(code_line, FoldedCodeLine):
             return '\\cf0 ⋮'
 
-        ancestor_list = self.palettes[self.palette].keys()
+        palette = code_line.lexer.palette
+        ancestor_list = cls.palettes[palette].keys()
 
         output = []
         if code_line.line_number >= 0:
-            output.append( self.line_number(code_line.line_number) )
+            output.append( cls.line_number(code_line.line_number) )
 
         for part in code_line.parts:
             text = rtf_encode(part.text)
             key = token_ancestor(part.token,   ancestor_list)
-            render = self.palettes[self.palette][key] % text
+            render = cls.palettes[palette][key] % text
 
             if code_line.highlight:
-                render = self.highlight % render
+                render = cls.highlight % render
 
             output.append(render)
 
         return ''.join(output)
 
-    def line_number(self, num):
+    @classmethod
+    def line_number(cls, num):
         """Returns a colourized version of a line number"""
         return f'\\cf5 {num:3} \n'

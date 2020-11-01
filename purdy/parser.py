@@ -2,7 +2,7 @@
 Parser
 ======
 
-This contains methods and classes to manager parsing of code
+This contains methods and classes to manage parsing of code
 """
 
 from copy import deepcopy
@@ -15,58 +15,46 @@ from pygments.token import String, Token
 # Pygments Token Management
 # =============================================================================
 
-LexerHolder = namedtuple('LexerHolder', ['name', 'lexer', 'description',
-    'is_console'])
+class PurdyLexer:
+    _registry = {
+        'con':('con', 'Python 3 Console', PythonConsoleLexer, True, 'code'), 
+        'py3':('py3', 'Python 3 Source', PythonLexer, False, 'code'),
+        'bash':('bash', 'Bash Console', BashSessionLexer, True, 'code'),
+    }
 
-class LexerContainer:
-    """Contains lexers used to parse code. The lexers are referenced by a
-    name. Supported lexers are:
+    def __init__(self, name, description, pygments_lexer_cls, is_console,
+            palette):
+        self.name = name
+        self.description = description
+        self.pygments_lexer = pygments_lexer_cls()
+        self.is_console = is_console
+        self.palette = palette
 
-    * `con` -- Python console 
-    * `py3` -- Python 3 code
-    * `bash` -- Bash console
-
-    """
-    def __init__(self):
-        holders = [
-            LexerHolder('con',  PythonConsoleLexer(), 'Python Console', True), 
-            LexerHolder('py3',  PythonLexer(), 'Python 3', False),
-            LexerHolder('bash', BashSessionLexer(), 'Bash Console', True),
-        ]
-        self._lexers = {h.name:h for h in holders}
-        self._reverse_lookup = {h.lexer.__class__:h for h in holders}
-
-    @property
-    def names(self):
-        return self._lexers.keys()
-
-    @property
-    def choices(self):
-        return ', '.join([f'"{h.name}" ({h.description})' for h in \
-            self._lexers.values()])
-
-    def get_lexer(self, name):
-        return self._lexers[name].lexer
-
-    def is_lexer_console(self, lexer):
-        ### Returns true if the lexer passed in is a console style lexer
-        holder = self._reverse_lookup[lexer.__class__]
-        return holder.is_console
-
-    def detect_lexer(self, source):
+    @classmethod
+    def factory_from_source(cls, source):
         if source.startswith('>>> ') or '\n>>> ' in source:
-            return self.get_lexer('con')
+            return PurdyLexer(*cls._registry['con'])
         elif source.startswith('$ ') or '\n$ ' in source:
-            return self.get_lexer('bash')
+            return PurdyLexer(*cls._registry['bash'])
 
-        return self.get_lexer('py3')
+        return PurdyLexer(*cls._registry['py3'])
 
-    def add_custom_lexer(self, lexer_holder):
-        self._lexers[lexer_holder.name] = lexer_holder
-        self._reverse_lookup[lexer_holder.lexer.__class__] = lexer_holder
+    @classmethod
+    def factory_from_name(cls, name):
+        return PurdyLexer(*cls._registry[name])
 
+    @classmethod
+    def choices(cls):
+        output = []
+        for key, value in cls._registry.items():
+            output.append(f'"{key}" ({value[1]})')
 
-LEXERS = LexerContainer()
+        return ', '.join([f'"{key}" ({value[1]})' for key, value in \
+            cls._registry.items()])
+
+    @classmethod
+    def names(cls):
+        return cls._registry.keys()
 
 # -----------------------------------------------------------------------------
 
@@ -139,9 +127,9 @@ class CodeLine:
     def __init__(self, parts, lexer, line_number=-1, highlight=False):
         """Represents a displayed line of code.
 
-        :param text: plain text version of line
         :param parts: list of :code:`CodePart` objects that correspond to 
                        this line of code
+        :param lexer: PurdyLexer used to parse the content
         :param line_number: line number for the line, -1 for off (default)
         :param highlight: True if this line is currently highlighted. Defaults
                           to False.
@@ -200,9 +188,12 @@ class _Parser:
 
     def parse(self, content):
         self.parts = []
-        for token_type, text in self.lexer.get_tokens(content):
-            if text == '\n':
+        for token_type, text in self.lexer.pygments_lexer.get_tokens(content):
+            if text.startswith('\n'):
                 self.newline_handler(token_type)
+                if len(text) > 1:
+                    # something came after the \n, handle it
+                    self.string_handler(token_type, text[1:])
             elif text == '':
                 # tokenizer sometimes puts in empty stuff, skip it
                 continue

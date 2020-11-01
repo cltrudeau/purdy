@@ -2,12 +2,12 @@ from unittest import TestCase
 
 from pygments.token import Token
 
-from purdy.parser import CodePart, CodeLine, LEXERS
+from purdy.parser import CodePart, CodeLine, PurdyLexer
 
 # =============================================================================
 
-py3_lexer = LEXERS.get_lexer('py3')
-bash_lexer = LEXERS.get_lexer('bash')
+py3_lexer = PurdyLexer.factory_from_name('py3')
+bash_lexer = PurdyLexer.factory_from_name('bash')
 
 PY_CODE_LINES = [
     CodeLine([

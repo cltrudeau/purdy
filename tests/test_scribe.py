@@ -10,7 +10,7 @@ from purdy.scribe import (range_set_to_list, print_tokens, print_ansi,
 
 from tests.base import PurdyContentTest
 
-RTFColourizer = COLOURIZERS['rtf']('code')
+RTFColourizer = COLOURIZERS['rtf']
 
 # =============================================================================
 

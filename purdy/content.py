@@ -33,9 +33,8 @@ class Code:
     """
 
     def __init__(self, filename='', text='', lexer_name='detect', 
-            lexer_holder=None, palette='code'):
+            purdy_lexer=None):
         self.source = ''
-        self.palette = palette
 
         if filename:
             filename = os.path.abspath(filename)
@@ -47,14 +46,13 @@ class Code:
 
         self.source = self.source.rstrip('\n')
 
-        from purdy.parser import LEXERS
+        from purdy.parser import PurdyLexer
         if lexer_name == 'detect':
-            self.lexer = LEXERS.detect_lexer(self.source)
+            self.lexer = PurdyLexer.factory_from_source(self.source)
         elif lexer_name == 'custom':
-            LEXERS.add_custom_lexer(lexer_holder)
-            self.lexer = lexer_holder.lexer
+            self.lexer = purdy_lexer
         else:
-            self.lexer = LEXERS.get_lexer(lexer_name)
+            self.lexer = PurdyLexer.factory_from_name(lexer_name)
 
     def remove_double_blanks(self, trim_whitespace=True):
         """Removes the second of two blanks in a row. If trim_whitespace is
@@ -213,20 +211,17 @@ class Listing:
         """
         self.starting_line_number = starting_line_number
 
-        self.palette = 'code'
+        self.colourizer = COLOURIZERS['plain']
         self.render_hook = RenderHook()
         self.lines = []
 
         if code:
             if isinstance(code, Code):
-                self.palette = code.palette
                 self.append_code(code)
             else:
-                self.palette = code[0].palette
                 for item in code:
                     self.append_code(item)
 
-        self.colourizer = COLOURIZERS['plain'](self.palette)
 
     def set_display(self, mode='plain', render_hook=None):
         """Code can be displayed using a variety of methods, from colourized
@@ -241,7 +236,7 @@ class Listing:
                             when something changes in the it is reflected in
                             the TUI.
         """
-        self.colourizer = COLOURIZERS[mode](self.palette)
+        self.colourizer = COLOURIZERS[mode]
 
         if render_hook:
             self.render_hook = render_hook
@@ -269,7 +264,8 @@ class Listing:
 
     def append_code(self, code):
         """Parses contents of a :class:`Code` object and appends it to this
-        box."""
+        box. Has a side effect of changing the listing's colour palette to
+        that of the code object sent in."""
         lines = parse_source(code.source, code.lexer)
         self.insert_lines(0, lines)
 

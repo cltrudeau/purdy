@@ -8,7 +8,7 @@ from waelstow import capture_stdout
 
 from purdy.colour import COLOURIZERS
 
-RTFColourizer = COLOURIZERS['rtf']('code')
+RTFColourizer = COLOURIZERS['rtf']
 
 # =============================================================================
 

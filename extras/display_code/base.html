@@ -1,0 +1,79 @@
+{% load airplanetags %}
+{% load static %}
+{% load awltags %}
+<!doctype html>
+<html lang="en">
+<head>
+  <!-- Required meta tags -->
+  <meta charset="utf-8">
+  <meta name="viewport" 
+    content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+  <!-- Bootstrap CSS -->
+  <link rel="stylesheet" href="{% airplane 'https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css' %}" 
+    integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" 
+    crossorigin="anonymous">
+
+  <link rel="stylesheet" href="{% static 'vye.css' %}">
+
+  <title>Vye {% if title %}&mdash; {{title}} {% endif %} </title>
+
+  {% block extra_head %}
+  {% endblock extra_head %}
+  {% block extra_script %}
+  {% endblock extra_script %}
+</head>
+<body>
+  {% if uses_vue %}
+    <div id="vue-container">
+      <template>
+        <div class="vue-root">
+  {% endif %}
+
+  <div class="navholder container {% if fixed_nav %}fixed-top{% endif %}">
+    {% block nav %}
+    {% endblock nav %}
+  </div>
+
+  {% block container %}
+    <main role="main" class="container">
+
+      {% block content %}
+      {% endblock content %}
+    </main>
+  {% endblock container %}
+
+  {% if uses_vue %}
+        </div>
+      </template>
+    </div>
+  {% endif %}
+
+  {% block after_vue %}
+  {% endblock after_vue %}
+
+  <!-- Optional JavaScript -->
+  <script src="{% airplane 'https://code.jquery.com/jquery-3.4.1.min.js' %}"
+    crossorigin="anonymous"></script>
+  <script src="{% airplane 'https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js' %}" 
+  integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+  <script src="{% airplane 'https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js' %}" 
+  integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+
+{% block body_script %}
+<script>
+// --- Globals
+var FETCH_URL = '/api/v1/room_specs/{{room_spec.id}}/';
+var wall_form = undefined;
+var create_lib_link = undefined;
+var text_form = undefined;
+var publish_form = undefined;
+
+$(function() {
+  ajax_setup(get_cookie('csrftoken'));
+});
+</script>
+{% endblock body_script %}
+
+</body>
+</html>
