@@ -9,6 +9,11 @@ different palettes from code
 * Add better error handling to the load action sequence
 * Add error handling detecting Transitions that are missing both code and
 code_box_to_copy
+* Add error handling when trying to Replace outside of box boundaries
+* Removed ReplaceTypewriter, multi-line replacement was ambiguous, use a
+Remove and InsertTypewriter to explicitly do what you need
+* Add error handling if a negative index is passed to InsertTypewriter,
+updated incorrect documentation
 
 1.4.0
 =====

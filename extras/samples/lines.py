@@ -6,7 +6,7 @@
 # replacing lines. Both done with and without the typewriter animation.
 
 from purdy.actions import (Append, Wait, Suffix, SuffixTypewriter,
-    Replace, ReplaceTypewriter)
+    Replace, Remove, InsertTypewriter)
 from purdy.content import Code
 from purdy.ui import SplitScreen
 
@@ -55,7 +55,10 @@ actions = [
 ]
 
 blob1 = Code(text='>>> d = 4')
-blob2 = Code(text='>>> e = 5')
+blob2 = Code(text="""\
+>>> e = 5
+>>> f = 6
+""")
 
 actions.extend([
     Replace(bottom, 3, blob1),
@@ -65,7 +68,9 @@ actions.extend([
     Suffix(bottom, 1, '333'),
     SuffixTypewriter(bottom, 1, '444'),
     Wait(),
-    ReplaceTypewriter(bottom, 2, blob2),
+    Remove(bottom, 2, 1),
+    InsertTypewriter(bottom, 2, blob2),
+    InsertTypewriter(bottom, 0, blob2),
 ])
 
 if __name__ == '__main__':

@@ -94,7 +94,10 @@ class Append(Insert):
 
 class Replace:
     """Replaces one or more lines of a :class:`purdy.ui.CodeBox` using the
-    content of a :class:`purdy.content.Code` object.
+    content of a :class:`purdy.content.Code` object. This action attempts to
+    overwrite using the number of lines in the :class:`purdy.content.Code`
+    object passed in, it is up to you to make sure there is enough space in
+    your CodeBox.
 
     :param code_box: the :class:`purdy.ui.CodeBox` instance where the code is
                      to be replaced 
@@ -333,6 +336,7 @@ class AppendTypewriter(TypewriterStep):
         content = condense(self.code.source)
         return f'actions.AppendTypewriter("{content}")'
 
+
 class InsertTypewriter(TypewriterStep):
     """Inserts the contents of a :class:`purdy.content.Code` object at the
     given position using the typewriter animation.
@@ -341,12 +345,15 @@ class InsertTypewriter(TypewriterStep):
                      into
 
     :param position: line number to insert the code at. Position is 1-indexed.
-                     Negative indicies are supported. 
 
     :param code: a :class:`purdy.content.Code` object containing the source
                  code to insert.
     """
     def __init__(self, code_box, position, code):
+        if position < 0:
+            raise AttributeError(
+                'Negative indicies are not supported for this action')
+
         self.code_box = code_box
         self.code = code
         self.position = position
@@ -354,46 +361,6 @@ class InsertTypewriter(TypewriterStep):
     def __str__(self):
         content = condense(self.code.source)
         return f'actions.InsertTypewriter({self.position}, "{content}")'
-
-class ReplaceTypewriter(TypewriterStep):
-    """Replaces one or more lines in a :class:`CodeBox` with the contents of a 
-    :class:`purdy.ui.CodeBox` using a typewriter animation.
-
-    :param code_box: the :class:`purdy.ui.CodeBox` instance to append code
-                     into
-
-    :param position: line number to insert the code at. Position is 1-indexed.
-                     Negative indicies are supported. 
-
-    :param code: a :class:`purdy.content.Code` object containing the source
-                 code to insert.
-    """
-    def __init__(self, code_box, position, code):
-        self.code_box = code_box
-        self.code = code
-        self.position = position
-
-    def __str__(self):
-        content = condense(self.code.source)
-        return f'actions.ReplaceTypewriter({self.position}, "{content}")'
-
-    def steps(self):
-        # Override TypewriterStep, need to remove the line before inserting a
-        # new one
-        steps = []
-
-        lines = parse_source(self.code.source, self.code.lexer)
-        for count, line in enumerate(lines):
-            # remove old line
-            step = steplib.RemoveRows(self.code_box, self.position + count)
-            steps.append(step)
-
-            # typewriter insert in place of removed line
-            pos = self.position + count
-            line_steps = self._line_to_steps(line, pos, pos)
-            steps.extend(line_steps)
-
-        return steps
 
 
 class SuffixTypewriter(TypewriterBase):

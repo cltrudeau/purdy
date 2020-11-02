@@ -23,7 +23,9 @@
   "actions.Suffix(1, \"333\")",
   "actions.SuffixTypewriter(1, \"444\")",
   "actions.Wait()",
-  "actions.ReplaceTypewriter(2, \">>> e = 5\")",
+  "actions.Remove(2, \"1\")",
+  "actions.InsertTypewriter(2, \">>> e = 5\n>>> f = 6\")",
+  "actions.InsertTypewriter(0, \">>> e = 5\n>>> f = 6\")",
   "=== Steps ===",
   "steps.InsertRow(\"[CodeLine(\"@decorator\")...]\" @ 0)",
   "steps.InsertRow(\"[CodeLine(\">>> a = 1\")...]\" @ 0)",
@@ -70,6 +72,42 @@
   "steps.Sleep()",
   "steps.ReplaceRows(\"[CodeLine(\">>> e = 5\")\" @ 2)",
   "steps.Sleep()",
+  "steps.InsertRow(\"[CodeLine(\"\")\" @ 3)",
+  "steps.ReplaceRows(\"[CodeLine(\">>> \")\" @ 3)",
+  "steps.ReplaceRows(\"[CodeLine(\">>> f\u2588\")\" @ 3)",
+  "steps.Sleep()",
+  "steps.ReplaceRows(\"[CodeLine(\">>> f \u2588\")\" @ 3)",
+  "steps.Sleep()",
+  "steps.ReplaceRows(\"[CodeLine(\">>> f =\u2588\")\" @ 3)",
+  "steps.Sleep()",
+  "steps.ReplaceRows(\"[CodeLine(\">>> f = \u2588\")\" @ 3)",
+  "steps.Sleep()",
+  "steps.ReplaceRows(\"[CodeLine(\">>> f = 6\")\" @ 3)",
+  "steps.Sleep()",
+  "steps.InsertRow(\"[CodeLine(\"\")\" @ 0)",
+  "steps.ReplaceRows(\"[CodeLine(\">>> \")\" @ -1)",
+  "steps.ReplaceRows(\"[CodeLine(\">>> e\u2588\")\" @ -1)",
+  "steps.Sleep()",
+  "steps.ReplaceRows(\"[CodeLine(\">>> e \u2588\")\" @ -1)",
+  "steps.Sleep()",
+  "steps.ReplaceRows(\"[CodeLine(\">>> e =\u2588\")\" @ -1)",
+  "steps.Sleep()",
+  "steps.ReplaceRows(\"[CodeLine(\">>> e = \u2588\")\" @ -1)",
+  "steps.Sleep()",
+  "steps.ReplaceRows(\"[CodeLine(\">>> e = 5\")\" @ -1)",
+  "steps.Sleep()",
+  "steps.InsertRow(\"[CodeLine(\"\")\" @ 0)",
+  "steps.ReplaceRows(\"[CodeLine(\">>> \")\" @ -1)",
+  "steps.ReplaceRows(\"[CodeLine(\">>> f\u2588\")\" @ -1)",
+  "steps.Sleep()",
+  "steps.ReplaceRows(\"[CodeLine(\">>> f \u2588\")\" @ -1)",
+  "steps.Sleep()",
+  "steps.ReplaceRows(\"[CodeLine(\">>> f =\u2588\")\" @ -1)",
+  "steps.Sleep()",
+  "steps.ReplaceRows(\"[CodeLine(\">>> f = \u2588\")\" @ -1)",
+  "steps.Sleep()",
+  "steps.ReplaceRows(\"[CodeLine(\">>> f = 6\")\" @ -1)",
+  "steps.Sleep()",
   "=== Forward ===",
   {
     "code_box": "CodeBox(id=1)",
@@ -280,10 +318,220 @@
     "code_box": "CodeBox(id=2)",
     "change_type": "change:2",
     "content": ">>> e = 5"
+  },
+  {
+    "code_box": "CodeBox(id=2)",
+    "change_type": "insert:3",
+    "content": ""
+  },
+  {
+    "code_box": "CodeBox(id=2)",
+    "change_type": "change:3",
+    "content": ">>> "
+  },
+  {
+    "code_box": "CodeBox(id=2)",
+    "change_type": "change:3",
+    "content": ">>> f\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=2)",
+    "change_type": "change:3",
+    "content": ">>> f \u2588"
+  },
+  {
+    "code_box": "CodeBox(id=2)",
+    "change_type": "change:3",
+    "content": ">>> f =\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=2)",
+    "change_type": "change:3",
+    "content": ">>> f = \u2588"
+  },
+  {
+    "code_box": "CodeBox(id=2)",
+    "change_type": "change:3",
+    "content": ">>> f = 6"
+  },
+  {
+    "code_box": "CodeBox(id=2)",
+    "change_type": "insert:5",
+    "content": ""
+  },
+  {
+    "code_box": "CodeBox(id=2)",
+    "change_type": "change:5",
+    "content": ">>> "
+  },
+  {
+    "code_box": "CodeBox(id=2)",
+    "change_type": "change:5",
+    "content": ">>> e\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=2)",
+    "change_type": "change:5",
+    "content": ">>> e \u2588"
+  },
+  {
+    "code_box": "CodeBox(id=2)",
+    "change_type": "change:5",
+    "content": ">>> e =\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=2)",
+    "change_type": "change:5",
+    "content": ">>> e = \u2588"
+  },
+  {
+    "code_box": "CodeBox(id=2)",
+    "change_type": "change:5",
+    "content": ">>> e = 5"
+  },
+  {
+    "code_box": "CodeBox(id=2)",
+    "change_type": "insert:6",
+    "content": ""
+  },
+  {
+    "code_box": "CodeBox(id=2)",
+    "change_type": "change:6",
+    "content": ">>> "
+  },
+  {
+    "code_box": "CodeBox(id=2)",
+    "change_type": "change:6",
+    "content": ">>> f\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=2)",
+    "change_type": "change:6",
+    "content": ">>> f \u2588"
+  },
+  {
+    "code_box": "CodeBox(id=2)",
+    "change_type": "change:6",
+    "content": ">>> f =\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=2)",
+    "change_type": "change:6",
+    "content": ">>> f = \u2588"
+  },
+  {
+    "code_box": "CodeBox(id=2)",
+    "change_type": "change:6",
+    "content": ">>> f = 6"
   },
   "=== Backward ===",
   {
     "code_box": "CodeBox(id=2)",
+    "change_type": "change:6",
+    "content": ">>> f = \u2588"
+  },
+  {
+    "code_box": "CodeBox(id=2)",
+    "change_type": "change:6",
+    "content": ">>> f =\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=2)",
+    "change_type": "change:6",
+    "content": ">>> f \u2588"
+  },
+  {
+    "code_box": "CodeBox(id=2)",
+    "change_type": "change:6",
+    "content": ">>> f\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=2)",
+    "change_type": "change:6",
+    "content": ">>> "
+  },
+  {
+    "code_box": "CodeBox(id=2)",
+    "change_type": "change:6",
+    "content": ""
+  },
+  {
+    "code_box": "CodeBox(id=2)",
+    "change_type": "remove:6",
+    "content": ""
+  },
+  {
+    "code_box": "CodeBox(id=2)",
+    "change_type": "change:5",
+    "content": ">>> e = \u2588"
+  },
+  {
+    "code_box": "CodeBox(id=2)",
+    "change_type": "change:5",
+    "content": ">>> e =\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=2)",
+    "change_type": "change:5",
+    "content": ">>> e \u2588"
+  },
+  {
+    "code_box": "CodeBox(id=2)",
+    "change_type": "change:5",
+    "content": ">>> e\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=2)",
+    "change_type": "change:5",
+    "content": ">>> "
+  },
+  {
+    "code_box": "CodeBox(id=2)",
+    "change_type": "change:5",
+    "content": ""
+  },
+  {
+    "code_box": "CodeBox(id=2)",
+    "change_type": "remove:5",
+    "content": ""
+  },
+  {
+    "code_box": "CodeBox(id=2)",
+    "change_type": "change:3",
+    "content": ">>> f = \u2588"
+  },
+  {
+    "code_box": "CodeBox(id=2)",
+    "change_type": "change:3",
+    "content": ">>> f =\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=2)",
+    "change_type": "change:3",
+    "content": ">>> f \u2588"
+  },
+  {
+    "code_box": "CodeBox(id=2)",
+    "change_type": "change:3",
+    "content": ">>> f\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=2)",
+    "change_type": "change:3",
+    "content": ">>> "
+  },
+  {
+    "code_box": "CodeBox(id=2)",
+    "change_type": "change:3",
+    "content": ""
+  },
+  {
+    "code_box": "CodeBox(id=2)",
+    "change_type": "remove:3",
+    "content": ""
+  },
+  {
+    "code_box": "CodeBox(id=2)",
     "change_type": "change:2",
     "content": ">>> e = \u2588"
   },
@@ -702,5 +950,110 @@
     "code_box": "CodeBox(id=2)",
     "change_type": "change:2",
     "content": ">>> e = 5"
+  },
+  {
+    "code_box": "CodeBox(id=2)",
+    "change_type": "insert:3",
+    "content": ""
+  },
+  {
+    "code_box": "CodeBox(id=2)",
+    "change_type": "change:3",
+    "content": ">>> "
+  },
+  {
+    "code_box": "CodeBox(id=2)",
+    "change_type": "change:3",
+    "content": ">>> f\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=2)",
+    "change_type": "change:3",
+    "content": ">>> f \u2588"
+  },
+  {
+    "code_box": "CodeBox(id=2)",
+    "change_type": "change:3",
+    "content": ">>> f =\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=2)",
+    "change_type": "change:3",
+    "content": ">>> f = \u2588"
+  },
+  {
+    "code_box": "CodeBox(id=2)",
+    "change_type": "change:3",
+    "content": ">>> f = 6"
+  },
+  {
+    "code_box": "CodeBox(id=2)",
+    "change_type": "insert:5",
+    "content": ""
+  },
+  {
+    "code_box": "CodeBox(id=2)",
+    "change_type": "change:5",
+    "content": ">>> "
+  },
+  {
+    "code_box": "CodeBox(id=2)",
+    "change_type": "change:5",
+    "content": ">>> e\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=2)",
+    "change_type": "change:5",
+    "content": ">>> e \u2588"
+  },
+  {
+    "code_box": "CodeBox(id=2)",
+    "change_type": "change:5",
+    "content": ">>> e =\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=2)",
+    "change_type": "change:5",
+    "content": ">>> e = \u2588"
+  },
+  {
+    "code_box": "CodeBox(id=2)",
+    "change_type": "change:5",
+    "content": ">>> e = 5"
+  },
+  {
+    "code_box": "CodeBox(id=2)",
+    "change_type": "insert:6",
+    "content": ""
+  },
+  {
+    "code_box": "CodeBox(id=2)",
+    "change_type": "change:6",
+    "content": ">>> "
+  },
+  {
+    "code_box": "CodeBox(id=2)",
+    "change_type": "change:6",
+    "content": ">>> f\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=2)",
+    "change_type": "change:6",
+    "content": ">>> f \u2588"
+  },
+  {
+    "code_box": "CodeBox(id=2)",
+    "change_type": "change:6",
+    "content": ">>> f =\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=2)",
+    "change_type": "change:6",
+    "content": ">>> f = \u2588"
+  },
+  {
+    "code_box": "CodeBox(id=2)",
+    "change_type": "change:6",
+    "content": ">>> f = 6"
   }
 ]

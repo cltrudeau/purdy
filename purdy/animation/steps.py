@@ -111,6 +111,15 @@ class ReplaceRows(BaseEditStep):
         return f'steps.ReplaceRows("{self.trunc_lines}" @ {self.position})'
 
     def render_step(self):
+        real_position = self.code_box.listing.positive_position(self.position)
+        box_length = len(self.code_box.listing.lines)
+        size = len(self.lines)
+        if real_position + size > box_length + 1:
+            raise AttributeError( ('Replacement happens in place. You cannot '
+                'replace outside the code_box. You are attempting to '
+                f'overwrite {size} lines at position {real_position} in a '
+                f'code_box that only has {box_length} lines') )
+
         self.undo_lines = self.code_box.listing.copy_lines(self.position,
             self.undo_size)
 
