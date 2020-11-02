@@ -1,3 +1,11 @@
+1.6.0
+=====
+
+* Add ability for Transition to accept no code, so can do a screen wipe to
+blank
+* Add unit tests for Code source change methods
+* Fix bugs found with above unit test
+
 1.5.0
 =====
 

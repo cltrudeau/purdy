@@ -183,6 +183,8 @@ class TransitionCell(AnimatingCellBase):
                     self.code.lexer)
             elif self.code_box_to_copy:
                 self.code_lines = deepcopy(self.code_box_to_copy.listing.lines)
+            else:
+                self.code_lines = []
 
             self.undo_lines = deepcopy(self.code_box.listing.lines)
             self.state = self.State.DELETING

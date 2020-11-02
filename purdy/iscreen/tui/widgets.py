@@ -117,7 +117,11 @@ class CodeWidget(urwid.Columns):
         """
         self.screen = screen
         self.auto_scroll = auto_scroll
-        self.walker = urwid.SimpleListWalker([])
+
+        # urwid does weird things when trying to focus an empty listing, never
+        # allow it to be empty
+        self.is_empty = True
+        self.walker = urwid.SimpleListWalker([urwid.Text(''), ])
 
         scroller = ScrollingIndicator()
         self.listbox = ScrollingListBox(scroller, self.walker)
@@ -130,14 +134,23 @@ class CodeWidget(urwid.Columns):
     def line_inserted(self, listing, position, line):
         markup = listing.render_line(line)
         index = position - 1
-        self.walker.contents.insert(index, urwid.Text(markup))
+
+        if self.is_empty:
+            self.walker.contents[0] = urwid.Text(markup)
+            self.is_empty = False
+        else:
+            self.walker.contents.insert(index, urwid.Text(markup))
 
         if self.auto_scroll:
             # if auto scrolling, change focus to last inserted item
             self.listbox.set_focus(index)
 
     def line_removed(self, listing, position):
-        del self.walker.contents[position - 1]
+        if len(self.walker.contents) == 1:
+            self.is_empty = True
+            self.walker.contents[0] = urwid.Text('')
+        else:
+            del self.walker.contents[position - 1]
 
         # urwid crashes if the focus is set outside of the range and you
         # try to do other operations to the box before returning to the
@@ -152,7 +165,9 @@ class CodeWidget(urwid.Columns):
         self.walker.contents[index].set_text(markup)
 
     def clear(self):
+        self.is_empty = True
         self.walker.contents.clear()
+        self.walker.contents.insert(0, urwid.Text(''))
 
 
 class TwinContainer(urwid.Columns):

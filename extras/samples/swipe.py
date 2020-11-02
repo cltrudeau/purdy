@@ -25,13 +25,12 @@ vbox.perform_actions([
 actions = [
     Append(code_box, blob2),
     Wait(),
-    Transition(code_box, blob),     
-    Append(code_box, blob2),
+    Transition(code_box),     # test transition to empty
+    Append(code_box, blob),
     Wait(),
 
     # Test Wait after Transition and code box copy
     Transition(code_box, code_box_to_copy=vbox),
-    #Transition(code_box, blob3),
     Wait(),
     Append(code_box, blob2),
 ]

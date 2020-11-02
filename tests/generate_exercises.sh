@@ -67,6 +67,10 @@ echo "sleep"
 ./capture_exercise.py sleep
 mv flipbook.json exercise_data/sleep.json
 
+echo "src_change"
+./capture_exercise.py src_change
+mv flipbook.json exercise_data/src_change.json
+
 echo "split_long"
 ./capture_exercise.py split_long
 mv flipbook.json exercise_data/split_long.json

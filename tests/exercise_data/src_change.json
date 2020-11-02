@@ -1,62 +1,120 @@
 [
   "=== Actions ===",
-  "actions.Append(\">>> None < \"3\"\nTr...\")",
+  "actions.Append(\"    # Before\n    ...\")",
   "actions.Wait()",
-  "actions.Transition(\"\", \"\")",
-  "actions.Append(\">>> numbers = [6,...\")",
-  "actions.Wait()",
-  "actions.Transition(\"\", \"CodeLine(\" 20 >>>...\")",
-  "actions.Wait()",
-  "actions.Append(\">>> None < \"3\"\nTr...\")",
+  "actions.Transition(\"# After\ndef show_...\", \"\")",
   "=== Steps ===",
-  "steps.InsertRow(\"[CodeLine(\">>> None < \"3\"\")...]\" @ 0)",
-  "steps.InsertRow(\"[CodeLine(\">>> numbers = [6, 3, 9, 1]\")...]\" @ 0)",
-  "steps.InsertRow(\"[CodeLine(\">>> None < \"3\"\")...]\" @ 0)",
+  "steps.InsertRow(\"[CodeLine(\"    # Before\")...]\" @ 0)",
   "=== Forward ===",
   {
     "code_box": "CodeBox(id=1)",
     "change_type": "insert:1",
-    "content": " 10 >>> None < \"3\""
+    "content": "  1     # Before"
   },
   {
     "code_box": "CodeBox(id=1)",
     "change_type": "insert:2",
-    "content": " 11 Traceback (most recent call last):"
+    "content": "  2     def show_only_this_function():"
   },
   {
     "code_box": "CodeBox(id=1)",
     "change_type": "insert:3",
-    "content": " 12   File \"<stdin>\", line 1, in <module>"
+    "content": "  3         # This comment is deleted"
   },
   {
     "code_box": "CodeBox(id=1)",
     "change_type": "insert:4",
-    "content": " 13 TypeError: '<' not supported between instances of 'NoneType' and 'str'"
+    "content": "  4         # As is this one"
   },
   {
     "code_box": "CodeBox(id=1)",
     "change_type": "insert:5",
-    "content": " 14 >>> for x in [1, 2, 3]"
+    "content": "  5         "
   },
   {
     "code_box": "CodeBox(id=1)",
     "change_type": "insert:6",
-    "content": " 15   File \"<stdin>\", line 1"
+    "content": "  6 "
   },
   {
     "code_box": "CodeBox(id=1)",
     "change_type": "insert:7",
-    "content": " 16     for x in [1, 2, 3]"
+    "content": "  7         # Above should be a single blank"
   },
   {
     "code_box": "CodeBox(id=1)",
     "change_type": "insert:8",
-    "content": " 17                      ^"
+    "content": "  8         print()"
   },
   {
     "code_box": "CodeBox(id=1)",
     "change_type": "insert:9",
-    "content": " 18 SyntaxError: invalid syntax"
+    "content": "  9 "
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "insert:10",
+    "content": " 10         # This comment should be replaced"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "insert:11",
+    "content": " 11         # Replace between the dollar signs $replace me$"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "insert:12",
+    "content": " 12 "
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "insert:13",
+    "content": " 13         # Fold the numbers in the following"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "insert:14",
+    "content": " 14         # a"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "insert:15",
+    "content": " 15         # 1"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "insert:16",
+    "content": " 16         # 2"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "insert:17",
+    "content": " 17         # b"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "insert:18",
+    "content": " 18         return"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "insert:19",
+    "content": " 19 "
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "insert:20",
+    "content": " 20 "
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "insert:21",
+    "content": " 21     def should_be_culled():"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "insert:22",
+    "content": " 22         pass"
   },
   {
     "code_box": "CodeBox(id=1)",
@@ -100,72 +158,67 @@
   },
   {
     "code_box": "CodeBox(id=1)",
-    "change_type": "clear",
+    "change_type": "change:9",
     "content": ""
   },
   {
     "code_box": "CodeBox(id=1)",
-    "change_type": "insert:1",
-    "content": " 10 >>> numbers = [6, 3, 9, 1]"
-  },
-  {
-    "code_box": "CodeBox(id=1)",
-    "change_type": "insert:2",
-    "content": " 11 >>> sorted(numbers)"
-  },
-  {
-    "code_box": "CodeBox(id=1)",
-    "change_type": "insert:3",
-    "content": " 12 [1, 3, 6, 9]"
-  },
-  {
-    "code_box": "CodeBox(id=1)",
-    "change_type": "insert:4",
-    "content": " 13 >>> def foo(a, b):"
-  },
-  {
-    "code_box": "CodeBox(id=1)",
-    "change_type": "insert:5",
-    "content": " 14 ...     pass"
-  },
-  {
-    "code_box": "CodeBox(id=1)",
-    "change_type": "insert:6",
-    "content": " 15 ... "
-  },
-  {
-    "code_box": "CodeBox(id=1)",
-    "change_type": "insert:7",
-    "content": " 16 >>> "
-  },
-  {
-    "code_box": "CodeBox(id=1)",
-    "change_type": "change:1",
+    "change_type": "change:10",
     "content": ""
   },
   {
     "code_box": "CodeBox(id=1)",
-    "change_type": "change:2",
+    "change_type": "change:11",
     "content": ""
   },
   {
     "code_box": "CodeBox(id=1)",
-    "change_type": "change:3",
+    "change_type": "change:12",
     "content": ""
   },
   {
     "code_box": "CodeBox(id=1)",
-    "change_type": "change:4",
+    "change_type": "change:13",
     "content": ""
   },
   {
     "code_box": "CodeBox(id=1)",
-    "change_type": "change:5",
+    "change_type": "change:14",
     "content": ""
   },
   {
     "code_box": "CodeBox(id=1)",
-    "change_type": "change:6",
+    "change_type": "change:15",
+    "content": ""
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:16",
+    "content": ""
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:17",
+    "content": ""
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:18",
+    "content": ""
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:19",
+    "content": ""
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:20",
+    "content": ""
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:21",
     "content": ""
   },
   {
@@ -176,233 +229,253 @@
   {
     "code_box": "CodeBox(id=1)",
     "change_type": "insert:1",
-    "content": " 10 >>> @decorated"
+    "content": "  1 # After"
   },
   {
     "code_box": "CodeBox(id=1)",
     "change_type": "insert:2",
-    "content": "\u22ee"
+    "content": "  2 def show_only_this_function():"
   },
   {
     "code_box": "CodeBox(id=1)",
     "change_type": "insert:3",
-    "content": " 12 ...     pass"
+    "content": "  3         "
   },
   {
     "code_box": "CodeBox(id=1)",
     "change_type": "insert:4",
-    "content": " 13 >>> None < \"3\""
+    "content": "  4     # Above should be a single blank"
   },
   {
     "code_box": "CodeBox(id=1)",
     "change_type": "insert:5",
-    "content": " 14 Traceback (most recent call last):"
+    "content": "  5     print()"
   },
   {
     "code_box": "CodeBox(id=1)",
     "change_type": "insert:6",
-    "content": " 15   File \"<stdin>\", line 1, in <module>"
+    "content": "  6 "
   },
   {
     "code_box": "CodeBox(id=1)",
     "change_type": "insert:7",
-    "content": " 16 TypeError: '<' not supported between instances of 'NoneType' and 'str'"
+    "content": "  7     # Was replaced"
   },
   {
     "code_box": "CodeBox(id=1)",
     "change_type": "insert:8",
-    "content": " 17 >>> for x in [1, 2, 3]"
+    "content": "  8     # Replace between the dollar signs $done$"
   },
   {
     "code_box": "CodeBox(id=1)",
     "change_type": "insert:9",
-    "content": " 18   File \"<stdin>\", line 1"
+    "content": "  9 "
   },
   {
     "code_box": "CodeBox(id=1)",
     "change_type": "insert:10",
-    "content": " 19     for x in [1, 2, 3]"
+    "content": " 10     # Fold the numbers in the following"
   },
   {
     "code_box": "CodeBox(id=1)",
     "change_type": "insert:11",
-    "content": " 20                      ^"
+    "content": " 11     # a"
   },
   {
     "code_box": "CodeBox(id=1)",
     "change_type": "insert:12",
-    "content": " 21 SyntaxError: invalid syntax"
+    "content": " 12 \u22ee"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "insert:13",
+    "content": " 13     # b"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "insert:14",
+    "content": " 14     return"
   },
   "=== Backward ===",
   {
     "code_box": "CodeBox(id=1)",
-    "change_type": "remove:4",
-    "content": ""
-  },
-  {
-    "code_box": "CodeBox(id=1)",
-    "change_type": "remove:4",
-    "content": ""
-  },
-  {
-    "code_box": "CodeBox(id=1)",
-    "change_type": "remove:4",
-    "content": ""
-  },
-  {
-    "code_box": "CodeBox(id=1)",
-    "change_type": "remove:4",
-    "content": ""
-  },
-  {
-    "code_box": "CodeBox(id=1)",
-    "change_type": "remove:4",
-    "content": ""
-  },
-  {
-    "code_box": "CodeBox(id=1)",
-    "change_type": "remove:4",
-    "content": ""
-  },
-  {
-    "code_box": "CodeBox(id=1)",
-    "change_type": "remove:4",
-    "content": ""
-  },
-  {
-    "code_box": "CodeBox(id=1)",
-    "change_type": "remove:4",
-    "content": ""
-  },
-  {
-    "code_box": "CodeBox(id=1)",
-    "change_type": "remove:4",
-    "content": ""
-  },
-  {
-    "code_box": "CodeBox(id=1)",
     "change_type": "clear",
     "content": ""
   },
   {
     "code_box": "CodeBox(id=1)",
     "change_type": "insert:1",
-    "content": " 10 >>> numbers = [6, 3, 9, 1]"
+    "content": "  1     # Before"
   },
   {
     "code_box": "CodeBox(id=1)",
     "change_type": "insert:2",
-    "content": " 11 >>> sorted(numbers)"
+    "content": "  2     def show_only_this_function():"
   },
   {
     "code_box": "CodeBox(id=1)",
     "change_type": "insert:3",
-    "content": " 12 [1, 3, 6, 9]"
+    "content": "  3         # This comment is deleted"
   },
   {
     "code_box": "CodeBox(id=1)",
     "change_type": "insert:4",
-    "content": " 13 >>> def foo(a, b):"
+    "content": "  4         # As is this one"
   },
   {
     "code_box": "CodeBox(id=1)",
     "change_type": "insert:5",
-    "content": " 14 ...     pass"
+    "content": "  5         "
   },
   {
     "code_box": "CodeBox(id=1)",
     "change_type": "insert:6",
-    "content": " 15 ... "
+    "content": "  6 "
   },
   {
     "code_box": "CodeBox(id=1)",
     "change_type": "insert:7",
-    "content": " 16 >>> "
-  },
-  {
-    "code_box": "CodeBox(id=1)",
-    "change_type": "remove:1",
-    "content": ""
-  },
-  {
-    "code_box": "CodeBox(id=1)",
-    "change_type": "remove:1",
-    "content": ""
-  },
-  {
-    "code_box": "CodeBox(id=1)",
-    "change_type": "remove:1",
-    "content": ""
-  },
-  {
-    "code_box": "CodeBox(id=1)",
-    "change_type": "remove:1",
-    "content": ""
-  },
-  {
-    "code_box": "CodeBox(id=1)",
-    "change_type": "remove:1",
-    "content": ""
-  },
-  {
-    "code_box": "CodeBox(id=1)",
-    "change_type": "remove:1",
-    "content": ""
-  },
-  {
-    "code_box": "CodeBox(id=1)",
-    "change_type": "remove:1",
-    "content": ""
-  },
-  {
-    "code_box": "CodeBox(id=1)",
-    "change_type": "clear",
-    "content": ""
-  },
-  {
-    "code_box": "CodeBox(id=1)",
-    "change_type": "insert:1",
-    "content": " 10 >>> None < \"3\""
-  },
-  {
-    "code_box": "CodeBox(id=1)",
-    "change_type": "insert:2",
-    "content": " 11 Traceback (most recent call last):"
-  },
-  {
-    "code_box": "CodeBox(id=1)",
-    "change_type": "insert:3",
-    "content": " 12   File \"<stdin>\", line 1, in <module>"
-  },
-  {
-    "code_box": "CodeBox(id=1)",
-    "change_type": "insert:4",
-    "content": " 13 TypeError: '<' not supported between instances of 'NoneType' and 'str'"
-  },
-  {
-    "code_box": "CodeBox(id=1)",
-    "change_type": "insert:5",
-    "content": " 14 >>> for x in [1, 2, 3]"
-  },
-  {
-    "code_box": "CodeBox(id=1)",
-    "change_type": "insert:6",
-    "content": " 15   File \"<stdin>\", line 1"
-  },
-  {
-    "code_box": "CodeBox(id=1)",
-    "change_type": "insert:7",
-    "content": " 16     for x in [1, 2, 3]"
+    "content": "  7         # Above should be a single blank"
   },
   {
     "code_box": "CodeBox(id=1)",
     "change_type": "insert:8",
-    "content": " 17                      ^"
+    "content": "  8         print()"
   },
   {
     "code_box": "CodeBox(id=1)",
     "change_type": "insert:9",
-    "content": " 18 SyntaxError: invalid syntax"
+    "content": "  9 "
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "insert:10",
+    "content": " 10         # This comment should be replaced"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "insert:11",
+    "content": " 11         # Replace between the dollar signs $replace me$"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "insert:12",
+    "content": " 12 "
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "insert:13",
+    "content": " 13         # Fold the numbers in the following"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "insert:14",
+    "content": " 14         # a"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "insert:15",
+    "content": " 15         # 1"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "insert:16",
+    "content": " 16         # 2"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "insert:17",
+    "content": " 17         # b"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "insert:18",
+    "content": " 18         return"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "insert:19",
+    "content": " 19 "
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "insert:20",
+    "content": " 20 "
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "insert:21",
+    "content": " 21     def should_be_culled():"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "insert:22",
+    "content": " 22         pass"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "remove:1",
+    "content": ""
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "remove:1",
+    "content": ""
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "remove:1",
+    "content": ""
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "remove:1",
+    "content": ""
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "remove:1",
+    "content": ""
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "remove:1",
+    "content": ""
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "remove:1",
+    "content": ""
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "remove:1",
+    "content": ""
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "remove:1",
+    "content": ""
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "remove:1",
+    "content": ""
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "remove:1",
+    "content": ""
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "remove:1",
+    "content": ""
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "remove:1",
+    "content": ""
   },
   {
     "code_box": "CodeBox(id=1)",
@@ -453,47 +526,112 @@
   {
     "code_box": "CodeBox(id=1)",
     "change_type": "insert:1",
-    "content": " 10 >>> None < \"3\""
+    "content": "  1     # Before"
   },
   {
     "code_box": "CodeBox(id=1)",
     "change_type": "insert:2",
-    "content": " 11 Traceback (most recent call last):"
+    "content": "  2     def show_only_this_function():"
   },
   {
     "code_box": "CodeBox(id=1)",
     "change_type": "insert:3",
-    "content": " 12   File \"<stdin>\", line 1, in <module>"
+    "content": "  3         # This comment is deleted"
   },
   {
     "code_box": "CodeBox(id=1)",
     "change_type": "insert:4",
-    "content": " 13 TypeError: '<' not supported between instances of 'NoneType' and 'str'"
+    "content": "  4         # As is this one"
   },
   {
     "code_box": "CodeBox(id=1)",
     "change_type": "insert:5",
-    "content": " 14 >>> for x in [1, 2, 3]"
+    "content": "  5         "
   },
   {
     "code_box": "CodeBox(id=1)",
     "change_type": "insert:6",
-    "content": " 15   File \"<stdin>\", line 1"
+    "content": "  6 "
   },
   {
     "code_box": "CodeBox(id=1)",
     "change_type": "insert:7",
-    "content": " 16     for x in [1, 2, 3]"
+    "content": "  7         # Above should be a single blank"
   },
   {
     "code_box": "CodeBox(id=1)",
     "change_type": "insert:8",
-    "content": " 17                      ^"
+    "content": "  8         print()"
   },
   {
     "code_box": "CodeBox(id=1)",
     "change_type": "insert:9",
-    "content": " 18 SyntaxError: invalid syntax"
+    "content": "  9 "
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "insert:10",
+    "content": " 10         # This comment should be replaced"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "insert:11",
+    "content": " 11         # Replace between the dollar signs $replace me$"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "insert:12",
+    "content": " 12 "
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "insert:13",
+    "content": " 13         # Fold the numbers in the following"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "insert:14",
+    "content": " 14         # a"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "insert:15",
+    "content": " 15         # 1"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "insert:16",
+    "content": " 16         # 2"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "insert:17",
+    "content": " 17         # b"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "insert:18",
+    "content": " 18         return"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "insert:19",
+    "content": " 19 "
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "insert:20",
+    "content": " 20 "
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "insert:21",
+    "content": " 21     def should_be_culled():"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "insert:22",
+    "content": " 22         pass"
   },
   {
     "code_box": "CodeBox(id=1)",
@@ -537,72 +675,67 @@
   },
   {
     "code_box": "CodeBox(id=1)",
-    "change_type": "clear",
+    "change_type": "change:9",
     "content": ""
   },
   {
     "code_box": "CodeBox(id=1)",
-    "change_type": "insert:1",
-    "content": " 10 >>> numbers = [6, 3, 9, 1]"
-  },
-  {
-    "code_box": "CodeBox(id=1)",
-    "change_type": "insert:2",
-    "content": " 11 >>> sorted(numbers)"
-  },
-  {
-    "code_box": "CodeBox(id=1)",
-    "change_type": "insert:3",
-    "content": " 12 [1, 3, 6, 9]"
-  },
-  {
-    "code_box": "CodeBox(id=1)",
-    "change_type": "insert:4",
-    "content": " 13 >>> def foo(a, b):"
-  },
-  {
-    "code_box": "CodeBox(id=1)",
-    "change_type": "insert:5",
-    "content": " 14 ...     pass"
-  },
-  {
-    "code_box": "CodeBox(id=1)",
-    "change_type": "insert:6",
-    "content": " 15 ... "
-  },
-  {
-    "code_box": "CodeBox(id=1)",
-    "change_type": "insert:7",
-    "content": " 16 >>> "
-  },
-  {
-    "code_box": "CodeBox(id=1)",
-    "change_type": "change:1",
+    "change_type": "change:10",
     "content": ""
   },
   {
     "code_box": "CodeBox(id=1)",
-    "change_type": "change:2",
+    "change_type": "change:11",
     "content": ""
   },
   {
     "code_box": "CodeBox(id=1)",
-    "change_type": "change:3",
+    "change_type": "change:12",
     "content": ""
   },
   {
     "code_box": "CodeBox(id=1)",
-    "change_type": "change:4",
+    "change_type": "change:13",
     "content": ""
   },
   {
     "code_box": "CodeBox(id=1)",
-    "change_type": "change:5",
+    "change_type": "change:14",
     "content": ""
   },
   {
     "code_box": "CodeBox(id=1)",
-    "change_type": "change:6",
+    "change_type": "change:15",
+    "content": ""
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:16",
+    "content": ""
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:17",
+    "content": ""
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:18",
+    "content": ""
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:19",
+    "content": ""
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:20",
+    "content": ""
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:21",
     "content": ""
   },
   {
@@ -613,61 +746,71 @@
   {
     "code_box": "CodeBox(id=1)",
     "change_type": "insert:1",
-    "content": " 10 >>> @decorated"
+    "content": "  1 # After"
   },
   {
     "code_box": "CodeBox(id=1)",
     "change_type": "insert:2",
-    "content": "\u22ee"
+    "content": "  2 def show_only_this_function():"
   },
   {
     "code_box": "CodeBox(id=1)",
     "change_type": "insert:3",
-    "content": " 12 ...     pass"
+    "content": "  3         "
   },
   {
     "code_box": "CodeBox(id=1)",
     "change_type": "insert:4",
-    "content": " 13 >>> None < \"3\""
+    "content": "  4     # Above should be a single blank"
   },
   {
     "code_box": "CodeBox(id=1)",
     "change_type": "insert:5",
-    "content": " 14 Traceback (most recent call last):"
+    "content": "  5     print()"
   },
   {
     "code_box": "CodeBox(id=1)",
     "change_type": "insert:6",
-    "content": " 15   File \"<stdin>\", line 1, in <module>"
+    "content": "  6 "
   },
   {
     "code_box": "CodeBox(id=1)",
     "change_type": "insert:7",
-    "content": " 16 TypeError: '<' not supported between instances of 'NoneType' and 'str'"
+    "content": "  7     # Was replaced"
   },
   {
     "code_box": "CodeBox(id=1)",
     "change_type": "insert:8",
-    "content": " 17 >>> for x in [1, 2, 3]"
+    "content": "  8     # Replace between the dollar signs $done$"
   },
   {
     "code_box": "CodeBox(id=1)",
     "change_type": "insert:9",
-    "content": " 18   File \"<stdin>\", line 1"
+    "content": "  9 "
   },
   {
     "code_box": "CodeBox(id=1)",
     "change_type": "insert:10",
-    "content": " 19     for x in [1, 2, 3]"
+    "content": " 10     # Fold the numbers in the following"
   },
   {
     "code_box": "CodeBox(id=1)",
     "change_type": "insert:11",
-    "content": " 20                      ^"
+    "content": " 11     # a"
   },
   {
     "code_box": "CodeBox(id=1)",
     "change_type": "insert:12",
-    "content": " 21 SyntaxError: invalid syntax"
+    "content": " 12 \u22ee"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "insert:13",
+    "content": " 13     # b"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "insert:14",
+    "content": " 14     return"
   }
 ]

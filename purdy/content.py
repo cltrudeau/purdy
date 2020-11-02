@@ -96,7 +96,7 @@ class Code:
         :param content: content to replace it with 
         """
         lines = self.source.split('\n')
-        lines[line_no + 1] = content
+        lines[line_no - 1] = content
         self.source = '\n'.join(lines)
         return self
 
@@ -109,8 +109,8 @@ class Code:
         :param content: content to replace with 
         """
         lines = self.source.split('\n')
-        lines[line_no + 1] = lines[line_no + 1][:pos - 1]
-        lines[line_no + 1] += content
+        lines[line_no - 1] = lines[line_no - 1][:pos - 1]
+        lines[line_no - 1] += content
         self.source = '\n'.join(lines)
         return self
 

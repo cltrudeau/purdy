@@ -520,7 +520,9 @@ class StopMovie:
 
 class Transition:
     """Replaces the contents of a :class:`purdy.ui.CodeBox` with new content,
-    doing a wipe animation from top to bottom.
+    doing a wipe animation from top to bottom. Only one of `code` or
+    `code_box_to_copy` should be given, both can be blank to transition to an
+    empty screen.
 
     :param code_box: the :class:`purdy.ui.CodeBox` instance to perform the
                      transition on
@@ -535,10 +537,6 @@ class Transition:
                              the same time as code parameter.
     """
     def __init__(self, code_box, code=None, code_box_to_copy=None):
-        if code is None and code_box_to_copy is None:
-            raise AttributeError(
-                'One of code or code_box_to_copy must be provided')
-
         self.code_box = code_box
         self.code = code
         self.code_box_to_copy = code_box_to_copy
