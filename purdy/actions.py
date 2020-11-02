@@ -568,6 +568,10 @@ class Transition:
                              the same time as code parameter.
     """
     def __init__(self, code_box, code=None, code_box_to_copy=None):
+        if code is None and code_box_to_copy is None:
+            raise AttributeError(
+                'One of code or code_box_to_copy must be provided')
+
         self.code_box = code_box
         self.code = code
         self.code_box_to_copy = code_box_to_copy

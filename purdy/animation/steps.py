@@ -108,7 +108,7 @@ class ReplaceRows(BaseEditStep):
         self.position = position
 
     def __str__(self):
-        return f'steps.ReplaceRow("{self.trunc_lines}" @ {self.position})'
+        return f'steps.ReplaceRows("{self.trunc_lines}" @ {self.position})'
 
     def render_step(self):
         self.undo_lines = self.code_box.listing.copy_lines(self.position,

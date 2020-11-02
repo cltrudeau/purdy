@@ -1,3 +1,4 @@
+
 $ curl --include http://127.0.0.1:8000/redirect/
 HTTP/1.1 302 Found
 Date: Tue, 21 Apr 2020 19:31:07 GMT

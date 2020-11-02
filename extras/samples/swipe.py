@@ -25,7 +25,7 @@ vbox.perform_actions([
 actions = [
     Append(code_box, blob2),
     Wait(),
-    Transition(code_box, blob),
+    Transition(code_box, blob),     
     Append(code_box, blob2),
     Wait(),
 

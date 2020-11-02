@@ -7,6 +7,8 @@ custom colourizers for things that aren't code like (HTML, XML) can now have
 different palettes from code
 * Custom lexer now supports named palettes
 * Add better error handling to the load action sequence
+* Add error handling detecting Transitions that are missing both code and
+code_box_to_copy
 
 1.4.0
 =====
