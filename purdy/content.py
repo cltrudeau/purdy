@@ -25,11 +25,8 @@ class Code:
                        content. See :class:`purdy.parser.LexerContainer` for a
                        list of available lexers.
 
-    :param lexer_holder: if lexer_name is "custom" this parameter is expected
-                         to contain a purdy.parser.LexerHolder object.
-
-    :param palette: name of colourizer palette to use during colouring,
-                    defaults to 'code', which should handle most cases.
+    :param purdy_lexer: if lexer_name is "custom" this parameter is expected
+                         to contain a purdy.parser.PurdyLexer object.
     """
 
     def __init__(self, filename='', text='', lexer_name='detect', 
