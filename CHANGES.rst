@@ -1,3 +1,9 @@
+1.6.1
+=====
+
+* Change base colours for URWID palette after complaints that the dark text
+was hard to read against black backgrounds
+
 1.6.0
 =====
 
