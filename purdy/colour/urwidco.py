@@ -1,5 +1,6 @@
 from pygments.token import Keyword, Name, Comment, String, Error, \
-    Number, Operator, Generic, Token, Whitespace, Punctuation
+    Number, Operator, Generic, Token, Whitespace, Punctuation, Text, \
+    Literal
 
 from purdy.parser import FoldedCodeLine, token_ancestor
 
@@ -11,34 +12,32 @@ _code_palette = {
     #                    fg16            bg16    fg256   bg256
     Token:              ('',             '', '', '',             ''),
     Whitespace:         ('',             '', '', '',             ''),
-    Comment:            ('dark cyan',    '', '', 'dark cyan',    ''),
-    Keyword:            ('brown',        '', '', 'brown',        ''),
-    Operator:           ('brown',        '', '', 'brown',        ''),
-    Name:               ('light gray',   '', '', 'light gray',   ''),
-    Name.Builtin:       ('dark cyan',    '', '', '#068',         ''),
-    Name.Function:      ('dark cyan',    '', '', 'light gray',   ''),
-    Name.Namespace:     ('dark cyan',    '', '', 'light gray',   ''),
-    Name.Class:         ('dark cyan',    '', '', 'light gray',   ''),
-    Name.Exception:     ('dark green',   '', '', 'dark green',   ''),
-    Name.Decorator:     ('dark cyan',    '', '', '#66d,bold',    ''),
-    Name.Variable:      ('',             '', '', '',             ''),
-    Name.Constant:      ('',             '', '', '',             ''),
-    Name.Attribute:     ('',             '', '', '',             ''),
-    Name.Tag:           ('',             '', '', '',             ''),
-    String:             ('dark magenta', '', '', 'dark magenta', ''),
-    Number:             ('dark magenta', '', '', 'dark magenta', ''),
-    Generic.Prompt:     ('dark blue',    '', '', 'dark blue',    ''),
-    Generic.Error:      ('dark green',   '', '', 'dark green',   ''),
-    Generic.Traceback:  ('',             '', '', '#a00,bold',    ''),
-    Error:              ('dark green',   '', '', '#f00',         ''),
+    Comment:            ('dark cyan',    '', '', '#6dd',         ''),
+    Keyword:            ('brown',        '', '', '#d8d',         ''),
+    Operator:           ('brown',        '', '', '#aaa',         ''),
+    Punctuation:        ('dark cyan',    '', '', '#8df',         ''),
+    Text:               ('dark cyan',    '', '', '#ddd',         ''),
+    Name:               ('light gray',   '', '', '#ddd',         ''), 
+    Name.Builtin:       ('dark cyan',    '', '', '#8af',    ''), 
+    Name.Builtin.Pseudo:('dark cyan',    '', '', '#a66,bold',    ''), 
+    Name.Function:      ('dark cyan',    '', '', '#adf',   ''),
+    Name.Class:         ('dark cyan',    '', '', '#adf',   ''),
+    Name.Exception:     ('dark green',   '', '', '#fd6,bold',   ''),
+    Name.Decorator:     ('dark cyan',    '', '', '#fd6,bold',    ''),
+    String:             ('dark magenta', '', '', '#ddd', ''),
+    Number:             ('dark magenta', '', '', '#f86', ''),
+    Generic.Prompt:     ('dark blue',    '', '', '#aaa',    ''),
+    Generic.Error:      ('dark green',   '', '', '#fd6,bold',   ''),
+    Generic.Traceback:  ('',             '', '', '#ddd',    ''),
+    Error:              ('dark green',   '', '', '#fd6,bold',         ''),
 }
 
 _xml_palette = dict(_code_palette)
 _xml_palette.update({
     Name.Attribute: ('brown',        '', '', 'brown',        ''),
-    Keyword:        ('dark cyan',    '', '', '#068',         ''),
-    Name.Tag:       ('dark cyan',    '', '', '#068',         ''),
-    Punctuation:    ('dark cyan',    '', '', '#068',         ''),
+    Keyword:        ('dark cyan',    '', '', '#8af',         ''),
+    Name.Tag:       ('dark cyan',    '', '', '#8af',         ''),
+    Punctuation:    ('dark cyan',    '', '', '#8af',         ''),
 })
 
 class UrwidColourizer:

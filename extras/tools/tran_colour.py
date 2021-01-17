@@ -390,5 +390,7 @@ if __name__ == '__main__':
         sys.stdout.write("\033[0m\n")
     else:
         short, rgb = rgb2short(arg)
+        urwid_rgb = convert_to_urwid(int(short), rgb)
         sys.stdout.write('RGB %s -> xterm color approx \033[38;5;%sm%s (%s)' % (arg, short, short, rgb))
         sys.stdout.write("\033[0m\n")
+        sys.stdout.write('Urwid code: %s\n' % urwid_rgb)
