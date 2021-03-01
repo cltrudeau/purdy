@@ -19,10 +19,12 @@ Each action gets translated into a series of steps defined in the
 """
 import random
 from copy import deepcopy
+from typing import Iterable, Protocol, List
 
 from pygments.token import Generic, Token
 
 from purdy.animation import steps as steplib
+from purdy.animation.steps import BaseEditStep, Step
 from purdy.parser import CodePart, CodeLine, parse_source, token_is_a
 from purdy.scribe import range_set_to_list
 
@@ -37,6 +39,11 @@ def condense(value):
         content = content[0:17] + '...'
 
     return content
+
+
+class Action(Protocol):
+    def step(self) -> List[Step]:
+        ...
 
 # =============================================================================
 # Single Code Blob Actions
