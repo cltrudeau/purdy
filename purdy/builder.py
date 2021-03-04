@@ -212,7 +212,7 @@ class ActionsBuilder(Iterable):
         return self._add_action(SuffixTypewriter(self.__code_box, position, source))
 
     def highlight(
-        self, spec: Union[str, List[int]], highlight_on: bool
+        self, spec: Union[int, str, Iterable[int]], highlight_on: bool
     ) -> "ActionsBuilder":
         """Adds an :class:`purdy.actions.Highlight` action
 
