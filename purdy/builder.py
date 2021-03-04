@@ -30,6 +30,12 @@ class ActionsBuilder(Iterable):
     Once all actions are created the instance of this class can be passed
     to the :class:`purdy.ui.Screen.run()` method.
 
+    :param screen: screen containing the code boxes the actions should be added to
+    :param lexer_name: name of the lexer to be used, which must be one of the following:
+        - con: Python 3 Console
+        - py3: Python 3 Source
+        - bash, Bash Console
+
     Example
     =======
 
@@ -42,6 +48,7 @@ class ActionsBuilder(Iterable):
     ... )
     >>> screen.run(actions)
     """
+
     def __init__(self, screen: Screen, lexer_name: str) -> None:
         self.__screen = screen
         self.__code_box = self.__screen.code_boxes[0]
