@@ -85,7 +85,11 @@ class ActionsBuilder(Iterable):
                      code to insert.
         :return: self
         """
-        return self._add_action(Insert(self.__code_box, position, code))
+        return self._add_action(
+            Insert(
+                self.__code_box, position, Code(text=code, lexer_name=self.__lexer_name)
+            )
+        )
 
     def append(self, filename: str = "", text: str = "") -> "ActionsBuilder":
         """Adds an :class:`purdy.actions.Append` action
@@ -115,7 +119,11 @@ class ActionsBuilder(Iterable):
 
         :return: self
         """
-        return self._add_action(Replace(self.__code_box, position, code))
+        return self._add_action(
+            Replace(
+                self.__code_box, position, Code(text=code, lexer_name=self.__lexer_name)
+            )
+        )
 
     def remove(self, position: int, size: int) -> "ActionsBuilder":
         """Adds an :class:`purdy.actions.Remove` action
@@ -185,7 +193,11 @@ class ActionsBuilder(Iterable):
 
         :return: self
         """
-        return self._add_action(InsertTypewriter(self.__code_box, position, code))
+        return self._add_action(
+            InsertTypewriter(
+                self.__code_box, position, Code(text=code, lexer_name=self.__lexer_name)
+            )
+        )
 
     def suffix_typewriter(self, position: int, source: str) -> "ActionsBuilder":
         """Adds an :class:`purdy.actions.SuffixTypewriter` action
