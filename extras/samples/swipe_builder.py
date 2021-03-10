@@ -3,8 +3,8 @@
 ### Example purdy library code
 #
 # Demonstrates the slide transition animation
-from builder import ActionsBuilder
-from purdy.actions import Append, Wait, Transition, Fold
+from purdy.builder import ActionsBuilder
+from purdy.actions import Append, Fold
 from purdy.content import Code
 from purdy.ui import SimpleScreen, VirtualCodeBox
 

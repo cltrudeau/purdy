@@ -3,7 +3,7 @@
 ### Example purdy library code
 #
 # Demonstrates typewrite animation with a colourized Python REPL session
-from builder import ActionsBuilder
+from purdy.builder import ActionsBuilder
 from purdy.ui import SimpleScreen
 
 screen = SimpleScreen()

@@ -3,7 +3,7 @@
 ### Example purdy library code
 #
 # Demonstrates inserting lines of code with and without typewriter animation
-from builder import ActionsBuilder
+from purdy.builder import ActionsBuilder
 from purdy.ui import SimpleScreen
 
 screen = SimpleScreen(starting_line_number=10)

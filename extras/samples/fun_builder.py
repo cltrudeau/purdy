@@ -3,7 +3,7 @@
 ### Example purdy library code
 #
 # Demonstrates the RunFunction action
-from builder import ActionsBuilder
+from purdy.builder import ActionsBuilder
 from purdy.ui import SimpleScreen
 
 

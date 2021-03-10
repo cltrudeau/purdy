@@ -3,7 +3,7 @@
 ### Example purdy library code
 #
 # Uses the typewriter animation to display a bash console session
-from builder import ActionsBuilder
+from purdy.builder import ActionsBuilder
 from purdy.ui import SimpleScreen
 
 screen = SimpleScreen()

@@ -4,7 +4,7 @@
 #
 # Displays a function with a multi-line doc string (these can be tricky to
 # parse, want to make sure each line is colourized as a string)
-from builder import ActionsBuilder
+from purdy.builder import ActionsBuilder
 from purdy.ui import SimpleScreen
 
 screen = SimpleScreen()

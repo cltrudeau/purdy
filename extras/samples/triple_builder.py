@@ -3,7 +3,7 @@
 ### Example purdy library code
 #
 # Demonstrates a split screen with three code boxes
-from builder import ActionsBuilder
+from purdy.builder import ActionsBuilder
 from purdy.ui import Screen, CodeBox
 
 py_code = "../display_code/code.py"

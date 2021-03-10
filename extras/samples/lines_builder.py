@@ -4,7 +4,7 @@
 #
 # Demonstrates appending strings to the end of existing lines as well as
 # replacing lines. Both done with and without the typewriter animation.
-from builder import ActionsBuilder
+from purdy.builder import ActionsBuilder
 from purdy.ui import SplitScreen
 
 screen = SplitScreen(top_starting_line_number=10)

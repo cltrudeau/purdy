@@ -3,7 +3,7 @@
 ### Example purdy library code
 #
 # Demonstrates movie mode and the StopMovie action interrupting it
-from builder import ActionsBuilder
+from purdy.builder import ActionsBuilder
 from purdy.settings import settings
 from purdy.ui import SplitScreen
 

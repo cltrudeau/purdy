@@ -3,7 +3,7 @@
 ### Example purdy library code
 #
 # Demonstrates the code folding mechanism
-from builder import ActionsBuilder
+from purdy.builder import ActionsBuilder
 from purdy.ui import SimpleScreen
 
 

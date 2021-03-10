@@ -3,7 +3,7 @@
 ### Example purdy library code
 #
 # Demonstrates a split screen with a large top window
-from builder import ActionsBuilder
+from purdy.builder import ActionsBuilder
 from purdy.settings import settings
 from purdy.ui import SplitScreen
 

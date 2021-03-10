@@ -4,7 +4,7 @@
 #
 # Appends the same colourized Python REPL session to the screen multiple
 # times, waiting for a keypress between each
-from builder import ActionsBuilder
+from purdy.builder import ActionsBuilder
 from purdy.ui import SimpleScreen
 
 screen = SimpleScreen(starting_line_number=1)

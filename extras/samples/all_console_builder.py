@@ -3,7 +3,7 @@
 ### Example purdy library code
 #
 # Displays a colourized Python REPL session to the screen
-from builder import ActionsBuilder
+from purdy.builder import ActionsBuilder
 from purdy.ui import SimpleScreen
 
 screen = SimpleScreen()

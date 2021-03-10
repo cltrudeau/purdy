@@ -3,7 +3,7 @@
 ### Example purdy library code
 #
 # Demonstrates the Shell action that runs a subprocess and returns the result
-from builder import ActionsBuilder
+from purdy.builder import ActionsBuilder
 from purdy.ui import SimpleScreen
 
 screen = SimpleScreen()

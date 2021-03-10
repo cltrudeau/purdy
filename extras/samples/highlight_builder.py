@@ -3,7 +3,7 @@
 ### Example purdy library code
 #
 # Demonstrates highlighting and unhighlighting lines of code
-from builder import ActionsBuilder
+from purdy.builder import ActionsBuilder
 from purdy.settings import settings
 from purdy.ui import SimpleScreen
 

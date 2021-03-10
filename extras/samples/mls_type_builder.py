@@ -4,7 +4,7 @@
 #
 # Example of a multi-line string in a Python REPL session using the typewriter
 # animation.
-from builder import ActionsBuilder
+from purdy.builder import ActionsBuilder
 from purdy.ui import SimpleScreen
 
 screen = SimpleScreen()

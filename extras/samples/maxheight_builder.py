@@ -3,7 +3,7 @@
 ### Example purdy library code
 #
 # Demonstrates a split screen with content that exceeds the window size
-from builder import ActionsBuilder
+from purdy.builder import ActionsBuilder
 from purdy.ui import SplitScreen
 
 screen = SplitScreen(max_height=30)

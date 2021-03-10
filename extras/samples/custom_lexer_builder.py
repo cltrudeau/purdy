@@ -3,7 +3,7 @@
 ### Example purdy library code
 #
 # Demonstrates the use of a custom lexer
-from builder import ActionsBuilder
+from purdy.builder import ActionsBuilder
 from purdy.content import Code
 from purdy.parser import PurdyLexer
 from purdy.ui import SimpleScreen

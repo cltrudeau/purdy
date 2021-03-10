@@ -3,7 +3,7 @@
 ### Example purdy library code
 #
 # Demonstrates the use of compact dividers
-from builder import ActionsBuilder
+from purdy.builder import ActionsBuilder
 from purdy.ui import SplitScreen
 
 screen = SplitScreen(compact=True)
