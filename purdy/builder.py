@@ -73,8 +73,11 @@ class ActionsBuilder(Iterable):
 
     def _create_code(
         self, filename: str = "", text: str = "", code: Code = None
-    ) -> Code:
-        return code or Code(filename=filename, text=text, lexer_name=self.__lexer_name)
+    ) -> Optional[Code]:
+        if filename or text or code:
+            return code or Code(
+                filename=filename, text=text, lexer_name=self.__lexer_name
+            )
 
     def insert(
         self, position: int, filename: str = "", text: str = "", code: Code = None
