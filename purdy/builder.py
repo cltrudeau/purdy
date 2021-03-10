@@ -299,17 +299,12 @@ class ActionsBuilder(Iterable):
 
     def transition(
         self,
-        code_box_to_copy: VirtualCodeBox,
         filename: str = "",
         text: str = "",
         code: Code = None,
+        code_box_to_copy: VirtualCodeBox = None,
     ) -> "ActionsBuilder":
         """Adds an :class:`purdy.actions.Transition` action
-
-        :param code_box_to_copy: a code box containing rendered code to copy into
-                                 this one to display. This is typically a
-                                 :class:`VirtualCodeBox`. Should not be used at
-                                 the same time as code parameter.
 
         :param filename: name of a file to read for :class:`purdy.content.Code` content.
                          If both this and `text` is given, `filename` is used first
@@ -319,6 +314,11 @@ class ActionsBuilder(Iterable):
         :param code: a :class:`purdy.content.Code` object containing the source
                      code to insert. If all `code`, `filename` and `text` are given,
                      `code` will be used first.
+
+        :param code_box_to_copy: a code box containing rendered code to copy into
+                                 this one to display. This is typically a
+                                 :class:`VirtualCodeBox`. Should not be used at
+                                 the same time as code parameter.
 
         :return: self
         """
