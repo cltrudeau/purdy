@@ -3,9 +3,7 @@
   "actions.AppendTypewriter(\"\n$ curl --include...\")",
   "=== Steps ===",
   "steps.InsertRow(\"[CodeLine(\"\")\" @ 0)",
-  "steps.ReplaceRows(\"[CodeLine(\"$\")\" @ -1)",
-  "steps.ReplaceRows(\"[CodeLine(\"$ \u2588\")\" @ -1)",
-  "steps.Sleep()",
+  "steps.ReplaceRows(\"[CodeLine(\"$ \")\" @ -1)",
   "steps.ReplaceRows(\"[CodeLine(\"$ c\u2588\")\" @ -1)",
   "steps.Sleep()",
   "steps.ReplaceRows(\"[CodeLine(\"$ cu\u2588\")\" @ -1)",
@@ -115,12 +113,7 @@
   {
     "code_box": "CodeBox(id=1)",
     "change_type": "change:1",
-    "content": "$"
-  },
-  {
-    "code_box": "CodeBox(id=1)",
-    "change_type": "change:1",
-    "content": "$ \u2588"
+    "content": "$ "
   },
   {
     "code_box": "CodeBox(id=1)",
@@ -661,12 +654,7 @@
   {
     "code_box": "CodeBox(id=1)",
     "change_type": "change:1",
-    "content": "$ \u2588"
-  },
-  {
-    "code_box": "CodeBox(id=1)",
-    "change_type": "change:1",
-    "content": "$"
+    "content": "$ "
   },
   {
     "code_box": "CodeBox(id=1)",
@@ -687,12 +675,7 @@
   {
     "code_box": "CodeBox(id=1)",
     "change_type": "change:1",
-    "content": "$"
-  },
-  {
-    "code_box": "CodeBox(id=1)",
-    "change_type": "change:1",
-    "content": "$ \u2588"
+    "content": "$ "
   },
   {
     "code_box": "CodeBox(id=1)",
