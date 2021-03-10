@@ -1,12 +1,10 @@
-from typing import Iterable, Iterator, Union, List, Callable, Optional
-
+from typing import Iterable, Iterator, Union, List, Callable, Optional, Any
 from purdy.actions import (
     AppendTypewriter,
     Append,
     Suffix,
     Wait,
     Clear,
-    Action,
     Insert,
     Replace,
     Remove,
@@ -55,7 +53,7 @@ class ActionsBuilder(Iterable):
         self.__lexer_name = lexer_name
         self.__actions = []
 
-    def __iter__(self) -> Iterator[Action]:
+    def __iter__(self) -> Iterator[Any]:
         return iter(self.__actions)
 
     def switch_to_code_box(self, index: int) -> "ActionsBuilder":
@@ -69,7 +67,7 @@ class ActionsBuilder(Iterable):
         self.__code_box = self.__screen.code_boxes[index]
         return self
 
-    def _add_action(self, action: Action) -> "ActionsBuilder":
+    def _add_action(self, action: Any) -> "ActionsBuilder":
         self.__actions.append(action)
         return self
 

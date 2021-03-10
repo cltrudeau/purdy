@@ -8,7 +8,6 @@ A :class:`.cell.GroupCell` wraps these steps. When the user moves forwards and
 backwards through the animations each cell is rendered or undone. This module 
 """
 from copy import deepcopy
-from typing import Protocol
 
 from pygments.token import String, Token
 
@@ -40,15 +39,6 @@ class BaseEditStep:
 
         # else len(self.lines) > 1:
         return f'[{self.lines[0]}...]'
-
-
-class Step(Protocol):
-    def render_step(self) -> None:
-        ...
-
-    def undo_step(self) -> None:
-        ...
-
 
 # ---------------------------------------------------------------------------
 # Line Insertion Steps
