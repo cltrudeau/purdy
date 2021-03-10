@@ -50,8 +50,7 @@ PY_CODE_LINES = [
 
 BASH_CODE_LINES = [
     CodeLine([
-        CodePart(Token.Generic.Prompt, '$'),
-        CodePart(Token.Text, ' '),
+        CodePart(Token.Generic.Prompt, '$ '),
         CodePart(Token.Name.Builtin, 'echo'),
         CodePart(Token.Text, ' '),
         CodePart(Token.Literal.String.Double, '"hello\\nthere"'),
@@ -63,8 +62,7 @@ BASH_CODE_LINES = [
         CodePart(Token.Generic.Output, 'there'),
     ], bash_lexer),
     CodeLine([
-        CodePart(Token.Generic.Prompt, '$'),
-        CodePart(Token.Text, ' '),
+        CodePart(Token.Generic.Prompt, '$ '),
     ], bash_lexer),
 ]
 

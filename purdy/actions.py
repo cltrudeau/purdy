@@ -44,7 +44,7 @@ def condense(value):
 
 class Insert:
     """Inserts the content of a :class:`purdy.content.Code` object to a
-    specified line in a :class:`purdy.ui.CodeBox`. Pushes content down, 
+    specified line in a :class:`purdy.ui.CodeBox`. Pushes content down,
     inserting at "1" is the beginning of the list. Position is 1-indexed
 
     :param code_box: the :class:`purdy.ui.CodeBox` instance to insert code
@@ -100,10 +100,10 @@ class Replace:
     your CodeBox.
 
     :param code_box: the :class:`purdy.ui.CodeBox` instance where the code is
-                     to be replaced 
+                     to be replaced
 
     :param position: line number to replace the code at. Position is 1-indexed.
-                     Negative indicies are supported. 
+                     Negative indicies are supported.
 
     :param code: a :class:`purdy.content.Code` object containing the source
                  code to insert.
@@ -128,10 +128,10 @@ class Remove:
     """Removes one or more lines of a :class:`purdy.ui.CodeBox`.
 
     :param code_box: the :class:`purdy.ui.CodeBox` instance where the code is
-                     to be replaced 
+                     to be replaced
 
     :param position: line number to replace the code at. Position is 1-indexed.
-                     Negative indicies are supported. 
+                     Negative indicies are supported.
 
     :param size: number of lines to remove.
     """
@@ -151,7 +151,7 @@ class Clear:
     """Clears the contents of a :class:`purdy.ui.CodeBox`.
 
     :param code_box: the :class:`purdy.ui.CodeBox` instance where the code is
-                     to be replaced 
+                     to be replaced
     """
     def __init__(self, code_box):
         self.code_box = code_box
@@ -171,10 +171,10 @@ class Suffix:
     :class:`purdy.ui.CodeBox`.
 
     :param code_box: the :class:`purdy.ui.CodeBox` instance where the code is
-                     to be appended 
+                     to be appended
 
     :param position: line number to replace the code at. Position is 1-indexed.
-                     Negative indicies are supported. 
+                     Negative indicies are supported.
 
     :param source: string containing content to append to the line
     """
@@ -197,7 +197,7 @@ class Shell:
     :class:`purdy.ui.CodeBox`.
 
     :param code_box: the :class:`purdy.ui.CodeBox` instance where the code is
-                     to be appended 
+                     to be appended
 
     :param cmd: string containing the shell command and its paramters.
                 Example: ``ls -la``.
@@ -289,7 +289,7 @@ class TypewriterStep(TypewriterBase):
                         output_parts.append( CodePart(Token, '\u2588') )
 
                     row_line = CodeLine(output_parts, self.code.lexer)
-                    step = steplib.ReplaceRows(self.code_box, replace_pos, 
+                    step = steplib.ReplaceRows(self.code_box, replace_pos,
                         row_line)
                     steps.append(step)
 
@@ -318,7 +318,7 @@ class TypewriterStep(TypewriterBase):
 
 class AppendTypewriter(TypewriterStep):
     """Adds the content of a :class:`purdy.content.Code` object to a
-    :class:`purdy.ui.CodeBox` using the typewriter animation. 
+    :class:`purdy.ui.CodeBox` using the typewriter animation.
 
     :param code_box: the :class:`purdy.ui.CodeBox` instance to append code
                      into
@@ -371,7 +371,7 @@ class SuffixTypewriter(TypewriterBase):
                      into
 
     :param position: line number to insert the code at. Position is 1-indexed.
-                     Negative indicies are supported. 
+                     Negative indicies are supported.
 
     :param source: a string to be appended to the given line
     """
@@ -458,10 +458,10 @@ class HighlightChain:
                 numbers = spec
 
             if previous_numbers:
-                all_steps.append( steplib.HighlightLines(self.code_box, 
+                all_steps.append( steplib.HighlightLines(self.code_box,
                     previous_numbers, False) )
 
-            all_steps.extend([ 
+            all_steps.extend([
                 steplib.HighlightLines(self.code_box, numbers, True),
                 steplib.CellEnd()
             ])
@@ -499,7 +499,7 @@ class Fold:
 # =============================================================================
 
 class Wait:
-    """Causes the animations to wait for a `right arrow` key press before 
+    """Causes the animations to wait for a `right arrow` key press before
     continuing.
     """
     def __str__(self):
@@ -532,7 +532,7 @@ class Transition:
                  the same time as code_box_to_copy parameter.
 
     :param code_box_to_copy: a code box containing rendered code to copy into
-                             this one to display. This is typically a 
+                             this one to display. This is typically a
                              :class:`VirtualCodeBox`. Should not be used at
                              the same time as code parameter.
     """
@@ -554,14 +554,14 @@ class Transition:
         return f'actions.Transition("{code_content}", "{copy_content}")'
 
     def steps(self):
-        return [steplib.Transition(self.code_box, self.code, 
+        return [steplib.Transition(self.code_box, self.code,
             self.code_box_to_copy), ]
 
 
 class Sleep:
     """Causes animations to pause for the given amount of time. Note that this
     action happens within a cell, so is considered part of the group of
-    animation steps done together. For example if Append + Sleep + Append is 
+    animation steps done together. For example if Append + Sleep + Append is
     part of the same cell it is all done/undone together.
 
     :param time: amount of time to sleep given in seconds, floats allowed

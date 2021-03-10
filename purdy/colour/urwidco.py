@@ -1,6 +1,5 @@
 from pygments.token import Keyword, Name, Comment, String, Error, \
-    Number, Operator, Generic, Token, Whitespace, Punctuation, Text, \
-    Literal
+    Number, Operator, Generic, Token, Whitespace, Punctuation, Text
 
 from purdy.parser import FoldedCodeLine, token_ancestor
 

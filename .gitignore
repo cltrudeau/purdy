@@ -25,3 +25,5 @@ docs/_build/
 extras/sample_site/uploads/
 .tox/
 .eggs/
+.venv
+.idea
