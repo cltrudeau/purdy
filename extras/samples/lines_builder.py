@@ -59,7 +59,7 @@ multiline_repl = """\
 
 (
     actions.switch_to_code_box(1)
-    .replace(3, repl)
+    .replace(3, text=repl)
     .wait()
     .suffix_typewriter(1, "56789")
     .wait()
@@ -67,8 +67,8 @@ multiline_repl = """\
     .suffix_typewriter(1, "444")
     .wait()
     .remove(2, 1)
-    .insert_typewriter(2, multiline_repl)
-    .insert_typewriter(0, multiline_repl)
+    .insert_typewriter(2, text=multiline_repl)
+    .insert_typewriter(0, text=multiline_repl)
 )
 
 if __name__ == "__main__":

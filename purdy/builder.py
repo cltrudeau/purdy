@@ -71,7 +71,14 @@ class ActionsBuilder(Iterable):
         self.__actions.append(action)
         return self
 
-    def insert(self, position: int, code: str) -> "ActionsBuilder":
+    def _create_code(
+        self, filename: str = "", text: str = "", code: Code = None
+    ) -> Code:
+        return code or Code(filename=filename, text=text, lexer_name=self.__lexer_name)
+
+    def insert(
+        self, position: int, filename: str = "", text: str = "", code: Code = None
+    ) -> "ActionsBuilder":
         """Adds an :class:`purdy.actions.Insert` action
 
         :param position: line number to insert code at. Position is 1-indexed.
@@ -79,48 +86,64 @@ class ActionsBuilder(Iterable):
                          beginning. Negative indices are supported. A value of
                          "0" will append the code to the bottom.
 
+        :param filename: name of a file to read for :class:`purdy.content.Code` content.
+                         If both this and `text` is given, `filename` is used first
+
+        :param text: text to read for :class:`purdy.content.Code` content.
+
         :param code: a :class:`purdy.content.Code` object containing the source
-                     code to insert.
+                     code to insert. If all `code`, `filename` and `text` are given,
+                     `code` will be used first.
         :return: self
         """
         return self._add_action(
-            Insert(
-                self.__code_box, position, Code(text=code, lexer_name=self.__lexer_name)
-            )
+            Insert(self.__code_box, position, self._create_code(filename, text, code))
         )
 
-    def append(self, filename: str = "", text: str = "") -> "ActionsBuilder":
+    def append(
+        self, filename: str = "", text: str = "", code: Code = None
+    ) -> "ActionsBuilder":
         """Adds an :class:`purdy.actions.Append` action
 
-        :param filename: name of a file to read for content. If both this and
-                         `text` is given, `filename` is used first
+        :param filename: name of a file to read for :class:`purdy.content.Code` content.
+                         If both this and `text` is given, `filename` is used first
 
-        :param text: a string containing code
+        :param text: text to read for :class:`purdy.content.Code` content.
+
+        :param code: a :class:`purdy.content.Code` object containing the source
+                     code to insert. If all `code`, `filename` and `text` are given,
+                     `code` will be used first.
 
         :return: self
         """
         return self._add_action(
             Append(
                 self.__code_box,
-                Code(filename, text, self.__lexer_name),
+                self._create_code(filename, text, code),
             )
         )
 
-    def replace(self, position: int, code: str) -> "ActionsBuilder":
+    def replace(
+        self, position: int, filename: str = "", text: str = "", code: Code = None
+    ) -> "ActionsBuilder":
         """Adds an :class:`purdy.actions.Replace` action
 
         :param position: line number to replace the code at. Position is 1-indexed.
                          Negative indices are supported.
 
+        :param filename: name of a file to read for :class:`purdy.content.Code` content.
+                         If both this and `text` is given, `filename` is used first
+
+        :param text: text to read for :class:`purdy.content.Code` content.
+
         :param code: a :class:`purdy.content.Code` object containing the source
-                     code to insert.
+                     code to insert. If all `code`, `filename` and `text` are given,
+                     `code` will be used first.
 
         :return: self
         """
         return self._add_action(
-            Replace(
-                self.__code_box, position, Code(text=code, lexer_name=self.__lexer_name)
-            )
+            Replace(self.__code_box, position, self._create_code(filename, text, code))
         )
 
     def remove(self, position: int, size: int) -> "ActionsBuilder":
@@ -164,36 +187,47 @@ class ActionsBuilder(Iterable):
         """
         return self._add_action(Shell(self.__code_box, cmd))
 
-    def append_typewriter(self, filename: str = "", text: str = "") -> "ActionsBuilder":
+    def append_typewriter(
+        self, filename: str = "", text: str = "", code: Code = None
+    ) -> "ActionsBuilder":
         """Adds an :class:`purdy.actions.AppendTypewriter` action
 
-        :param filename: name of a file to read for content. If both this and
-                         `text` is given, `filename` is used first
+        :param filename: name of a file to read for :class:`purdy.content.Code` content.
+                         If both this and `text` is given, `filename` is used first
 
-        :param text: a string containing code
+        :param text: text to read for :class:`purdy.content.Code` content.
+
+        :param code: a :class:`purdy.content.Code` object containing the source
+                     code to insert. If all `code`, `filename` and `text` are given,
+                     `code` will be used first.
 
         :return: self
         """
         return self._add_action(
-            AppendTypewriter(
-                self.__code_box,
-                Code(filename, text, self.__lexer_name),
-            )
+            AppendTypewriter(self.__code_box, self._create_code(filename, text, code))
         )
 
-    def insert_typewriter(self, position: int, code: str) -> "ActionsBuilder":
+    def insert_typewriter(
+        self, position: int, filename: str = "", text: str = "", code: Code = None
+    ) -> "ActionsBuilder":
         """Adds an :class:`purdy.actions.InsertTypewriter` action
 
         :param position: line number to insert the code at. Position is 1-indexed.
 
+        :param filename: name of a file to read for :class:`purdy.content.Code` content.
+                         If both this and `text` is given, `filename` is used first
+
+        :param text: text to read for :class:`purdy.content.Code` content.
+
         :param code: a :class:`purdy.content.Code` object containing the source
-                     code to insert.
+                     code to insert. If all `code`, `filename` and `text` are given,
+                     `code` will be used first.
 
         :return: self
         """
         return self._add_action(
             InsertTypewriter(
-                self.__code_box, position, Code(text=code, lexer_name=self.__lexer_name)
+                self.__code_box, position, self._create_code(filename, text, code)
             )
         )
 
@@ -264,26 +298,34 @@ class ActionsBuilder(Iterable):
         return self._add_action(StopMovie())
 
     def transition(
-        self, filename: str, text: str, code_box_to_copy: VirtualCodeBox
+        self,
+        code_box_to_copy: VirtualCodeBox,
+        filename: str = "",
+        text: str = "",
+        code: Code = None,
     ) -> "ActionsBuilder":
         """Adds an :class:`purdy.actions.Transition` action
-
-        :param filename: name of a file to read for content. If both this and
-                         `text` is given, `filename` is used first
-
-        :param text: a string containing code
 
         :param code_box_to_copy: a code box containing rendered code to copy into
                                  this one to display. This is typically a
                                  :class:`VirtualCodeBox`. Should not be used at
                                  the same time as code parameter.
 
+        :param filename: name of a file to read for :class:`purdy.content.Code` content.
+                         If both this and `text` is given, `filename` is used first
+
+        :param text: text to read for :class:`purdy.content.Code` content.
+
+        :param code: a :class:`purdy.content.Code` object containing the source
+                     code to insert. If all `code`, `filename` and `text` are given,
+                     `code` will be used first.
+
         :return: self
         """
         return self._add_action(
             Transition(
                 self.__code_box,
-                Code(filename, text, self.__lexer_name),
+                self._create_code(filename, text, code),
                 code_box_to_copy,
             )
         )

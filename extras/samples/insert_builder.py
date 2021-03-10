@@ -24,10 +24,10 @@ actions = (
     ActionsBuilder(screen, "py3")
     .append(code_file)
     .wait()
-    .insert(8, for_loop)
+    .insert(8, text=for_loop)
     .wait()
-    .insert_typewriter(8, two_lists)
-    .insert(8, stuff)
+    .insert_typewriter(8, text=two_lists)
+    .insert(8, text=stuff)
 )
 
 if __name__ == "__main__":
