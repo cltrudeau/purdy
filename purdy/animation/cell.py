@@ -52,8 +52,10 @@ def group_steps_into_cells(steps):
             cells.append(cell)
             cell = None
         elif isinstance(step, steplib.SectionBreak):
+            # Section markers are't cells, they just change the state of the
+            # previous cell
             if cells:
-                cell[-1].section_break = True
+                cells[-1].section_break = True
         else:
             if not cell:
                 cell = GroupCell()

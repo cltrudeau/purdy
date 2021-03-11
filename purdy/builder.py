@@ -1,7 +1,8 @@
 from typing import Iterable, Iterator, Union, List, Callable, Optional, Any
 from purdy.actions import (AppendTypewriter, Append, Suffix, Wait, Clear,
     Insert, Replace, Remove, Shell, InsertTypewriter, SuffixTypewriter,
-    Highlight, HighlightChain, Fold, StopMovie, Transition, Sleep, RunFunction)
+    Highlight, HighlightChain, Fold, StopMovie, Transition, Sleep, RunFunction,
+    Section)
 from purdy.content import Code
 from purdy.ui import VirtualCodeBox, Screen
 
@@ -324,3 +325,10 @@ class ActionsBuilder(Iterable):
         :return: self
         """
         return self._add_action(RunFunction(fn, undo, *args, **kwargs))
+
+    def section(self) -> 'ActionsBuilder':
+        """Adds a :class:`purdy.actions.Section` action
+
+        :return: self
+        """
+        return self._add_action(Section())

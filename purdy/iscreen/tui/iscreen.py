@@ -315,6 +315,8 @@ class HelpDialog(urwid.Pile):
             urwid.Text([('bold', '<LEFT> '), ': Previous step']),
             urwid.Text([('bold', '<RIGHT>'), ': Next step']),
             urwid.Text([('bold', 's      '), ': Next step, skip animation']),
+            urwid.Text([('bold', 'S      '), ': Skip to next section marker']),
+            urwid.Text(               '         or to the end'),
             urwid.Text(''),
             urwid.Text(('title', 'State')),
             urwid.Text(f'Step {index} of {steps}'),

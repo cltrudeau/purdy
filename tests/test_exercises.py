@@ -10,8 +10,9 @@ class TestExercises(TestCase):
         exercises = ["all_console", "append", "bash_console", "builder", 
             "cols", "compact", "docstring", "exec", "fold", "highlight",
             "insert", "lines", "maxheight", "mixed", "mls_type",
-            "movie_console", "remove", "replace", "sleep", "split_long",
-            "src_change", "swipe", "tall", "triple", "type_console", ]
+            "movie_console", "remove", "replace", "section", "sleep", 
+            "split_long", "src_change", "swipe", "tall", "triple",
+            "type_console", ]
 
         exercise_data = Path(__file__).parent / "exercise_data"
 

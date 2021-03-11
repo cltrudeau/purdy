@@ -20,7 +20,7 @@ class AnimationManager:
         ACTIVE = 0
         SLEEPING = 1
 
-    handled_keys = ['left', 'right', 's']
+    handled_keys = ['left', 'right', 's', 'S']
 
     def __init__(self, screen):
         self.screen = screen
@@ -74,6 +74,8 @@ class AnimationManager:
             self.backward()
         elif key == 's':
             self.fast_forward()
+        elif key == 'S':
+            self.next_section()
 
     def forward(self):
         if self.index + 1 >= len(self.cells):
@@ -92,6 +94,15 @@ class AnimationManager:
 
         self.index += 1
         self.cells[self.index].render(self, skip=True)
+
+    def next_section(self):
+        while self.index + 1 < len(self.cells):
+            self.index += 1
+            self.cells[self.index].render(self, skip=True)
+
+            if self.cells[self.index].section_break:
+                # found the boundary, stop
+                return
 
     def interrupt(self):
         self.cells[self.index].interrupt(self)

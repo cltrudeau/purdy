@@ -67,6 +67,10 @@ echo "replace"
 ./capture_exercise.py replace
 mv flipbook.json exercise_data/replace.json
 
+echo "section"
+./capture_exercise.py section
+mv flipbook.json exercise_data/section.json
+
 echo "sleep"
 ./capture_exercise.py sleep
 mv flipbook.json exercise_data/sleep.json

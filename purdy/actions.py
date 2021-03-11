@@ -603,7 +603,9 @@ class RunFunction:
 
 
 class Section:
-    """Marker for the beginning of a section."""
+    """Marker for the beginning of a section. In the TUI you can skip to the
+    next section marker using "S"."""
+
     def __str__(self):
         return 'actions.Section()'
 
