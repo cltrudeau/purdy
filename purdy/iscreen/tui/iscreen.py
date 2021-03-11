@@ -12,6 +12,10 @@ from purdy.iscreen.tui.widgets import CodeWidget, DividingLine, TwinContainer
 
 UrwidColourizer = COLOURIZERS['urwid']
 
+#import logging
+#logging.basicConfig(filename='debug.log', level=logging.DEBUG)
+#logger = logging.getLogger()
+
 # =============================================================================
 # Window Management
 # =============================================================================
@@ -102,9 +106,21 @@ class BaseWindow(urwid.Pile):
         walker = FocusWalker(self)
         walker.focus_prev()
 
+    def _close_help(self, button):
+        self.iscreen.loop.widget = self
+
+    def _show_help(self):
+        help_box = HelpDialog(self)
+        self.iscreen.loop.widget = urwid.Overlay(help_box, self, 
+            align='center', valign='middle', width=50, height=20)
+
     def keypress(self, size, key):
         if key in ('q', 'Q'):
             raise urwid.ExitMainLoop()
+
+        if key == '?':
+            self._show_help()
+            return
 
         if key in ('f1', 'f2', 'f3', 'f4', 'f5', 'f6', 'f7', 'f8', 'f9', 'f10'):
             # let parent handle function keys
@@ -275,3 +291,50 @@ class TUIScreen:
         # call urwid's main loop, this code doesn't return until the loop
         # exits!!!
         self.loop.run()
+
+# =============================================================================
+# Help Dialog
+# =============================================================================
+
+class HelpDialog(urwid.Pile):
+    def __init__(self, parent):
+        self.parent = parent
+
+        ### Define dialog
+        header = urwid.Text(('reverse', 'Help'), align = 'center')
+
+        # Body
+        index = parent.animation_manager.index + 1
+        steps = len(parent.animation_manager.cells)
+        content = urwid.Pile([
+            urwid.Text(''),
+            urwid.Text(('title', 'Keys')),
+            urwid.Text(''),
+            urwid.Text([('bold', 'q, Q   '), ': Quit']),
+            urwid.Text([('bold', '<TAB>  '), ': Switch focused window']),
+            urwid.Text([('bold', '<LEFT> '), ': Previous step']),
+            urwid.Text([('bold', '<RIGHT>'), ': Next step']),
+            urwid.Text([('bold', 's      '), ': Next step, skip animation']),
+            urwid.Text(''),
+            urwid.Text(('title', 'State')),
+            urwid.Text(f'Step {index} of {steps}'),
+        ])
+        body_filler = urwid.Filler(content, valign = 'top')
+        body = urwid.Padding(body_filler, left=1, right=1)
+
+        # Footer
+        footer = urwid.Button(('reverse', 'Okay'), self.parent._close_help)
+        footer = urwid.AttrWrap(footer, 'selectable', 'focus')
+        footer = urwid.GridFlow([footer], 8, 1, 1, 'center')
+
+        # Layout
+        layout = urwid.Frame(body, header, footer, 'footer')
+        line_box = urwid.LineBox(layout)
+        
+        super().__init__([line_box])
+
+    def keypress(self, size, key):
+        if key in ('q', 'Q'):
+            raise urwid.ExitMainLoop()
+
+        super().keypress(size, key)

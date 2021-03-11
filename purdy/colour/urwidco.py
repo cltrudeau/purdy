@@ -68,6 +68,9 @@ class UrwidColourizer:
 
         # add miscellaneous other palette items
         urwid_palette.extend([
+            ('reverse', 'black', 'white', '', 'black', 'white'),
+            ('bold', 'white,bold', '', '', 'white,bold', ''),
+            ('title', 'white,underline', '', '', 'white,underline', ''),
             ('folded', 'white', '', '', 'white', ''),
             ('line_number', 'dark gray', '', '', 'dark gray', ''),
             ('empty', '', '', '', '', ''),

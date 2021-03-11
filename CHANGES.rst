@@ -1,3 +1,15 @@
+1.7.0
+=====
+
+* Added @johanvergeer's contribution of the ActionsBuilder class, a short cut
+class based on a builder pattern so you can use methods on the builder class
+to create actions instead of a list of actions. Supports type hinting in case
+that's your thing
+* Upgraded minimum version of Pygments to 2.8 due to behaviour changes in the
+parser causing conflicts during testing
+* Added help screen
+
+
 1.6.1
 =====
 

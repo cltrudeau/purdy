@@ -17,7 +17,8 @@ Prompts are:
 
 If the program is paused at a prompt, pressing the **right** arrow will
 continue. Typing animation can be skipped over by pressing the letter "s"
-instead. Animation can be undone by pressing the **left** arrow.
+instead. Animation can be undone by pressing the **left** arrow. More info on
+keys can be found in the help dialog, viewed by pressing "?".
 
 Example Usage:
 
