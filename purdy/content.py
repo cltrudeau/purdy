@@ -10,6 +10,10 @@ from copy import deepcopy
 from purdy.colour import COLOURIZERS
 from purdy.parser import FoldedCodeLine, parse_source
 
+#import logging
+#logging.basicConfig(filename='debug.log', level=logging.DEBUG)
+#logger = logging.getLogger()
+
 # =============================================================================
 
 class Code:
@@ -280,7 +284,7 @@ class Listing:
                 raise IndexError('position is 1-indexed, 0 is invalid')
 
             if original < 0:
-                raise IndexError( (f'position {original} translated to'
+                raise IndexError( (f'position {original} translated to '
                     f'{position}, is outside range 1-{size}') )
 
             raise IndexError(f'position {position} outside range 1-{size}')

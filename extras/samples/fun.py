@@ -8,6 +8,10 @@ from purdy.actions import Append, Wait, RunFunction
 from purdy.content import Code
 from purdy.ui import SimpleScreen
 
+def something_else():
+    return 'Something completely different'
+
+
 def do_something(foo, bar=3):
     with open('zzz_output.txt', 'a') as f:
         f.write(f'Doing something {foo} {bar}\n')
@@ -32,6 +36,8 @@ actions = [
     Append(code_box, second),
     Wait(),
     Append(code_box, third),
+    RunFunction(something_else, None),
+    Append(code_box, Code(text='after parameterless function')),
 ]
 
 if __name__ == '__main__':

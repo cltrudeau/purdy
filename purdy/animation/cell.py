@@ -51,6 +51,9 @@ def group_steps_into_cells(steps):
 
             cells.append(cell)
             cell = None
+        elif isinstance(step, steplib.SectionBreak):
+            if cells:
+                cell[-1].section_break = True
         else:
             if not cell:
                 cell = GroupCell()
@@ -100,6 +103,7 @@ class GroupCell(AnimatingCellBase):
         self.steps = []
         self.index = 0
         self.animation_alarm_handle = None
+        self.section_break = False
 
     def __str__(self):
         step_string = ','.join([str(step) for step in self.steps])
@@ -167,6 +171,7 @@ class TransitionCell(AnimatingCellBase):
         self.state = self.State.BEFORE
         self.steps = []
         self.auto_forward = True
+        self.section_break = False
 
     def render(self, manager, skip=False):
         if self.state == self.State.DONE:

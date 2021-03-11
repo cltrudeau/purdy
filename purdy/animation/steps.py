@@ -14,6 +14,10 @@ from pygments.token import String, Token
 from purdy.parser import (CodeLine, CodePart, token_is_a, parse_source,
     PurdyLexer)
 
+#import logging
+#logging.basicConfig(filename='debug.log', level=logging.DEBUG)
+#logger = logging.getLogger()
+
 # ===========================================================================
 # Animation Steps
 # ===========================================================================
@@ -286,6 +290,7 @@ class FoldLines:
 
         start = self.position - 1
         last = self.end
+
         if self.end == -1:
             last = len(self.code_box.listing.lines)
 
@@ -313,6 +318,10 @@ class Sleep:
 
 
 class CellEnd:
+    pass
+
+
+class SectionBreak:
     pass
 
 
@@ -360,7 +369,12 @@ class RunFunction:
         self.fn_kwargs = kwargs
 
     def __str__(self):
-        return 'steps.RunFunction()'
+        undo_name = 'None'
+        if self.undo:
+            undo_name = self.undo.__name__
+
+        return (f'steps.RunFunction({self.fn.__name__}, {undo_name},'
+            f' args={self.fn_args}, kwargs={self.fn_kwargs})')
 
     def render_step(self):
         self.fn(*self.fn_args, **self.fn_kwargs)

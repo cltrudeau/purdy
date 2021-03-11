@@ -8,6 +8,7 @@ def load_samples_module(mod_name):
     samples = Path(__file__).resolve()
     samples = samples.parent.parent / 'extras/samples'
     samples = samples.resolve()
+    mod_name = mod_name.replace('.', '/')
     filename = samples / f'{mod_name}.py'
 
     # Change to samples dir, most of the scripts have local referenced files, 
@@ -24,6 +25,7 @@ def load_samples_module(mod_name):
     os.chdir(current_dir)
 
     return module
+
 
 def run_exercise(module_name):
     from purdy.settings import settings

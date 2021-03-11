@@ -446,7 +446,7 @@ class HighlightChain:
         self.spec_list = spec_list
 
     def __str__(self):
-        return f'actions.Highlight({self.spec_list}, {self.highlight_on})'
+        return f'actions.HighlightChain({self.spec_list})'
 
     def steps(self):
         all_steps = []
@@ -487,6 +487,9 @@ class Fold:
         self.code_box = code_box
         self.position = position
         self.end = end
+        if end != -1 and end < position:
+            raise AttributeError((f'Ending line number ({end}) must be '
+                f'larger than starting number ({position})'))
 
     def __str__(self):
         return f'actions.Fold({self.position}, {self.end})'
@@ -595,5 +598,14 @@ class RunFunction:
         return 'actions.RunFunction'
 
     def steps(self):
-        return [steplib.RunFunction(self.fn, self.undo, self.fn_args,
-            self.fn_kwargs), ]
+        return [steplib.RunFunction(self.fn, self.undo, *self.fn_args,
+            **self.fn_kwargs), ]
+
+
+class Section:
+    """Marker for the beginning of a section."""
+    def __str__(self):
+        return 'actions.Section()'
+
+    def steps(self):
+        return [steplib.SectionBreak(), ]

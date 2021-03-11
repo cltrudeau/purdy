@@ -11,6 +11,10 @@ echo "bash_console"
 ./capture_exercise.py bash_console
 mv flipbook.json exercise_data/bash_console.json
 
+echo "builder"
+./capture_exercise.py builder
+mv flipbook.json exercise_data/builder.json
+
 echo "cols"
 ./capture_exercise.py cols
 mv flipbook.json exercise_data/cols.json
