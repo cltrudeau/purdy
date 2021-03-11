@@ -588,7 +588,7 @@ class RunFunction:
 
     :param fn: function to be called
     :param undo: function to be called when this Action is undone, can be None
-    :param *args, **kwargs: any remaining arguments are passed to the
+    :param \*args, \*\*kwargs: any remaining arguments are passed to the
                             functions when they are called
     """
     def __init__(self, fn, undo, *args, **kwargs):

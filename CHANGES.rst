@@ -10,6 +10,8 @@ parser causing conflicts during testing
 * Added help screen
 * Added section markers and ability to skip to a section in the TUI
 * Changed Sleep to accept a tuple specifying range of random amount to sleep
+* Add ability to skip multiple steps, sections, or backwards steps by typing a
+number before the command
 
 1.6.1
 =====

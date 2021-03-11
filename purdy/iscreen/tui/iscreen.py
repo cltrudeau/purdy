@@ -8,7 +8,9 @@ constructed by :class:`purdy.ui.Screen` depending on its factory.
 import urwid
 
 from purdy.colour import COLOURIZERS
-from purdy.iscreen.tui.widgets import CodeWidget, DividingLine, TwinContainer
+from purdy.iscreen.tui.widgets import (CodeWidget, DividingLine,
+    TwinContainer, ScrollingListBox, ScrollingIndicator)
+
 
 UrwidColourizer = COLOURIZERS['urwid']
 
@@ -106,13 +108,13 @@ class BaseWindow(urwid.Pile):
         walker = FocusWalker(self)
         walker.focus_prev()
 
-    def _close_help(self, button):
+    def _close_help(self):
         self.iscreen.loop.widget = self
 
     def _show_help(self):
         help_box = HelpDialog(self)
         self.iscreen.loop.widget = urwid.Overlay(help_box, self, 
-            align='center', valign='middle', width=50, height=20)
+            align='center', valign='middle', width=55, height=20)
 
     def keypress(self, size, key):
         if key in ('q', 'Q'):
@@ -306,37 +308,44 @@ class HelpDialog(urwid.Pile):
         # Body
         index = parent.animation_manager.index + 1
         steps = len(parent.animation_manager.cells)
-        content = urwid.Pile([
+
+        walker = urwid.SimpleListWalker([
             urwid.Text(''),
             urwid.Text(('title', 'Keys')),
             urwid.Text(''),
             urwid.Text([('bold', 'q, Q   '), ': Quit']),
             urwid.Text([('bold', '<TAB>  '), ': Switch focused window']),
+            urwid.Text([('bold', '⬆ <TAB>'), ': Previous focused window']),
             urwid.Text([('bold', '<LEFT> '), ': Previous step']),
             urwid.Text([('bold', '<RIGHT>'), ': Next step']),
             urwid.Text([('bold', 's      '), ': Next step, skip animation']),
             urwid.Text([('bold', 'S      '), ': Skip to next section marker']),
             urwid.Text(               '         or to the end'),
             urwid.Text(''),
+            urwid.Text(('title', 'Multiples')),
+            urwid.Text('You can perform multiple s, S, and <LEFT> commands'),
+            urwid.Text('by typing a number before the command'),
+            urwid.Text(''),
             urwid.Text(('title', 'State')),
             urwid.Text(f'Step {index} of {steps}'),
         ])
-        body_filler = urwid.Filler(content, valign = 'top')
-        body = urwid.Padding(body_filler, left=1, right=1)
+
+        scroller = ScrollingIndicator()
+        listbox = ScrollingListBox(scroller, walker)
+        layout = [listbox, (1, scroller)]
+        body = urwid.Columns(layout)
 
         # Footer
-        footer = urwid.Button(('reverse', 'Okay'), self.parent._close_help)
-        footer = urwid.AttrWrap(footer, 'selectable', 'focus')
-        footer = urwid.GridFlow([footer], 8, 1, 1, 'center')
+        footer = urwid.Text(('bold', "<ENTER> to close"), align="center")
 
         # Layout
-        layout = urwid.Frame(body, header, footer, 'footer')
+        layout = urwid.Frame(body, header, footer, 'body')
         line_box = urwid.LineBox(layout)
         
         super().__init__([line_box])
 
     def keypress(self, size, key):
-        if key in ('q', 'Q'):
-            raise urwid.ExitMainLoop()
+        if key == 'enter':
+            self.parent._close_help()
 
         super().keypress(size, key)

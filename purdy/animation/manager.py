@@ -20,12 +20,14 @@ class AnimationManager:
         ACTIVE = 0
         SLEEPING = 1
 
-    handled_keys = ['left', 'right', 's', 'S']
+    handled_keys = ['left', 'right', 's', 'S', '0', '1', '2', '3', '4', '5',
+        '6', '7', '8', '9', 'esc']
 
     def __init__(self, screen):
         self.screen = screen
         self.cells = []
         self.index = -1
+        self.multi_action = ''
 
     def register(self, content):
         """Register one or more "cell" classes from 
@@ -76,6 +78,10 @@ class AnimationManager:
             self.fast_forward()
         elif key == 'S':
             self.next_section()
+        elif key in ('0', '1', '2', '3', '4', '5', '6', '7', '8', '9'):
+            self.multi_action += key
+        elif key == 'esc':
+            self.multi_action = ''
 
     def forward(self):
         if self.index + 1 >= len(self.cells):
@@ -89,27 +95,40 @@ class AnimationManager:
             self._conditional_alarms(cell)
 
     def fast_forward(self):
-        if self.index + 1 >= len(self.cells):
-            return
+        repeat = 1
+        if self.multi_action:
+            repeat = int(self.multi_action)
+            self.multi_action = ''
 
-        self.index += 1
-        self.cells[self.index].render(self, skip=True)
+        while self.index + 1 < len(self.cells) and repeat > 0:
+            self.index += 1
+            self.cells[self.index].render(self, skip=True)
+            repeat -= 1
 
     def next_section(self):
-        while self.index + 1 < len(self.cells):
+        repeat = 1
+        if self.multi_action:
+            repeat = int(self.multi_action)
+            self.multi_action = ''
+
+        while self.index + 1 < len(self.cells) and repeat > 0:
             self.index += 1
             self.cells[self.index].render(self, skip=True)
 
             if self.cells[self.index].section_break:
                 # found the boundary, stop
-                return
+                repeat -= 1
 
     def interrupt(self):
         self.cells[self.index].interrupt(self)
 
     def backward(self):
-        if self.index <= 0:
-            return
+        repeat = 1
+        if self.multi_action:
+            repeat = int(self.multi_action)
+            self.multi_action = ''
 
-        self.cells[self.index].undo(self)
-        self.index -= 1
+        while self.index > 0 and repeat > 0:
+            self.cells[self.index].undo(self)
+            self.index -= 1
+            repeat -= 1

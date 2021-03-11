@@ -54,6 +54,28 @@ The following programs come with the `purdy` library:
 More information can be found in the Command Line Program Documentation.
 
 
+Purdy TUI Controls
+##################
+
+The following keys help you to control the TUI purdy programs:
+
+* ``?`` -- Help screen
+* ``<RIGHT>`` -- next animation step
+* ``<LEFT>`` -- previous animation step
+* ``s`` -- go to the next step, skipping any animation
+
+For custom made code using the purdy library, the following controls will also
+work:
+
+* ``S`` -- go to the next section, skipping any animation. 
+* ``<TAB>`` -- focus next window area in a multi Screen display
+* ``<SHIFT><TAB>`` -- focus previous window area in a multi Screen display
+
+Additionally the ``s``, ``S``, and ``<LEFT>`` commands all support skipping
+multiple steps by specifying a number first. For example the sequence ``12s``
+would skip past the next 12 steps.
+
+
 Purdy Library
 #############
 

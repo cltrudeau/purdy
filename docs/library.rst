@@ -60,7 +60,7 @@ Library API
 
 .. automodule:: purdy.actions
     :members:
-    :exclude-members: AppendTypewriter, InsertTypewriter, ReplaceTypewriter, SuffixTypewriter
+    :exclude-members: AppendTypewriter, InsertTypewriter, SuffixTypewriter
 
 
 Typewriter Actions
@@ -72,16 +72,13 @@ displayed a letter at a time as if someone is typing. The
 variance time between letters being pressed.
 
 When the code in question is based on a console, the typewriter will wait for
-a the `right arrow` to be pressed whenever it sees a prompt. For example, when
+the `right arrow` to be pressed whenever it sees a prompt. For example, when
 appending Python REPL code, the ``>>>`` will cause the interface to wait.
 
 .. autoclass:: purdy.actions.AppendTypewriter
     :members:
 
 .. autoclass:: purdy.actions.InsertTypewriter
-    :members:
-
-.. autoclass:: purdy.actions.ReplaceTypewriter
     :members:
 
 .. autoclass:: purdy.actions.SuffixTypewriter

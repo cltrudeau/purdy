@@ -305,8 +305,8 @@ class ActionsBuilder(Iterable):
         return self._add_action(Transition(self.__code_box,
                 self._create_code(filename, text, code), code_box_to_copy))
 
-    def sleep(self, time: Union[float, int, 
-            Tuple[Union[float, int], Union[float, int]]) -> "ActionsBuilder":
+    def sleep(self, 
+            time: Union[float, Tuple[float, float]]) -> "ActionsBuilder":
         """Adds an :class:`purdy.actions.Sleep` action
 
         :param time: amount of time to sleep given in seconds, or a tuple
