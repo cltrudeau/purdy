@@ -11,6 +11,7 @@ rendering.
 """
 from copy import deepcopy
 from enum import Enum
+import random
 
 from purdy.animation import steps as steplib
 from purdy.parser import BlankCodeLine, parse_source
@@ -127,8 +128,13 @@ class GroupCell(AnimatingCellBase):
                     continue
                 else:
                     manager.state = manager.State.SLEEPING
+
+                    time = step.time
+                    if isinstance(step.time, tuple):
+                        time = random.uniform(step.time[0], step.time[1])
+
                     self.animation_alarm_handle = manager.screen.set_alarm(
-                        'animation_alarm', step.time)
+                        'animation_alarm', time)
 
                     self.index += 1
                     return

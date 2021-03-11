@@ -8,7 +8,8 @@ that's your thing
 * Upgraded minimum version of Pygments to 2.8 due to behaviour changes in the
 parser causing conflicts during testing
 * Added help screen
-
+* Added section markers and ability to skip to a section in the TUI
+* Changed Sleep to accept a tuple specifying range of random amount to sleep
 
 1.6.1
 =====

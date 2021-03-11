@@ -4,7 +4,7 @@
 #
 # Demonstrates the Sleep action
 
-from purdy.actions import Append, Sleep
+from purdy.actions import Append, Sleep, Wait
 from purdy.content import Code
 from purdy.ui import SimpleScreen
 
@@ -14,7 +14,9 @@ blob = Code('../display_code/simple.repl')
 
 actions = [
     Append(code_box, blob),
-    Sleep(3),
+    Sleep(1),
+    Append(code_box, blob),
+    Sleep((3, 6)),
     Append(code_box, blob),
 ]
 

@@ -567,7 +567,10 @@ class Sleep:
     animation steps done together. For example if Append + Sleep + Append is
     part of the same cell it is all done/undone together.
 
-    :param time: amount of time to sleep given in seconds, floats allowed
+    :param time: Either the amount of time to sleep in seconds (ints and 
+                 floats supported), or a tuple containing a pair of times
+                 specifying the range of a random value to sleep.
+
     """
     def __init__(self, time):
         self.time = time
