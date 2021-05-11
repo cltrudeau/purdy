@@ -83,6 +83,10 @@ echo "split_long"
 ./capture_exercise.py split_long
 mv flipbook.json exercise_data/split_long.json
 
+echo "subset"
+./capture_exercise.py subset
+mv flipbook.json exercise_data/subset.json
+
 echo "swipe"
 ./capture_exercise.py swipe
 mv flipbook.json exercise_data/swipe.json

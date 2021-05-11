@@ -209,6 +209,25 @@ class Code:
 
         return self
 
+    def subset(self, start, end):
+        """Returns a new Code object containing just the subset of lines
+        identified in this call
+
+        :param start: line number of the listing to start the subset at.
+                      1-indexed
+        :param end: line number to finish the subset on, inclusive.  1-indexed.
+
+        :returns: Code object
+        """
+        code = deepcopy(self)
+        if end < start:
+            raise AttributeError('Value of end must be bigger than start')
+
+        lines = self.source.split('\n')
+        lines = lines[start - 1:end]
+        code.source = '\n'.join(lines)
+        return code
+
 # -----------------------------------------------------------------------------
 
 class RenderHook:

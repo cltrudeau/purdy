@@ -1,3 +1,10 @@
+1.8.0
+=====
+
+* add Code.subset() method that returns a new Code object including only a 
+subset of the original's source
+* upgrade minimum dependency on Pygments due to security advisory
+
 1.7.0
 =====
 

@@ -1,11 +1,11 @@
 [
   "=== Actions ===",
   "actions.Append(\"# Sample Code\n\ncl...\")",
-  "actions.Append(\">>> numbers = [6,...\")",
+  "actions.Append(\">>> # Python REPL...\")",
   "actions.Append(\"# Sample Code\n\ncl...\")",
   "=== Steps ===",
   "steps.InsertRow(\"[CodeLine(\"# Sample Code\")...]\" @ 0)",
-  "steps.InsertRow(\"[CodeLine(\">>> numbers = [6, 3, 9, 1]\")...]\" @ 0)",
+  "steps.InsertRow(\"[CodeLine(\">>> # Python REPL\")...]\" @ 0)",
   "steps.InsertRow(\"[CodeLine(\"# Sample Code\")...]\" @ 0)",
   "=== Forward ===",
   {
@@ -206,36 +206,41 @@
   {
     "code_box": "CodeBox(id=2)",
     "change_type": "insert:1",
-    "content": ">>> numbers = [6, 3, 9, 1]"
+    "content": ">>> # Python REPL"
   },
   {
     "code_box": "CodeBox(id=2)",
     "change_type": "insert:2",
-    "content": ">>> sorted(numbers)"
+    "content": ">>> numbers = [6, 3, 9, 1]"
   },
   {
     "code_box": "CodeBox(id=2)",
     "change_type": "insert:3",
-    "content": "[1, 3, 6, 9]"
+    "content": ">>> sorted(numbers)"
   },
   {
     "code_box": "CodeBox(id=2)",
     "change_type": "insert:4",
-    "content": ">>> def foo(a, b):"
+    "content": "[1, 3, 6, 9]"
   },
   {
     "code_box": "CodeBox(id=2)",
     "change_type": "insert:5",
-    "content": "...     pass"
+    "content": ">>> def foo(a, b):"
   },
   {
     "code_box": "CodeBox(id=2)",
     "change_type": "insert:6",
-    "content": "... "
+    "content": "...     pass"
   },
   {
     "code_box": "CodeBox(id=2)",
     "change_type": "insert:7",
+    "content": "... "
+  },
+  {
+    "code_box": "CodeBox(id=2)",
+    "change_type": "insert:8",
     "content": ">>> "
   },
   {
@@ -665,6 +670,11 @@
     "content": ""
   },
   {
+    "code_box": "CodeBox(id=2)",
+    "change_type": "remove:1",
+    "content": ""
+  },
+  {
     "code_box": "CodeBox(id=1)",
     "change_type": "remove:1",
     "content": ""
@@ -1058,36 +1068,41 @@
   {
     "code_box": "CodeBox(id=2)",
     "change_type": "insert:1",
-    "content": ">>> numbers = [6, 3, 9, 1]"
+    "content": ">>> # Python REPL"
   },
   {
     "code_box": "CodeBox(id=2)",
     "change_type": "insert:2",
-    "content": ">>> sorted(numbers)"
+    "content": ">>> numbers = [6, 3, 9, 1]"
   },
   {
     "code_box": "CodeBox(id=2)",
     "change_type": "insert:3",
-    "content": "[1, 3, 6, 9]"
+    "content": ">>> sorted(numbers)"
   },
   {
     "code_box": "CodeBox(id=2)",
     "change_type": "insert:4",
-    "content": ">>> def foo(a, b):"
+    "content": "[1, 3, 6, 9]"
   },
   {
     "code_box": "CodeBox(id=2)",
     "change_type": "insert:5",
-    "content": "...     pass"
+    "content": ">>> def foo(a, b):"
   },
   {
     "code_box": "CodeBox(id=2)",
     "change_type": "insert:6",
-    "content": "... "
+    "content": "...     pass"
   },
   {
     "code_box": "CodeBox(id=2)",
     "change_type": "insert:7",
+    "content": "... "
+  },
+  {
+    "code_box": "CodeBox(id=2)",
+    "change_type": "insert:8",
     "content": ">>> "
   },
   {

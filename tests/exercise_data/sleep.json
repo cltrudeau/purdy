@@ -1,191 +1,221 @@
 [
   "=== Actions ===",
-  "actions.Append(\">>> numbers = [6,...\")",
+  "actions.Append(\">>> # Python REPL...\")",
   "actions.Sleep",
-  "actions.Append(\">>> numbers = [6,...\")",
+  "actions.Append(\">>> # Python REPL...\")",
   "actions.Sleep",
-  "actions.Append(\">>> numbers = [6,...\")",
+  "actions.Append(\">>> # Python REPL...\")",
   "=== Steps ===",
-  "steps.InsertRow(\"[CodeLine(\">>> numbers = [6, 3, 9, 1]\")...]\" @ 0)",
+  "steps.InsertRow(\"[CodeLine(\">>> # Python REPL\")...]\" @ 0)",
   "steps.Sleep()",
-  "steps.InsertRow(\"[CodeLine(\">>> numbers = [6, 3, 9, 1]\")...]\" @ 0)",
+  "steps.InsertRow(\"[CodeLine(\">>> # Python REPL\")...]\" @ 0)",
   "steps.Sleep()",
-  "steps.InsertRow(\"[CodeLine(\">>> numbers = [6, 3, 9, 1]\")...]\" @ 0)",
+  "steps.InsertRow(\"[CodeLine(\">>> # Python REPL\")...]\" @ 0)",
   "=== Forward ===",
   {
     "code_box": "CodeBox(id=1)",
     "change_type": "insert:1",
-    "content": " 10 >>> numbers = [6, 3, 9, 1]"
+    "content": " 10 >>> # Python REPL"
   },
   {
     "code_box": "CodeBox(id=1)",
     "change_type": "insert:2",
-    "content": " 11 >>> sorted(numbers)"
+    "content": " 11 >>> numbers = [6, 3, 9, 1]"
   },
   {
     "code_box": "CodeBox(id=1)",
     "change_type": "insert:3",
-    "content": " 12 [1, 3, 6, 9]"
+    "content": " 12 >>> sorted(numbers)"
   },
   {
     "code_box": "CodeBox(id=1)",
     "change_type": "insert:4",
-    "content": " 13 >>> def foo(a, b):"
+    "content": " 13 [1, 3, 6, 9]"
   },
   {
     "code_box": "CodeBox(id=1)",
     "change_type": "insert:5",
-    "content": " 14 ...     pass"
+    "content": " 14 >>> def foo(a, b):"
   },
   {
     "code_box": "CodeBox(id=1)",
     "change_type": "insert:6",
-    "content": " 15 ... "
+    "content": " 15 ...     pass"
   },
   {
     "code_box": "CodeBox(id=1)",
     "change_type": "insert:7",
-    "content": " 16 >>> "
+    "content": " 16 ... "
   },
   {
     "code_box": "CodeBox(id=1)",
     "change_type": "insert:8",
-    "content": " 17 >>> numbers = [6, 3, 9, 1]"
+    "content": " 17 >>> "
   },
   {
     "code_box": "CodeBox(id=1)",
     "change_type": "insert:9",
-    "content": " 18 >>> sorted(numbers)"
+    "content": " 18 >>> # Python REPL"
   },
   {
     "code_box": "CodeBox(id=1)",
     "change_type": "insert:10",
-    "content": " 19 [1, 3, 6, 9]"
+    "content": " 19 >>> numbers = [6, 3, 9, 1]"
   },
   {
     "code_box": "CodeBox(id=1)",
     "change_type": "insert:11",
-    "content": " 20 >>> def foo(a, b):"
+    "content": " 20 >>> sorted(numbers)"
   },
   {
     "code_box": "CodeBox(id=1)",
     "change_type": "insert:12",
-    "content": " 21 ...     pass"
+    "content": " 21 [1, 3, 6, 9]"
   },
   {
     "code_box": "CodeBox(id=1)",
     "change_type": "insert:13",
-    "content": " 22 ... "
+    "content": " 22 >>> def foo(a, b):"
   },
   {
     "code_box": "CodeBox(id=1)",
     "change_type": "insert:14",
-    "content": " 23 >>> "
+    "content": " 23 ...     pass"
   },
   {
     "code_box": "CodeBox(id=1)",
     "change_type": "insert:15",
-    "content": " 24 >>> numbers = [6, 3, 9, 1]"
+    "content": " 24 ... "
   },
   {
     "code_box": "CodeBox(id=1)",
     "change_type": "insert:16",
-    "content": " 25 >>> sorted(numbers)"
+    "content": " 25 >>> "
   },
   {
     "code_box": "CodeBox(id=1)",
     "change_type": "insert:17",
-    "content": " 26 [1, 3, 6, 9]"
+    "content": " 26 >>> # Python REPL"
   },
   {
     "code_box": "CodeBox(id=1)",
     "change_type": "insert:18",
-    "content": " 27 >>> def foo(a, b):"
+    "content": " 27 >>> numbers = [6, 3, 9, 1]"
   },
   {
     "code_box": "CodeBox(id=1)",
     "change_type": "insert:19",
-    "content": " 28 ...     pass"
+    "content": " 28 >>> sorted(numbers)"
   },
   {
     "code_box": "CodeBox(id=1)",
     "change_type": "insert:20",
-    "content": " 29 ... "
+    "content": " 29 [1, 3, 6, 9]"
   },
   {
     "code_box": "CodeBox(id=1)",
     "change_type": "insert:21",
-    "content": " 30 >>> "
+    "content": " 30 >>> def foo(a, b):"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "insert:22",
+    "content": " 31 ...     pass"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "insert:23",
+    "content": " 32 ... "
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "insert:24",
+    "content": " 33 >>> "
   },
   "=== Backward ===",
   {
     "code_box": "CodeBox(id=1)",
-    "change_type": "remove:15",
+    "change_type": "remove:17",
     "content": ""
   },
   {
     "code_box": "CodeBox(id=1)",
-    "change_type": "remove:15",
+    "change_type": "remove:17",
     "content": ""
   },
   {
     "code_box": "CodeBox(id=1)",
-    "change_type": "remove:15",
+    "change_type": "remove:17",
     "content": ""
   },
   {
     "code_box": "CodeBox(id=1)",
-    "change_type": "remove:15",
+    "change_type": "remove:17",
     "content": ""
   },
   {
     "code_box": "CodeBox(id=1)",
-    "change_type": "remove:15",
+    "change_type": "remove:17",
     "content": ""
   },
   {
     "code_box": "CodeBox(id=1)",
-    "change_type": "remove:15",
+    "change_type": "remove:17",
     "content": ""
   },
   {
     "code_box": "CodeBox(id=1)",
-    "change_type": "remove:15",
+    "change_type": "remove:17",
     "content": ""
   },
   {
     "code_box": "CodeBox(id=1)",
-    "change_type": "remove:8",
+    "change_type": "remove:17",
     "content": ""
   },
   {
     "code_box": "CodeBox(id=1)",
-    "change_type": "remove:8",
+    "change_type": "remove:9",
     "content": ""
   },
   {
     "code_box": "CodeBox(id=1)",
-    "change_type": "remove:8",
+    "change_type": "remove:9",
     "content": ""
   },
   {
     "code_box": "CodeBox(id=1)",
-    "change_type": "remove:8",
+    "change_type": "remove:9",
     "content": ""
   },
   {
     "code_box": "CodeBox(id=1)",
-    "change_type": "remove:8",
+    "change_type": "remove:9",
     "content": ""
   },
   {
     "code_box": "CodeBox(id=1)",
-    "change_type": "remove:8",
+    "change_type": "remove:9",
     "content": ""
   },
   {
     "code_box": "CodeBox(id=1)",
-    "change_type": "remove:8",
+    "change_type": "remove:9",
+    "content": ""
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "remove:9",
+    "content": ""
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "remove:9",
+    "content": ""
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "remove:1",
     "content": ""
   },
   {
@@ -227,106 +257,121 @@
   {
     "code_box": "CodeBox(id=1)",
     "change_type": "insert:1",
-    "content": " 10 >>> numbers = [6, 3, 9, 1]"
+    "content": " 10 >>> # Python REPL"
   },
   {
     "code_box": "CodeBox(id=1)",
     "change_type": "insert:2",
-    "content": " 11 >>> sorted(numbers)"
+    "content": " 11 >>> numbers = [6, 3, 9, 1]"
   },
   {
     "code_box": "CodeBox(id=1)",
     "change_type": "insert:3",
-    "content": " 12 [1, 3, 6, 9]"
+    "content": " 12 >>> sorted(numbers)"
   },
   {
     "code_box": "CodeBox(id=1)",
     "change_type": "insert:4",
-    "content": " 13 >>> def foo(a, b):"
+    "content": " 13 [1, 3, 6, 9]"
   },
   {
     "code_box": "CodeBox(id=1)",
     "change_type": "insert:5",
-    "content": " 14 ...     pass"
+    "content": " 14 >>> def foo(a, b):"
   },
   {
     "code_box": "CodeBox(id=1)",
     "change_type": "insert:6",
-    "content": " 15 ... "
+    "content": " 15 ...     pass"
   },
   {
     "code_box": "CodeBox(id=1)",
     "change_type": "insert:7",
-    "content": " 16 >>> "
+    "content": " 16 ... "
   },
   {
     "code_box": "CodeBox(id=1)",
     "change_type": "insert:8",
-    "content": " 17 >>> numbers = [6, 3, 9, 1]"
+    "content": " 17 >>> "
   },
   {
     "code_box": "CodeBox(id=1)",
     "change_type": "insert:9",
-    "content": " 18 >>> sorted(numbers)"
+    "content": " 18 >>> # Python REPL"
   },
   {
     "code_box": "CodeBox(id=1)",
     "change_type": "insert:10",
-    "content": " 19 [1, 3, 6, 9]"
+    "content": " 19 >>> numbers = [6, 3, 9, 1]"
   },
   {
     "code_box": "CodeBox(id=1)",
     "change_type": "insert:11",
-    "content": " 20 >>> def foo(a, b):"
+    "content": " 20 >>> sorted(numbers)"
   },
   {
     "code_box": "CodeBox(id=1)",
     "change_type": "insert:12",
-    "content": " 21 ...     pass"
+    "content": " 21 [1, 3, 6, 9]"
   },
   {
     "code_box": "CodeBox(id=1)",
     "change_type": "insert:13",
-    "content": " 22 ... "
+    "content": " 22 >>> def foo(a, b):"
   },
   {
     "code_box": "CodeBox(id=1)",
     "change_type": "insert:14",
-    "content": " 23 >>> "
+    "content": " 23 ...     pass"
   },
   {
     "code_box": "CodeBox(id=1)",
     "change_type": "insert:15",
-    "content": " 24 >>> numbers = [6, 3, 9, 1]"
+    "content": " 24 ... "
   },
   {
     "code_box": "CodeBox(id=1)",
     "change_type": "insert:16",
-    "content": " 25 >>> sorted(numbers)"
+    "content": " 25 >>> "
   },
   {
     "code_box": "CodeBox(id=1)",
     "change_type": "insert:17",
-    "content": " 26 [1, 3, 6, 9]"
+    "content": " 26 >>> # Python REPL"
   },
   {
     "code_box": "CodeBox(id=1)",
     "change_type": "insert:18",
-    "content": " 27 >>> def foo(a, b):"
+    "content": " 27 >>> numbers = [6, 3, 9, 1]"
   },
   {
     "code_box": "CodeBox(id=1)",
     "change_type": "insert:19",
-    "content": " 28 ...     pass"
+    "content": " 28 >>> sorted(numbers)"
   },
   {
     "code_box": "CodeBox(id=1)",
     "change_type": "insert:20",
-    "content": " 29 ... "
+    "content": " 29 [1, 3, 6, 9]"
   },
   {
     "code_box": "CodeBox(id=1)",
     "change_type": "insert:21",
-    "content": " 30 >>> "
+    "content": " 30 >>> def foo(a, b):"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "insert:22",
+    "content": " 31 ...     pass"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "insert:23",
+    "content": " 32 ... "
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "insert:24",
+    "content": " 33 >>> "
   }
 ]

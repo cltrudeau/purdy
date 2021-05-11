@@ -3,7 +3,7 @@ colored==1.4.2
 coverage==5.1
 pudb==2019.2
 pyflakes==2.2.0
-Pygments==2.6.1
+Pygments==2.9.0
 Sphinx==2.2.0
 sphinx-argparse==0.2.5
 sphinx-rtd-theme==0.4.3
