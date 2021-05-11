@@ -1,3 +1,9 @@
+1.9.0
+=====
+
+* Add custom lexer for Node.js interactive console sessions, included it in
+the PurdyLexers listing
+
 1.8.1
 =====
 

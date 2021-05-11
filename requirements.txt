@@ -4,9 +4,9 @@ coverage==5.1
 pudb==2019.2
 pyflakes==2.2.0
 Pygments==2.9.0
-Sphinx==2.2.0
+Sphinx==4.0.1
 sphinx-argparse==0.2.5
-sphinx-rtd-theme==0.4.3
+sphinx-rtd-theme==0.5.2
 tox==3.14.6
 twine==2.0.0
 urwid==2.0.1

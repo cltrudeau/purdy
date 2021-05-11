@@ -26,7 +26,7 @@ class Code:
 
     :param lexer_name: name of lexer to use to tokenize the code, defaults to 
                        'detect', attempting to auto detect the type of
-                       content. See :class:`purdy.parser.LexerContainer` for a
+                       content. See :class:`purdy.parser.PurdyLexer` for a
                        list of available lexers.
 
     :param purdy_lexer: if lexer_name is "custom" this parameter is expected

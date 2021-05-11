@@ -260,8 +260,7 @@ class Screen:
     |                       |
     +-----------------------+
 
-    Command Line Parameters
-    -----------------------
+    **Command Line Parameters**
 
     Unless "deactivate_args" is set to True in :mod:`purdy.settings` (False by
     default), Screen will also parse command line arguments. This allows

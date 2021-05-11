@@ -11,15 +11,28 @@ from collections import namedtuple
 from pygments.lexers import PythonConsoleLexer, PythonLexer, BashSessionLexer
 from pygments.token import String, Token
 
+from purdy.lexers import NodeConsoleLexer
+
 # =============================================================================
 # Pygments Token Management
 # =============================================================================
 
 class PurdyLexer:
+    """Container for the built-in supported lexers. This class is where the
+    names of the lexers are defined. Current choices are:
+
+    * 'con' -- Python 3 Console
+    * 'py3' -- Python 3 Source code
+    * 'bash' -- interactive Bash session
+    * 'node' -- interactive JavaScript / Node.js session
+    """
+
     _registry = {
         'con':('con', 'Python 3 Console', PythonConsoleLexer, True, 'code'), 
         'py3':('py3', 'Python 3 Source', PythonLexer, False, 'code'),
         'bash':('bash', 'Bash Console', BashSessionLexer, True, 'code'),
+        'node':('node', 'JavaScript Node.js Console', NodeConsoleLexer, True, 
+            'code'),
     }
 
     def __init__(self, name, description, pygments_lexer_cls, is_console,

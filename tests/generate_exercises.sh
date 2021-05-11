@@ -59,6 +59,10 @@ echo "movie_console"
 ./capture_exercise.py movie_console
 mv flipbook.json exercise_data/movie_console.json
 
+echo "node"
+./capture_exercise.py node
+mv flipbook.json exercise_data/node.json
+
 echo "remove"
 ./capture_exercise.py remove
 mv flipbook.json exercise_data/remove.json

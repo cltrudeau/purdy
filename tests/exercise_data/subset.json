@@ -1,0 +1,431 @@
+[
+  "=== Actions ===",
+  "actions.Append(\"class Thing:\n    ...\")",
+  "actions.Append(\"@decorated\ndef ot...\")",
+  "=== Steps ===",
+  "steps.InsertRow(\"[CodeLine(\"class Thing:\")...]\" @ 0)",
+  "steps.InsertRow(\"[CodeLine(\"@decorated\")...]\" @ 0)",
+  "=== Forward ===",
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "insert:1",
+    "content": "class Thing:"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "insert:2",
+    "content": "    bar = 1"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "insert:3",
+    "content": ""
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "insert:4",
+    "content": "    def __init__(self, *args, **kwargs):"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "insert:5",
+    "content": "        this.foo = 'blah'"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "insert:6",
+    "content": ""
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "insert:7",
+    "content": "    def stuff(self, index):"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "insert:8",
+    "content": "        \"\"\"This is a doc string on a class method"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "insert:9",
+    "content": ""
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "insert:10",
+    "content": "        :param index: a parameter whose name is index"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "insert:11",
+    "content": "        \"\"\""
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "insert:12",
+    "content": "        x = 0"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "insert:13",
+    "content": "        while(x != 0):"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "insert:14",
+    "content": "            # never get here"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "insert:15",
+    "content": "            for y in range(1, 10):"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "insert:16",
+    "content": "                print('Unreachable')"
+  },
+  {
+    "code_box": "CodeBox(id=2)",
+    "change_type": "insert:1",
+    "content": "@decorated"
+  },
+  {
+    "code_box": "CodeBox(id=2)",
+    "change_type": "insert:2",
+    "content": "def other_thing():"
+  },
+  {
+    "code_box": "CodeBox(id=2)",
+    "change_type": "insert:3",
+    "content": "    if True != False:"
+  },
+  {
+    "code_box": "CodeBox(id=2)",
+    "change_type": "insert:4",
+    "content": "        print('Uh duh')"
+  },
+  {
+    "code_box": "CodeBox(id=2)",
+    "change_type": "insert:5",
+    "content": "    elif True:"
+  },
+  {
+    "code_box": "CodeBox(id=2)",
+    "change_type": "insert:6",
+    "content": "        print('More unreachable code')"
+  },
+  {
+    "code_box": "CodeBox(id=2)",
+    "change_type": "insert:7",
+    "content": "    else:"
+  },
+  {
+    "code_box": "CodeBox(id=2)",
+    "change_type": "insert:8",
+    "content": "        print('Redundant unreachable code')"
+  },
+  {
+    "code_box": "CodeBox(id=2)",
+    "change_type": "insert:9",
+    "content": ""
+  },
+  {
+    "code_box": "CodeBox(id=2)",
+    "change_type": "insert:10",
+    "content": "    do_nothing()"
+  },
+  {
+    "code_box": "CodeBox(id=2)",
+    "change_type": "insert:11",
+    "content": ""
+  },
+  {
+    "code_box": "CodeBox(id=2)",
+    "change_type": "insert:12",
+    "content": "    raise AttributeError()"
+  },
+  "=== Backward ===",
+  {
+    "code_box": "CodeBox(id=2)",
+    "change_type": "remove:1",
+    "content": ""
+  },
+  {
+    "code_box": "CodeBox(id=2)",
+    "change_type": "remove:1",
+    "content": ""
+  },
+  {
+    "code_box": "CodeBox(id=2)",
+    "change_type": "remove:1",
+    "content": ""
+  },
+  {
+    "code_box": "CodeBox(id=2)",
+    "change_type": "remove:1",
+    "content": ""
+  },
+  {
+    "code_box": "CodeBox(id=2)",
+    "change_type": "remove:1",
+    "content": ""
+  },
+  {
+    "code_box": "CodeBox(id=2)",
+    "change_type": "remove:1",
+    "content": ""
+  },
+  {
+    "code_box": "CodeBox(id=2)",
+    "change_type": "remove:1",
+    "content": ""
+  },
+  {
+    "code_box": "CodeBox(id=2)",
+    "change_type": "remove:1",
+    "content": ""
+  },
+  {
+    "code_box": "CodeBox(id=2)",
+    "change_type": "remove:1",
+    "content": ""
+  },
+  {
+    "code_box": "CodeBox(id=2)",
+    "change_type": "remove:1",
+    "content": ""
+  },
+  {
+    "code_box": "CodeBox(id=2)",
+    "change_type": "remove:1",
+    "content": ""
+  },
+  {
+    "code_box": "CodeBox(id=2)",
+    "change_type": "remove:1",
+    "content": ""
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "remove:1",
+    "content": ""
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "remove:1",
+    "content": ""
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "remove:1",
+    "content": ""
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "remove:1",
+    "content": ""
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "remove:1",
+    "content": ""
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "remove:1",
+    "content": ""
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "remove:1",
+    "content": ""
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "remove:1",
+    "content": ""
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "remove:1",
+    "content": ""
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "remove:1",
+    "content": ""
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "remove:1",
+    "content": ""
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "remove:1",
+    "content": ""
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "remove:1",
+    "content": ""
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "remove:1",
+    "content": ""
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "remove:1",
+    "content": ""
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "remove:1",
+    "content": ""
+  },
+  "=== Forward ===",
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "insert:1",
+    "content": "class Thing:"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "insert:2",
+    "content": "    bar = 1"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "insert:3",
+    "content": ""
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "insert:4",
+    "content": "    def __init__(self, *args, **kwargs):"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "insert:5",
+    "content": "        this.foo = 'blah'"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "insert:6",
+    "content": ""
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "insert:7",
+    "content": "    def stuff(self, index):"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "insert:8",
+    "content": "        \"\"\"This is a doc string on a class method"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "insert:9",
+    "content": ""
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "insert:10",
+    "content": "        :param index: a parameter whose name is index"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "insert:11",
+    "content": "        \"\"\""
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "insert:12",
+    "content": "        x = 0"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "insert:13",
+    "content": "        while(x != 0):"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "insert:14",
+    "content": "            # never get here"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "insert:15",
+    "content": "            for y in range(1, 10):"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "insert:16",
+    "content": "                print('Unreachable')"
+  },
+  {
+    "code_box": "CodeBox(id=2)",
+    "change_type": "insert:1",
+    "content": "@decorated"
+  },
+  {
+    "code_box": "CodeBox(id=2)",
+    "change_type": "insert:2",
+    "content": "def other_thing():"
+  },
+  {
+    "code_box": "CodeBox(id=2)",
+    "change_type": "insert:3",
+    "content": "    if True != False:"
+  },
+  {
+    "code_box": "CodeBox(id=2)",
+    "change_type": "insert:4",
+    "content": "        print('Uh duh')"
+  },
+  {
+    "code_box": "CodeBox(id=2)",
+    "change_type": "insert:5",
+    "content": "    elif True:"
+  },
+  {
+    "code_box": "CodeBox(id=2)",
+    "change_type": "insert:6",
+    "content": "        print('More unreachable code')"
+  },
+  {
+    "code_box": "CodeBox(id=2)",
+    "change_type": "insert:7",
+    "content": "    else:"
+  },
+  {
+    "code_box": "CodeBox(id=2)",
+    "change_type": "insert:8",
+    "content": "        print('Redundant unreachable code')"
+  },
+  {
+    "code_box": "CodeBox(id=2)",
+    "change_type": "insert:9",
+    "content": ""
+  },
+  {
+    "code_box": "CodeBox(id=2)",
+    "change_type": "insert:10",
+    "content": "    do_nothing()"
+  },
+  {
+    "code_box": "CodeBox(id=2)",
+    "change_type": "insert:11",
+    "content": ""
+  },
+  {
+    "code_box": "CodeBox(id=2)",
+    "change_type": "insert:12",
+    "content": "    raise AttributeError()"
+  }
+]

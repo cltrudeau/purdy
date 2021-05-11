@@ -26,19 +26,21 @@ class TestParser(TestCase):
     def test_lexer_container(self):
         #--- Test the names property
         names = list(PurdyLexer.names())
-        self.assertEqual(3, len(names))
+        self.assertEqual(4, len(names))
         names = set(names)
 
-        expected = set(['py3', 'con', 'bash'])
+        expected = set(['py3', 'con', 'bash', 'node'])
         self.assertEqual(expected, names)
 
         #--- Test the choices property
         choices = PurdyLexer.choices().split(',')
-        self.assertEqual(3, len(choices))
+        self.assertEqual(4, len(choices))
 
         self.assertIn('"py3" (Python 3 Source)', PurdyLexer.choices())
         self.assertIn('"con" (Python 3 Console)', PurdyLexer.choices())
         self.assertIn('"bash" (Bash Console)', PurdyLexer.choices())
+        self.assertIn('"node" (JavaScript Node.js Console)', 
+            PurdyLexer.choices())
 
         #--- Test lexer detection
         lexer = PurdyLexer.factory_from_source(PYCON_SOURCE)
