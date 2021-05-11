@@ -1,3 +1,9 @@
+1.8.1
+=====
+
+* bug fix: TwinBoxes weren't initializing proplery causing crashes when used
+with AppendTypewriter
+
 1.8.0
 =====
 

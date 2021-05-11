@@ -1,17 +1,151 @@
 [
   "=== Actions ===",
-  "actions.Append(\"# Sample Code\n\ncl...\")",
+  "actions.AppendTypewriter(\">>> @decorated\n.....\")",
   "actions.Append(\">>> # This is a c...\")",
   "actions.Append(\">>> # This is a c...\")",
   "=== Steps ===",
-  "steps.InsertRow(\"[CodeLine(\"# Sample Code\")...]\" @ 0)",
+  "steps.InsertRow(\"[CodeLine(\"\")\" @ 0)",
+  "steps.ReplaceRows(\"[CodeLine(\">>> \")\" @ -1)",
+  "steps.ReplaceRows(\"[CodeLine(\">>> @\u2588\")\" @ -1)",
+  "steps.Sleep()",
+  "steps.ReplaceRows(\"[CodeLine(\">>> @d\u2588\")\" @ -1)",
+  "steps.Sleep()",
+  "steps.ReplaceRows(\"[CodeLine(\">>> @de\u2588\")\" @ -1)",
+  "steps.Sleep()",
+  "steps.ReplaceRows(\"[CodeLine(\">>> @dec\u2588\")\" @ -1)",
+  "steps.Sleep()",
+  "steps.ReplaceRows(\"[CodeLine(\">>> @deco\u2588\")\" @ -1)",
+  "steps.Sleep()",
+  "steps.ReplaceRows(\"[CodeLine(\">>> @decor\u2588\")\" @ -1)",
+  "steps.Sleep()",
+  "steps.ReplaceRows(\"[CodeLine(\">>> @decora\u2588\")\" @ -1)",
+  "steps.Sleep()",
+  "steps.ReplaceRows(\"[CodeLine(\">>> @decorat\u2588\")\" @ -1)",
+  "steps.Sleep()",
+  "steps.ReplaceRows(\"[CodeLine(\">>> @decorate\u2588\")\" @ -1)",
+  "steps.Sleep()",
+  "steps.ReplaceRows(\"[CodeLine(\">>> @decorated\")\" @ -1)",
+  "steps.Sleep()",
+  "steps.InsertRow(\"[CodeLine(\"\")\" @ 0)",
+  "steps.ReplaceRows(\"[CodeLine(\"... \")\" @ -1)",
+  "steps.ReplaceRows(\"[CodeLine(\"... d\u2588\")\" @ -1)",
+  "steps.Sleep()",
+  "steps.ReplaceRows(\"[CodeLine(\"... de\u2588\")\" @ -1)",
+  "steps.Sleep()",
+  "steps.ReplaceRows(\"[CodeLine(\"... def\u2588\")\" @ -1)",
+  "steps.Sleep()",
+  "steps.ReplaceRows(\"[CodeLine(\"... def \u2588\")\" @ -1)",
+  "steps.Sleep()",
+  "steps.ReplaceRows(\"[CodeLine(\"... def t\u2588\")\" @ -1)",
+  "steps.Sleep()",
+  "steps.ReplaceRows(\"[CodeLine(\"... def th\u2588\")\" @ -1)",
+  "steps.Sleep()",
+  "steps.ReplaceRows(\"[CodeLine(\"... def thi\u2588\")\" @ -1)",
+  "steps.Sleep()",
+  "steps.ReplaceRows(\"[CodeLine(\"... def thin\u2588\")\" @ -1)",
+  "steps.Sleep()",
+  "steps.ReplaceRows(\"[CodeLine(\"... def thing\u2588\")\" @ -1)",
+  "steps.Sleep()",
+  "steps.ReplaceRows(\"[CodeLine(\"... def thing(\u2588\")\" @ -1)",
+  "steps.Sleep()",
+  "steps.ReplaceRows(\"[CodeLine(\"... def thing(a\u2588\")\" @ -1)",
+  "steps.Sleep()",
+  "steps.ReplaceRows(\"[CodeLine(\"... def thing(a,\u2588\")\" @ -1)",
+  "steps.Sleep()",
+  "steps.ReplaceRows(\"[CodeLine(\"... def thing(a, \u2588\")\" @ -1)",
+  "steps.Sleep()",
+  "steps.ReplaceRows(\"[CodeLine(\"... def thing(a, b\u2588\")\" @ -1)",
+  "steps.Sleep()",
+  "steps.ReplaceRows(\"[CodeLine(\"... def thing(a, b,\u2588\")\" @ -1)",
+  "steps.Sleep()",
+  "steps.ReplaceRows(\"[CodeLine(\"... def thing(a, b, \u2588\")\" @ -1)",
+  "steps.Sleep()",
+  "steps.ReplaceRows(\"[CodeLine(\"... def thing(a, b, c\u2588\")\" @ -1)",
+  "steps.Sleep()",
+  "steps.ReplaceRows(\"[CodeLine(\"... def thing(a, b, c)\u2588\")\" @ -1)",
+  "steps.Sleep()",
+  "steps.ReplaceRows(\"[CodeLine(\"... def thing(a, b, c):\")\" @ -1)",
+  "steps.Sleep()",
+  "steps.InsertRow(\"[CodeLine(\"\")\" @ 0)",
+  "steps.ReplaceRows(\"[CodeLine(\"... \")\" @ -1)",
+  "steps.ReplaceRows(\"[CodeLine(\"...  \u2588\")\" @ -1)",
+  "steps.Sleep()",
+  "steps.ReplaceRows(\"[CodeLine(\"...   \u2588\")\" @ -1)",
+  "steps.Sleep()",
+  "steps.ReplaceRows(\"[CodeLine(\"...    \u2588\")\" @ -1)",
+  "steps.Sleep()",
+  "steps.ReplaceRows(\"[CodeLine(\"...     \u2588\")\" @ -1)",
+  "steps.Sleep()",
+  "steps.ReplaceRows(\"[CodeLine(\"...     p\u2588\")\" @ -1)",
+  "steps.Sleep()",
+  "steps.ReplaceRows(\"[CodeLine(\"...     pa\u2588\")\" @ -1)",
+  "steps.Sleep()",
+  "steps.ReplaceRows(\"[CodeLine(\"...     pas\u2588\")\" @ -1)",
+  "steps.Sleep()",
+  "steps.ReplaceRows(\"[CodeLine(\"...     pass\")\" @ -1)",
+  "steps.Sleep()",
   "steps.InsertRow(\"[CodeLine(\">>> # This is a comment\")...]\" @ 0)",
   "steps.InsertRow(\"[CodeLine(\">>> # This is a comment\")...]\" @ 0)",
   "=== Forward ===",
   {
     "code_box": "CodeBox(id=1)",
     "change_type": "insert:1",
-    "content": "  1 # Sample Code"
+    "content": "  1 "
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:1",
+    "content": "  1 >>> "
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:1",
+    "content": "  1 >>> @\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:1",
+    "content": "  1 >>> @d\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:1",
+    "content": "  1 >>> @de\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:1",
+    "content": "  1 >>> @dec\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:1",
+    "content": "  1 >>> @deco\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:1",
+    "content": "  1 >>> @decor\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:1",
+    "content": "  1 >>> @decora\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:1",
+    "content": "  1 >>> @decorat\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:1",
+    "content": "  1 >>> @decorate\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:1",
+    "content": "  1 >>> @decorated"
   },
   {
     "code_box": "CodeBox(id=1)",
@@ -20,188 +154,153 @@
   },
   {
     "code_box": "CodeBox(id=1)",
+    "change_type": "change:2",
+    "content": "  2 ... "
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:2",
+    "content": "  2 ... d\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:2",
+    "content": "  2 ... de\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:2",
+    "content": "  2 ... def\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:2",
+    "content": "  2 ... def \u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:2",
+    "content": "  2 ... def t\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:2",
+    "content": "  2 ... def th\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:2",
+    "content": "  2 ... def thi\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:2",
+    "content": "  2 ... def thin\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:2",
+    "content": "  2 ... def thing\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:2",
+    "content": "  2 ... def thing(\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:2",
+    "content": "  2 ... def thing(a\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:2",
+    "content": "  2 ... def thing(a,\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:2",
+    "content": "  2 ... def thing(a, \u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:2",
+    "content": "  2 ... def thing(a, b\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:2",
+    "content": "  2 ... def thing(a, b,\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:2",
+    "content": "  2 ... def thing(a, b, \u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:2",
+    "content": "  2 ... def thing(a, b, c\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:2",
+    "content": "  2 ... def thing(a, b, c)\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:2",
+    "content": "  2 ... def thing(a, b, c):"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
     "change_type": "insert:3",
-    "content": "  3 class Thing:"
+    "content": "  3 "
   },
   {
     "code_box": "CodeBox(id=1)",
-    "change_type": "insert:4",
-    "content": "  4     bar = 1"
+    "change_type": "change:3",
+    "content": "  3 ... "
   },
   {
     "code_box": "CodeBox(id=1)",
-    "change_type": "insert:5",
-    "content": "  5 "
+    "change_type": "change:3",
+    "content": "  3 ...  \u2588"
   },
   {
     "code_box": "CodeBox(id=1)",
-    "change_type": "insert:6",
-    "content": "  6     def __init__(self, *args, **kwargs):"
+    "change_type": "change:3",
+    "content": "  3 ...   \u2588"
   },
   {
     "code_box": "CodeBox(id=1)",
-    "change_type": "insert:7",
-    "content": "  7         this.foo = 'blah'"
+    "change_type": "change:3",
+    "content": "  3 ...    \u2588"
   },
   {
     "code_box": "CodeBox(id=1)",
-    "change_type": "insert:8",
-    "content": "  8 "
+    "change_type": "change:3",
+    "content": "  3 ...     \u2588"
   },
   {
     "code_box": "CodeBox(id=1)",
-    "change_type": "insert:9",
-    "content": "  9     def stuff(self, index):"
+    "change_type": "change:3",
+    "content": "  3 ...     p\u2588"
   },
   {
     "code_box": "CodeBox(id=1)",
-    "change_type": "insert:10",
-    "content": " 10         \"\"\"This is a doc string on a class method"
+    "change_type": "change:3",
+    "content": "  3 ...     pa\u2588"
   },
   {
     "code_box": "CodeBox(id=1)",
-    "change_type": "insert:11",
-    "content": " 11 "
+    "change_type": "change:3",
+    "content": "  3 ...     pas\u2588"
   },
   {
     "code_box": "CodeBox(id=1)",
-    "change_type": "insert:12",
-    "content": " 12         :param index: a parameter whose name is index"
-  },
-  {
-    "code_box": "CodeBox(id=1)",
-    "change_type": "insert:13",
-    "content": " 13         \"\"\""
-  },
-  {
-    "code_box": "CodeBox(id=1)",
-    "change_type": "insert:14",
-    "content": " 14         x = 0"
-  },
-  {
-    "code_box": "CodeBox(id=1)",
-    "change_type": "insert:15",
-    "content": " 15         while(x != 0):"
-  },
-  {
-    "code_box": "CodeBox(id=1)",
-    "change_type": "insert:16",
-    "content": " 16             # never get here"
-  },
-  {
-    "code_box": "CodeBox(id=1)",
-    "change_type": "insert:17",
-    "content": " 17             for y in range(1, 10):"
-  },
-  {
-    "code_box": "CodeBox(id=1)",
-    "change_type": "insert:18",
-    "content": " 18                 print('Unreachable')"
-  },
-  {
-    "code_box": "CodeBox(id=1)",
-    "change_type": "insert:19",
-    "content": " 19 "
-  },
-  {
-    "code_box": "CodeBox(id=1)",
-    "change_type": "insert:20",
-    "content": " 20 thing = Thing()"
-  },
-  {
-    "code_box": "CodeBox(id=1)",
-    "change_type": "insert:21",
-    "content": " 21 thing.stuff(42)"
-  },
-  {
-    "code_box": "CodeBox(id=1)",
-    "change_type": "insert:22",
-    "content": " 22 "
-  },
-  {
-    "code_box": "CodeBox(id=1)",
-    "change_type": "insert:23",
-    "content": " 23 "
-  },
-  {
-    "code_box": "CodeBox(id=1)",
-    "change_type": "insert:24",
-    "content": " 24 def do_nothing():"
-  },
-  {
-    "code_box": "CodeBox(id=1)",
-    "change_type": "insert:25",
-    "content": " 25     pass"
-  },
-  {
-    "code_box": "CodeBox(id=1)",
-    "change_type": "insert:26",
-    "content": " 26 "
-  },
-  {
-    "code_box": "CodeBox(id=1)",
-    "change_type": "insert:27",
-    "content": " 27 "
-  },
-  {
-    "code_box": "CodeBox(id=1)",
-    "change_type": "insert:28",
-    "content": " 28 @decorated"
-  },
-  {
-    "code_box": "CodeBox(id=1)",
-    "change_type": "insert:29",
-    "content": " 29 def other_thing():"
-  },
-  {
-    "code_box": "CodeBox(id=1)",
-    "change_type": "insert:30",
-    "content": " 30     if True != False:"
-  },
-  {
-    "code_box": "CodeBox(id=1)",
-    "change_type": "insert:31",
-    "content": " 31         print('Uh duh')"
-  },
-  {
-    "code_box": "CodeBox(id=1)",
-    "change_type": "insert:32",
-    "content": " 32     elif True:"
-  },
-  {
-    "code_box": "CodeBox(id=1)",
-    "change_type": "insert:33",
-    "content": " 33         print('More unreachable code')"
-  },
-  {
-    "code_box": "CodeBox(id=1)",
-    "change_type": "insert:34",
-    "content": " 34     else:"
-  },
-  {
-    "code_box": "CodeBox(id=1)",
-    "change_type": "insert:35",
-    "content": " 35         print('Redundant unreachable code')"
-  },
-  {
-    "code_box": "CodeBox(id=1)",
-    "change_type": "insert:36",
-    "content": " 36 "
-  },
-  {
-    "code_box": "CodeBox(id=1)",
-    "change_type": "insert:37",
-    "content": " 37     do_nothing()"
-  },
-  {
-    "code_box": "CodeBox(id=1)",
-    "change_type": "insert:38",
-    "content": " 38 "
-  },
-  {
-    "code_box": "CodeBox(id=1)",
-    "change_type": "insert:39",
-    "content": " 39     raise AttributeError()"
+    "change_type": "change:3",
+    "content": "  3 ...     pass"
   },
   {
     "code_box": "CodeBox(id=2)",
@@ -1086,193 +1185,213 @@
   },
   {
     "code_box": "CodeBox(id=1)",
-    "change_type": "remove:1",
+    "change_type": "change:3",
+    "content": "  3 ...     pas\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:3",
+    "content": "  3 ...     pa\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:3",
+    "content": "  3 ...     p\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:3",
+    "content": "  3 ...     \u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:3",
+    "content": "  3 ...    \u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:3",
+    "content": "  3 ...   \u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:3",
+    "content": "  3 ...  \u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:3",
+    "content": "  3 ... "
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:3",
+    "content": "  3 "
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "remove:3",
     "content": ""
   },
   {
     "code_box": "CodeBox(id=1)",
-    "change_type": "remove:1",
+    "change_type": "change:2",
+    "content": "  2 ... def thing(a, b, c)\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:2",
+    "content": "  2 ... def thing(a, b, c\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:2",
+    "content": "  2 ... def thing(a, b, \u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:2",
+    "content": "  2 ... def thing(a, b,\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:2",
+    "content": "  2 ... def thing(a, b\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:2",
+    "content": "  2 ... def thing(a, \u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:2",
+    "content": "  2 ... def thing(a,\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:2",
+    "content": "  2 ... def thing(a\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:2",
+    "content": "  2 ... def thing(\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:2",
+    "content": "  2 ... def thing\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:2",
+    "content": "  2 ... def thin\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:2",
+    "content": "  2 ... def thi\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:2",
+    "content": "  2 ... def th\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:2",
+    "content": "  2 ... def t\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:2",
+    "content": "  2 ... def \u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:2",
+    "content": "  2 ... def\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:2",
+    "content": "  2 ... de\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:2",
+    "content": "  2 ... d\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:2",
+    "content": "  2 ... "
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:2",
+    "content": "  2 "
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "remove:2",
     "content": ""
   },
   {
     "code_box": "CodeBox(id=1)",
-    "change_type": "remove:1",
-    "content": ""
+    "change_type": "change:1",
+    "content": "  1 >>> @decorate\u2588"
   },
   {
     "code_box": "CodeBox(id=1)",
-    "change_type": "remove:1",
-    "content": ""
+    "change_type": "change:1",
+    "content": "  1 >>> @decorat\u2588"
   },
   {
     "code_box": "CodeBox(id=1)",
-    "change_type": "remove:1",
-    "content": ""
+    "change_type": "change:1",
+    "content": "  1 >>> @decora\u2588"
   },
   {
     "code_box": "CodeBox(id=1)",
-    "change_type": "remove:1",
-    "content": ""
+    "change_type": "change:1",
+    "content": "  1 >>> @decor\u2588"
   },
   {
     "code_box": "CodeBox(id=1)",
-    "change_type": "remove:1",
-    "content": ""
+    "change_type": "change:1",
+    "content": "  1 >>> @deco\u2588"
   },
   {
     "code_box": "CodeBox(id=1)",
-    "change_type": "remove:1",
-    "content": ""
+    "change_type": "change:1",
+    "content": "  1 >>> @dec\u2588"
   },
   {
     "code_box": "CodeBox(id=1)",
-    "change_type": "remove:1",
-    "content": ""
+    "change_type": "change:1",
+    "content": "  1 >>> @de\u2588"
   },
   {
     "code_box": "CodeBox(id=1)",
-    "change_type": "remove:1",
-    "content": ""
+    "change_type": "change:1",
+    "content": "  1 >>> @d\u2588"
   },
   {
     "code_box": "CodeBox(id=1)",
-    "change_type": "remove:1",
-    "content": ""
+    "change_type": "change:1",
+    "content": "  1 >>> @\u2588"
   },
   {
     "code_box": "CodeBox(id=1)",
-    "change_type": "remove:1",
-    "content": ""
+    "change_type": "change:1",
+    "content": "  1 >>> "
   },
   {
     "code_box": "CodeBox(id=1)",
-    "change_type": "remove:1",
-    "content": ""
-  },
-  {
-    "code_box": "CodeBox(id=1)",
-    "change_type": "remove:1",
-    "content": ""
-  },
-  {
-    "code_box": "CodeBox(id=1)",
-    "change_type": "remove:1",
-    "content": ""
-  },
-  {
-    "code_box": "CodeBox(id=1)",
-    "change_type": "remove:1",
-    "content": ""
-  },
-  {
-    "code_box": "CodeBox(id=1)",
-    "change_type": "remove:1",
-    "content": ""
-  },
-  {
-    "code_box": "CodeBox(id=1)",
-    "change_type": "remove:1",
-    "content": ""
-  },
-  {
-    "code_box": "CodeBox(id=1)",
-    "change_type": "remove:1",
-    "content": ""
-  },
-  {
-    "code_box": "CodeBox(id=1)",
-    "change_type": "remove:1",
-    "content": ""
-  },
-  {
-    "code_box": "CodeBox(id=1)",
-    "change_type": "remove:1",
-    "content": ""
-  },
-  {
-    "code_box": "CodeBox(id=1)",
-    "change_type": "remove:1",
-    "content": ""
-  },
-  {
-    "code_box": "CodeBox(id=1)",
-    "change_type": "remove:1",
-    "content": ""
-  },
-  {
-    "code_box": "CodeBox(id=1)",
-    "change_type": "remove:1",
-    "content": ""
-  },
-  {
-    "code_box": "CodeBox(id=1)",
-    "change_type": "remove:1",
-    "content": ""
-  },
-  {
-    "code_box": "CodeBox(id=1)",
-    "change_type": "remove:1",
-    "content": ""
-  },
-  {
-    "code_box": "CodeBox(id=1)",
-    "change_type": "remove:1",
-    "content": ""
-  },
-  {
-    "code_box": "CodeBox(id=1)",
-    "change_type": "remove:1",
-    "content": ""
-  },
-  {
-    "code_box": "CodeBox(id=1)",
-    "change_type": "remove:1",
-    "content": ""
-  },
-  {
-    "code_box": "CodeBox(id=1)",
-    "change_type": "remove:1",
-    "content": ""
-  },
-  {
-    "code_box": "CodeBox(id=1)",
-    "change_type": "remove:1",
-    "content": ""
-  },
-  {
-    "code_box": "CodeBox(id=1)",
-    "change_type": "remove:1",
-    "content": ""
-  },
-  {
-    "code_box": "CodeBox(id=1)",
-    "change_type": "remove:1",
-    "content": ""
-  },
-  {
-    "code_box": "CodeBox(id=1)",
-    "change_type": "remove:1",
-    "content": ""
-  },
-  {
-    "code_box": "CodeBox(id=1)",
-    "change_type": "remove:1",
-    "content": ""
-  },
-  {
-    "code_box": "CodeBox(id=1)",
-    "change_type": "remove:1",
-    "content": ""
-  },
-  {
-    "code_box": "CodeBox(id=1)",
-    "change_type": "remove:1",
-    "content": ""
-  },
-  {
-    "code_box": "CodeBox(id=1)",
-    "change_type": "remove:1",
-    "content": ""
+    "change_type": "change:1",
+    "content": "  1 "
   },
   {
     "code_box": "CodeBox(id=1)",
@@ -1283,7 +1402,62 @@
   {
     "code_box": "CodeBox(id=1)",
     "change_type": "insert:1",
-    "content": "  1 # Sample Code"
+    "content": "  1 "
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:1",
+    "content": "  1 >>> "
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:1",
+    "content": "  1 >>> @\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:1",
+    "content": "  1 >>> @d\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:1",
+    "content": "  1 >>> @de\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:1",
+    "content": "  1 >>> @dec\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:1",
+    "content": "  1 >>> @deco\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:1",
+    "content": "  1 >>> @decor\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:1",
+    "content": "  1 >>> @decora\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:1",
+    "content": "  1 >>> @decorat\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:1",
+    "content": "  1 >>> @decorate\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:1",
+    "content": "  1 >>> @decorated"
   },
   {
     "code_box": "CodeBox(id=1)",
@@ -1292,188 +1466,153 @@
   },
   {
     "code_box": "CodeBox(id=1)",
+    "change_type": "change:2",
+    "content": "  2 ... "
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:2",
+    "content": "  2 ... d\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:2",
+    "content": "  2 ... de\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:2",
+    "content": "  2 ... def\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:2",
+    "content": "  2 ... def \u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:2",
+    "content": "  2 ... def t\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:2",
+    "content": "  2 ... def th\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:2",
+    "content": "  2 ... def thi\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:2",
+    "content": "  2 ... def thin\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:2",
+    "content": "  2 ... def thing\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:2",
+    "content": "  2 ... def thing(\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:2",
+    "content": "  2 ... def thing(a\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:2",
+    "content": "  2 ... def thing(a,\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:2",
+    "content": "  2 ... def thing(a, \u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:2",
+    "content": "  2 ... def thing(a, b\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:2",
+    "content": "  2 ... def thing(a, b,\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:2",
+    "content": "  2 ... def thing(a, b, \u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:2",
+    "content": "  2 ... def thing(a, b, c\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:2",
+    "content": "  2 ... def thing(a, b, c)\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:2",
+    "content": "  2 ... def thing(a, b, c):"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
     "change_type": "insert:3",
-    "content": "  3 class Thing:"
+    "content": "  3 "
   },
   {
     "code_box": "CodeBox(id=1)",
-    "change_type": "insert:4",
-    "content": "  4     bar = 1"
+    "change_type": "change:3",
+    "content": "  3 ... "
   },
   {
     "code_box": "CodeBox(id=1)",
-    "change_type": "insert:5",
-    "content": "  5 "
+    "change_type": "change:3",
+    "content": "  3 ...  \u2588"
   },
   {
     "code_box": "CodeBox(id=1)",
-    "change_type": "insert:6",
-    "content": "  6     def __init__(self, *args, **kwargs):"
+    "change_type": "change:3",
+    "content": "  3 ...   \u2588"
   },
   {
     "code_box": "CodeBox(id=1)",
-    "change_type": "insert:7",
-    "content": "  7         this.foo = 'blah'"
+    "change_type": "change:3",
+    "content": "  3 ...    \u2588"
   },
   {
     "code_box": "CodeBox(id=1)",
-    "change_type": "insert:8",
-    "content": "  8 "
+    "change_type": "change:3",
+    "content": "  3 ...     \u2588"
   },
   {
     "code_box": "CodeBox(id=1)",
-    "change_type": "insert:9",
-    "content": "  9     def stuff(self, index):"
+    "change_type": "change:3",
+    "content": "  3 ...     p\u2588"
   },
   {
     "code_box": "CodeBox(id=1)",
-    "change_type": "insert:10",
-    "content": " 10         \"\"\"This is a doc string on a class method"
+    "change_type": "change:3",
+    "content": "  3 ...     pa\u2588"
   },
   {
     "code_box": "CodeBox(id=1)",
-    "change_type": "insert:11",
-    "content": " 11 "
+    "change_type": "change:3",
+    "content": "  3 ...     pas\u2588"
   },
   {
     "code_box": "CodeBox(id=1)",
-    "change_type": "insert:12",
-    "content": " 12         :param index: a parameter whose name is index"
-  },
-  {
-    "code_box": "CodeBox(id=1)",
-    "change_type": "insert:13",
-    "content": " 13         \"\"\""
-  },
-  {
-    "code_box": "CodeBox(id=1)",
-    "change_type": "insert:14",
-    "content": " 14         x = 0"
-  },
-  {
-    "code_box": "CodeBox(id=1)",
-    "change_type": "insert:15",
-    "content": " 15         while(x != 0):"
-  },
-  {
-    "code_box": "CodeBox(id=1)",
-    "change_type": "insert:16",
-    "content": " 16             # never get here"
-  },
-  {
-    "code_box": "CodeBox(id=1)",
-    "change_type": "insert:17",
-    "content": " 17             for y in range(1, 10):"
-  },
-  {
-    "code_box": "CodeBox(id=1)",
-    "change_type": "insert:18",
-    "content": " 18                 print('Unreachable')"
-  },
-  {
-    "code_box": "CodeBox(id=1)",
-    "change_type": "insert:19",
-    "content": " 19 "
-  },
-  {
-    "code_box": "CodeBox(id=1)",
-    "change_type": "insert:20",
-    "content": " 20 thing = Thing()"
-  },
-  {
-    "code_box": "CodeBox(id=1)",
-    "change_type": "insert:21",
-    "content": " 21 thing.stuff(42)"
-  },
-  {
-    "code_box": "CodeBox(id=1)",
-    "change_type": "insert:22",
-    "content": " 22 "
-  },
-  {
-    "code_box": "CodeBox(id=1)",
-    "change_type": "insert:23",
-    "content": " 23 "
-  },
-  {
-    "code_box": "CodeBox(id=1)",
-    "change_type": "insert:24",
-    "content": " 24 def do_nothing():"
-  },
-  {
-    "code_box": "CodeBox(id=1)",
-    "change_type": "insert:25",
-    "content": " 25     pass"
-  },
-  {
-    "code_box": "CodeBox(id=1)",
-    "change_type": "insert:26",
-    "content": " 26 "
-  },
-  {
-    "code_box": "CodeBox(id=1)",
-    "change_type": "insert:27",
-    "content": " 27 "
-  },
-  {
-    "code_box": "CodeBox(id=1)",
-    "change_type": "insert:28",
-    "content": " 28 @decorated"
-  },
-  {
-    "code_box": "CodeBox(id=1)",
-    "change_type": "insert:29",
-    "content": " 29 def other_thing():"
-  },
-  {
-    "code_box": "CodeBox(id=1)",
-    "change_type": "insert:30",
-    "content": " 30     if True != False:"
-  },
-  {
-    "code_box": "CodeBox(id=1)",
-    "change_type": "insert:31",
-    "content": " 31         print('Uh duh')"
-  },
-  {
-    "code_box": "CodeBox(id=1)",
-    "change_type": "insert:32",
-    "content": " 32     elif True:"
-  },
-  {
-    "code_box": "CodeBox(id=1)",
-    "change_type": "insert:33",
-    "content": " 33         print('More unreachable code')"
-  },
-  {
-    "code_box": "CodeBox(id=1)",
-    "change_type": "insert:34",
-    "content": " 34     else:"
-  },
-  {
-    "code_box": "CodeBox(id=1)",
-    "change_type": "insert:35",
-    "content": " 35         print('Redundant unreachable code')"
-  },
-  {
-    "code_box": "CodeBox(id=1)",
-    "change_type": "insert:36",
-    "content": " 36 "
-  },
-  {
-    "code_box": "CodeBox(id=1)",
-    "change_type": "insert:37",
-    "content": " 37     do_nothing()"
-  },
-  {
-    "code_box": "CodeBox(id=1)",
-    "change_type": "insert:38",
-    "content": " 38 "
-  },
-  {
-    "code_box": "CodeBox(id=1)",
-    "change_type": "insert:39",
-    "content": " 39     raise AttributeError()"
+    "change_type": "change:3",
+    "content": "  3 ...     pass"
   },
   {
     "code_box": "CodeBox(id=2)",

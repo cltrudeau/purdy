@@ -191,12 +191,12 @@ class TwinCodeBox:
         self.left = Side()
         self.left.code_box = CodeBox(self.left_starting_line_number,
             self.left_auto_scroll)
-        self.screen.code_boxes.append(self.left.code_box)
+        self.left.code_box.setup(screen)
 
         self.right = Side()
         self.right.code_box = CodeBox(self.right_starting_line_number,
             self.right_auto_scroll)
-        self.screen.code_boxes.append(self.right.code_box)
+        self.right.code_box.setup(screen)
 
     def build(self, screen):
         self.screen.iscreen.add_twin_code_box(self)
