@@ -1,3 +1,9 @@
+1.9.1
+=====
+
+* Bug fixes for the RTF generator, not escaping braces 
+* Bug fixes for NodeConsoleParser, not >3 leading dots correctly
+
 1.9.0
 =====
 

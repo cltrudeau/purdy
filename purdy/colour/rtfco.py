@@ -28,9 +28,11 @@ def rtf_encode(text):
             # regular ascii
             letter = chr(num)
 
-            # RTF uses backslash, so it needs to be escaped
+            # Escape characters that are used by RTF 
             if letter == '\\':
                 output.append('\\\\')
+            elif letter in '{}':
+                output.append('\\' + letter)
             else:
                 output.append(letter)
         elif num <= 256:
@@ -92,8 +94,8 @@ _code_palette = {
     Name.Tag:           '\\cf0 %s\n',
     Punctuation:        '\\b \\cf5 %s\n\\b0\n', 
     String:             '\\cf9 %s\n', 
-    String.Doc:         '\\i \\cf2 %s\n \\i0', 
-    Number:             '\\b \cf10 %s\n \\b0', 
+    String.Doc:         '\\i \\cf2 %s\n\\i0', 
+    Number:             '\\b \cf10 %s\n\\b0', 
     Generic.Prompt:     '\\cf2 %s\n',
     Generic.Error:      '\\cf11 %s\n',
     Generic.Traceback:  '\\b \cf12 %s\n\\b0\n', 

@@ -53,11 +53,15 @@ class NodeConsoleLexer(Lexer):
                     [(0, Generic.Prompt, line[:2])]))
 
                 curcode += line[2:]
-            elif line.startswith('... '):
-                insertions.append((len(curcode), 
-                    [(0, Generic.Prompt, line[:4])]))
+            elif line.startswith('...'):
+                # node does a nested ... thing depending on depth
+                code = line.lstrip('.')
+                lead = len(line) - len(code)
 
-                curcode += line[4:]
+                insertions.append((len(curcode), 
+                    [(0, Generic.Prompt, line[:lead])]))
+
+                curcode += code
             else:
                 if curcode:
                     yield from do_insertions(insertions, 
@@ -68,3 +72,7 @@ class NodeConsoleLexer(Lexer):
 
                 yield from do_insertions([], 
                     jslexer.get_tokens_unprocessed(line))
+
+        if curcode:
+            yield from do_insertions(insertions, 
+                jslexer.get_tokens_unprocessed(curcode))

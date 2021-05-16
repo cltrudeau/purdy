@@ -24,11 +24,11 @@
 \
 \cf0     
 \i \cf2 """Multi-line
- \i0\
+\i0\
 \i \cf2     Doc string
- \i0\
+\i0\
 \i \cf2     """
- \i0\
+\i0\
 \cf0     
 \cf5 bar
 \cf0  
