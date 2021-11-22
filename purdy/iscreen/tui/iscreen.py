@@ -2,7 +2,7 @@
 TUI Screen (purdy.tui.iscreen.py)
 =================================
 
-This module is an Urwid code viewer concrete implementaion of a Screen. It is
+This module is an Urwid code viewer concrete implementation of a Screen. It is
 constructed by :class:`purdy.ui.Screen` depending on its factory.
 """
 import urwid

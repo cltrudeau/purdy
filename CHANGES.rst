@@ -1,3 +1,12 @@
+1.10.0
+======
+
+* Add DollarBashSessionLexer, with special handling for Bash session prompts
+to do better highlighting if your prompt uses a dollar sign
+* Upgrade dependency to Pygments==2.10.0 to use their NodeConsoleLexer
+now that it has been contributed
+* Add Python 3.10 to test suite
+
 1.9.1
 =====
 

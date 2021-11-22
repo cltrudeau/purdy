@@ -26,6 +26,7 @@ SETUP_ARGS = dict(
         'Programming Language :: Python :: 3.7',
         'Programming Language :: Python :: 3.8',
         'Programming Language :: Python :: 3.9',
+        'Programming Language :: Python :: 3.10',
         'Topic :: Software Development :: Libraries :: Application Frameworks',
         'Topic :: Software Development :: Libraries :: Python Modules',
     ],
@@ -34,7 +35,7 @@ SETUP_ARGS = dict(
     scripts=['bin/purdy', 'bin/subpurdy', 'bin/pat', 'bin/prat'],
     install_requires = [
         'asttokens>=2.0.4',
-        'Pygments>=2.9.0',
+        'Pygments>=2.10.0',
         'urwid>=2.0.1',
         'colored>=1.4.2',
     ],

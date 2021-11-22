@@ -23,6 +23,10 @@ echo "compact"
 ./capture_exercise.py compact
 mv flipbook.json exercise_data/compact.json
 
+echo "dbash"
+./capture_exercise.py dbash
+mv flipbook.json exercise_data/dbash.json
+
 echo "docstring"
 ./capture_exercise.py docstring
 mv flipbook.json exercise_data/docstring.json
@@ -58,10 +62,6 @@ mv flipbook.json exercise_data/mls_type.json
 echo "movie_console"
 ./capture_exercise.py movie_console
 mv flipbook.json exercise_data/movie_console.json
-
-echo "node"
-./capture_exercise.py node
-mv flipbook.json exercise_data/node.json
 
 echo "remove"
 ./capture_exercise.py remove

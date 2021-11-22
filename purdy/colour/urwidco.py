@@ -25,7 +25,7 @@ _code_palette = {
     Name.Decorator:     ('dark cyan',    '', '', '#fd6,bold',    ''),
     String:             ('dark magenta', '', '', '#ddd', ''),
     Number:             ('dark magenta', '', '', '#f86', ''),
-    Generic.Prompt:     ('dark blue',    '', '', '#aaa',    ''),
+    Generic.Prompt:     ('dark blue',    '', '', '#fff,bold',    ''),
     Generic.Error:      ('dark green',   '', '', '#fd6,bold',   ''),
     Generic.Traceback:  ('',             '', '', '#ddd',    ''),
     Error:              ('dark green',   '', '', '#fd6,bold',         ''),

@@ -8,10 +8,11 @@ This contains methods and classes to manage parsing of code
 from copy import deepcopy
 from collections import namedtuple
 
-from pygments.lexers import PythonConsoleLexer, PythonLexer, BashSessionLexer
+from pygments.lexers import (PythonConsoleLexer, PythonLexer, BashSessionLexer,
+    NodeConsoleLexer)
 from pygments.token import String, Token
 
-from purdy.lexers import NodeConsoleLexer
+from purdy.lexers import DollarBashSessionLexer
 
 # =============================================================================
 # Pygments Token Management
@@ -24,6 +25,7 @@ class PurdyLexer:
     * 'con' -- Python 3 Console
     * 'py3' -- Python 3 Source code
     * 'bash' -- interactive Bash session
+    * 'dbash' -- interactive Bash session using a dollar sign prompt
     * 'node' -- interactive JavaScript / Node.js session
     """
 
@@ -31,6 +33,8 @@ class PurdyLexer:
         'con':('con', 'Python 3 Console', PythonConsoleLexer, True, 'code'), 
         'py3':('py3', 'Python 3 Source', PythonLexer, False, 'code'),
         'bash':('bash', 'Bash Console', BashSessionLexer, True, 'code'),
+        'dbash':('dbash', 'Bash Console with a dollar-sign prompt', 
+            DollarBashSessionLexer, True, 'code'),
         'node':('node', 'JavaScript Node.js Console', NodeConsoleLexer, True, 
             'code'),
     }

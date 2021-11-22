@@ -1,0 +1,307 @@
+[
+  "=== Actions ===",
+  "actions.AppendTypewriter(\"# A comment field...\")",
+  "=== Steps ===",
+  "steps.InsertRow(\"[CodeLine(\"# A comment field\")\" @ 0)",
+  "steps.InsertRow(\"[CodeLine(\"\")\" @ 0)",
+  "steps.ReplaceRows(\"[CodeLine(\"$ \")\" @ -1)",
+  "steps.ReplaceRows(\"[CodeLine(\"$ l\u2588\")\" @ -1)",
+  "steps.Sleep()",
+  "steps.ReplaceRows(\"[CodeLine(\"$ ls\")\" @ -1)",
+  "steps.Sleep()",
+  "steps.InsertRow(\"[CodeLine(\"stuff/ things/\")\" @ 0)",
+  "steps.InsertRow(\"[CodeLine(\"\")\" @ 0)",
+  "steps.ReplaceRows(\"[CodeLine(\"(\u2588\")\" @ -1)",
+  "steps.Sleep()",
+  "steps.ReplaceRows(\"[CodeLine(\"(V\u2588\")\" @ -1)",
+  "steps.Sleep()",
+  "steps.ReplaceRows(\"[CodeLine(\"(VE\u2588\")\" @ -1)",
+  "steps.Sleep()",
+  "steps.ReplaceRows(\"[CodeLine(\"(VEN\u2588\")\" @ -1)",
+  "steps.Sleep()",
+  "steps.ReplaceRows(\"[CodeLine(\"(VENV\u2588\")\" @ -1)",
+  "steps.Sleep()",
+  "steps.ReplaceRows(\"[CodeLine(\"(VENV)\u2588\")\" @ -1)",
+  "steps.Sleep()",
+  "steps.ReplaceRows(\"[CodeLine(\"(VENV) \u2588\")\" @ -1)",
+  "steps.Sleep()",
+  "steps.ReplaceRows(\"[CodeLine(\"(VENV) $ \")\" @ -1)",
+  "steps.ReplaceRows(\"[CodeLine(\"(VENV) $ l\u2588\")\" @ -1)",
+  "steps.Sleep()",
+  "steps.ReplaceRows(\"[CodeLine(\"(VENV) $ ls\")\" @ -1)",
+  "steps.Sleep()",
+  "steps.InsertRow(\"[CodeLine(\"stuff/ things/\")\" @ 0)",
+  "=== Forward ===",
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "insert:1",
+    "content": "# A comment field"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "insert:2",
+    "content": ""
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:2",
+    "content": "$ "
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:2",
+    "content": "$ l\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:2",
+    "content": "$ ls"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "insert:3",
+    "content": "stuff/ things/"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "insert:4",
+    "content": ""
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:4",
+    "content": "(\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:4",
+    "content": "(V\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:4",
+    "content": "(VE\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:4",
+    "content": "(VEN\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:4",
+    "content": "(VENV\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:4",
+    "content": "(VENV)\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:4",
+    "content": "(VENV) \u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:4",
+    "content": "(VENV) $ "
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:4",
+    "content": "(VENV) $ l\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:4",
+    "content": "(VENV) $ ls"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "insert:5",
+    "content": "stuff/ things/"
+  },
+  "=== Backward ===",
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "remove:5",
+    "content": ""
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:4",
+    "content": "(VENV) $ l\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:4",
+    "content": "(VENV) $ "
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:4",
+    "content": "(VENV) \u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:4",
+    "content": "(VENV)\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:4",
+    "content": "(VENV\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:4",
+    "content": "(VEN\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:4",
+    "content": "(VE\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:4",
+    "content": "(V\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:4",
+    "content": "(\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:4",
+    "content": ""
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "remove:4",
+    "content": ""
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "remove:3",
+    "content": ""
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:2",
+    "content": "$ l\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:2",
+    "content": "$ "
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:2",
+    "content": ""
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "remove:2",
+    "content": ""
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "remove:1",
+    "content": ""
+  },
+  "=== Forward ===",
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "insert:1",
+    "content": "# A comment field"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "insert:2",
+    "content": ""
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:2",
+    "content": "$ "
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:2",
+    "content": "$ l\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:2",
+    "content": "$ ls"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "insert:3",
+    "content": "stuff/ things/"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "insert:4",
+    "content": ""
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:4",
+    "content": "(\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:4",
+    "content": "(V\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:4",
+    "content": "(VE\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:4",
+    "content": "(VEN\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:4",
+    "content": "(VENV\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:4",
+    "content": "(VENV)\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:4",
+    "content": "(VENV) \u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:4",
+    "content": "(VENV) $ "
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:4",
+    "content": "(VENV) $ l\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:4",
+    "content": "(VENV) $ ls"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "insert:5",
+    "content": "stuff/ things/"
+  }
+]
