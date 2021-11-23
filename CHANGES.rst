@@ -1,3 +1,10 @@
+1.10.1
+======
+
+* Simplified DollarBashSessionLexer by removing special handling of comment
+character which can be put after the prompt line if required. Makes code a lot
+closer to Pygments base and less likely to break
+
 1.10.0
 ======
 

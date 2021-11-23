@@ -1,4 +1,4 @@
-# A comment field
+$ # A comment field
 $ ls
 stuff/ things/
 (VENV) $ ls

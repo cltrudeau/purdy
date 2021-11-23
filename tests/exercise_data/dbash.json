@@ -1,8 +1,43 @@
 [
   "=== Actions ===",
-  "actions.AppendTypewriter(\"# A comment field...\")",
+  "actions.AppendTypewriter(\"$ # A comment fie...\")",
   "=== Steps ===",
-  "steps.InsertRow(\"[CodeLine(\"# A comment field\")\" @ 0)",
+  "steps.InsertRow(\"[CodeLine(\"\")\" @ 0)",
+  "steps.ReplaceRows(\"[CodeLine(\"$ \")\" @ -1)",
+  "steps.ReplaceRows(\"[CodeLine(\"$ #\u2588\")\" @ -1)",
+  "steps.Sleep()",
+  "steps.ReplaceRows(\"[CodeLine(\"$ # \u2588\")\" @ -1)",
+  "steps.Sleep()",
+  "steps.ReplaceRows(\"[CodeLine(\"$ # A\u2588\")\" @ -1)",
+  "steps.Sleep()",
+  "steps.ReplaceRows(\"[CodeLine(\"$ # A \u2588\")\" @ -1)",
+  "steps.Sleep()",
+  "steps.ReplaceRows(\"[CodeLine(\"$ # A c\u2588\")\" @ -1)",
+  "steps.Sleep()",
+  "steps.ReplaceRows(\"[CodeLine(\"$ # A co\u2588\")\" @ -1)",
+  "steps.Sleep()",
+  "steps.ReplaceRows(\"[CodeLine(\"$ # A com\u2588\")\" @ -1)",
+  "steps.Sleep()",
+  "steps.ReplaceRows(\"[CodeLine(\"$ # A comm\u2588\")\" @ -1)",
+  "steps.Sleep()",
+  "steps.ReplaceRows(\"[CodeLine(\"$ # A comme\u2588\")\" @ -1)",
+  "steps.Sleep()",
+  "steps.ReplaceRows(\"[CodeLine(\"$ # A commen\u2588\")\" @ -1)",
+  "steps.Sleep()",
+  "steps.ReplaceRows(\"[CodeLine(\"$ # A comment\u2588\")\" @ -1)",
+  "steps.Sleep()",
+  "steps.ReplaceRows(\"[CodeLine(\"$ # A comment \u2588\")\" @ -1)",
+  "steps.Sleep()",
+  "steps.ReplaceRows(\"[CodeLine(\"$ # A comment f\u2588\")\" @ -1)",
+  "steps.Sleep()",
+  "steps.ReplaceRows(\"[CodeLine(\"$ # A comment fi\u2588\")\" @ -1)",
+  "steps.Sleep()",
+  "steps.ReplaceRows(\"[CodeLine(\"$ # A comment fie\u2588\")\" @ -1)",
+  "steps.Sleep()",
+  "steps.ReplaceRows(\"[CodeLine(\"$ # A comment fiel\u2588\")\" @ -1)",
+  "steps.Sleep()",
+  "steps.ReplaceRows(\"[CodeLine(\"$ # A comment field\")\" @ -1)",
+  "steps.Sleep()",
   "steps.InsertRow(\"[CodeLine(\"\")\" @ 0)",
   "steps.ReplaceRows(\"[CodeLine(\"$ \")\" @ -1)",
   "steps.ReplaceRows(\"[CodeLine(\"$ l\u2588\")\" @ -1)",
@@ -35,7 +70,97 @@
   {
     "code_box": "CodeBox(id=1)",
     "change_type": "insert:1",
-    "content": "# A comment field"
+    "content": ""
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:1",
+    "content": "$ "
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:1",
+    "content": "$ #\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:1",
+    "content": "$ # \u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:1",
+    "content": "$ # A\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:1",
+    "content": "$ # A \u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:1",
+    "content": "$ # A c\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:1",
+    "content": "$ # A co\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:1",
+    "content": "$ # A com\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:1",
+    "content": "$ # A comm\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:1",
+    "content": "$ # A comme\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:1",
+    "content": "$ # A commen\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:1",
+    "content": "$ # A comment\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:1",
+    "content": "$ # A comment \u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:1",
+    "content": "$ # A comment f\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:1",
+    "content": "$ # A comment fi\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:1",
+    "content": "$ # A comment fie\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:1",
+    "content": "$ # A comment fiel\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:1",
+    "content": "$ # A comment field"
   },
   {
     "code_box": "CodeBox(id=1)",
@@ -210,6 +335,96 @@
   },
   {
     "code_box": "CodeBox(id=1)",
+    "change_type": "change:1",
+    "content": "$ # A comment fiel\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:1",
+    "content": "$ # A comment fie\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:1",
+    "content": "$ # A comment fi\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:1",
+    "content": "$ # A comment f\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:1",
+    "content": "$ # A comment \u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:1",
+    "content": "$ # A comment\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:1",
+    "content": "$ # A commen\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:1",
+    "content": "$ # A comme\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:1",
+    "content": "$ # A comm\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:1",
+    "content": "$ # A com\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:1",
+    "content": "$ # A co\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:1",
+    "content": "$ # A c\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:1",
+    "content": "$ # A \u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:1",
+    "content": "$ # A\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:1",
+    "content": "$ # \u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:1",
+    "content": "$ #\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:1",
+    "content": "$ "
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:1",
+    "content": ""
+  },
+  {
+    "code_box": "CodeBox(id=1)",
     "change_type": "remove:1",
     "content": ""
   },
@@ -217,7 +432,97 @@
   {
     "code_box": "CodeBox(id=1)",
     "change_type": "insert:1",
-    "content": "# A comment field"
+    "content": ""
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:1",
+    "content": "$ "
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:1",
+    "content": "$ #\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:1",
+    "content": "$ # \u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:1",
+    "content": "$ # A\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:1",
+    "content": "$ # A \u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:1",
+    "content": "$ # A c\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:1",
+    "content": "$ # A co\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:1",
+    "content": "$ # A com\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:1",
+    "content": "$ # A comm\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:1",
+    "content": "$ # A comme\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:1",
+    "content": "$ # A commen\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:1",
+    "content": "$ # A comment\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:1",
+    "content": "$ # A comment \u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:1",
+    "content": "$ # A comment f\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:1",
+    "content": "$ # A comment fi\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:1",
+    "content": "$ # A comment fie\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:1",
+    "content": "$ # A comment fiel\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:1",
+    "content": "$ # A comment field"
   },
   {
     "code_box": "CodeBox(id=1)",
