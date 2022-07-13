@@ -76,24 +76,23 @@ class ReadBox(Widget):
         h = self._viewport_x + self._h
         bg = background
         limit = self._w - self._offset
-        prev_wraps = False
 
-        logger.debug("*******")
-        for item in self._content[x:h]:
-            logger.debug("%s", item)
+        #logger.debug("******* Updating Viewport")
+        #for item in self._content[x:h]:
+        #    logger.debug("%s", item)
 
-        for index, (wraps, text) in enumerate(self._content[x:h]):
+        for index, (wrap_count, text) in enumerate(self._content[x:h]):
             position = self._viewport_x + index
-            if not wraps or (wraps and not prev_wraps):
-                # In wrap mode the cursor needs to highlight the set of
-                # wrapped lines; if this isn't a wrapping line reset the
-                # colour; if it is a wrapping line and the previous one
-                # wasn't, reset the colour 
-                bg = background
+            bg = background
+            virtual_cursor = position
+            if wrap_count > 0:
+                virtual_cursor = position - wrap_count + 1
 
-            if self._line_cursor and self._cursor_x == position:
-                logger.debug("CURSOR LINE %d %s %s", position, wraps,
-                    text)
+            logger.debug("LINE vx=%d p=%d wc=%d %s", x,
+                    position, wrap_count, text)
+            if self._line_cursor and self._cursor_x == virtual_cursor:
+                logger.debug("   CURSOR cx=%d vx=%d p=%d wc=%d %s", 
+                    self._cursor_x, x, position, wrap_count, text)
                 bg = Screen.COLOUR_WHITE
 
             # Clip the text to the width of the view port
@@ -104,11 +103,9 @@ class ReadBox(Widget):
             self._frame.canvas.paint(
                 paint_text,
                 self._x + self._offset,
-                self._y + index - self._viewport_x,
+                self._y + index,
                 colour, attr, bg,
                 colour_map=colour_map)
-
-            prev_wraps = wraps
 
     def reset(self):
         # Reset to original data and move to end of the text.
@@ -126,15 +123,30 @@ class ReadBox(Widget):
 
         :param delta: The number of lines to move (-ve is up, +ve is down).
         """
-        logger.debug("Change Line x=%d d=%d v=%d h=%d", self._cursor_x, delta,
+        logger.debug("Change Line cur=%d d=%d v=%d h=%d", self._cursor_x, delta,
             self._viewport_x, self._h)
         # Ensure new line is within limits
         self._cursor_x = min(max(0, self._cursor_x + delta),
             len(self._content) - 1)
 
-        # NOTE NOTE NOTE ??? do logic for moving with wrapped lines
+        # If the cursor is on a wrapped line, position it to treat the wrapped
+        # lines as a single unit
+        if self._line_wrap and self._content[self._cursor_x][0] >= 1:
+            logger.debug("  wrapped line!")
+            if delta < 0 :
+                # When moving up, cursor position is top of wrapped group
+                self._cursor_x -= self._content[self._cursor_x][0] - 1
+            else:
+                # When moving down, skip any wrapped lines
+                while self._content[self._cursor_x][0] > 1:
+                    logger.debug("   advancing cur=%d %s", self._cursor_x,
+                        self._content[self._cursor_x])
+                    self._cursor_x += 1
+                    if self._content[self._cursor_x][0] == 1:
+                        # Hit two sets of wrapped lines in a row: stop
+                        break
 
-        logger.debug("  min/max => x=%d d=%d v=%d", self._cursor_x, delta,
+        logger.debug("  min/max => cur=%d d=%d v=%d", self._cursor_x, delta,
             self._viewport_x)
 
         # Check if the view port has moved
@@ -327,6 +339,7 @@ class ReadBox(Widget):
 
             if self._line_wrap and length > limit:
                 # Wrapping, deconstruct the line into its parts
+                wrap_count = 1
                 while self.string_len(str(line)) >= limit:
                     sub_string = _enforce_width(line, limit, 
                         self._frame.canvas.unicode_aware)
@@ -334,14 +347,21 @@ class ReadBox(Widget):
                     length = self.string_len(str(sub_string))
                     sub_string += ' ' * (self._longest - length)
 
-                    self._content.append( (True, sub_string) )
+                    self._content.append( (wrap_count, sub_string) )
                     line = line[len(sub_string):]
 
-                self._content.append( (True, line) )
+                    wrap_count += 1
+
+                length = self.string_len(str(line))
+                line += ' ' * (self._longest - length)
+                self._content.append( (wrap_count, line) )
             else:
                 # Not wrapping lines, pad to longest, then store
                 length = self.string_len(str(line))
                 line += ' ' * (self._longest - length)
-                self._content.append( (False, line) )
+                self._content.append( (0, line) )
 
+        #logger.debug("**** Content built")
+        #for wc, text in self._content:
+        #    logger.debug(" %3d *%s*", wc, text)
         self._content_changed = False
