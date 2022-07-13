@@ -58,10 +58,6 @@ class DemoFrame(Frame):
         self.add_layout(layout)
         layout.add_widget(Label("Thing"), 1)
 
-# NOTE NOTE NOTE
-# NOTE: ??? clipping of ColouredText is breaking the colourization, which
-# messes things up when you scroll to the right
-
 #        layout.add_widget(TextBox(7,
 #                                  label="TextBox:",
 #                                  name="TA",

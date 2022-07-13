@@ -44,17 +44,18 @@ class ReadBox(Widget):
         super(ReadBox, self).__init__(name, **kwargs)
         self._label = label
 
-        self._viewport_x = 0
-        self._viewport_y = 0
+        self._viewport_row = 0
+        self._viewport_col = 0
 
-        self._cursor_x = 0
+        self._cursor_row = 0
 
         self._required_height = height
         self._line_wrap = line_wrap
         self._parser = parser
         self._readonly = True
         self._line_cursor = True
-        self._auto_scroll = True
+        self._cursor_colour = Screen.COLOUR_WHITE
+        self._auto_scroll = False
 
         self._content = []
         self._content_changed = True
@@ -72,8 +73,8 @@ class ReadBox(Widget):
             self._x + self._offset, self._y, self.width, self._h)
 
         # Loop through the content in the view port
-        x = self._viewport_x
-        h = self._viewport_x + self._h
+        x = self._viewport_row
+        h = self._viewport_row + self._h
         bg = background
         limit = self._w - self._offset
 
@@ -82,21 +83,20 @@ class ReadBox(Widget):
         #    logger.debug("%s", item)
 
         for index, (wrap_count, text) in enumerate(self._content[x:h]):
-            position = self._viewport_x + index
+            position = self._viewport_row + index
             bg = background
             virtual_cursor = position
             if wrap_count > 0:
                 virtual_cursor = position - wrap_count + 1
 
-            logger.debug("LINE vx=%d p=%d wc=%d %s", x,
-                    position, wrap_count, text)
-            if self._line_cursor and self._cursor_x == virtual_cursor:
-                logger.debug("   CURSOR cx=%d vx=%d p=%d wc=%d %s", 
-                    self._cursor_x, x, position, wrap_count, text)
-                bg = Screen.COLOUR_WHITE
+            if self._line_cursor and self._cursor_row == virtual_cursor \
+                    and self._has_focus:
+                #logger.debug("   CURSOR cx=%d vx=%d p=%d wc=%d %s", 
+                #    self._cursor_row, x, position, wrap_count, text)
+                bg = self._cursor_colour
 
             # Clip the text to the width of the view port
-            y = self._viewport_y
+            y = self._viewport_col
             paint_text = text[y:y+limit]
             colour_map = getattr(paint_text, "colour_map", None)
 
@@ -109,13 +109,46 @@ class ReadBox(Widget):
 
     def reset(self):
         # Reset to original data and move to end of the text.
-        self._start_line = 0
-        self._start_column = 0
-        if self._auto_scroll or self._line > len(self._value) - 1:
-            self._line = len(self._value) - 1
+        self._viewport_row = 0
+        self._viewport_col = 0
 
-        self._column = 0 if self._is_disabled else len(self._value[self._line])
-        self._reflowed_text_cache = None
+        self._cursor_row = 0
+
+        if self._auto_scroll and self._content:
+            # Scroll to the bottom
+            self._change_line( len(self._content) )
+
+    def _cursor_to_line(self, num):
+        """Moves the cursor to the given line. Moves the view port if
+        required.
+        """
+        logger.debug("**** to line num=%d cr=%d vr=%d", num, 
+            self._cursor_row, self._viewport_row)
+        if num < 0:
+            self._cursor_row = 0
+        elif num >= len(self._content):
+            self._cursor_row = len(self._content) - 1
+        else:
+            self._cursor_row = num
+
+        logger.debug("   adjusted cursor cr=%d", self._cursor_row)
+
+        # Adjust cursor for wrapped rows
+        if self._line_wrap and self._content[self._cursor_row][0] > 1:
+            # Cursor moved to a wrapped line, adjust to the first of the
+            # wrapped lines
+            self._cursor_row -= self._content[self._cursor_row][0] - 1
+
+            logger.debug("   wrap moved cr=%d", self._cursor_row)
+
+        # Cursor has been moved, adjust the view port if needed
+        if self._cursor_row < self._viewport_row:
+            self._viewport_row = self._cursor_row
+        elif self._cursor_row > self._viewport_row + self._h:
+            self._viewport_row = self._cursor_row - self._h
+
+        logger.debug("   => outcome num=%d cr=%d vr=%d", num, 
+            self._cursor_row, self._viewport_row)
 
     def _change_line(self, delta):
         """
@@ -123,43 +156,31 @@ class ReadBox(Widget):
 
         :param delta: The number of lines to move (-ve is up, +ve is down).
         """
-        logger.debug("Change Line cur=%d d=%d v=%d h=%d", self._cursor_x, delta,
-            self._viewport_x, self._h)
         # Ensure new line is within limits
-        self._cursor_x = min(max(0, self._cursor_x + delta),
+        self._cursor_row = min(max(0, self._cursor_row + delta),
             len(self._content) - 1)
 
         # If the cursor is on a wrapped line, position it to treat the wrapped
         # lines as a single unit
-        if self._line_wrap and self._content[self._cursor_x][0] >= 1:
-            logger.debug("  wrapped line!")
+        if self._line_wrap and self._content[self._cursor_row][0] >= 1:
             if delta < 0 :
                 # When moving up, cursor position is top of wrapped group
-                self._cursor_x -= self._content[self._cursor_x][0] - 1
+                self._cursor_row -= self._content[self._cursor_row][0] - 1
             else:
                 # When moving down, skip any wrapped lines
-                while self._content[self._cursor_x][0] > 1:
-                    logger.debug("   advancing cur=%d %s", self._cursor_x,
-                        self._content[self._cursor_x])
-                    self._cursor_x += 1
-                    if self._content[self._cursor_x][0] == 1:
+                while self._content[self._cursor_row][0] > 1:
+                    self._cursor_row += 1
+                    if self._content[self._cursor_row][0] == 1:
                         # Hit two sets of wrapped lines in a row: stop
                         break
 
-        logger.debug("  min/max => cur=%d d=%d v=%d", self._cursor_x, delta,
-            self._viewport_x)
-
         # Check if the view port has moved
-        if self._cursor_x < self._viewport_x:
-            self._viewport_x = self._cursor_x
+        if self._cursor_row < self._viewport_row:
+            self._viewport_row = self._cursor_row
             return
 
-        if self._cursor_x > self._viewport_x + self._h - 1:
-            logger.debug("   !!! trigger")
-            self._viewport_x = self._cursor_x - self._h + 1
-
-        logger.debug("  lower => x=%d d=%d v=%d", self._cursor_x, delta,
-            self._viewport_x)
+        if self._cursor_row > self._viewport_row + self._h - 1:
+            self._viewport_row = self._cursor_row - self._h + 1
 
     def _change_vscroll(self, delta):
         """
@@ -167,12 +188,12 @@ class ReadBox(Widget):
 
         :param delta: The number of lines to move (-ve is up, +ve is down).
         """
-        self._viewport_x += delta
+        self._viewport_row += delta
 
-        if self._viewport_x < 0:
-            self._viewport_x = 0
-        elif self._viewport_x + self._h > len(self._content):
-            self._viewport_x = len(self._content) - self._h
+        if self._viewport_row < 0:
+            self._viewport_row = 0
+        elif self._viewport_row + self._h > len(self._content):
+            self._viewport_row = len(self._content) - self._h
 
     def _change_hscroll(self, delta):
         """
@@ -180,82 +201,72 @@ class ReadBox(Widget):
 
         :param delta: The number of lines to move (-ve is left, +ve is right).
         """
-        logger.debug("b hscroll y=%d d=%d", self._viewport_y, delta)
+        logger.debug("b hscroll y=%d d=%d", self._viewport_col, delta)
 
-        self._viewport_y += delta
-        if self._viewport_y < 0:
-            self._viewport_y = 0
+        self._viewport_col += delta
+        if self._viewport_col < 0:
+            self._viewport_col = 0
             return
 
         farthest = self._longest - (self._w - self._offset)
         logger.debug("  => farthest=%d w=%d l=%d o=%d", farthest, self._w, 
             self._longest, self._offset)
-        if self._viewport_y > farthest:
-            self._viewport_y = farthest
+        if self._viewport_col > farthest:
+            self._viewport_col = farthest
+
+    def _keyboard_event(self, event):
+        if event.key_code == Screen.KEY_PAGE_UP:
+            self._change_line(-self._h)
+        elif event.key_code == Screen.KEY_PAGE_DOWN:
+            self._change_line(self._h)
+        elif event.key_code == Screen.KEY_UP:
+            if self._line_cursor:
+                self._change_line(-1)
+            else:
+                self._change_vscroll(-1)
+        elif event.key_code == Screen.KEY_DOWN:
+            if self._line_cursor:
+                self._change_line(1)
+            else:
+                self._change_vscroll(1)
+        elif event.key_code == Screen.KEY_LEFT and not self._line_wrap:
+            self._change_hscroll(-1)
+        elif event.key_code == Screen.KEY_RIGHT and not self._line_wrap:
+            self._change_hscroll(1)
+        elif event.key_code == Screen.KEY_HOME:
+            # Go to the top of the view port
+            self._change_line( -1 * len(self._content) )
+        elif event.key_code == Screen.KEY_END:
+            # Go to the bottom of the view port
+            self._change_line( len(self._content) )
+        else:
+            # Ignore any other key press.
+            return event
+
+        # Event was handled
+        return None
+
+    def _mouse_event(self, event):
+        # Mouse event - rebase coordinates to Frame context.
+        if event.buttons != 0:
+            if self.is_mouse_over(event, include_label=False):
+                clicked_line = event.y - self._y + self._viewport_row
+                self._cursor_to_line(clicked_line)
+                return None
+
+        # Ignore other mouse events.
+        return event
 
     def process_event(self, event):
-        def _join(a, b):
-            if self._parser:
-                return ColouredText(a, self._parser, colour=b[0].first_colour).join(b)
-            return a.join(b)
-
         if isinstance(event, KeyboardEvent):
-            old_value = copy(self._value)
-            if event.key_code == Screen.KEY_PAGE_UP:
-                self._change_line(-self._h)
-            elif event.key_code == Screen.KEY_PAGE_DOWN:
-                self._change_line(self._h)
-            elif event.key_code == Screen.KEY_UP:
-                if self._line_cursor:
-                    self._change_line(-1)
-                else:
-                    self._change_vscroll(-1)
-            elif event.key_code == Screen.KEY_DOWN:
-                if self._line_cursor:
-                    self._change_line(1)
-                else:
-                    self._change_vscroll(1)
-            elif event.key_code == Screen.KEY_LEFT and not self._line_wrap:
-                self._change_hscroll(-1)
-            elif event.key_code == Screen.KEY_RIGHT and not self._line_wrap:
-                self._change_hscroll(1)
-            elif event.key_code == Screen.KEY_HOME:
-                # Go to the start of this line
-                self._column = 0
-            elif event.key_code == Screen.KEY_END:
-                # Go to the end of this line
-                self._column = len(self._value[self._line])
-            else:
-                # Ignore any other key press.
-                return event
-
+            result = self._keyboard_event(event)
         elif isinstance(event, MouseEvent):
-            # Mouse event - rebase coordinates to Frame context.
-            if event.buttons != 0:
-                if self.is_mouse_over(event, include_label=False):
-                    # Find the line first.
-                    clicked_line = event.y - self._y + self._start_line
-                    if self._line_wrap:
-                        # Line-wrapped text needs to be mapped to visible lines
-                        display_text = self._reflowed_text
-                        clicked_line = min(clicked_line, len(display_text) - 1)
-                        text_line = display_text[clicked_line][1]
-                        text_col = display_text[clicked_line][2]
-                    else:
-                        # non-wrapped just needs a little end protection
-                        text_line = max(0, clicked_line)
-                        text_col = 0
-                    self._line = min(len(self._value) - 1, text_line)
-
-                    return None
-            # Ignore other mouse events.
-            return event
+            result = self._mouse_event(event)
         else:
             # Ignore other events
             return event
 
-        # If we got here, we processed the event - swallow it.
-        return None
+        return result
 
     def required_height(self, offset, width):
         return self._required_height
@@ -285,6 +296,17 @@ class ReadBox(Widget):
     @auto_scroll.setter
     def auto_scroll(self, new_value):
         self._auto_scroll = new_value
+
+    @property
+    def cursor_colour(self):
+        """The highlighting line cursor's colour. Defaults to white."""
+        return self._cursor_colour
+
+    @cursor_colour.setter
+    def cursor_colour(self, colour):
+        """The highlighting line cursor's colour. Defaults to white."""
+        self._cursor_colour = colour
+
 
     @property
     def value(self):
@@ -360,6 +382,10 @@ class ReadBox(Widget):
                 length = self.string_len(str(line))
                 line += ' ' * (self._longest - length)
                 self._content.append( (0, line) )
+
+        if self._auto_scroll and self._content:
+            # Scroll to the bottom
+            self._change_line( len(self._content) )
 
         #logger.debug("**** Content built")
         #for wc, text in self._content:
