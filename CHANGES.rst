@@ -1,3 +1,8 @@
+1.10.2
+======
+
+* Added 3.11 testing to tox, removed 3.6
+
 1.10.1
 ======
 
