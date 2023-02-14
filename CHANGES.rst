@@ -1,3 +1,10 @@
+1.11
+====
+
+* Added lexers for a variety of document formats: YAML, RST, Markdown
+* Added a lexer for no tokenization
+* Updated minimum Pygments version to 2.14
+
 1.10.2
 ======
 

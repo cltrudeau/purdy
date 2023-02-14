@@ -41,6 +41,7 @@ class TestScribe(PurdyContentTest):
     def test_tokens(self):
         code = Code(text=self.py_source, lexer_name='py3')
         listing = Listing(code)
+        self.maxDiff = None
 
         self.file_compare('print_tokens_ansi.out', print_tokens, listing, True)
         self.file_compare('print_tokens_bw.out', print_tokens, listing, False)

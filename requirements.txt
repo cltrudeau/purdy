@@ -1,13 +1,11 @@
-asttokens==2.0.5
-colored==1.4.2
-coverage==5.5
-pudb==2021.1
-pyflakes==2.3.1
-Pygments==2.10.0
-Sphinx==4.1.2
-sphinx-argparse==0.3.1
-sphinx-rtd-theme==0.5.2
-tox==3.24.3
-twine==3.4.2
-urwid==2.1.2
-waelstow==0.10.2
+# Requirements file for dev only
+coverage==7.1.0
+pudb==2022.1.3
+pyflakes==3.0.1
+Sphinx==6.1.3
+sphinx-argparse==0.4.0
+sphinx-rtd-theme==1.2.0
+tox==4.4.5
+twine==4.0.2
+waelstow==0.11.0
+-e git+ssh://git@github.com/cltrudeau/purdy.git@3933c82ab4ab1159a53fbc2e24b3882502955e4e#egg=purdy

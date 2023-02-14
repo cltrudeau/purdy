@@ -1,5 +1,5 @@
 from pygments.token import Keyword, Name, Comment, String, Error, \
-    Number, Operator, Generic, Token, Whitespace, Punctuation
+    Number, Operator, Generic, Token, Whitespace, Punctuation, Text, Literal
 
 from purdy.parser import FoldedCodeLine, token_ancestor
 
@@ -41,12 +41,26 @@ _xml_palette.update({
     Punctuation:    ('#006688',    '',),
 })
 
+_doc_palette = dict(_code_palette)
+_doc_palette.update({
+    Text:           ('light_gray', '',),
+    Name.Tag:       ('#006688',    '',),
+    Name.Attribute: ('#006688',    '',),
+    Punctuation:    ('#006688',    '',),
+    Generic.Heading:('yellow',     '',),
+    Generic.Subheading:('yellow',     '',),
+    Literal:        ('magenta',    '',),
+    Generic.Emph:   ('dark_blue',   '',),
+    Generic.Strong: ('dark_green',   'bold',),
+})
+
 import colored
 
 class ANSIColourizer:
     palettes = {
         'code':_code_palette,
         'xml':_xml_palette,
+        'doc':_doc_palette,
     }
 
     reset = colored.attr('reset')

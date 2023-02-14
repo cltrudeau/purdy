@@ -1,5 +1,5 @@
 from pygments.token import Keyword, Name, Comment, String, Error, \
-    Number, Operator, Generic, Token, Whitespace, Punctuation
+    Number, Operator, Generic, Token, Whitespace, Punctuation, Text, Literal
 
 from purdy.parser import FoldedCodeLine, token_ancestor
 
@@ -110,10 +110,20 @@ _xml_palette.update({
     Punctuation:    '\\cf6 %s\n', 
 })
 
+_doc_palette = dict(_xml_palette)
+_doc_palette.update({
+    Generic.Emph:   '\\cf11 %s\n',
+    Generic.Strong: '\\b \cf12 %s\n\\b0\n', 
+    Literal:        '\\cf0 %s\n',
+    Generic.Heading:'\\cf2 %s\n',
+    Generic.Subheading:'\\cf2 %s\n',
+})
+
 class RTFColourizer:
     palettes = {
         'code':_code_palette,
         'xml':_xml_palette,
+        'doc':_doc_palette,
     }
 
     rtf_header = RTFHeaders.preamble + RTFHeaders.color_table + \

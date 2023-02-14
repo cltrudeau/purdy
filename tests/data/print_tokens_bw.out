@@ -1,7 +1,7 @@
 # Sample Code
     Token.Comment.Single: # Sample Code
 \n
-    Token.Text: ''
+    Token.Text.Whitespace: ''
 def foo():
     Token.Keyword: def
     Token.Text:  
@@ -10,7 +10,7 @@ def foo():
     Token.Punctuation: )
     Token.Punctuation: :
     """Multi-line
-    Token.Text:     
+    Token.Text.Whitespace:     
     Token.Literal.String.Doc: """Multi-line
     Doc string
     Token.Literal.String.Doc:     Doc string

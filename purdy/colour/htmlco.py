@@ -1,5 +1,5 @@
 from pygments.token import Keyword, Name, Comment, String, Error, \
-    Number, Operator, Generic, Token, Whitespace, Punctuation
+    Number, Operator, Generic, Token, Whitespace, Punctuation, Text, Literal
 
 from purdy.parser import FoldedCodeLine, token_ancestor
 
@@ -42,10 +42,20 @@ _xml_palette.update({
     Punctuation:    'color: #3465a4;',
 })
 
+_doc_palette = dict(_xml_palette)
+_doc_palette.update({
+    Generic.Emph:   'color: #ef2929;',
+    Generic.Strong: 'color: #a40000; font-weight: bold;',
+    Literal:        'color: #3465a4;',
+    Generic.Heading:'color: #3465a4;',
+    Generic.Subheading:'color: #3465a4;',
+})
+
 class HTMLColourizer:
     palettes = {
         'code':_code_palette,
         'xml':_xml_palette,
+        'doc':_doc_palette,
     }
 
     highlight = 'background-color:#ddd; '

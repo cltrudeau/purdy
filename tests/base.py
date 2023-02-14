@@ -14,7 +14,7 @@ PY_CODE_LINES = [
         CodePart(Token.Comment.Single, '# Sample Code'),
     ], py3_lexer),
     CodeLine([
-        CodePart(Token.Text, ''),
+        CodePart(Token.Text.Whitespace, ''),
     ], py3_lexer),
     CodeLine([
         CodePart(Token.Keyword, 'def'),
@@ -25,7 +25,7 @@ PY_CODE_LINES = [
         CodePart(Token.Punctuation, ':'),
     ], py3_lexer),
     CodeLine([
-        CodePart(Token.Text, '    '),
+        CodePart(Token.Text.Whitespace, '    '),
         CodePart(Token.Literal.String.Doc, '"""Multi-line'),
     ], py3_lexer),
     CodeLine([
@@ -52,7 +52,7 @@ BASH_CODE_LINES = [
     CodeLine([
         CodePart(Token.Generic.Prompt, '$ '),
         CodePart(Token.Name.Builtin, 'echo'),
-        CodePart(Token.Text, ' '),
+        CodePart(Token.Text.Whitespace, ' '),
         CodePart(Token.Literal.String.Double, '"hello\\nthere"'),
     ], bash_lexer),
     CodeLine([

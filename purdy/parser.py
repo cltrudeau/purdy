@@ -10,6 +10,9 @@ from collections import namedtuple
 
 from pygments.lexers import (PythonConsoleLexer, PythonLexer, BashSessionLexer,
     NodeConsoleLexer)
+from pygments.lexers.data import YamlLexer    
+from pygments.lexers.markup import MarkdownLexer, RstLexer
+from pygments.lexers.special import TextLexer
 from pygments.token import String, Token
 
 from purdy.lexers import DollarBashSessionLexer
@@ -27,6 +30,10 @@ class PurdyLexer:
     * 'bash' -- interactive Bash session
     * 'dbash' -- interactive Bash session using a dollar sign prompt
     * 'node' -- interactive JavaScript / Node.js session
+    * 'yaml' -- YAML document
+    * 'rst' -- RST document
+    * 'md' -- Markdown document
+    * 'none' -- Use plain text, no lexing
     """
 
     _registry = {
@@ -37,6 +44,10 @@ class PurdyLexer:
             DollarBashSessionLexer, True, 'code'),
         'node':('node', 'JavaScript Node.js Console', NodeConsoleLexer, True, 
             'code'),
+        'yaml':('yaml', 'YAML Doc', YamlLexer, False, 'doc'),
+        'rst':('rst', 'RST Doc', RstLexer, False, 'doc'),
+        'md':('md', 'Markdown Doc', MarkdownLexer, False, 'doc'),
+        'none':('none', 'No Parsing', TextLexer, False, 'doc'),
     }
 
     def __init__(self, name, description, pygments_lexer_cls, is_console,

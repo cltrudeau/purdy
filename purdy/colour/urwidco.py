@@ -1,5 +1,5 @@
 from pygments.token import Keyword, Name, Comment, String, Error, \
-    Number, Operator, Generic, Token, Whitespace, Punctuation, Text
+    Number, Operator, Generic, Token, Whitespace, Punctuation, Text, Literal
 
 from purdy.parser import FoldedCodeLine, token_ancestor
 
@@ -39,10 +39,23 @@ _xml_palette.update({
     Punctuation:    ('dark cyan',    '', '', '#8af',         ''),
 })
 
+_doc_palette = dict(_code_palette)
+_doc_palette.update({
+    Name.Tag:       ('brown',        '', '', 'brown',        ''),
+    Name.Attribute: ('brown',        '', '', 'brown',        ''),
+    Literal:        ('dark cyan',    '', '', '#8af',         ''),
+    Generic.Heading:('brown',        '', '', 'brown',        ''),
+    Generic.Subheading:('brown',        '', '', 'brown',        ''),
+    Generic.Emph:   ('dark blue',    '', '', 'dark blue',        ''),
+    Generic.Strong: ('dark green',   '', '', 'dark green',        ''),
+    String:         ('dark magenta', '', '', 'dark magenta',        ''),
+})
+
 class UrwidColourizer:
     palettes = {
         'code':_code_palette,
         'xml':_xml_palette,
+        'doc':_doc_palette,
     }
 
     @classmethod
