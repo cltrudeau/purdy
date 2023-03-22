@@ -57,11 +57,15 @@ class Insert:
 
     :param code: a :class:`purdy.content.Code` object containing the source
                  code to insert.
+
+    :param pauses: optional list of :class:`purdy.actions.Pause` objects that
+                   specify where to insert pauses in the output
     """
-    def __init__(self, code_box, position, code):
+    def __init__(self, code_box, position, code, pauses=[]):
         self.code_box = code_box
         self.code = code
         self.position = position
+        self.pauses = pauses
 
     def __str__(self):
         content = condense(self.code.source)
@@ -69,7 +73,31 @@ class Insert:
 
     def steps(self):
         lines = parse_source(self.code.source, self.code.lexer)
-        steps = [steplib.InsertRows(self.code_box, self.position, lines), ]
+        if not self.pauses:
+            # No pauses to insert, insert it all
+            steps = [steplib.InsertRows(self.code_box, self.position, lines), ]
+        else:
+            start = 0
+            steps = []
+
+            for count, pause in enumerate(self.pauses):
+                # Insert everything up to the pause
+                subset = lines[start:pause.line_no]
+                offset = self.position + count
+                step = steplib.InsertRows(self.code_box, offset, subset)
+                steps.append(step)
+
+                # Do the pause by inserting a sleep step
+                steps.append(steplib.Sleep(pause.duration))
+
+                start += len(subset)
+
+            if start < len(lines):
+                # Insert the remainder
+                subset = lines[start:]
+                offset = self.position + count
+                step = steplib.InsertRows(self.code_box, offset, subset)
+                steps.append(step)
 
         return steps
 
@@ -83,9 +111,12 @@ class Append(Insert):
 
     :param code: a :class:`purdy.content.Code` object containing the source
                  code to insert.
+
+    :param pauses: optional list of :class:`purdy.actions.Pause` objects that
+                   specify where to insert pauses in the output
     """
-    def __init__(self, code_box, code):
-        super().__init__(code_box, 0, code)
+    def __init__(self, code_box, code, pauses=[]):
+        super().__init__(code_box, 0, code, pauses)
 
     def __str__(self):
         content = condense(self.code.source)
@@ -300,6 +331,7 @@ class TypewriterStep(TypewriterBase):
 
     def steps(self):
         steps = []
+        pauses = {p.line_no:p for p in self.pauses}
 
         lines = parse_source(self.code.source, self.code.lexer)
         for count, line in enumerate(lines):
@@ -310,6 +342,10 @@ class TypewriterStep(TypewriterBase):
                 # Append to position
                 spot = self.position + count
                 line_steps = self._line_to_steps(line, spot, spot)
+
+            if count in pauses:
+                # Processed line is supposed to have a Pause after it
+                steps.append(steplib.Sleep(pauses[count].duration))
 
             steps.extend(line_steps)
 
@@ -325,12 +361,16 @@ class AppendTypewriter(TypewriterStep):
 
     :param code: a :class:`purdy.content.Code` object containing the source
                  code to insert.
+
+    :param pauses: optional list of :class:`purdy.actions.Pause` objects that
+                   specify where to insert pauses in the output
     """
 
-    def __init__(self, code_box, code):
+    def __init__(self, code_box, code, pauses=[]):
         self.code_box = code_box
         self.code = code
         self.position = 0
+        self.pauses = pauses
 
     def __str__(self):
         content = condense(self.code.source)
@@ -348,8 +388,11 @@ class InsertTypewriter(TypewriterStep):
 
     :param code: a :class:`purdy.content.Code` object containing the source
                  code to insert.
+
+    :param pauses: optional list of :class:`purdy.actions.Pause` objects that
+                   specify where to insert pauses in the output
     """
-    def __init__(self, code_box, position, code):
+    def __init__(self, code_box, position, code, pauses=[]):
         if position < 0:
             raise AttributeError(
                 'Negative indicies are not supported for this action')
@@ -357,6 +400,7 @@ class InsertTypewriter(TypewriterStep):
         self.code_box = code_box
         self.code = code
         self.position = position
+        self.pauses = pauses
 
     def __str__(self):
         content = condense(self.code.source)
@@ -379,6 +423,7 @@ class SuffixTypewriter(TypewriterBase):
         self.code_box = code_box
         self.position = position
         self.source = source
+        self.pauses = []
 
     def __str__(self):
         return f'actions.SuffixTypewriter({self.position}, "{self.source}")'
@@ -392,6 +437,52 @@ class SuffixTypewriter(TypewriterBase):
 
             steps.extend([
                 steplib.SuffixRow(self.code_box, self.position, letter, cursor),
+                steplib.Sleep(self.delay_until_next_letter),
+            ])
+
+        return steps
+
+
+class AppendPrompt(TypewriterBase):
+    """This action is used to show a prompt and its response. It appends the
+    content of a :class:`purdy.content.Code` object to a
+    :class:`purdy.ui.CodeBox` as a prompt, waits for the 'right arrow' key,
+    then uses the typewriter animation to add the response to the same line.
+
+    :param code_box: the :class:`purdy.ui.CodeBox` instance to append code
+                     into
+
+    :param code: a :class:`purdy.content.Code` object containing the prompt
+                 code to insert.
+
+    :param response: text to place after the prompt
+    """
+    def __init__(self, code_box, code, response):
+        self.code_box = code_box
+        self.code = code
+        self.response = response
+        self.pauses = []
+
+    def __str__(self):
+        prompt = condense(self.code.source)
+        response = condense(self.response)
+
+        return f'actions.AppendPrompt({prompt}, {response}")'
+
+    def steps(self):
+        # Insert the prompt, then wait
+        lines = parse_source(self.code.source, self.code.lexer)
+        steps = [steplib.InsertRows(self.code_box, 0, lines), ]
+        steps.append(steplib.CellEnd())
+
+        # Insert the response
+        for count, letter in enumerate(self.response):
+            cursor = False
+            if count + 1 != len(self.response):
+                cursor = True
+
+            steps.extend([
+                steplib.SuffixRow(self.code_box, -1, letter, cursor),
                 steplib.Sleep(self.delay_until_next_letter),
             ])
 
@@ -614,3 +705,19 @@ class Section:
 
     def steps(self):
         return [steplib.SectionBreak(), ]
+
+
+class Pause:
+    """Used by some actions to indicate a delay between output lines.
+
+    :param line_no: line in block to insert pause after. Note that this does
+        not differentiate between code and output, just lines in a block
+    :param duartion: time in seconds to delay (ints and floats supported)
+    """
+
+    def __init__(self, line_no, duration):
+        self.line_no = line_no
+        self.duration = duration
+
+    def __str__(self):
+        return f'actions.Pause(line={self.line_no}, amt={self.duration})'

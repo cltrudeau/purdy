@@ -12,7 +12,7 @@ class TestBuilderCoverage(TestCase):
         ignore_functions = ['init', 'iter', 'createcode', 'addaction', 
             'switchtocodebox', 'new', 'subclasshook']
         ignore_actions = ['codepart', 'typewriterstep', 'typewriterbase',
-            'codeline', ]
+            'codeline', 'pause']
 
         # create a list of the named actions by introspecting the actions
         # module, removing anything in the ignore list

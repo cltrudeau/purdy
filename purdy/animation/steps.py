@@ -179,7 +179,7 @@ class SuffixRow(BaseEditStep):
         return inside
 
     def render_step(self):
-        line = deepcopy(self.code_box.listing.lines[self.position - 1])
+        line = deepcopy(self.code_box.listing.get_line(self.position))
         self.undo_line = line
 
         token = line.parts[-1][0]
@@ -314,7 +314,11 @@ class Sleep:
         self.time = time
 
     def __str__(self):
-        return 'steps.Sleep()'
+        # Uncomment for debugging; don't want the time value in the tests as
+        # some of them are random and it messes things up
+        #return f'steps.Sleep(t={self.time})'
+
+        return f'steps.Sleep()'
 
 
 class CellEnd:

@@ -317,6 +317,19 @@ class Listing:
         lines = parse_source(code.source, code.lexer)
         self.insert_lines(0, lines)
 
+    def get_line(self, position):
+        """Returns the line at the given position. Lines are 1-indexed, 0
+        means the last line, negative indexing supported
+
+        :param position: position of line to return
+        """
+        if position == 0:
+            position = len(self.lines)
+        else:
+            position = self.positive_position(position)
+
+        return self.lines[position - 1]
+
     def insert_lines(self, position, lines):
         """Inserts a line at the given position. Pushes content down, so
         a line inserted at position 1 becomes the new first item.

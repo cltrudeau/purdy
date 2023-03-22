@@ -1,0 +1,904 @@
+[
+  "=== Actions ===",
+  "actions.Append(\"# This will be ap...\")",
+  "actions.Wait()",
+  "actions.AppendTypewriter(\"$ pip install rea...\")",
+  "=== Steps ===",
+  "steps.InsertRow(\"[CodeLine(\"# This will be appended\")...]\" @ 0)",
+  "steps.Sleep()",
+  "steps.InsertRow(\"[CodeLine(\"...pation\")...]\" @ 0)",
+  "steps.InsertRow(\"[CodeLine(\"\")\" @ 0)",
+  "steps.ReplaceRows(\"[CodeLine(\"$ \")\" @ -1)",
+  "steps.ReplaceRows(\"[CodeLine(\"$ p\u2588\")\" @ -1)",
+  "steps.Sleep()",
+  "steps.ReplaceRows(\"[CodeLine(\"$ pi\u2588\")\" @ -1)",
+  "steps.Sleep()",
+  "steps.ReplaceRows(\"[CodeLine(\"$ pip\u2588\")\" @ -1)",
+  "steps.Sleep()",
+  "steps.ReplaceRows(\"[CodeLine(\"$ pip \u2588\")\" @ -1)",
+  "steps.Sleep()",
+  "steps.ReplaceRows(\"[CodeLine(\"$ pip i\u2588\")\" @ -1)",
+  "steps.Sleep()",
+  "steps.ReplaceRows(\"[CodeLine(\"$ pip in\u2588\")\" @ -1)",
+  "steps.Sleep()",
+  "steps.ReplaceRows(\"[CodeLine(\"$ pip ins\u2588\")\" @ -1)",
+  "steps.Sleep()",
+  "steps.ReplaceRows(\"[CodeLine(\"$ pip inst\u2588\")\" @ -1)",
+  "steps.Sleep()",
+  "steps.ReplaceRows(\"[CodeLine(\"$ pip insta\u2588\")\" @ -1)",
+  "steps.Sleep()",
+  "steps.ReplaceRows(\"[CodeLine(\"$ pip instal\u2588\")\" @ -1)",
+  "steps.Sleep()",
+  "steps.ReplaceRows(\"[CodeLine(\"$ pip install\u2588\")\" @ -1)",
+  "steps.Sleep()",
+  "steps.ReplaceRows(\"[CodeLine(\"$ pip install \u2588\")\" @ -1)",
+  "steps.Sleep()",
+  "steps.ReplaceRows(\"[CodeLine(\"$ pip install r\u2588\")\" @ -1)",
+  "steps.Sleep()",
+  "steps.ReplaceRows(\"[CodeLine(\"$ pip install re\u2588\")\" @ -1)",
+  "steps.Sleep()",
+  "steps.ReplaceRows(\"[CodeLine(\"$ pip install rea\u2588\")\" @ -1)",
+  "steps.Sleep()",
+  "steps.ReplaceRows(\"[CodeLine(\"$ pip install real\u2588\")\" @ -1)",
+  "steps.Sleep()",
+  "steps.ReplaceRows(\"[CodeLine(\"$ pip install realp\u2588\")\" @ -1)",
+  "steps.Sleep()",
+  "steps.ReplaceRows(\"[CodeLine(\"$ pip install realpy\u2588\")\" @ -1)",
+  "steps.Sleep()",
+  "steps.ReplaceRows(\"[CodeLine(\"$ pip install realpyt\u2588\")\" @ -1)",
+  "steps.Sleep()",
+  "steps.ReplaceRows(\"[CodeLine(\"$ pip install realpyth\u2588\")\" @ -1)",
+  "steps.Sleep()",
+  "steps.ReplaceRows(\"[CodeLine(\"$ pip install realpytho\u2588\")\" @ -1)",
+  "steps.Sleep()",
+  "steps.ReplaceRows(\"[CodeLine(\"$ pip install realpython\u2588\")\" @ -1)",
+  "steps.Sleep()",
+  "steps.ReplaceRows(\"[CodeLine(\"$ pip install realpython-\u2588\")\" @ -1)",
+  "steps.Sleep()",
+  "steps.ReplaceRows(\"[CodeLine(\"$ pip install realpython-r\u2588\")\" @ -1)",
+  "steps.Sleep()",
+  "steps.ReplaceRows(\"[CodeLine(\"$ pip install realpython-re\u2588\")\" @ -1)",
+  "steps.Sleep()",
+  "steps.ReplaceRows(\"[CodeLine(\"$ pip install realpython-rea\u2588\")\" @ -1)",
+  "steps.Sleep()",
+  "steps.ReplaceRows(\"[CodeLine(\"$ pip install realpython-read\u2588\")\" @ -1)",
+  "steps.Sleep()",
+  "steps.ReplaceRows(\"[CodeLine(\"$ pip install realpython-reade\u2588\")\" @ -1)",
+  "steps.Sleep()",
+  "steps.ReplaceRows(\"[CodeLine(\"$ pip install realpython-reader\")\" @ -1)",
+  "steps.Sleep()",
+  "steps.InsertRow(\"[CodeLine(\"Obtaining file:///Users/ctrudeau/code/realpython-reader-1.1.1\")\" @ 0)",
+  "steps.InsertRow(\"[CodeLine(\"  Installing build dependencies ... done\")\" @ 0)",
+  "steps.InsertRow(\"[CodeLine(\"  Checking if build backend supports build_editable ... done\")\" @ 0)",
+  "steps.InsertRow(\"[CodeLine(\"  Getting requirements to build editable ... done\")\" @ 0)",
+  "steps.InsertRow(\"[CodeLine(\"  Preparing editable metadata (pyproject.toml) ... done\")\" @ 0)",
+  "steps.Sleep()",
+  "steps.InsertRow(\"[CodeLine(\"Requirement already satisfied: feedparser\")\" @ 0)",
+  "steps.InsertRow(\"[CodeLine(\"Requirement already satisfied: html2text\")\" @ 0)",
+  "steps.InsertRow(\"[CodeLine(\"Requirement already satisfied: sgmllib3k\")\" @ 0)",
+  "steps.InsertRow(\"[CodeLine(\"Building wheels for collected packages: realpython-reader\")\" @ 0)",
+  "steps.InsertRow(\"[CodeLine(\"  Building editable for realpython-reader (pyproject.toml) ... done\")\" @ 0)",
+  "steps.InsertRow(\"[CodeLine(\"  Created wheel for realpython-reader: filename=realpython_reader-1.1.1-0.editable-py3-none-any.whl size=4663 sha256=4235df475f173c3561dea3d56d21fd4ef96f9c950b0807c53ca8aa69395fc9f5\")\" @ 0)",
+  "steps.InsertRow(\"[CodeLine(\"  Stored in directory: /private/var/folders/mz/5txqv6hs4232hkjbxcny3jt40000gn/T/pip-ephem-wheel-cache-xxyt67v3/wheels/96/1f/e4/96bcd125f56372f550bb71af8c24b1144687c854f32e988e4b\")\" @ 0)",
+  "steps.InsertRow(\"[CodeLine(\"Successfully built realpython-reader\")\" @ 0)",
+  "steps.Sleep()",
+  "steps.InsertRow(\"[CodeLine(\"Installing collected packages: realpython-reader\")\" @ 0)",
+  "steps.InsertRow(\"[CodeLine(\"  Attempting uninstall: realpython-reader\")\" @ 0)",
+  "steps.InsertRow(\"[CodeLine(\"    Found existing installation: realpython-reader 1.1.1\")\" @ 0)",
+  "steps.InsertRow(\"[CodeLine(\"    Uninstalling realpython-reader-1.1.1:\")\" @ 0)",
+  "steps.InsertRow(\"[CodeLine(\"      Successfully uninstalled realpython-reader-1.1.1\")\" @ 0)",
+  "steps.InsertRow(\"[CodeLine(\"Successfully installed realpython-reader-1.1.1\")\" @ 0)",
+  "=== Forward ===",
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "insert:1",
+    "content": "# This will be appended"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "insert:2",
+    "content": "Antici...."
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "insert:3",
+    "content": "...pation"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "insert:4",
+    "content": "# Press a key"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "insert:5",
+    "content": ""
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:5",
+    "content": "$ "
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:5",
+    "content": "$ p\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:5",
+    "content": "$ pi\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:5",
+    "content": "$ pip\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:5",
+    "content": "$ pip \u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:5",
+    "content": "$ pip i\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:5",
+    "content": "$ pip in\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:5",
+    "content": "$ pip ins\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:5",
+    "content": "$ pip inst\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:5",
+    "content": "$ pip insta\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:5",
+    "content": "$ pip instal\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:5",
+    "content": "$ pip install\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:5",
+    "content": "$ pip install \u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:5",
+    "content": "$ pip install r\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:5",
+    "content": "$ pip install re\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:5",
+    "content": "$ pip install rea\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:5",
+    "content": "$ pip install real\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:5",
+    "content": "$ pip install realp\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:5",
+    "content": "$ pip install realpy\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:5",
+    "content": "$ pip install realpyt\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:5",
+    "content": "$ pip install realpyth\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:5",
+    "content": "$ pip install realpytho\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:5",
+    "content": "$ pip install realpython\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:5",
+    "content": "$ pip install realpython-\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:5",
+    "content": "$ pip install realpython-r\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:5",
+    "content": "$ pip install realpython-re\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:5",
+    "content": "$ pip install realpython-rea\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:5",
+    "content": "$ pip install realpython-read\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:5",
+    "content": "$ pip install realpython-reade\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:5",
+    "content": "$ pip install realpython-reader"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "insert:6",
+    "content": "Obtaining file:///Users/ctrudeau/code/realpython-reader-1.1.1"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "insert:7",
+    "content": "  Installing build dependencies ... done"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "insert:8",
+    "content": "  Checking if build backend supports build_editable ... done"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "insert:9",
+    "content": "  Getting requirements to build editable ... done"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "insert:10",
+    "content": "  Preparing editable metadata (pyproject.toml) ... done"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "insert:11",
+    "content": "Requirement already satisfied: feedparser"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "insert:12",
+    "content": "Requirement already satisfied: html2text"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "insert:13",
+    "content": "Requirement already satisfied: sgmllib3k"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "insert:14",
+    "content": "Building wheels for collected packages: realpython-reader"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "insert:15",
+    "content": "  Building editable for realpython-reader (pyproject.toml) ... done"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "insert:16",
+    "content": "  Created wheel for realpython-reader: filename=realpython_reader-1.1.1-0.editable-py3-none-any.whl size=4663 sha256=4235df475f173c3561dea3d56d21fd4ef96f9c950b0807c53ca8aa69395fc9f5"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "insert:17",
+    "content": "  Stored in directory: /private/var/folders/mz/5txqv6hs4232hkjbxcny3jt40000gn/T/pip-ephem-wheel-cache-xxyt67v3/wheels/96/1f/e4/96bcd125f56372f550bb71af8c24b1144687c854f32e988e4b"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "insert:18",
+    "content": "Successfully built realpython-reader"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "insert:19",
+    "content": "Installing collected packages: realpython-reader"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "insert:20",
+    "content": "  Attempting uninstall: realpython-reader"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "insert:21",
+    "content": "    Found existing installation: realpython-reader 1.1.1"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "insert:22",
+    "content": "    Uninstalling realpython-reader-1.1.1:"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "insert:23",
+    "content": "      Successfully uninstalled realpython-reader-1.1.1"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "insert:24",
+    "content": "Successfully installed realpython-reader-1.1.1"
+  },
+  "=== Backward ===",
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "remove:24",
+    "content": ""
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "remove:23",
+    "content": ""
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "remove:22",
+    "content": ""
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "remove:21",
+    "content": ""
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "remove:20",
+    "content": ""
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "remove:19",
+    "content": ""
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "remove:18",
+    "content": ""
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "remove:17",
+    "content": ""
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "remove:16",
+    "content": ""
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "remove:15",
+    "content": ""
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "remove:14",
+    "content": ""
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "remove:13",
+    "content": ""
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "remove:12",
+    "content": ""
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "remove:11",
+    "content": ""
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "remove:10",
+    "content": ""
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "remove:9",
+    "content": ""
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "remove:8",
+    "content": ""
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "remove:7",
+    "content": ""
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "remove:6",
+    "content": ""
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:5",
+    "content": "$ pip install realpython-reade\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:5",
+    "content": "$ pip install realpython-read\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:5",
+    "content": "$ pip install realpython-rea\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:5",
+    "content": "$ pip install realpython-re\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:5",
+    "content": "$ pip install realpython-r\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:5",
+    "content": "$ pip install realpython-\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:5",
+    "content": "$ pip install realpython\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:5",
+    "content": "$ pip install realpytho\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:5",
+    "content": "$ pip install realpyth\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:5",
+    "content": "$ pip install realpyt\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:5",
+    "content": "$ pip install realpy\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:5",
+    "content": "$ pip install realp\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:5",
+    "content": "$ pip install real\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:5",
+    "content": "$ pip install rea\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:5",
+    "content": "$ pip install re\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:5",
+    "content": "$ pip install r\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:5",
+    "content": "$ pip install \u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:5",
+    "content": "$ pip install\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:5",
+    "content": "$ pip instal\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:5",
+    "content": "$ pip insta\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:5",
+    "content": "$ pip inst\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:5",
+    "content": "$ pip ins\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:5",
+    "content": "$ pip in\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:5",
+    "content": "$ pip i\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:5",
+    "content": "$ pip \u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:5",
+    "content": "$ pip\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:5",
+    "content": "$ pi\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:5",
+    "content": "$ p\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:5",
+    "content": "$ "
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:5",
+    "content": ""
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "remove:5",
+    "content": ""
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "remove:3",
+    "content": ""
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "remove:3",
+    "content": ""
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "remove:1",
+    "content": ""
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "remove:1",
+    "content": ""
+  },
+  "=== Forward ===",
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "insert:1",
+    "content": "# This will be appended"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "insert:2",
+    "content": "Antici...."
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "insert:3",
+    "content": "...pation"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "insert:4",
+    "content": "# Press a key"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "insert:5",
+    "content": ""
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:5",
+    "content": "$ "
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:5",
+    "content": "$ p\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:5",
+    "content": "$ pi\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:5",
+    "content": "$ pip\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:5",
+    "content": "$ pip \u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:5",
+    "content": "$ pip i\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:5",
+    "content": "$ pip in\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:5",
+    "content": "$ pip ins\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:5",
+    "content": "$ pip inst\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:5",
+    "content": "$ pip insta\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:5",
+    "content": "$ pip instal\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:5",
+    "content": "$ pip install\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:5",
+    "content": "$ pip install \u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:5",
+    "content": "$ pip install r\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:5",
+    "content": "$ pip install re\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:5",
+    "content": "$ pip install rea\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:5",
+    "content": "$ pip install real\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:5",
+    "content": "$ pip install realp\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:5",
+    "content": "$ pip install realpy\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:5",
+    "content": "$ pip install realpyt\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:5",
+    "content": "$ pip install realpyth\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:5",
+    "content": "$ pip install realpytho\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:5",
+    "content": "$ pip install realpython\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:5",
+    "content": "$ pip install realpython-\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:5",
+    "content": "$ pip install realpython-r\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:5",
+    "content": "$ pip install realpython-re\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:5",
+    "content": "$ pip install realpython-rea\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:5",
+    "content": "$ pip install realpython-read\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:5",
+    "content": "$ pip install realpython-reade\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:5",
+    "content": "$ pip install realpython-reader"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "insert:6",
+    "content": "Obtaining file:///Users/ctrudeau/code/realpython-reader-1.1.1"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "insert:7",
+    "content": "  Installing build dependencies ... done"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "insert:8",
+    "content": "  Checking if build backend supports build_editable ... done"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "insert:9",
+    "content": "  Getting requirements to build editable ... done"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "insert:10",
+    "content": "  Preparing editable metadata (pyproject.toml) ... done"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "insert:11",
+    "content": "Requirement already satisfied: feedparser"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "insert:12",
+    "content": "Requirement already satisfied: html2text"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "insert:13",
+    "content": "Requirement already satisfied: sgmllib3k"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "insert:14",
+    "content": "Building wheels for collected packages: realpython-reader"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "insert:15",
+    "content": "  Building editable for realpython-reader (pyproject.toml) ... done"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "insert:16",
+    "content": "  Created wheel for realpython-reader: filename=realpython_reader-1.1.1-0.editable-py3-none-any.whl size=4663 sha256=4235df475f173c3561dea3d56d21fd4ef96f9c950b0807c53ca8aa69395fc9f5"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "insert:17",
+    "content": "  Stored in directory: /private/var/folders/mz/5txqv6hs4232hkjbxcny3jt40000gn/T/pip-ephem-wheel-cache-xxyt67v3/wheels/96/1f/e4/96bcd125f56372f550bb71af8c24b1144687c854f32e988e4b"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "insert:18",
+    "content": "Successfully built realpython-reader"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "insert:19",
+    "content": "Installing collected packages: realpython-reader"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "insert:20",
+    "content": "  Attempting uninstall: realpython-reader"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "insert:21",
+    "content": "    Found existing installation: realpython-reader 1.1.1"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "insert:22",
+    "content": "    Uninstalling realpython-reader-1.1.1:"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "insert:23",
+    "content": "      Successfully uninstalled realpython-reader-1.1.1"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "insert:24",
+    "content": "Successfully installed realpython-reader-1.1.1"
+  }
+]

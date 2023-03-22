@@ -1,3 +1,15 @@
+1.13
+====
+
+* Add new action that simulates a prompt and a response
+
+
+1.12
+====
+
+* Add ability to add pauses during console output for Insert, Append, and
+  their typewriter equivalents
+
 1.11
 ====
 

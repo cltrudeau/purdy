@@ -63,6 +63,14 @@ echo "movie_console"
 ./capture_exercise.py movie_console
 mv flipbook.json exercise_data/movie_console.json
 
+echo "pause"
+./capture_exercise.py pause
+mv flipbook.json exercise_data/pause.json
+
+echo "prompt"
+./capture_exercise.py prompt
+mv flipbook.json exercise_data/prompt.json
+
 echo "remove"
 ./capture_exercise.py remove
 mv flipbook.json exercise_data/remove.json

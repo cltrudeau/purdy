@@ -2,8 +2,8 @@ from typing import (Iterable, Iterator, Union, List, Callable, Optional, Any,
     Tuple)
 from purdy.actions import (AppendTypewriter, Append, Suffix, Wait, Clear,
     Insert, Replace, Remove, Shell, InsertTypewriter, SuffixTypewriter,
-    Highlight, HighlightChain, Fold, StopMovie, Transition, Sleep, RunFunction,
-    Section)
+    AppendPrompt, Highlight, HighlightChain, Fold, StopMovie, Transition,
+    Sleep, RunFunction, Section)
 from purdy.content import Code
 from purdy.ui import VirtualCodeBox, Screen
 
@@ -226,6 +226,19 @@ class ActionsBuilder(Iterable):
         """
         return self._add_action(SuffixTypewriter(self.__code_box, position, 
             source))
+
+    def append_prompt(self, code: Code, response: str ) -> "ActionsBuilder":
+        """This action is used to show a prompt and its response. It appends the
+        content of a :class:`purdy.content.Code` object to a
+        :class:`purdy.ui.CodeBox` as a prompt, waits for the 'right arrow' key,
+        then uses the typewriter animation to add the response to the same line.
+
+        :param code: a :class:`purdy.content.Code` object containing the prompt
+                     code to insert.
+
+        :param response: text to place after the prompt
+        """
+        return self._add_action(AppendPrompt(self.__code_box, code, response))
 
     def highlight(self, spec: Union[int, str, Iterable[int]], 
             highlight_on: bool) -> "ActionsBuilder":
