@@ -1,3 +1,11 @@
+1.13.1
+======
+
+* The "none" lexer added in 1.11 used Pygment's TextLexer which returns all
+  text as a single blob, rather than splitting it by lines. Added a new
+  internal lexer that lexes on newlines and switched the "none" parser to use
+  it
+
 1.13
 ====
 

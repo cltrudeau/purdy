@@ -4,23 +4,23 @@ from readbox import ReadBox
 from asciimatics.widgets import Frame, Layout, Label, Divider, Text, TextBox, \
     CheckBox, RadioButtons, Button, PopUpDialog, TimePicker, DatePicker, DropdownList, PopupMenu
 from asciimatics.effects import Background
-from asciimatics.event import MouseEvent
+from asciimatics.event import KeyboardEvent, MouseEvent
 from asciimatics.scene import Scene
 from asciimatics.screen import Screen
 from asciimatics.exceptions import ResizeScreenError, NextScene, StopApplication, InvalidFields
 from asciimatics.parsers import AsciimaticsParser
+
 import sys
 import re
 import datetime
 import logging
 
 # Test data
-tree = r"""
+tree = r"""${1}This is the first wrapping line, wrap wrap wrap, and then wrap some more.  These are the Daves I know I know, these are the Daves I know
        ${3,1}*
 ${2}      / \
 ${2}     /${1}o${2}  \
 ${2}    /_   _\ ${1}
-This is the first wrapping line, wrap wrap wrap, and then wrap some more.  These are the Daves I know I know, these are the Daves I know
 123456789 123456789 123456789 123456789 123456789abcdefgh
 ${2}     /   \${4}b
 ${2}    /     \
@@ -34,56 +34,80 @@ ${2} /___________\
       ${3}|||
 
 This is a very long line that goes on and on, it might wrap for you
-""".split("\n")
+
+1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25""".split("\n")
+
+extra = """\
+26
+27
+28
+29
+30""".split("\n")
 
 #tree = [c for c in "1234567890abcdefghijklmnop"]
 
 # Initial data for the form
 form_data = {
-    "TA": tree + tree,
+    "TA": tree + extra,
+    #"TA": tree,
 }
 
 logging.basicConfig(filename="debug.log", level=logging.DEBUG)
 
 
+def global_keyhandler(event):
+    if isinstance(event, KeyboardEvent):
+        if event.key_code == ord('q') or event.key_code == ord('Q'):
+            raise StopApplication("User terminated app")
+
+
 class DemoFrame(Frame):
     def __init__(self, screen):
-        super(DemoFrame, self).__init__(screen,
-                                        int(screen.height * 2 // 3),
-                                        int(screen.width * 2 // 3),
-                                        data=form_data,
-                                        has_shadow=True,
-                                        name="My Form")
-        layout = Layout([1, 18, 1])
-        self.add_layout(layout)
-        layout.add_widget(Label("Thing"), 1)
+        super(DemoFrame, self).__init__(screen, screen.height, screen.width,
+            data=form_data, has_border=False, can_scroll=False)
 
-#        layout.add_widget(TextBox(7,
-#                                  label="TextBox:",
-#                                  name="TA",
-#                                  parser=AsciimaticsParser(),
-#                                  line_wrap=True), 1)
-        box = ReadBox(15, label="ReadBox:", name="TA",
+        self.set_theme('monochrome')
+        layout = Layout([1,], fill_frame=True)
+        self.add_layout(layout)
+
+        box = ReadBox(ReadBox.FILL_FRAME, name="TA",
             parser=AsciimaticsParser(), line_wrap=True)
         box.line_cursor = False
-        layout.add_widget(box, 1)
-
-        layout.add_widget(Divider(height=3), 1)
-
-        layout2 = Layout([1, 1, 1])
-        self.add_layout(layout2)
-        layout2.add_widget(Button("Quit", self._quit), 2)
+        layout.add_widget(box, 0)
         self.fix()
-
-    def _quit(self):
-        raise StopApplication("User requested exit")
 
 
 def demo(screen, scene):
-    screen.play([Scene([
-        Background(screen),
-        DemoFrame(screen)
-    ], -1)], stop_on_resize=True, start_scene=scene, allow_int=True)
+    scenes = [
+        Scene([Background(screen), DemoFrame(screen) ], -1)
+    ]
+
+    screen.play(scenes, stop_on_resize=True, start_scene=scene,
+        unhandled_input=global_keyhandler, allow_int=True,)
 
 
 last_scene = None

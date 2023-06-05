@@ -63,6 +63,10 @@ echo "movie_console"
 ./capture_exercise.py movie_console
 mv flipbook.json exercise_data/movie_console.json
 
+echo "newline"
+./capture_exercise.py newline
+mv flipbook.json exercise_data/newline.json
+
 echo "pause"
 ./capture_exercise.py pause
 mv flipbook.json exercise_data/pause.json

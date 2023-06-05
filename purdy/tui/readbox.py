@@ -11,7 +11,6 @@ from logging import getLogger
 from asciimatics.event import KeyboardEvent, MouseEvent
 from asciimatics.screen import Screen
 from asciimatics.strings import ColouredText
-from asciimatics.widgets.scrollbar import _ScrollBar
 from asciimatics.widgets.widget import Widget
 from asciimatics.widgets.utilities import _find_min_start, _enforce_width, _get_offset
 
@@ -66,22 +65,18 @@ class ReadBox(Widget):
         if self._content_changed:
             self._generate_content()
 
-            for item in self._content:
-                logger.debug('*** %s', item)
-
         self._draw_label()
 
         # Clear out the existing box content
         (colour, attr, background) = self._pick_colours("readonly")
-        self._frame.canvas.clear_buffer(colour, attr, background,
+        self._frame.canvas.clear_buffer(colour, attr, background, 
             self._x + self._offset, self._y, self.width, self._h)
 
         # Loop through the content in the view port
         x = self._viewport_row
         h = self._viewport_row + self._h
         bg = background
-        limit = self._w - self._offset - 1
-        focus_only = len(self._content) < self._h
+        limit = self._w - self._offset
 
         #logger.debug("******* Updating Viewport")
         #for item in self._content[x:h]:
@@ -96,15 +91,13 @@ class ReadBox(Widget):
 
             if self._line_cursor and self._cursor_row == virtual_cursor \
                     and self._has_focus:
-                #logger.debug("   CURSOR cx=%d vx=%d p=%d wc=%d %s",
+                #logger.debug("   CURSOR cx=%d vx=%d p=%d wc=%d %s", 
                 #    self._cursor_row, x, position, wrap_count, text)
                 bg = self._cursor_colour
 
             # Clip the text to the width of the view port
             y = self._viewport_col
             paint_text = text[y:y+limit]
-
-            # Paint the text
             colour_map = getattr(paint_text, "colour_map", None)
 
             self._frame.canvas.paint(
@@ -113,36 +106,6 @@ class ReadBox(Widget):
                 self._y + index,
                 colour, attr, bg,
                 colour_map=colour_map)
-
-        # Paint the scroll indicators
-        if focus_only:
-            # Only paint a focus indicator
-            mark = '▮' if self._has_focus else '▯'
-
-            self._frame.canvas.paint(
-                mark,
-                self._x + self._offset + self._w - 1,
-                self._y,
-                colour, attr, bg)
-        else:
-            # Paint scroll indicators
-            if self._viewport_row != 0:
-                # Show up marker if we're not at the top
-                mark = '▲' if self._has_focus else '△'
-                self._frame.canvas.paint(
-                    mark,
-                    self._x + self._offset + self._w - 1,
-                    self._y,
-                    colour, attr, bg)
-
-            if self._viewport_row + self._h < len(self._content):
-                # Show down marker if we're not at the bottom
-                mark = '▼' if self._has_focus else '▽'
-                self._frame.canvas.paint(
-                    mark,
-                    self._x + self._offset + self._w - 1,
-                    self._y + self._h - 1,
-                    colour, attr, bg)
 
     def reset(self):
         # Reset to original data and move to end of the text.
@@ -387,16 +350,15 @@ class ReadBox(Widget):
 
         if self._line_wrap:
             # If wrapping lines, each line should be the width of the window
-            self._longest = self._w - self._offset - 1
+            self._longest = self._w - self._offset
 
         # Convert to the internal format:
         #
-        #   (wrap, text)
+        #   (wrap, text)  
         #
         # wrap: bool, True if this is part of a wrapped line
         # text: parsed text
-        limit = self._w - self._offset - 1
-
+        limit = self._w - self._offset
         for line in lines:
             length = self.string_len(str(line))
 
@@ -404,7 +366,7 @@ class ReadBox(Widget):
                 # Wrapping, deconstruct the line into its parts
                 wrap_count = 1
                 while self.string_len(str(line)) >= limit:
-                    sub_string = _enforce_width(line, limit,
+                    sub_string = _enforce_width(line, limit, 
                         self._frame.canvas.unicode_aware)
 
                     length = self.string_len(str(sub_string))
