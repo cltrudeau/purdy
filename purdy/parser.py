@@ -10,12 +10,11 @@ from collections import namedtuple
 
 from pygments.lexers import (PythonConsoleLexer, PythonLexer, BashSessionLexer,
     NodeConsoleLexer)
-from pygments.lexers.data import YamlLexer    
+from pygments.lexers.data import YamlLexer
 from pygments.lexers.markup import MarkdownLexer, RstLexer
-from pygments.lexers.special import TextLexer
 from pygments.token import String, Token
 
-from purdy.lexers import DollarBashSessionLexer
+from purdy.lexers import DollarBashSessionLexer, NewlineLexer
 
 # =============================================================================
 # Pygments Token Management
@@ -37,17 +36,17 @@ class PurdyLexer:
     """
 
     _registry = {
-        'con':('con', 'Python 3 Console', PythonConsoleLexer, True, 'code'), 
+        'con':('con', 'Python 3 Console', PythonConsoleLexer, True, 'code'),
         'py3':('py3', 'Python 3 Source', PythonLexer, False, 'code'),
         'bash':('bash', 'Bash Console', BashSessionLexer, True, 'code'),
-        'dbash':('dbash', 'Bash Console with a dollar-sign prompt', 
+        'dbash':('dbash', 'Bash Console with a dollar-sign prompt',
             DollarBashSessionLexer, True, 'code'),
-        'node':('node', 'JavaScript Node.js Console', NodeConsoleLexer, True, 
+        'node':('node', 'JavaScript Node.js Console', NodeConsoleLexer, True,
             'code'),
         'yaml':('yaml', 'YAML Doc', YamlLexer, False, 'doc'),
         'rst':('rst', 'RST Doc', RstLexer, False, 'doc'),
         'md':('md', 'Markdown Doc', MarkdownLexer, False, 'doc'),
-        'none':('none', 'No Parsing', TextLexer, False, 'doc'),
+        'none':('none', 'No Parsing', NewlineLexer, False, 'doc'),
     }
 
     def __init__(self, name, description, pygments_lexer_cls, is_console,
