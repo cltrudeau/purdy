@@ -2,7 +2,7 @@
 
 echo "============================================================"
 echo "== pyflakes =="
-pyflakes purdy tests extras/samples extras/tools
+pyflakes src tests extras/samples extras/tools
 
 echo "============================================================"
 echo "== loggers =="

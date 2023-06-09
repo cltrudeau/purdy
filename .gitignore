@@ -12,7 +12,7 @@
 *~
 .coverage*
 htmlcov/
-foo.py
+foo*.py
 debug.log
 debug.lock
 db.sqlite3

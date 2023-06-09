@@ -1,9 +1,0 @@
-<div style="background :#f8f8f8; overflow:auto; width:auto; border:solid gray; border-width:.1em .1em .1em .8em; padding:.2em .6em;"><pre style="margin: 0; line-height:125%"><span style="color: #8f5902; font-style: italic;"># Sample Code</span>
-
-<span style="color: #2048a7; font-weight: bold;">def</span> <span style="color: #000000;">foo</span><span style="color: #000000; font-weight: bold;">(</span><span style="color: #000000; font-weight: bold;">)</span><span style="color: #000000; font-weight: bold;">:</span>
-    <span style="color: #8f5902; font-style: italic;">&quot;&quot;&quot;Multi-line</span>
-<span style="color: #8f5902; font-style: italic;">    Doc string</span>
-<span style="color: #8f5902; font-style: italic;">    &quot;&quot;&quot;</span>
-    <span style="color: #000000;">bar</span> <span style="color: #ce5c00; font-weight: bold;">=</span> <span style="color: #4e9a06;">&#x27;</span><span style="color: #4e9a06;">Thing</span><span style="color: #4e9a06;">\</span><span style="color: #4e9a06;">Stuff</span><span style="color: #4e9a06;">&#x27;</span>
-</pre></div>
-
