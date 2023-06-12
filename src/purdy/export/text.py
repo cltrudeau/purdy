@@ -44,3 +44,12 @@ def listing_to_tokens_outline(listing):
         result.append("[EOL]")
 
     return "\n".join(result) + "\n"
+
+
+def listing_to_logger(logger, listing):
+    logger.debug("*** Listing info stamp=%s id=%s", listing.change_stamp,
+        id(listing))
+
+    content = listing_to_tokens_outline(listing)
+    for line in content.split("\n"):
+        logger.debug("   %s", line)

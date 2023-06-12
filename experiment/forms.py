@@ -58,15 +58,15 @@ class DemoFrame(Frame):
         self.add_layout(layout)
         layout.add_widget(Label("Thing"), 1)
 
-#        layout.add_widget(TextBox(7,
-#                                  label="TextBox:",
-#                                  name="TA",
-#                                  parser=AsciimaticsParser(),
-#                                  line_wrap=True), 1)
-        box = ReadBox(15, label="ReadBox:", name="TA",
-            parser=AsciimaticsParser(), line_wrap=True)
-        box.line_cursor = False
-        layout.add_widget(box, 1)
+        layout.add_widget(TextBox(7,
+                                  label="TextBox:",
+                                  name="TA",
+                                  parser=AsciimaticsParser(),
+                                  line_wrap=True), 1)
+#        box = ReadBox(15, label="ReadBox:", name="TA",
+#            parser=AsciimaticsParser(), line_wrap=True)
+#        box.line_cursor = False
+#        layout.add_widget(box, 1)
 
         layout.add_widget(Divider(height=3), 1)
 

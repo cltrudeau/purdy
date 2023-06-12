@@ -114,6 +114,10 @@ class ReadBox(Widget):
                 colour, attr, bg,
                 colour_map=colour_map)
 
+            #logger.debug("   Painting x=%s, y=%s, fg=%s, attr=%s, bg=%s *%s*",
+            #    self._x + self._offset, self._y + index, colour, attr, bg,
+            #    paint_text)
+
         # Paint the scroll indicators
         if focus_only:
             # Only paint a focus indicator

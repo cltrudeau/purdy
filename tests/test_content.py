@@ -4,7 +4,7 @@ from pygments.token import Generic
 
 from tests.base import PurdyCase
 
-from purdy.content import Code, Listing
+from purdy.content import Code, Listing, _ListingLine
 from purdy.filters import remove_lines, remove_double_blanks
 from purdy.parser import (Parser, CodeLine, CodePart, LineNumber, HighlightOn,
     HighlightOff)
@@ -142,6 +142,8 @@ class ListingTest(PurdyCase):
         self.assertEqual(code.lines[1], listing[1])
         self.assertEqual(code.lines[1:3], list(listing[1:3]))
 
+    # -----
+    # Line Numbers
     def test_line_numbers(self):
 
         # Build a string with A through O on a line each
@@ -177,6 +179,44 @@ class ListingTest(PurdyCase):
 
             self.assertEqual(expected, line)
 
+    def test_line_number_toggle(self):
+        source = (
+            "She walks in beauty\n"
+            "like the night,\n"
+            "Of cloudless climes\n"
+            "and starry skies;\n"
+            "And all that's best of dark and bright\n"
+            "Meet in her aspect and her eyes;"
+        )
+
+        code = Code(text=source, parser='plain')
+        listing = Listing(code)
+
+        # Toggle line numbers on (defaults to 1)
+        listing.toggle_line_numbers()
+
+        self.assertEqual(LineNumber, listing.lines[0].parts[0].token)
+        self.assertEqual('1 ', listing.lines[0].parts[0].text)
+
+        # Toggle them off
+        listing.toggle_line_numbers()
+        self.assertNotEqual(LineNumber, listing.lines[0].parts[0].token)
+
+        # Try again with assigned numbers (this turns them on)
+        listing.starting_line_number = 10
+
+        # Toggle them off
+        listing.toggle_line_numbers()
+        self.assertNotEqual(LineNumber, listing.lines[0].parts[0].token)
+
+        # Toggle them back on and make sure they're still starting at 10
+        listing.toggle_line_numbers()
+
+        self.assertEqual(LineNumber, listing.lines[0].parts[0].token)
+        self.assertEqual('10 ', listing.lines[0].parts[0].text)
+
+    # -----
+    # Highlight
     def assert_highlight_count(self, lines, expected_count):
         on_count = 0
         off_count = 0
@@ -361,44 +401,98 @@ class ListingTest(PurdyCase):
                 self.assertNotEqual(HighlightOn, part.token)
                 self.assertNotEqual(HighlightOff, part.token)
 
-    def test_append(self):
-        source1 = (
-            "She walks in beauty\n"
-            "like the night,\n"
-            "Of cloudless climes\n"
-        )
+    # -----
+    # Segmenting
+    def test_wrap_at_length(self):
+        # Test without a split
+        source = "She walks in beauty"
+        code = Code(text=source, parser='plain')
+        listing = Listing(code)
+        pieces = listing.lines[0].wrap_at_length(80)
 
-        source2 = (
-            "and starry skies;\n"
-            "And all that's best of dark and bright\n"
-            "Meet in her aspect and her eyes;"
-        )
+        # Should not have done anything
+        token = listing.lines[0].parts[0].token
+        self.assertEqual(1, len(pieces))
+        self.assertEqual(token, pieces[0][0].token)
+        self.assertEqual(source, pieces[0][0].text)
 
-        code1 = Code(text=source1, parser='plain')
-        code2 = Code(text=source2, parser='plain')
+        # ---
+        # Test with a single split
+        left = "She walks in beauty "
+        right = "like the night"
+        source = left + right
 
-        listing = Listing(code1)
-        listing.starting_line_number = 1
-        listing.append(code2)
-        nantucket = "There once was a man from Nantucket"
-        listing.append(nantucket)
+        code = Code(text=source, parser='plain')
+        listing = Listing(code)
+        pieces = listing.lines[0].wrap_at_length(len(left))
 
-        bucket = "Who couldn't find his bucket"
-        code_line = CodeLine(Parser.registry['plain'], [
-            CodePart(Generic.Output, bucket)])
-        listing.append(code_line)
+        # Should not have done anything
+        self.assertEqual(2, len(pieces))
+        self.assertEqual(token, pieces[0][0].token)
+        self.assertEqual(left, pieces[0][0].text)
+        self.assertEqual(token, pieces[1][0].token)
+        self.assertEqual(right, pieces[1][0].text)
 
-        self.assertEqual(8, len(listing.lines))
-        self.assertEqual('1 ', listing.lines[0].parts[0].text)
-        self.assertEqual('8 ', listing.lines[7].parts[0].text)
+        # ---
+        # Test with a double split
+        left  = "She walks in beauty "
+        mid   = "like the night Of cl"
+        right = "less climes"
+        source = left + mid + right
 
-        expected = source2.split("\n")[2]
-        self.assertEqual(expected, listing.lines[5].parts[1].text)
+        code = Code(text=source, parser='plain')
+        listing = Listing(code)
+        pieces = listing.lines[0].wrap_at_length(len(left))
 
-        self.assertEqual(nantucket, listing.lines[6].parts[1].text)
-        self.assertEqual(bucket, listing.lines[7].parts[1].text)
+        # Should not have done anything
+        self.assertEqual(3, len(pieces))
+        self.assertEqual(token, pieces[0][0].token)
+        self.assertEqual(left, pieces[0][0].text)
+        self.assertEqual(token, pieces[1][0].token)
+        self.assertEqual(mid, pieces[1][0].text)
+        self.assertEqual(token, pieces[2][0].token)
+        self.assertEqual(right, pieces[2][0].text)
 
-    def test_append_bad(self):
-        listing = Listing()
-        with self.assertRaises(ValueError):
-            listing.append(3)
+    # -----
+    # Operations
+#    def test_append(self):
+#        source1 = (
+#            "She walks in beauty\n"
+#            "like the night,\n"
+#            "Of cloudless climes\n"
+#        )
+#
+#        source2 = (
+#            "and starry skies;\n"
+#            "And all that's best of dark and bright\n"
+#            "Meet in her aspect and her eyes;"
+#        )
+#
+#        code1 = Code(text=source1, parser='plain')
+#        code2 = Code(text=source2, parser='plain')
+#
+#        listing = Listing(code1)
+#        listing.starting_line_number = 1
+#        listing.append(code2)
+#        nantucket = "There once was a man from Nantucket"
+#        listing.append(nantucket)
+#
+#        bucket = "Who couldn't find his bucket"
+#        code_line = CodeLine(Parser.registry['plain'], [
+#            CodePart(Generic.Output, bucket)])
+#        listing.append(code_line)
+#
+#        self.assertEqual(8, len(listing.lines))
+#        self.assertEqual('1 ', listing.lines[0].parts[0].text)
+#        self.assertEqual('8 ', listing.lines[7].parts[0].text)
+#
+#        expected = source2.split("\n")[2]
+#        self.assertEqual(expected, listing.lines[5].parts[1].text)
+#
+#        self.assertEqual(nantucket, listing.lines[6].parts[1].text)
+#        self.assertEqual(bucket, listing.lines[7].parts[1].text)
+#
+#    def test_append_bad(self):
+#        listing = Listing()
+#        with self.assertRaises(ValueError):
+#            listing.append(3)

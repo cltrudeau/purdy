@@ -12,6 +12,7 @@ from pygments.token import Generic
 
 from purdy.parser import (CodeLine, CodePart, Parser, LineNumber, HighlightOn,
     HighlightOff)
+from purdy.utils import string_length_split
 
 #import logging
 #logging.basicConfig(filename='debug.log', level=logging.DEBUG)
@@ -106,17 +107,179 @@ class Code:
 
 # -----------------------------------------------------------------------------
 
+class _ListingLine(CodeLine):
+    padded_num = lambda n, w: f'{n:{w}} '
+
+    def __init__(self, code_line=None, line_number=None, line_number_width=0):
+        self.length = 0
+        self.parts = []
+        self.line_number = line_number
+        self.line_number_width = line_number_width
+
+        if code_line:
+            self.spec = code_line.spec
+
+            if line_number is not None:
+                self.parts.append(CodePart(LineNumber, self.padded_num))
+                self.length += len(num)
+
+            for part in code_line.parts:
+                self.length += len(part.text)
+                self.parts.append(deepcopy(part))
+
+    @property
+    def padded_num(self):
+        return f'{self.line_number:{self.line_number_width}} '
+
+
+    def set_line_number(self, line_number, line_number_width):
+        """Sets the line number for this line. If `line_number` is `None`, any
+        existing line number is removed.
+
+        :param line_number: new number for this line (int)
+        :param line_number_width: width of padding for the number
+
+        :returns: next line number after this one, or `None` if was set to
+            `None`
+        """
+        self.line_number = line_number
+
+        # Removing the line number
+        if line_number is None:
+            self.line_number_width = 0
+            if self.parts[0].token == LineNumber:
+                self.parts = self.parts[1:]
+
+            return None
+
+        # Adding or changing the line number
+        delta = line_number_width - self.line_number_width
+        self.line_number_width = line_number_width
+
+        if self.parts[0].token == LineNumber:
+            self.parts[0].text = self.padded_num
+        else:
+            self.parts.insert(0, CodePart(LineNumber, self.padded_num))
+
+        self.length += delta
+
+        return line_number + 1
+
+    # ----
+    # Highlighting
+
+    def highlight(self):
+        pos = 0
+        if self.parts[0].token == LineNumber:
+            pos = 1
+
+        self.parts.insert(pos, CodePart(HighlightOn, ''))
+        self.parts.append(CodePart(HighlightOff, ''))
+
+    def highlight_fractional(self, start, end):
+        pos = 0
+        highlighting = False
+        change = []
+
+        for part in self.parts:
+            if part.token == LineNumber:
+                change.append( deepcopy(part) )
+                continue
+
+            if len(part.text) + pos < start:
+                # Before highlighting
+                change.append( deepcopy(part) )
+            elif start <= pos <= end:
+                # Inside highlighting
+                if not highlighting:
+                    # Start the highlight
+                    change.append( CodePart(HighlightOn, '') )
+                    highlighting = True
+
+                if len(part.text) + pos < end:
+                    # Whole thing gets highlighted, just add it
+                    change.append( deepcopy(part) )
+                else:
+                    # Need to split inside the part
+                    split_point = end - pos + 1
+                    left = part.text[0:split_point]
+                    right = part.text[split_point:]
+
+                    change.append( CodePart(part.token, left) )
+                    change.append( CodePart(HighlightOff, '') )
+                    change.append( CodePart(part.token, right) )
+                    highlighting = False
+            else:
+                # After highlighting
+                change.append( deepcopy(part) )
+
+            pos += len(part.text)
+
+        self.parts = change
+
+    def highlight_off(self):
+        change = []
+        for part in self.parts:
+            if part.token == HighlightOn or part.token == HighlightOff:
+                continue
+
+            change.append( deepcopy(part) )
+
+        self.parts = change
+
+    # ---
+    # Wrap Management
+    def wrap_at_length(self, size):
+        """Processes the current line for a maximum width, returning a list of
+        part lists each limited to the given size
+        """
+
+        if self.length < size:
+            return [self.parts]
+
+        pieces = []
+        piece_length = 0
+        current_piece = []
+
+        for part in self.parts:
+            if len(part.text) + piece_length < size:
+                current_piece.append(part)
+                piece_length += len(part.text)
+                continue
+
+            # Hit a splitting point
+            split_point = size - piece_length
+            left = part.text[0:split_point]
+            right = part.text[split_point:]
+
+            # Add the left chunk to the current piece
+            current_piece.append( CodePart(part.token, left) )
+            pieces.append(current_piece)
+            current_piece = []
+            piece_length = 0
+
+            sections = string_length_split(right, size)
+            for section in sections:
+                current_piece.append( CodePart(part.token, section) )
+                pieces.append(current_piece)
+                current_piece = []
+
+        return pieces
+
+
 class Listing:
     """A container mapped to display a series of tokenized lines."""
 
     def __init__(self, code=None, starting_line_number=None):
         self._starting_line_number = starting_line_number
+        self._old_starting_line_number = starting_line_number
         self.change_stamp = 0
 
         self.lines = []
 
         if code:
-            self.lines += deepcopy(code.lines)
+            for line in code.lines:
+                self.lines.append(_ListingLine(line))
 
         self.recalculate_line_numbers()
 
@@ -149,110 +312,37 @@ class Listing:
 
     # -----
     # Line number management
+    def toggle_line_numbers(self):
+        if self.lines[0].parts[0].token == LineNumber:
+            # Turn line numbers off
+            self._old_starting_line_number = self.starting_line_number
+            self.starting_line_number = None
+        else:
+            if self._old_starting_line_number is None:
+                self._old_starting_line_number = 1
+
+            self.starting_line_number = self._old_starting_line_number
 
     def recalculate_line_numbers(self):
         if self.starting_line_number is None:
-            # Remove any existing line numbers
-            for line in self.lines:
-                first = line.parts[0]
-                if first.token == LineNumber:
-                    del line.parts[0]
+            num = None
+            width = 0
+        else:
+            num = self.starting_line_number
+            largest = num + len(self.lines)
+            width = int(log10(largest)) + 1
 
-            return
-
-        # Find the amount of space needed for line numbers plus a margin
-        # character
-        largest = self.starting_line_number + len(self.lines)
-        width = int(log10(largest)) + 1
-
-        # Loop through and add the new line numbers
-        for count, line in enumerate(self.lines):
-            num = count + self._starting_line_number
-            text = f'{num:{width}} '
-
-            first = line.parts[0]
-            if first.token == LineNumber:
-                first.text = text
-            else:
-                line.parts.insert(0, CodePart(LineNumber, text))
+        for line in self.lines:
+            num = line.set_line_number(num, width)
 
     # -----
     # Highlight management
 
-    def _highlight_line(self, index):
-        line = self.lines[index]
-        all_parts = iter(line.parts)
-
-        if line.parts[0].token == LineNumber:
-            parts = [deepcopy(line.parts[0]), CodePart(HighlightOn, '')]
-            change = CodeLine(line.spec, parts)
-            next(all_parts)
-        else:
-            change = CodeLine(line.spec, [CodePart(HighlightOn, '')])
-
-        for part in all_parts:
-            change.parts.append( deepcopy(part) )
-
-        change.parts.append( CodePart(HighlightOff, '') )
-        self.lines[index] = change
-
-    def _highlight_fractional(self, index, start, end):
-        line = self.lines[index]
-        change = CodeLine(line.spec, [])
-
-        pos = 0
-        highlighting = False
-        for part in line.parts:
-            if part.token == LineNumber:
-                change.parts.append( deepcopy(part) )
-                continue
-
-            if len(part.text) + pos < start:
-                # Before highlighting
-                change.parts.append( deepcopy(part) )
-            elif start <= pos <= end:
-                # Inside highlighting
-                if not highlighting:
-                    # Start the highlight
-                    change.parts.append( CodePart(HighlightOn, '') )
-                    highlighting = True
-
-                if len(part.text) + pos < end:
-                    # Whole thing gets highlighted, just add it
-                    change.parts.append( deepcopy(part) )
-                else:
-                    # Need to split inside the part
-                    split_point = end - pos + 1
-                    left = part.text[0:split_point]
-                    right = part.text[split_point:]
-
-                    change.parts.append( CodePart(part.token, left) )
-                    change.parts.append( CodePart(HighlightOff, '') )
-                    change.parts.append( CodePart(part.token, right) )
-                    highlighting = False
-            else:
-                # After highlighting
-                change.parts.append( deepcopy(part) )
-
-            pos += len(part.text)
-
-        self.lines[index] = change
-
-    def _highlight_line_off(self, index):
-        line = self.lines[index]
-        change = CodeLine(line.spec, [])
-        for part in line.parts:
-            if part.token == HighlightOn or part.token == HighlightOff:
-                continue
-
-            change.parts.append( deepcopy(part) )
-
-        self.lines[index] = change
-
     def highlight_off_all(self):
         """Turns off all highlighting in the listing"""
-        for index in range(0, len(self.lines)):
-            self._highlight_line_off(index)
+        self.change_stamp += 1
+        for line in self.lines:
+            line.highlight_off()
 
     def highlight_off(self, *args):
         """Turns off highlighting for one or more lines. Each argument is a
@@ -263,15 +353,17 @@ class Listing:
 
         All indicators are 1-indexed. Integer values support negative indexing
         """
+        self.change_stamp += 1
+
         for value in args:
             if isinstance(value, int):
                 if value > 0:
                     value -= 1
 
-                self._highlight_line_off(value)
+                self.lines[value].highlight_off()
             elif isinstance(value, tuple):
                 for num in range(value[0], value[1] + 1):
-                    self._highlight_line_off(num - 1)
+                    self.lines[num - 1].highlight_off()
 
     def highlight(self, *args):
         """Turns on highlighting for one or more lines. Each argument is a
@@ -299,19 +391,21 @@ class Listing:
         why not?
 
         """
+        self.change_stamp += 1
+
         for value in args:
             if isinstance(value, int):
                 if value > 0:
                     # 1-indexed for positive numbers
                     value -= 1
 
-                self._highlight_line(value)
+                self.lines[value].highlight()
             elif isinstance(value, tuple):
                 if value[0] < 0:
                     raise ValueError("Negative indexing not supported")
 
                 for num in range(value[0], value[1] + 1):
-                    self._highlight_line(num - 1)
+                    self.lines[num - 1].highlight()
             else:
                 # Must be a string
                 is_positive = True
@@ -330,7 +424,7 @@ class Listing:
                         # Put the negative back in it
                         value = 0 - value
 
-                    self._highlight_line(value)
+                    self.lines[value].highlight()
                 else:
                     # Ranged case, possibly fractional
                     left, right = value.split('-')
@@ -346,7 +440,7 @@ class Listing:
                             # Put the negative back in it
                             line_num = 0 - line_num
 
-                        self._highlight_fractional(line_num,
+                        self.lines[line_num].highlight_fractional(
                             int(start) - 1, int(right) - 1)
                     else:
                         # Ranged highlight with integers
@@ -357,33 +451,15 @@ class Listing:
 
                         right = int(right)
                         for num in range(left, right + 1):
-                            self._highlight_line(num - 1)
+                            self.lines[num - 1].highlight()
 
     # -----
     # Container operations
 
-    def append(self, *args):
-        """Adds lines to the listing. Accepts:
-
-            * A string which it treats as generic output
-            * A :class:`purdy.parser.CodeLine` object
-            * A :class:`purdy.parser.Code` object
-
-        Accepts multiple arguments, appending each in order
-        """
+    def append(self, code):
         self.change_stamp += 1
-        for item in args:
-            if isinstance(item, str):
-                # Passed a bare string, use the 'none' parser and general
-                # output
-                spec = Parser.registry['plain']
-                line = CodeLine(spec, [CodePart(Generic.Output, item)])
-                self.lines.append(line)
-            elif isinstance(item, CodeLine):
-                self.lines.append(item)
-            elif isinstance(item, Code):
-                self.lines += deepcopy(item.lines)
-            else:
-                raise ValueError("Unrecognized value to append: ", item)
+
+        for line in code.lines:
+            self.lines.append(_ListingLine(line))
 
         self.recalculate_line_numbers()

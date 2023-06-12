@@ -1,3 +1,11 @@
+2.0.0a1
+=======
+
+* BREAKING CHANGE VERSION
+* Library has been re-vamped in the do-it-right-the-second-time fashion
+* Most actions and interfaces have changed, no backward compatibility
+
+
 1.13.1
 ======
 

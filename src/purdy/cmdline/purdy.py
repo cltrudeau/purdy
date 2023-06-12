@@ -6,7 +6,7 @@ import argparse
 
 from purdy.cmdline.utils import common_arg, filename_arg
 from purdy.content import Code, Listing
-from purdy.tui.screen import run
+from purdy.tui.screen import Screen, CodeBox
 
 # ===========================================================================
 
@@ -37,4 +37,11 @@ def main():
         parts = args.highlight.split(",")
         listing.highlight(*parts)
 
-    run(listing)
+    rows = [
+        (CodeBox(listing, width_ratio=0.5), CodeBox(listing)),
+#        CodeBox(listing, height=6),
+        CodeBox(listing),
+    ]
+
+    screen = Screen(rows)
+    screen.run([])
