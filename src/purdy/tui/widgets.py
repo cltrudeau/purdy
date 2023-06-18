@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 """This module implements a text box that displays a
 :class:`purdy.content.Listing` object."""
+import sys
 from dataclasses import dataclass
 from logging import getLogger
 
@@ -184,13 +185,15 @@ class PurdyFrame(Frame):
                 try:
                     widget._listing.highlight(num)
                 except IndexError:
-                    logger.debug("BEEP")
-                    # print("\a")
+                    # Beep noise
+                    sys.stdout.write("\a")
 
                 self._canvas.refresh()
                 self._num_command = []
                 return None
             elif event.key_code == ord('H'):
+                self._num_command = [] # Clear the num code
+
                 for widget in self._box_widgets:
                     widget._listing.highlight_off_all()
 
@@ -198,25 +201,50 @@ class PurdyFrame(Frame):
 
                 return None
             elif event.key_code == Screen.KEY_ESCAPE:
-                logger.debug("Cleared num keys")
                 self._num_command = []
                 return None
             elif event.key_code == ord('?'):
+                self._num_command = [] # Clear the num code
+
                 self._scene.add_effect(
                     PopUpDialog(self._screen, HELP_MESSAGE, ["OK"],
                         has_shadow=True)
                 )
                 return None
             elif event.key_code == Screen.KEY_RIGHT:
-                animator.forward()
+                if self._num_command:
+                    num = int(''.join(self._num_command))
+                else:
+                    num = 1
+
+                for _ in range(0, num):
+                    animator.forward()
+
+                self._num_command = [] # Clear the num code
                 self._canvas.refresh()
                 return None
             elif event.key_code == Screen.KEY_LEFT:
-                animator.backward()
+                if self._num_command:
+                    num = int(''.join(self._num_command))
+                else:
+                    num = 1
+
+                for _ in range(0, num):
+                    animator.backward()
+
+                self._num_command = [] # Clear the num code
                 self._canvas.refresh()
                 return None
             elif event.key_code == ord('s'):
-                animator.fast_forward()
+                if self._num_command:
+                    num = int(''.join(self._num_command))
+                else:
+                    num = 1
+
+                for _ in range(0, num):
+                    animator.fast_forward()
+
+                self._num_command = [] # Clear the num code
                 self._canvas.refresh()
                 return None
 
