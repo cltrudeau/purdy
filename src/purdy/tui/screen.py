@@ -72,6 +72,9 @@ class _BaseScreen:
                 item.name = name
                 self.boxes[name] = item
 
+        global animator
+        animator.screen = self
+
 # ===========================================================================
 
 class Screen(_BaseScreen):

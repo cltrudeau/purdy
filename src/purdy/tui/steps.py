@@ -10,25 +10,9 @@ logger = getLogger(__name__)
 
 # ===========================================================================
 
-class _ListingState:
-    def __init__(self, listing):
-        self.listing = listing
-        self.lines = deepcopy(listing.lines)
-
-# ---------------------------------------------------------------------------
-
-class _Undoable:
-    def __init__(self, box):
-        self.box = box
-        self.undo = None
-
-    def backward(self):
-        self.box.listing.replace_lines(self.undo.lines)
-
-
-class AppendStep(_Undoable):
+class AppendStep:
     def __init__(self, box, *args):
-        super().__init__(box)
+        self.box = box
         self.code_list = []
 
         for item in args:
@@ -50,33 +34,29 @@ class AppendStep(_Undoable):
         return "\n".join(output)
 
     def forward(self):
-        self.undo = _ListingState(self.box.listing)
-
         for code in self.code_list:
             self.box.listing.append_code(code)
 
 
-class HighlightStep(_Undoable):
+class HighlightStep:
     def __init__(self, box, *args):
-        super().__init__(box)
+        self.box = box
         self.highlights = args
 
     def __str__(self):
         return f"   HighlightStep: {self.box.name} {self.highlights}"
 
     def forward(self):
-        self.undo = _ListingState(self.box.listing)
         self.box.listing.highlight(*self.highlights)
 
 
-class HighlightOffStep(_Undoable):
+class HighlightOffStep:
     def __init__(self, box, *args):
-        super().__init__(box)
+        self.box = box
         self.highlights = args
 
     def __str__(self):
         return f"   HighlightOffStep: {self.box.name} {self.highlights}"
 
     def forward(self):
-        self.undo = _ListingState(self.box.listing)
         self.box.listing.highlight_off(*self.highlights)

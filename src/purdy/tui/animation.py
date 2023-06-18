@@ -10,13 +10,34 @@ logger = getLogger(__name__)
 # Cells
 # ===========================================================================
 
-class Cell:
+class _ListingState:
+    def __init__(self, listing):
+        self.listing = listing
+        self.lines = deepcopy(listing.lines)
+
+
+class _UndoableCell:
     def __init__(self):
         self.steps = []
         self.state = {}
 
+    def backward(self):
+        # Undo state is stored per box based on the first step that touches
+        # that box
+        global animator
+
+        # Loop through the stored state and undo each
+        for name, undo in self.state.items():
+            box = animator.screen.boxes[name]
+            box.listing.replace_lines(undo.lines)
+
+
+class Cell(_UndoableCell):
     def forward(self):
         for step in self.steps:
+            if step.box.name not in self.state:
+                self.state[step.box.name] = _ListingState(step.box.listing)
+
             step.forward()
 
         return 1
@@ -25,15 +46,10 @@ class Cell:
         # No animation, skip and next are the same
         return self.forward()
 
-    def backward(self):
-        # Back out each of the steps in reverse order
-        for step in reversed(self.steps):
-            step.backward()
 
-
-class MultiCell:
+class MultiCell(_UndoableCell):
     def __init__(self):
-        self.steps = []
+        super().__init__()
         self.current_step = 0
 
     def forward(self):
@@ -41,6 +57,9 @@ class MultiCell:
         animator.animating = True
 
         step = self.steps[self.current_step]
+        if step.box.name not in self.state:
+            self.state[step.box.name] = _ListingState(step.box.listing)
+
         step.forward()
 
         self.current_step += 1
@@ -61,18 +80,6 @@ class MultiCell:
         self.current_step = len(self.steps)
         return 1
 
-    def backward(self, manager):
-        # ??? Can this somehow store the whole thing and do a massive undo all
-        # in one step?
-
-        # Turn off animation and undo all preformed steps
-        global animator
-        animator.animating = False
-
-        # Back out each of the steps in reverse order
-        for step in reversed(self.steps):
-            step.backward()
-
 # ===========================================================================
 # Animator
 # ===========================================================================
@@ -83,6 +90,7 @@ class Animator:
         self.animating = False
         self.cells = []
         self.current_cell = 0
+        self.screen = None
 
     # ----
     # Step Management
