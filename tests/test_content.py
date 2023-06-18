@@ -478,7 +478,7 @@ class ListingTest(PurdyCase):
 #        listing.append(nantucket)
 #
 #        bucket = "Who couldn't find his bucket"
-#        code_line = CodeLine(Parser.registry['plain'], [
+#        code_line = CodeLine(Parser.from_name('plain'), [
 #            CodePart(Generic.Output, bucket)])
 #        listing.append(code_line)
 #

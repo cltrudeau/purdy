@@ -77,6 +77,7 @@ class LexerSpec:
     lexer_cls: object
     console: bool
     style: str
+    aliases: list = None
 
 
 _built_in_specs = [
@@ -89,11 +90,13 @@ _built_in_specs = [
         DollarBashSessionLexer, True, 'code'),
     LexerSpec('node', 'Interactive JavaScript Node.js Console',
         NodeConsoleLexer, True, 'code'),
-    LexerSpec('yaml', 'YAML Doc', YamlLexer, False, 'doc'),
+    LexerSpec('yaml', 'YAML Doc', YamlLexer, False, 'doc', ['yml']),
     LexerSpec('rst', 'RST Doc', RstLexer, False, 'doc'),
     LexerSpec('md', 'Markdown Doc', MarkdownLexer, False, 'doc'),
-    LexerSpec('plain', 'Plain text, no parsing', NewlineLexer, False, 'doc'),
-    LexerSpec('html', 'HTML/Django/Jinja', HtmlDjangoLexer, False, 'xml'),
+    LexerSpec('plain', 'Plain text, no parsing', NewlineLexer, False, 'doc',
+        ['txt']),
+    LexerSpec('html', 'HTML/Django/Jinja', HtmlDjangoLexer, False, 'xml',
+        ['htm']),
 ]
 
 
@@ -130,8 +133,6 @@ class Parser:
     built-in to purdy but you can also create your own parser with any
     :class:`pygments.lexers.Lexer` class.
     """
-
-    registry = { spec.name:spec for spec in _built_in_specs }
     names = [spec.name for spec in _built_in_specs]
 
     def __init__(self, spec):
@@ -154,12 +155,19 @@ class Parser:
 
     @classmethod
     def from_name(cls, name):
-        try:
-            return Parser(cls.registry[name])
-        except KeyError:
-            error = f"Unknown lexer *{name}*. Choices are: "
-            error += cls.names.join(',')
-            raise AttributeError(error)
+        # Search through the spec's for a matching name or alias
+        for spec in _built_in_specs:
+            if name.lower() == spec.name:
+                return Parser(spec)
+
+            if spec.aliases is not None:
+                for alias in spec.aliases:
+                    if name.lower() == alias:
+                        return Parser(spec)
+
+        error = f"Unknown lexer *{name}*. Choices are: "
+        error += cls.names.join(',')
+        raise AttributeError(error)
 
     def parse(self, content):
         lexer = self.spec.lexer_cls()

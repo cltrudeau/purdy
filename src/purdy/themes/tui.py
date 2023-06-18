@@ -25,7 +25,7 @@ _code_palette = {
     Name.Namespace:     '7',
     Name.Class:         '7',
     Name.Exception:     '22',                # dark green
-    Name.Decorator:     ('62', 'bold',),     # slate_blue 3b
+    Name.Decorator:     ('62', '1',),        # slate_blue 3b, bold
     Name.Variable:      '',
     Name.Constant:      '',
     Name.Attribute:     '',
@@ -34,7 +34,7 @@ _code_palette = {
     Number:             '5',
     Generic.Prompt:     '18',                # dark_blue
     Generic.Error:      '22',                # dark green
-    Generic.Traceback:  ('124', 'bold',),    # red 3a
+    Generic.Traceback:  ('124', '1',),       # red 3a, bold
     Error:              '9',                 # light red
 
     LineNumber:         '241',               # grey 39
@@ -52,7 +52,7 @@ _doc_palette.update({
     Generic.Subheading: '3',
     Literal:            '5',                # magenta
     Generic.Emph:       '18',               # dark blue
-    Generic.Strong:     ('22', 'bold',),    # dark green
+    Generic.Strong:     ('22', '1',),       # dark green, bold
 })
 
 _xml_palette = dict(_code_palette)

@@ -1,9 +1,12 @@
 # tui.steps.py
 from copy import deepcopy
+from logging import getLogger
 
 from pygments.token import Generic
 
 from purdy.content import Code
+
+logger = getLogger(__name__)
 
 # ===========================================================================
 
@@ -28,10 +31,20 @@ class AppendStep:
             else:
                 raise ValueError("Unrecognized value to append: ", item)
 
-    def forwards(self):
-        self.undo = _ListingState(self.box.listing)
+    def __str__(self):
+        output = [f"   AppendStep:"]
         for code in self.code_list:
-            self.box.listing.append(code)
+            output.append(f"      Code: {code.parser.spec.name}")
+            for line in code.source.split("\n"):
+                output.append(f"         {line}")
 
-    def backwards(self):
-        self.box.listing.lines = self.undo.lines
+        return "\n".join(output)
+
+    def forward(self):
+        self.undo = _ListingState(self.box.listing)
+
+        for code in self.code_list:
+            self.box.listing.append_code(code)
+
+    def backward(self):
+        self.box.listing.replace_lines(self.undo.lines)

@@ -8,17 +8,22 @@ from purdy.tui.steps import AppendStep
 # ===========================================================================
 
 class Cell:
-    def __init__(self, manager):
+    def __init__(self):
         self.steps = []
-        self.manager = manager
 
-    def forwards(self):
+    def forward(self):
         for step in self.steps:
-            step.forwards()
+            step.forward()
 
-    def backwards(self):
+        return 1
+
+    def fast_forward(self):
+        # No animation, skip and next are the same
+        return self.forward()
+
+    def backward(self):
         for step in self.steps:
-            step.backwards()
+            step.backward()
 
 
 class MultiCell:
@@ -26,35 +31,46 @@ class MultiCell:
         self.steps = []
         self.current_step = 0
 
-    def forwards(self, manager):
-        manager.animating = True
+    def forward(self):
+        global animator
+        animator.animating = True
 
-    def next_step(self, manager):
         step = self.steps[self.current_step]
-        step.forward(manager)
+        step.forward()
 
         self.current_step += 1
         if self.current_step >= len(self.steps):
-            manager.animating = False
-            return True
+            animator.animating = False
+            return 1
 
-        return False
+        return 0
 
-    def fast_forward(self, manager):
+    def fast_forward(self):
+        # Turn off animation and complete all remaining steps
+        global animator
+        animator.animating = False
+
         for step in steps[self.current_step:]:
-            step.forward(manager)
+            step.forward()
 
-        manager.animating = False
         self.current_step = len(self.steps)
+        return 1
+
+    def backward(self, manager):
+        # Turn off animation and undo all preformed steps
+        global animator
+        animator.animating = False
+
+        for step in self.steps:
+            step.backward()
 
 # ===========================================================================
-# Manager
+# Animator
 # ===========================================================================
 
-class ActionManager:
+class Animator:
     def __init__(self):
         self.started = False
-        self.frame = None
         self.animating = False
         self.cells = []
         self.current_cell = 0
@@ -62,20 +78,21 @@ class ActionManager:
     # ----
     # Step Management
 
-    def _append_steps(self, steps):
+    def append_steps(self, steps):
         if not self.cells:
-            self.cells = [Cell(self)]
+            self.cells = [Cell()]
 
         if isinstance(self.cells[-1], MultiCell):
-            self.cells.append(Cell(self))
+            self.cells.append(Cell())
 
         self.cells[-1].steps += steps
 
-    def _end_cell(self):
-        self.cells.append(Cell(self))
+    def end_cell(self):
+        self.cells.append(Cell())
 
-    def _append_multi_cell(self, steps):
-        cell = MultiCell(self, steps)
+    def append_multi_cell(self, steps):
+        cell = MultiCell(self)
+        cell.steps += steps
 
         # Check if the last cell is empty, if so replace it
         if not self.cells[-1].steps:
@@ -83,30 +100,49 @@ class ActionManager:
         else:
             self.cells.append(cell)
 
-    def _forwards(self):
+    def forward(self):
         self.started = True
         if self.current_cell >= len(self.cells):
             return
 
         cell = self.cells[self.current_cell]
-        cell.forwards()
+        delta = cell.forward()
+        self.current_cell += delta
+
+    def fast_forward(self):
+        self.started = True
+        if self.current_cell >= len(self.cells):
+            return
+
+        cell = self.cells[self.current_cell]
+        cell.fast_forward()
         self.current_cell += 1
 
-    def _backwards(self):
+    def backward(self):
         if not self.started or self.current_cell == 0:
             return
 
         self.current_cell -= 1
         cell = self.cells[self.current_cell]
-        cell.backwards()
+        cell.backward()
 
         if self.current_cell == 0:
             self.started = False
 
+animator = Animator()
+
+# ===========================================================================
+# Action Manager
+# ===========================================================================
+
+class ActionManager:
+    def __init__(self, box):
+        self.box = box
+
     # ----
     # Actions
-    def append(self, box, *args):
-        """Appends content to a given box. Accepts either
+    def append(self, *args):
+        """Appends content to the associated box. Accepts either
         :code:`purdy.content.Code` objects or strings. Strings are parsed as
         plain text.
 
@@ -115,9 +151,9 @@ class ActionManager:
         if len(args) == 0:
             raise ValueError("Must provide code to append")
 
-        self._append_steps([AppendStep(box, *args)])
+        animator.append_steps([AppendStep(self.box, *args)])
         return self
 
     def wait(self):
-        self.cells.append(Cell(self))
+        animator.cells.append(Cell())
         return self

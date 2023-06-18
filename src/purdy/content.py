@@ -8,15 +8,14 @@ from copy import deepcopy
 from math import log10
 from pathlib import Path
 
-from pygments.token import Generic
+from pygments.token import Generic, Whitespace
 
 from purdy.parser import (CodeLine, CodePart, Parser, LineNumber, HighlightOn,
     HighlightOff)
 from purdy.utils import string_length_split
 
-#import logging
-#logging.basicConfig(filename='debug.log', level=logging.DEBUG)
-#logger = logging.getLogger()
+import logging
+logger = logging.getLogger()
 
 # =============================================================================
 
@@ -77,6 +76,18 @@ class Code:
 
         # Parse the code into a series of parser.CodeLine objects
         self.lines = self.parser.parse(self.source)
+
+        # Pygments lexers strip leading and trailing newlines, put them back
+        # in so the content matches the source
+        blank = CodeLine(self.parser.spec, [CodePart(Whitespace, '')])
+        count = self.source.count("\n")
+        before = count - self.source.lstrip("\n").count("\n")
+        after = count - self.source.rstrip("\n").count("\n")
+        for _ in range(0, before):
+            self.lines.insert(0, deepcopy(blank))
+
+        for _ in range(0, after - 1):
+            self.lines.append(deepcopy(blank))
 
     def clone(self, filters=[]):
         return Code(text=self.source, parser=self.parser, filters=filters)
@@ -456,10 +467,20 @@ class Listing:
     # -----
     # Container operations
 
-    def append(self, code):
+    def append_code(self, code):
         self.change_stamp += 1
+        logger.debug("Listing.append() => new stamp=%s id=%s",
+            self.change_stamp, id(self))
 
         for line in code.lines:
             self.lines.append(_ListingLine(line))
 
+        self.recalculate_line_numbers()
+
+    def replace_lines(self, lines):
+        self.change_stamp += 1
+        logger.debug("Listing.replace_lines() => new stamp=%s id=%s",
+            self.change_stamp, id(self))
+
+        self.lines = deepcopy(lines)
         self.recalculate_line_numbers()

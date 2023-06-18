@@ -12,6 +12,7 @@ from asciimatics.widgets.widget import Widget
 from purdy.content import Listing
 from purdy.parser import token_ancestor, HighlightOn, HighlightOff
 from purdy.themes.tui import THEMES, ANCESTORS
+from purdy.tui.animation import animator
 from purdy.tui.glayout import GappedLayout
 
 # Logging
@@ -36,9 +37,9 @@ h -- highlight the given number
 NUM_KEYS = [ord('0') + num for num in range(0, 10)]
 
 class PurdyFrame(Frame):
-    def __init__(self, rows, actions, screen, max_height):
+    def __init__(self, rows, screen, max_height):
         self._num_command = []
-        self._animating = False
+        self._box_widgets = []
 
         frame_height = screen.height
         if max_height is not None:
@@ -47,21 +48,15 @@ class PurdyFrame(Frame):
         divider_height = len(rows) - 1
 
         # Process the listing boxes sent in the rows container
-        data = {}
         requested_height = 0
         num_requesting = 0
         for index, item in enumerate(rows):
 
             if isinstance(item, tuple):
-                data[item[0].name] = item[0].listing
-                data[item[1].name] = item[1].listing
-
                 if item[0].height is not None:
                     requested_height += item[0].height
                     num_requesting += 1
             else:
-                data[item.name] = item.listing
-
                 if item.height is not None:
                     requested_height += item.height
                     num_requesting += 1
@@ -75,7 +70,7 @@ class PurdyFrame(Frame):
         # Create and layout the frame
 
         super(PurdyFrame, self).__init__(screen, frame_height, screen.width,
-            x=0, y=0, data=data, has_border=False, can_scroll=False)
+            x=0, y=0, data={}, has_border=False, can_scroll=False)
 
         self.set_theme('monochrome')
 
@@ -107,21 +102,21 @@ class PurdyFrame(Frame):
                     fill_frame=last_row)
                 self.add_layout(twin_layout)
 
-                box1 = ListingBox(box_height, name=item[0].name)
+                box1 = ListingBox(item[0], box_height)
+                self._box_widgets.append(box1)
                 twin_layout.add_widget(box1, 0)
-                item[0].widget = box1
 
-                box2 = ListingBox(box_height, name=item[1].name)
+                box2 = ListingBox(item[1], box_height)
+                self._box_widgets.append(box2)
                 twin_layout.add_widget(box2, 2)
-                item[1].widget = box2
             else:
                 # Single box
                 layout = Layout([1,], fill_frame=last_row)
                 self.add_layout(layout)
 
-                box = ListingBox(box_height, name=item.name)
+                box = ListingBox(item, box_height)
+                self._box_widgets.append(box)
                 layout.add_widget(box, 0)
-                item.widget = box
 
             if len(rows) > 1 and (index + 1 < len(rows)):
                 layout = Layout([1,])
@@ -131,62 +126,79 @@ class PurdyFrame(Frame):
             space -= box_height
 
         self.fix()
-        logger.debug("**** Sizes %s", self._layouts[0]._column_sizes)
 
-    @property
-    def frame_update_count(self):
-        if not self._animating:
-            return super().frame_update_count
+        # Play everything in the initial cell
+        animator.forward()
 
-        # Do Animation
-        widget = self._layouts[0]._columns[0][0]
-        limit = widget._render_limit
+#    @property
+#    def frame_update_count(self):
+#        if not self._animating:
+#            return super().frame_update_count
+#
+#        # Do Animation
+#        widget = self._layouts[0]._columns[0][0]
+#        limit = widget._render_limit
+#
+#        total = 0
+#        for part in widget._listing.lines[limit.line].parts:
+#            total += len(part.text)
+#
+#        limit.pos += 1
+#        if limit.pos > total:
+#            limit.pos = 0
+#            limit.line += 1
+#
+#        if limit.line > len(widget._listing.lines) - 1:
+#            self._animating = False
+#            widget._render_limit = None
+#
+#        # Still animating, come back in 3 frames
+#        return 3
 
-        total = 0
-        for part in widget._value.lines[limit.line].parts:
-            total += len(part.text)
+    def _current_listingbox(self):
+        # If a ListingBox is focused, use it, otherwise use the first one
+        widget = self.focussed_widget
+        if widget is None or not isinstance(widget, ListingBox):
+            widget = self._box_widgets[0]
 
-        limit.pos += 1
-        if limit.pos > total:
-            limit.pos = 0
-            limit.line += 1
-
-        if limit.line > len(widget._value.lines) - 1:
-            self._animating = False
-            widget._render_limit = None
-
-        # Still animating, come back in 3 frames
-        return 3
+        widget.focus()
+        return widget
 
     def process_event(self, event):
-        event = super().process_event(event)
 
         if isinstance(event, KeyboardEvent):
             if event.key_code in NUM_KEYS:
                 self._num_command.append(chr(event.key_code))
+                logger.debug("Got num key %s, total is %s",
+                    chr(event.key_code), "".join(self._num_command))
                 return None
             elif event.key_code == ord('h'):
                 # Highlight the line in the number command
-                widget = self.focussed_widget
-                if isinstance(widget, ListingBox):
-                    if self._num_command:
-                        num = int(''.join(self._num_command))
-                    else:
-                        num = 1
+                widget = self._current_listingbox()
 
-                    widget._value.highlight(num)
+                if self._num_command:
+                    num = int(''.join(self._num_command))
+                else:
+                    num = 1
 
-                    self._canvas.refresh()
-                    self._num_command = []
+                try:
+                    widget._listing.highlight(num)
+                except IndexError:
+                    logger.debug("BEEP")
+                    # print("\a")
+
+                self._canvas.refresh()
+                self._num_command = []
                 return None
             elif event.key_code == ord('H'):
-                widget = self.focussed_widget
-                if isinstance(widget, ListingBox):
-                    widget._value.highlight_off_all()
-                    self._canvas.refresh()
+                for widget in self._box_widgets:
+                    widget._listing.highlight_off_all()
+
+                self._canvas.refresh()
 
                 return None
             elif event.key_code == Screen.KEY_ESCAPE:
+                logger.debug("Cleared num keys")
                 self._num_command = []
                 return None
             elif event.key_code == ord('?'):
@@ -195,8 +207,21 @@ class PurdyFrame(Frame):
                         has_shadow=True)
                 )
                 return None
+            elif event.key_code == Screen.KEY_RIGHT:
+                animator.forward()
+                self._canvas.refresh()
+                return None
+            elif event.key_code == Screen.KEY_LEFT:
+                animator.backward()
+                self._canvas.refresh()
+                return None
+            elif event.key_code == ord('s'):
+                animator.fast_forward()
+                self._canvas.refresh()
+                return None
 
-        return event
+        # We didn't snag the event, use default handling
+        return super().process_event(event)
 
 # ===========================================================================
 # Listing Tools
@@ -246,16 +271,6 @@ class _ViewPortLine:
 
 # ---------------------------------------------------------------------------
 
-class ListingProxy:
-    def __init__(self, widget=None):
-        self._widget = widget
-
-    def __getattr__(self, name):
-        fn = getattr(self._widget._value, name)
-        return fn
-
-# ---------------------------------------------------------------------------
-
 class ListingBox(Widget):
     """
     A ListingBox is a widget for multi-line read-only text viewing.
@@ -268,28 +283,23 @@ class ListingBox(Widget):
 #        "_reflowed_text_cache", "_parser", "_readonly", "_line_cursor",
 #        "_auto_scroll", ]
 
-    def __init__(self, height, label=None, name=None, as_string=False,
-            line_wrap=False, parser=None, on_change=None, **kwargs):
+    def __init__(self, box, height):
         """
         :param height: The required number of input lines for this ListingBox.
-        :param label: An optional label for the widget.
         :param name: The name for the ListingBox.
-        :param line_wrap: Whether to wrap at the end of the line.
-        :param parser: Optional parser to colour text.
 
         Also see the common keyword arguments in :py:obj:`.Widget`.
         """
-        super(ListingBox, self).__init__(name, **kwargs)
-        self._label = label
+        super(ListingBox, self).__init__(name=str(box))
+        self._listing = box.listing
+
+        self._label = None
 
         self._viewport_row = 0
 
         self._required_height = height
-        self._parser = parser
         self._readonly = True
-        self._line_cursor = True
-        self._cursor_colour = Screen.COLOUR_WHITE
-        self._auto_scroll = False
+        self._auto_scroll = box.auto_scroll
 
         self._content = []
         self._listing_stamp = -1
@@ -338,7 +348,7 @@ class ListingBox(Widget):
                     fg, attr, bg)
 
     def update(self, frame_no):
-        if self._listing_stamp < self._value.change_stamp:
+        if self._listing_stamp < self._listing.change_stamp:
             self._generate_content()
 
         # Clear out the existing box content
@@ -417,13 +427,14 @@ class ListingBox(Widget):
         #
         # Each content line is one or more tuples containing colour
         # information and text for display on a viewport line
+        old_size = len(self._content)
         self._content = []
 
         # Split point for wrapping text is one less than width to make room
         # for the scroll indicator
         width = self._w - 1
 
-        for index, line in enumerate(self._value):
+        for index, line in enumerate(self._listing):
             theme = THEMES[line.spec.name]
             ancestors = ANCESTORS[line.spec.name]
             bg = theme['Background']
@@ -461,25 +472,26 @@ class ListingBox(Widget):
 
                 self._content.append(viewport_line)
 
-        if self._auto_scroll and self._content:
+        if self._auto_scroll and old_size < len(self._content):
             # Scroll to the bottom
-            self._change_line( len(self._content) )
+            self._change_vscroll( len(self._content) )
 
         # Track the state marker of the listing so we can detect when it
         # changes
-        self._listing_stamp = self._value.change_stamp
+        self._listing_stamp = self._listing.change_stamp
 
-        logger.debug("**** Content built %s", len(self._content))
-        for line in self._content:
-            logger.debug("   %s",
-                (f"_ViewPortLine(listing_index={line.listing_index}, "
-                f"wrapcount={line.wrap_count},")
-            )
-            for part in line.parts:
-                logger.debug("      => (%4s,%4s,%4s) *%s*", part.fg, part.attr,
-                    part.bg, part.text)
+        #logger.debug("**** Content built vlines=%s stamp=%s",
+        #    len(self._content), self._listing_stamp)
+        #for line in self._content:
+        #    logger.debug("   %s",
+        #        (f"_ViewPortLine(listing_index={line.listing_index}, "
+        #        f"wrapcount={line.wrap_count},")
+        #    )
+        #    for part in line.parts:
+        #        logger.debug("      => (%4s,%4s,%4s) *%s*", part.fg, part.attr,
+        #            part.bg, part.text)
 
-            logger.debug(")")
+        #    logger.debug(")")
 
     # ----
     # Event Management
@@ -563,7 +575,7 @@ class ListingBox(Widget):
             self._change_vscroll( len(self._content) )
             return None
         elif event.key_code == ord('n'):
-            self._value.toggle_line_numbers()
+            self._listing.toggle_line_numbers()
             self._generate_content()
             return None
 
@@ -593,24 +605,13 @@ class ListingBox(Widget):
 
     @property
     def value(self):
-        """
-        The current value for this ListingBox is a
-        :class:`purdy.content.Listing` object.
-        """
-        if self._value is None:
-            self._value = Listing()
-        return self._value
+        # This widget isn't really used in the form, ignore any value stuff
+        return ''
 
     @value.setter
     def value(self, new_value):
-        self._listing_stamp = -1
-        self._value = new_value
-        if new_value is None:
-            self._value = Listing()
-            return
-
-        self._generate_content()
-        self.reset()
+        # This widget isn't really used in the form, ignore any value stuff
+        return
 
     # ----
     # Utilities
