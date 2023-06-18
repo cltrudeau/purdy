@@ -1,7 +1,10 @@
 # tui.animation.py
 from copy import deepcopy
+from logging import getLogger
 
-from purdy.tui.steps import AppendStep
+from purdy.tui.steps import AppendStep, HighlightStep, HighlightOffStep
+
+logger = getLogger(__name__)
 
 # ===========================================================================
 # Cells
@@ -10,6 +13,7 @@ from purdy.tui.steps import AppendStep
 class Cell:
     def __init__(self):
         self.steps = []
+        self.state = {}
 
     def forward(self):
         for step in self.steps:
@@ -22,7 +26,8 @@ class Cell:
         return self.forward()
 
     def backward(self):
-        for step in self.steps:
+        # Back out each of the steps in reverse order
+        for step in reversed(self.steps):
             step.backward()
 
 
@@ -57,11 +62,15 @@ class MultiCell:
         return 1
 
     def backward(self, manager):
+        # ??? Can this somehow store the whole thing and do a massive undo all
+        # in one step?
+
         # Turn off animation and undo all preformed steps
         global animator
         animator.animating = False
 
-        for step in self.steps:
+        # Back out each of the steps in reverse order
+        for step in reversed(self.steps):
             step.backward()
 
 # ===========================================================================
@@ -152,6 +161,26 @@ class ActionManager:
             raise ValueError("Must provide code to append")
 
         animator.append_steps([AppendStep(self.box, *args)])
+        return self
+
+    def highlight(self, *args):
+        if len(args) == 0:
+            raise ValueError("Must provide a line number to highlight")
+
+        animator.append_steps([HighlightStep(self.box, *args)])
+        return self
+
+    def highlight_chain(self, *args):
+        if len(args) == 0:
+            raise ValueError("Must provide a line number to highlight")
+
+        for item in args:
+            on = HighlightStep(self.box, item)
+            off = HighlightOffStep(self.box, item)
+
+            animator.append_steps([on])
+            animator.end_cell()
+            animator.append_steps([off])
         return self
 
     def wait(self):

@@ -5,6 +5,7 @@ Content
 Reperesntations of source code are found in this module.
 """
 from copy import deepcopy
+from dataclasses import dataclass
 from math import log10
 from pathlib import Path
 
@@ -117,6 +118,73 @@ class Code:
         return self._iterate(start, end)
 
 # -----------------------------------------------------------------------------
+
+@dataclass
+class _HighlightIndicator:
+    index: int
+    is_fractional: bool = False
+    start: int = None
+    end: int = None
+
+    @classmethod
+    def indicators(cls, value, listing):
+        # Returns a list of indicators based on a given value
+        length = len(listing.lines)
+
+        if isinstance(value, int):
+            if value > 0:
+                return [cls(value - 1)]
+
+            # Calculate based on negative index
+            return [cls(length + value)]
+        elif isinstance(value, tuple):
+            if value[0] < 0:
+                raise ValueError("Negative indexing not supported for tuples")
+
+            return [cls(num - 1) for num in range(value[0], value[1] + 1)]
+
+        # Must be a string
+        is_positive = True
+        if value[0] == '-':
+            # Negative indexing case
+            is_positive = False
+            value = value[1:]
+
+        if '-' not in value:
+            # Single number case, not a range
+            value = int(value)
+            if is_positive:
+                # 1-indexed for positive numbers
+                return [cls(value - 1)]
+            else:
+                # Calculate based on negative index
+                return [cls(length - value)]
+        else:
+            # Ranged case, possibly fractional
+            left, right = value.split('-')
+            if '.' in left:
+                # Ranged, fractional highlight
+                line_num, start = left.split('.')
+
+                line_num = int(line_num)
+                if is_positive:
+                    # 1-indexed line value
+                    line_num -= 1
+                else:
+                    # Calculate negative index
+                    line_num = length - line_num
+
+                return [cls(line_num, True, int(start) - 1, int(right) - 1)]
+            else:
+                # Ranged highlight with integers
+                left = int(left)
+                if not is_positive:
+                    raise ValueError("Negative indexing not supported"
+                        " with tuples")
+
+                right = int(right)
+                return [cls(num - 1) for num in range(left, right + 1)]
+
 
 class _ListingLine(CodeLine):
     padded_num = lambda n, w: f'{n:{w}} '
@@ -361,20 +429,18 @@ class Listing:
 
         * int: the line number to turn off
         * tuple: the line number range (inclusive) to turn off
+        * string: number and range indicators
+
+        This will turn highlighting off for a line that was highlighted
+        fractionally.
 
         All indicators are 1-indexed. Integer values support negative indexing
         """
         self.change_stamp += 1
-
         for value in args:
-            if isinstance(value, int):
-                if value > 0:
-                    value -= 1
-
-                self.lines[value].highlight_off()
-            elif isinstance(value, tuple):
-                for num in range(value[0], value[1] + 1):
-                    self.lines[num - 1].highlight_off()
+            indicators = _HighlightIndicator.indicators(value, self)
+            for indicator in indicators:
+                self.lines[indicator.index].highlight_off()
 
     def highlight(self, *args):
         """Turns on highlighting for one or more lines. Each argument is a
@@ -405,64 +471,13 @@ class Listing:
         self.change_stamp += 1
 
         for value in args:
-            if isinstance(value, int):
-                if value > 0:
-                    # 1-indexed for positive numbers
-                    value -= 1
-
-                self.lines[value].highlight()
-            elif isinstance(value, tuple):
-                if value[0] < 0:
-                    raise ValueError("Negative indexing not supported")
-
-                for num in range(value[0], value[1] + 1):
-                    self.lines[num - 1].highlight()
-            else:
-                # Must be a string
-                is_positive = True
-                if value[0] == '-':
-                    # Negative indexing case
-                    is_positive = False
-                    value = value[1:]
-
-                if '-' not in value:
-                    # Single number case, not a range
-                    value = int(value)
-                    if is_positive:
-                        # 1-indexed for positive numbers
-                        value -= 1
-                    else:
-                        # Put the negative back in it
-                        value = 0 - value
-
-                    self.lines[value].highlight()
+            indicators = _HighlightIndicator.indicators(value, self)
+            for indicator in indicators:
+                if indicator.is_fractional:
+                    line = self.lines[indicator.index]
+                    line.highlight_fractional(indicator.start, indicator.end)
                 else:
-                    # Ranged case, possibly fractional
-                    left, right = value.split('-')
-                    if '.' in left:
-                        # Ranged, fractional highlight
-                        line_num, start = left.split('.')
-
-                        line_num = int(line_num)
-                        if is_positive:
-                            # 1-indexed line value
-                            line_num -= 1
-                        else:
-                            # Put the negative back in it
-                            line_num = 0 - line_num
-
-                        self.lines[line_num].highlight_fractional(
-                            int(start) - 1, int(right) - 1)
-                    else:
-                        # Ranged highlight with integers
-                        left = int(left)
-                        if not is_positive:
-                            raise ValueError("Negative indexing not supported"
-                                " with tuples")
-
-                        right = int(right)
-                        for num in range(left, right + 1):
-                            self.lines[num - 1].highlight()
+                    self.lines[indicator.index].highlight()
 
     # -----
     # Container operations

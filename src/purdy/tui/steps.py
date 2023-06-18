@@ -17,9 +17,18 @@ class _ListingState:
 
 # ---------------------------------------------------------------------------
 
-class AppendStep:
-    def __init__(self, box, *args):
+class _Undoable:
+    def __init__(self, box):
         self.box = box
+        self.undo = None
+
+    def backward(self):
+        self.box.listing.replace_lines(self.undo.lines)
+
+
+class AppendStep(_Undoable):
+    def __init__(self, box, *args):
+        super().__init__(box)
         self.code_list = []
 
         for item in args:
@@ -32,7 +41,7 @@ class AppendStep:
                 raise ValueError("Unrecognized value to append: ", item)
 
     def __str__(self):
-        output = [f"   AppendStep:"]
+        output = [f"   AppendStep: {self.box.name}"]
         for code in self.code_list:
             output.append(f"      Code: {code.parser.spec.name}")
             for line in code.source.split("\n"):
@@ -46,5 +55,28 @@ class AppendStep:
         for code in self.code_list:
             self.box.listing.append_code(code)
 
-    def backward(self):
-        self.box.listing.replace_lines(self.undo.lines)
+
+class HighlightStep(_Undoable):
+    def __init__(self, box, *args):
+        super().__init__(box)
+        self.highlights = args
+
+    def __str__(self):
+        return f"   HighlightStep: {self.box.name} {self.highlights}"
+
+    def forward(self):
+        self.undo = _ListingState(self.box.listing)
+        self.box.listing.highlight(*self.highlights)
+
+
+class HighlightOffStep(_Undoable):
+    def __init__(self, box, *args):
+        super().__init__(box)
+        self.highlights = args
+
+    def __str__(self):
+        return f"   HighlightOffStep: {self.box.name} {self.highlights}"
+
+    def forward(self):
+        self.undo = _ListingState(self.box.listing)
+        self.box.listing.highlight_off(*self.highlights)
