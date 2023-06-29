@@ -8,4 +8,3 @@ sphinx-rtd-theme==1.2.0
 tox==4.4.5
 twine==4.0.2
 waelstow==0.11.0
--e git+ssh://git@github.com/cltrudeau/purdy.git@3933c82ab4ab1159a53fbc2e24b3882502955e4e#egg=purdy
