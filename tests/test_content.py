@@ -67,7 +67,7 @@ class TestContent(PurdyContentTest):
     #=== Test Methods
 
     def test_construction(self):
-        #---Test consttruction via a Code object. Need to test both py3 and
+        #---Test construction via a Code object. Need to test both py3 and
         # bash to get all parsing cases
         with patch('builtins.open', mock_open(read_data=self.bash_source)):
             code = Code(filename='foo', lexer_name='bash')
@@ -382,3 +382,28 @@ class TestContent(PurdyContentTest):
         listing.fold_lines(1, 1)
         self.assertEqual( FoldedCodeLine(1), listing.lines[0])
         self.assert_line_text('BCD', listing.lines[1:])
+
+    def test_portion(self):
+        # test finding a function
+        code = Code(text=self.py_source)
+        code.python_portion("foo")
+        listing = Listing(code)
+        expected = deepcopy(PY_CODE_LINES)[2:]
+        self.assert_code_parts(expected, listing)
+
+        # test find a function with an integer header
+        code = Code(text=self.py_source)
+        code.python_portion("foo", header=1)
+        listing = Listing(code)
+        expected = deepcopy(PY_CODE_LINES)[2:]
+        expected.insert(0, PY_CODE_LINES[0])
+        self.assert_code_parts(expected, listing)
+
+        # test find a function with a tuple header
+        code = Code(text=self.py_source)
+        code.python_portion("foo", header=(1, 2))
+        listing = Listing(code)
+        expected = deepcopy(PY_CODE_LINES)[2:]
+        expected.insert(0, PY_CODE_LINES[1])
+        expected.insert(0, PY_CODE_LINES[0])
+        self.assert_code_parts(expected, listing)

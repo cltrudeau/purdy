@@ -3,7 +3,10 @@ import unittest, sys
 from waelstow import discover_tests
 
 def get_suite(labels=[]):
-    return discover_tests('tests', labels)
+#    breakpoint()
+#    return discover_tests('tests', labels)
+    tests = discover_tests('tests', labels)
+    return tests
 
 
 if __name__ == '__main__':

@@ -146,7 +146,7 @@ class Code:
 
         return ''
 
-    def python_portion(self, name):
+    def python_portion(self, name, header=None):
         """Treates the source in this object as Python and then finds either
         the named function, class, or assigned variable and replaces the 
         source with only the found item. 
@@ -156,11 +156,31 @@ class Code:
         :param name: dot notated name of a function or class. Examples:
                      `Foo.bar` would find the `bar` method of class `Foo` or
                      an inner function named `bar` in a function named `Foo`
+        :param header: optionally include another part of the source file
+                       before the parsed content. Typically used to include
+                       the header portion of a file. If given an integer, it
+                       will include the first X number of lines. If given a
+                       tuple "(x, y)" includes lines from x to y (inclusive)
         """
+        output = ""
+        if header is not None:
+            content = []
+            lines = self.source.split('\n')
+            if isinstance(header, int):
+                content += lines[0:header]
+            elif isinstance(header, tuple):
+                start = header[0] - 1
+                end = header[1]
+                content += lines[start:end]
+
+            output = "\n".join(content) + "\n"
+
         atok = asttokens.ASTTokens(self.source, parse=True)
         name_parts = name.split('.')
-        self.source = self._descend_ast(atok, atok.tree, name_parts[0],
+        output += self._descend_ast(atok, atok.tree, name_parts[0],
             name_parts[1:])
+
+        self.source = output
         return self
 
     def left_justify(self):

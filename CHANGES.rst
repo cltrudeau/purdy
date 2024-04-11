@@ -1,3 +1,10 @@
+1.13.2
+======
+
+* Add ability to include a header when using the Code.python_portion() method
+* Update requirements bounds to avoid a breaking change from colored==2.0.0
+
+
 1.13.1
 ======
 

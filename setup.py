@@ -37,7 +37,7 @@ SETUP_ARGS = dict(
         'asttokens>=2.0.4',
         'Pygments>=2.14.0',
         'urwid>=2.0.1',
-        'colored>=1.4.2',
+        'colored>=1.4.2,<2',
     ],
     tests_require = [
         'waelstow>=0.10.2',

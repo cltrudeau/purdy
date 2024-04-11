@@ -5,3 +5,7 @@ pyflakes==3.0.1
 tox==4.4.5
 twine==4.0.2
 waelstow==0.11.0
+
+# Python 3.12 removed setup tools
+setuptools==69.2.0
+wheel==0.43.0

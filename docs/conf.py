@@ -23,6 +23,13 @@
 
 # -- Project information -----------------------------------------------------
 
+from pathlib import Path
+import sys
+
+SRC_DIR = Path(__file__).parent / '..'
+SRC_DIR = SRC_DIR.resolve()
+sys.path.insert(0, str(SRC_DIR))
+
 project = 'purdy'
 copyright_start = 2019
 author = 'Christopher Trudeau'
@@ -35,9 +42,8 @@ else:
     copyright = '%d-%d, %s' % (copyright_start, year, author)
 
 # short version number (X.Y)
-import imp
-mod = imp.load_source('purdy_mod', '../purdy/__init__.py')
-version = mod.__version__
+import purdy
+version = purdy.__version__
 
 # -- General configuration ------------------------------------------------
 
@@ -76,7 +82,7 @@ release = version
 #
 # This is also used if you do content translation via gettext catalogs.
 # Usually you set "language" from the command line for these cases.
-language = None
+language = 'en'
 
 # List of patterns, relative to source directory, that match files and
 # directories to ignore when looking for source files.
