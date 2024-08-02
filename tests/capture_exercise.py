@@ -11,7 +11,7 @@ def load_samples_module(mod_name):
     mod_name = mod_name.replace('.', '/')
     filename = samples / f'{mod_name}.py'
 
-    # Change to samples dir, most of the scripts have local referenced files, 
+    # Change to samples dir, most of the scripts have local referenced files,
     # then save so we can reset afterwards
     current_dir = os.getcwd()
     os.chdir(samples)

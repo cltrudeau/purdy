@@ -345,7 +345,7 @@ class Screen:
         #logger.debug(55*'=')
         self._get_args()
         self.actions = actions
- 
+
         if self.args.export or self.args.exportrtf:
             Factory.name = 'virtual'
 

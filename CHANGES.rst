@@ -1,3 +1,9 @@
+1.13.3
+======
+
+* Fix bug where HighlightChain wasn't turning off
+* Changed tox tests to cover 3.8-3.12 (drop 3.7, add 3.12)
+
 1.13.2
 ======
 

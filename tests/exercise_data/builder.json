@@ -222,6 +222,7 @@
   "steps.HighlightLines(\"[1]\", True)",
   "steps.HighlightLines(\"[1]\", False)",
   "steps.HighlightLines(\"[2]\", True)",
+  "steps.HighlightLines(\"[2]\", False)",
   "steps.FoldLines(2, 2)",
   "steps.Sleep()",
   "steps.RunFunction(do_foo, None, args=(), kwargs={})",
@@ -992,6 +993,11 @@
     "content": "print('Hello world')  # comment"
   },
   {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:2",
+    "content": "print('Hello world')  # comment"
+  },
+  {
     "code_box": "CodeBox(id=2)",
     "change_type": "change:2",
     "content": "\u22ee"
@@ -1131,6 +1137,11 @@
     "code_box": "CodeBox(id=2)",
     "change_type": "remove:3",
     "content": ""
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:2",
+    "content": "print('Hello world')  # comment"
   },
   {
     "code_box": "CodeBox(id=1)",
@@ -2852,6 +2863,11 @@
     "code_box": "CodeBox(id=1)",
     "change_type": "change:1",
     "content": "inserting via typewriter.... more text"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:2",
+    "content": "print('Hello world')  # comment"
   },
   {
     "code_box": "CodeBox(id=1)",

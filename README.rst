@@ -96,7 +96,7 @@ Installation
 Supports
 ########
 
-Purdy has been tested with Python 3.7 through 3.11. Terminal control is done
+Purdy has been tested with Python 3.8 through 3.12. Terminal control is done
 with the `Urwid <http://urwid.org/>`_ library. Parsing and tokenization is
 done through `Pygments <https://pygments.org/>`_. Both libraries are
 execellent and I'm grateful they're publically available.

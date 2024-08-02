@@ -10,6 +10,7 @@
   "steps.HighlightLines(\"[2]\", True)",
   "steps.HighlightLines(\"[2]\", False)",
   "steps.HighlightLines(\"[3]\", True)",
+  "steps.HighlightLines(\"[3]\", False)",
   "=== Forward ===",
   {
     "code_box": "CodeBox(id=1)",
@@ -75,6 +76,11 @@
     "code_box": "CodeBox(id=1)",
     "change_type": "change:2",
     "content": ">>> numbers = [6, 3, 9, 1]"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:3",
+    "content": ">>> sorted(numbers)"
   },
   {
     "code_box": "CodeBox(id=1)",
@@ -89,6 +95,11 @@
   },
   {
     "code_box": "CodeBox(id=1)",
+    "change_type": "change:3",
+    "content": ">>> sorted(numbers)"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
     "change_type": "change:2",
     "content": ">>> numbers = [6, 3, 9, 1]"
   },
@@ -217,6 +228,11 @@
     "code_box": "CodeBox(id=1)",
     "change_type": "change:2",
     "content": ">>> numbers = [6, 3, 9, 1]"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:3",
+    "content": ">>> sorted(numbers)"
   },
   {
     "code_box": "CodeBox(id=1)",

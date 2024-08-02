@@ -4,7 +4,7 @@
 #
 # Demonstrates highlight chain action
 
-from purdy.actions import Append, HighlightChain
+from purdy.actions import Append, HighlightChain, Wait
 from purdy.content import Code
 from purdy.ui import SimpleScreen
 
@@ -15,6 +15,7 @@ blob = Code('../display_code/code.py')
 actions = [
     Append(code_box, blob),
     HighlightChain(code_box, ['1-2', '3-4', '5-6', '7-8', '9-12']),
+    Wait()   # make sure the chain turns off
 ]
 
 if __name__ == '__main__':

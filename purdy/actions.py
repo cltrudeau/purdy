@@ -26,6 +26,10 @@ from purdy.animation import steps as steplib
 from purdy.parser import CodePart, CodeLine, parse_source, token_is_a
 from purdy.scribe import range_set_to_list
 
+#import logging
+#logging.basicConfig(filename='debug.log', level=logging.DEBUG)
+#logger = logging.getLogger()
+
 # =============================================================================
 
 def condense(value):
@@ -558,6 +562,10 @@ class HighlightChain:
             ])
 
             previous_numbers = numbers
+
+        if previous_numbers:
+            all_steps.append( steplib.HighlightLines(self.code_box,
+                previous_numbers, False) )
 
         return all_steps
 
