@@ -1,3 +1,12 @@
+1.14
+====
+
+* 2024/11/07
+* Add ability to use plain text in Insert and Append actions
+* Fix bug where "none" lexer was adding an extra newline
+* Add support for Python 3.13
+* Remove support for Python 3.8
+
 1.13.3
 ======
 

@@ -9,10 +9,12 @@ class TestBuilderCoverage(TestCase):
         ### Checks the ActionsBuilder has a method for each of the actions in
         # the actions module
 
-        ignore_functions = ['init', 'iter', 'createcode', 'addaction', 
+        # Introspection finds imports as well as classes, the following lists
+        # are used to cull the imports from the result
+        ignore_functions = ['init', 'iter', 'createcode', 'addaction',
             'switchtocodebox', 'new', 'subclasshook']
-        ignore_actions = ['codepart', 'typewriterstep', 'typewriterbase',
-            'codeline', 'pause']
+        ignore_actions = ['code', 'codepart', 'typewriterstep',
+            'typewriterbase', 'codeline', 'pause']
 
         # create a list of the named actions by introspecting the actions
         # module, removing anything in the ignore list

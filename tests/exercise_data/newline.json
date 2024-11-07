@@ -54,11 +54,6 @@
   },
   {
     "code_box": "CodeBox(id=1)",
-    "change_type": "insert:9",
-    "content": ""
-  },
-  {
-    "code_box": "CodeBox(id=1)",
     "change_type": "change:1",
     "content": ">>> # Python REPL"
   },
@@ -158,11 +153,6 @@
     "change_type": "remove:1",
     "content": ""
   },
-  {
-    "code_box": "CodeBox(id=1)",
-    "change_type": "remove:1",
-    "content": ""
-  },
   "=== Forward ===",
   {
     "code_box": "CodeBox(id=1)",
@@ -203,11 +193,6 @@
     "code_box": "CodeBox(id=1)",
     "change_type": "insert:8",
     "content": ">>> "
-  },
-  {
-    "code_box": "CodeBox(id=1)",
-    "change_type": "insert:9",
-    "content": ""
   },
   {
     "code_box": "CodeBox(id=1)",

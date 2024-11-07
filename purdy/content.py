@@ -19,12 +19,12 @@ from purdy.parser import FoldedCodeLine, parse_source
 class Code:
     """Represents source code from the user.
 
-    :param filename: name of a file to read for content. If both this and 
+    :param filename: name of a file to read for content. If both this and
                      `text` is given, `filename` is used first
 
     :param text: a string containing code
 
-    :param lexer_name: name of lexer to use to tokenize the code, defaults to 
+    :param lexer_name: name of lexer to use to tokenize the code, defaults to
                        'detect', attempting to auto detect the type of
                        content. See :class:`purdy.parser.PurdyLexer` for a
                        list of available lexers.
@@ -33,7 +33,7 @@ class Code:
                          to contain a purdy.parser.PurdyLexer object.
     """
 
-    def __init__(self, filename='', text='', lexer_name='detect', 
+    def __init__(self, filename='', text='', lexer_name='detect',
             purdy_lexer=None):
         self.source = ''
 
@@ -94,7 +94,7 @@ class Code:
         """Replaces the given line with new content
 
         :param line_no: number of the line to replace, 1-indexed
-        :param content: content to replace it with 
+        :param content: content to replace it with
         """
         lines = self.source.split('\n')
         lines[line_no - 1] = content
@@ -107,7 +107,7 @@ class Code:
 
         :param line_no: number of the line to replace, 1-indexed
         :param pos: position number to start the replacement at, 1-indexed
-        :param content: content to replace with 
+        :param content: content to replace with
         """
         lines = self.source.split('\n')
         lines[line_no - 1] = lines[line_no - 1][:pos - 1]
@@ -148,8 +148,8 @@ class Code:
 
     def python_portion(self, name, header=None):
         """Treates the source in this object as Python and then finds either
-        the named function, class, or assigned variable and replaces the 
-        source with only the found item. 
+        the named function, class, or assigned variable and replaces the
+        source with only the found item.
 
         .. warning:: If the named item is not found your source will be empty!
 
@@ -209,9 +209,9 @@ class Code:
 
     def fold_lines(self, start, end):
         """Call this method to replace one or more lines with a vertical
-        elipses, i.e. a fold of the code. 
+        elipses, i.e. a fold of the code.
 
-        :param start: line number of the listing to start code folding on. 
+        :param start: line number of the listing to start code folding on.
                       1-indexed.
         :param end: line number to fold until, inclusive (1-indexed).
         """
@@ -424,9 +424,9 @@ class Listing:
 
     def fold_lines(self, start, end):
         """Call this method to replace one or more lines with a vertical
-        elipses, i.e. a fold of the code. 
+        elipses, i.e. a fold of the code.
 
-        :param start: line number of the listing to start code folding on. 
+        :param start: line number of the listing to start code folding on.
                       1-indexed.
         :param end: line number to fold until, inclusive (1-indexed).
         """
@@ -447,8 +447,8 @@ class Listing:
         """Turns highlighting on for the lines of code
 
         :param highlight: boolean value, True for turning highlighting on
-        :param start: line number to start highlighting on (1-indexed), 
-                      defaults to 1 
+        :param start: line number to start highlighting on (1-indexed),
+                      defaults to 1
         :param end: line number to highlight until, inclusive (1-indexed),
                     a value of -1 indicates to change the highlight from start
                     until the end of the list. Defaults to -1

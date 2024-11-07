@@ -23,6 +23,7 @@ from copy import deepcopy
 from pygments.token import Generic, Token
 
 from purdy.animation import steps as steplib
+from purdy.content import Code
 from purdy.parser import CodePart, CodeLine, parse_source, token_is_a
 from purdy.scribe import range_set_to_list
 
@@ -60,16 +61,21 @@ class Insert:
                      "0" will append the code to the bottom.
 
     :param code: a :class:`purdy.content.Code` object containing the source
-                 code to insert.
+                 code to insert, or a string. Strings are treated as text
+                 without highlighting.
 
     :param pauses: optional list of :class:`purdy.actions.Pause` objects that
                    specify where to insert pauses in the output
     """
     def __init__(self, code_box, position, code, pauses=[]):
         self.code_box = code_box
-        self.code = code
         self.position = position
         self.pauses = pauses
+
+        if isinstance(code, str):
+            self.code = Code(text=code, lexer_name="none")
+        else:
+            self.code = code
 
     def __str__(self):
         content = condense(self.code.source)
@@ -114,7 +120,8 @@ class Append(Insert):
                      into
 
     :param code: a :class:`purdy.content.Code` object containing the source
-                 code to insert.
+                 code to insert, or a string. Strings are treated as text
+                 without highlighting.
 
     :param pauses: optional list of :class:`purdy.actions.Pause` objects that
                    specify where to insert pauses in the output

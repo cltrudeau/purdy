@@ -3,7 +3,7 @@
 ### Example purdy library code
 #
 # Appends the same colourized Python REPL session to the screen multiple
-# times, waiting for a keypress between each
+# times, waiting for a keypress between each, then appends some plain text
 
 from purdy.actions import Append, Wait
 from purdy.content import Code
@@ -26,13 +26,9 @@ actions = [
     Wait(),
     Append(code_box, blob),
     Wait(),
-    Append(code_box, blob),
+    Append(code_box, "This is plain text appended"),
     Wait(),
-    Append(code_box, blob),
-    Wait(),
-    Append(code_box, blob),
-    Wait(),
-    Append(code_box, blob),
+    Append(code_box, "This is plain text appended"),
     Wait(),
 ]
 

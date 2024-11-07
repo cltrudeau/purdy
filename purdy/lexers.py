@@ -27,6 +27,8 @@ class NewlineLexer(Lexer):
     aliases = ["newline"]
 
     def get_tokens_unprocessed(self, text):
-        for token in text.split("\n"):
+        tokens = text.split("\n")
+        for count, token in enumerate(tokens):
             yield 0, Generic.Output, token
-            yield 0, Text, "\n"
+            if count != len(tokens) - 1:
+                yield 0, Text, "\n"
