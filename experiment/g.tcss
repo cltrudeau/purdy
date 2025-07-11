@@ -1,0 +1,35 @@
+Grid {
+    grid-size: 2;
+    grid-columns: 2fr 1fr 1fr;
+    grid-rows: 5 10
+}
+
+.vscroller {
+    border: solid red;
+}
+
+.vscroller:focus {
+    border: solid white;
+}
+
+Dialog {
+    align: center middle;
+}
+
+#dialog_box {
+    background: $panel;
+    border: thick $background;
+    width: auto;
+    height: auto;
+}
+
+#dialog_text {
+    width: auto;
+    height: auto;
+    margin: 1 2 1 2;
+}
+
+#dialog_ok {
+    align: center middle;
+    background: $primary;
+}

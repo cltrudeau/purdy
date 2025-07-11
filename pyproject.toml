@@ -1,0 +1,54 @@
+[build-system]
+requires = ["setuptools>=40.9.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "purdy"
+description = "Terminal based code snippet display tool"
+authors = [{name="Christopher Trudeau", email="ctrudeau+pypi@arsensa.com"}]
+readme = "README.rst"
+license = {file="LICENSE"}
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Environment :: Web Environment",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Programming Language :: Python :: 3.14",
+    "Topic :: Software Development :: Libraries :: Application Frameworks",
+    "Topic :: Software Development :: Libraries :: Python Modules",
+]
+dynamic = ["version"]
+dependencies = [
+    "Pygments==2.19.1",
+    "textual==3.2.0",
+]
+requires-python = ">=3.10"
+
+[project.optional-dependencies]
+build = ["build==1.2.2.post1", "twine==6.1.0"]
+dev = [
+    "coverage==7.9.2",
+    "nox==2025.5.1",
+    "pudb==2025.1",
+    "pyflakes==3.4.0",
+    "Sphinx==8.2.3",
+    "sphinx-rtd-theme==3.0.2",
+    "waelstow==0.12.0",
+]
+
+#[project.scripts]
+#makemanage = "awl.appmanage:_make_manage"
+
+[project.urls]
+repository = "https://github.com/cltrudeau/purdy"
+documentation = "http://purdy.readthedocs.io/en/latest/"
+
+[tool.setuptools.dynamic]
+version = {attr = "purdy.__version__"}
