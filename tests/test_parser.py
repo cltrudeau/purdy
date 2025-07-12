@@ -4,8 +4,8 @@ from unittest import TestCase
 from pygments.lexers import PythonConsoleLexer
 from pygments.token import Token
 
-from purdy.parser import (CodeLine, CodePart, LexerSpec, Parser, token_is_a,
-    token_ancestor)
+from purdy.parser import (CodeLine, CodePart, LexerSpec, Parser, PartsList,
+    token_is_a, token_ancestor)
 
 # =============================================================================
 
@@ -60,6 +60,30 @@ class TestLexerSpec(TestCase):
             LexerSpec.find("not_a_lexer_name")
 
 
+class TestPartsList(TestCase):
+    def test_partslist(self):
+        parts = PartsList()
+        self.assertEqual(0, parts.text_length)
+
+        parts.append(CodePart(Token.Keyword, 'def'))
+        self.assertEqual(3, parts.text_length)
+
+        parts[0] = CodePart(Token.Keyword, 'if')
+        self.assertEqual(2, parts.text_length)
+
+        parts.insert(0, CodePart(Token.Keyword, 'def'))
+        self.assertEqual(5, parts.text_length)
+
+        del parts[1]
+        self.assertEqual(3, parts.text_length)
+
+        second = PartsList()
+        second.append(CodePart(Token.Keyword, 'else'))
+
+        parts.extend(second)
+        self.assertEqual(7, parts.text_length)
+
+
 class TestCodeLine(TestCase):
     def test_codeline(self):
         plain = LexerSpec.built_ins["plain"]
@@ -87,21 +111,6 @@ class TestCodeLine(TestCase):
 
 
 class TestParser(TestCase):
-    def print_code_lines(self, lines, compare=None):
-        for index, line in enumerate(lines):
-            print("---------")
-            if compare:
-                try:
-                    for part in compare[index].parts:
-                        print(part)
-                    print(">>>")
-                except IndexError:
-                    print("!!!!! Size mismatch, only printing lines now")
-                    compare = False
-
-            for part in line.parts:
-                print(part)
-
     def test_constructor(self):
         # Auto detect case
         expected = LexerSpec.built_ins["py"]

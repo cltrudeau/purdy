@@ -129,7 +129,9 @@ LexerSpec.aliases = {
 LexerSpec.names = list(LexerSpec.built_ins.keys()) + \
     list(LexerSpec.aliases.keys())
 
-# ---------------------------------------------------------------------------
+# =============================================================================
+# Code Token Classes
+# =============================================================================
 
 @dataclass
 class CodePart:
@@ -137,10 +139,41 @@ class CodePart:
     text: str
 
 
+class PartsList(list):
+    """Subclass of list that tracks the length of the text fields within the
+    :class:`CodePart` objects inside of it."""
+    def __init__(self):
+        super().__init__()
+        self.text_length = 0
+
+    def __setitem__(self, index, value):
+        # Replacing a value, remove the old length, add the new one
+        self.text_length -= len(self[index].text)
+        super().__setitem__(index, value)
+        self.text_length += len(value.text)
+
+    def __delitem__(self, index):
+        self.text_length -= len(self[index].text)
+        super().__delitem__(index)
+
+    def append(self, value):
+        super().append(value)
+        self.text_length += len(value.text)
+
+    def insert(self, index, value):
+        super().insert(index, value)
+        self.text_length += len(value.text)
+
+    def extend(self, other):
+        super().extend(other)
+        for part in other:
+            self.text_length += len(part.text)
+
+
 @dataclass
 class CodeLine:
     spec: LexerSpec
-    parts: list = field(default_factory=list)
+    parts: PartsList = field(default_factory=PartsList)
     has_newline: bool = False
 
     def __repr__(self):
@@ -160,6 +193,9 @@ class CodeLine:
 
         return True
 
+# =============================================================================
+# Parsing
+# =============================================================================
 
 class Parser:
     """Parser is responsible for parsing code and turning it into a series of

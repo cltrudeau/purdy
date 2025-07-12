@@ -1,9 +1,10 @@
 # handlers/base.py
 #
 # Common classes for code content handlers
+from copy import deepcopy
 from pathlib import Path
 
-from purdy.parser import Parser
+from purdy.parser import Parser, CodeLine, CodePart
 
 # ===========================================================================
 
@@ -13,7 +14,7 @@ class _BaseCode:
     # Expects a concrete implementation to provide an "output_line(index)"
     # method
     def __init__(self):
-        self.wrap = False
+        self.wrap = None
         self.enable_line_numbers = False
         self.starting_line_number = 1
         self.line_number_size = 0
@@ -32,7 +33,7 @@ class _BaseCode:
         # Not a slice
         return self.output_line(index)
 
-    # --- Handle folding
+    # --- Folding
     def fold(self, index, length):
         """Create a fold in the code
 
@@ -74,6 +75,100 @@ class _BaseCode:
         self.fold_set = set()
         for start, size in self.folds:
             self.fold_set.update(range(start, start+size))
+
+    def fold_count(self, index):
+        """Gives information about the fold state of the given line.
+
+        :param index: Index of line to process
+        :return: None if the line is not folded, 1 if the it is the first line
+            in a fold, and 2 if it is deeper in the fold
+        """
+        if index in self.fold_set:
+            # The index is folded, check if it is the first in the fold
+            for start, _ in self.folds:
+                if index == start:
+                    return 1
+
+            # If you get here, then it wasn't the starting point in the fold
+            return 2
+
+        # Not folded
+        return None
+
+    # --- Wrapping
+    def _chunk_line(self, compare, output):
+        wrapped = CodeLine(spec=compare.spec, has_newline=True)
+        length = 0
+
+        for part_count, part in enumerate(compare.parts):
+            length += len(part.text)
+            if length > self.wrap:
+                # Split the line at this point
+                cut_at = self.wrap - length   # -ve, chars from right
+                left_of = part.text[0:cut_at]
+                split_point = left_of.rfind(" ")
+
+                if split_point == -1:
+                    # No split point in the text, move it all into the next
+                    # line
+                    output.append(wrapped)
+
+                    next_line = CodeLine(spec=compare.spec, has_newline=True)
+                    next_line.parts.extend(compare.parts[part_count:])
+                    return next_line
+
+                # Stuff everything to the left into the current line
+                left = CodePart(part.token, part.text[:split_point])
+                wrapped.parts.append(left)
+                output.append(wrapped)
+
+                # Everything else goes into the next line
+                next_line = CodeLine(spec=compare.spec, has_newline=True)
+
+                right = CodePart(part.token, part.text[split_point:])
+                next_line.parts.append(right)
+                next_line.parts.extend(compare.parts[part_count + 1:])
+                return next_line
+            else:
+                # Not a split point, Copy the CodePart into the wrapped line
+                full = CodePart(part.token, part.text)
+                wrapped.parts.append(full)
+
+        # Got through the for-loop without returning, whatever is left is less
+        # than the wrap lenght
+        output.append(compare)
+        return None
+
+    def wrap_line(self, index):
+        """Split a line up into multiple parts based on the wrap length.
+
+        :param index: Index of line to split
+        :returns: Returns a list of :class:`CodeLine` objects based on
+            splitting the given one at the index. If no wrap was needed the
+            list will contain the original :class:`CodeLine`
+        """
+        line = self.lines[index]
+
+        # If wrapping is off, or the line is shorter than the wrap
+        if self.wrap is None or line.parts.text_length < self.wrap:
+            return [line]
+
+        # Perform wrapping
+        #
+        # When a line is split into more than two, the wrap of the second line
+        # starts where the second line got split. Wrapping at 20 does not mean
+        # wrapping every 20 characters, it means no more than 20 past the last
+        # splitting point
+        output = []
+        compare = deepcopy(line)
+
+        while(compare):
+            compare = self._chunk_line(compare, output)
+
+        # Match the newline state of the last line
+        output[-1].has_newline = line.has_newline
+        return output
+
 
 class _Code(_BaseCode):
     """Content handler for code read in from a file.
