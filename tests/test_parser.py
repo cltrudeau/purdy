@@ -7,6 +7,8 @@ from pygments.token import Token
 from purdy.parser import (CodeLine, CodePart, LexerSpec, Parser, PartsList,
     token_is_a, token_ancestor)
 
+from utils import code_liner
+
 # =============================================================================
 
 class TestTokenComparison(TestCase):
@@ -83,6 +85,8 @@ class TestPartsList(TestCase):
         parts.extend(second)
         self.assertEqual(7, parts.text_length)
 
+        self.assertEqual("defelse", parts.all_text)
+
 
 class TestCodeLine(TestCase):
     def test_codeline(self):
@@ -101,12 +105,17 @@ class TestCodeLine(TestCase):
         # Equality test: classes
         self.assertFalse(line == CodeLine(repl))
 
+        # Equality test: newline marker
+        line.has_newline = True
+        self.assertFalse(line == CodeLine(plain))
+        line.has_newline = False
+
         # Equality test: parts count
         line.parts.append(CodePart(Token.Keyword, 'def'))
         self.assertFalse(line == CodeLine(plain))
 
         # Equality test: equal part count but different contents
-        line2 = CodeLine(plain, parts=[CodePart(Token.Keyword, 'if')])
+        line2 = code_liner(plain, False, CodePart(Token.Keyword, 'if'))
         self.assertFalse(line == line2)
 
 
@@ -159,29 +168,29 @@ class TestParser(TestCase):
         content = path.read_text()
 
         expected = [
-            CodeLine(parser.spec, [
+            code_liner(parser.spec, True,
                 CodePart(Token.Comment.Single,
-                    '# Small file for simple parser testing'), ], True),
-
-            CodeLine(parser.spec, [
+                    '# Small file for simple parser testing')
+            ),
+            code_liner(parser.spec, True,
                 CodePart(Token.Keyword, 'def'),
                 CodePart(Token.Text.Whitespace, ' '),
                 CodePart(Token.Name.Function, 'simple'),
                 CodePart(Token.Punctuation, '('),
                 CodePart(Token.Name, 'thing'),
                 CodePart(Token.Punctuation, ')'),
-                CodePart(Token.Punctuation, ':'),], True),
-
-            CodeLine(parser.spec, [
+                CodePart(Token.Punctuation, ':')
+            ),
+            code_liner(parser.spec, True,
                 CodePart(token=Token.Text.Whitespace, text='    '),
                 CodePart(token=Token.Literal.String.Doc,
-                    text='"""This tests'),], True),
-
-            CodeLine(parser.spec, [
+                    text='"""This tests')
+            ),
+            code_liner(parser.spec, True,
                 CodePart(token=Token.Literal.String.Doc,
-                    text='    multi-line strings"""')], True),
-
-            CodeLine(parser.spec, [
+                    text='    multi-line strings"""')
+            ),
+            code_liner(parser.spec, True,
                 CodePart(token=Token.Text, text='    '),
                 CodePart(token=Token.Keyword, text='return'),
                 CodePart(token=Token.Text, text=' '),
@@ -192,12 +201,10 @@ class TestParser(TestCase):
                 CodePart(token=Token.Literal.String.Double, text='"'),
                 CodePart(token=Token.Literal.String.Escape, text='\\n'),
                 CodePart(token=Token.Literal.String.Double, text='Done'),
-                CodePart(token=Token.Literal.String.Double, text='"'),], True),
-
-            CodeLine(parser.spec, [
-                CodePart(Token.Text.Whitespace, ''),], True),
-
-            CodeLine(parser.spec, [
+                CodePart(token=Token.Literal.String.Double, text='"')
+            ),
+            code_liner(parser.spec, True, CodePart(Token.Text.Whitespace, '')),
+            code_liner(parser.spec, True,
                 CodePart(token=Token.Name, text='simple'),
                 CodePart(token=Token.Punctuation, text='('),
                 CodePart(token=Token.Literal.String.Double, text='"'),
@@ -206,11 +213,11 @@ class TestParser(TestCase):
                 CodePart(token=Token.Literal.String.Double,
                     text='With newline'),
                 CodePart(token=Token.Literal.String.Double, text='"'),
-                CodePart(token=Token.Punctuation, text=')'),], False)
+                CodePart(token=Token.Punctuation, text=')')
+            ),
         ]
 
         lines = parser.parse(content)
-        #self.print_code_lines(lines, expected)
         self.assertEqual(expected, lines)
 
     def test_blank_lines(self):
@@ -218,22 +225,20 @@ class TestParser(TestCase):
 
         content = "   \n\nx=1\n"
         expected = [
-            CodeLine(parser.spec, [
-                CodePart(token=Token.Text, text='   '), ], True),
-
-            CodeLine(parser.spec, [
-                CodePart(token=Token.Text.Whitespace, text=''), ], True),
-
-            CodeLine(parser.spec, [
+            code_liner(parser.spec, True,
+                CodePart(token=Token.Text, text='   ')
+            ),
+            code_liner(parser.spec, True,
+                CodePart(token=Token.Text.Whitespace, text='')
+            ),
+            code_liner(parser.spec, True,
                 CodePart(token=Token.Name, text='x'),
                 CodePart(token=Token.Operator, text='='),
-                CodePart(token=Token.Literal.Number.Integer, text='1'), ],
-                True),
+                CodePart(token=Token.Literal.Number.Integer, text='1')
+            ),
         ]
 
         lines = parser.parse(content)
-        #self.print_code_lines(lines)
-        #self.print_code_lines(lines, expected)
         self.assertEqual(expected, lines)
 
     def test_multiline_output(self):
@@ -243,29 +248,29 @@ class TestParser(TestCase):
         content = path.read_text()
 
         expected = [
-            CodeLine(parser.spec, [
-                CodePart(token=Token.Generic.Output, text=''), ], True),
-
-            CodeLine(parser.spec, [
+            code_liner(parser.spec, True,
+                CodePart(token=Token.Generic.Output, text='')
+            ),
+            code_liner(parser.spec, True,
                 CodePart(token=Token.Generic.Prompt, text='$ '),
                 CodePart(token=Token.Text, text='curl'),
                 CodePart(token=Token.Text.Whitespace, text=' '),
                 CodePart(token=Token.Text, text='--include'),
                 CodePart(token=Token.Text.Whitespace, text=' '),
                 CodePart(token=Token.Text,
-                    text='http://127.0.0.1:8000/redirect/'), ], True),
-
-            CodeLine(parser.spec, [
+                    text='http://127.0.0.1:8000/redirect/')
+            ),
+            code_liner(parser.spec, True,
                 CodePart(token=Token.Generic.Output,
-                    text='HTTP/1.1 302 Found'), ],True),
-
-            CodeLine(parser.spec, [
+                    text='HTTP/1.1 302 Found')
+            ),
+            code_liner(parser.spec, True,
                 CodePart(token=Token.Generic.Output,
-                    text='Date: Tue, 21 Apr 2020 19:31:07 GMT'),], False),
+                    text='Date: Tue, 21 Apr 2020 19:31:07 GMT')
+            ),
         ]
 
         lines = parser.parse(content)
-        #self.print_code_lines(lines, expected)
         self.assertEqual(expected, lines)
 
     def test_after_newline(self):
@@ -275,19 +280,19 @@ class TestParser(TestCase):
         parser = Parser("html")
 
         expected = [
-            CodeLine(parser.spec, [
+            code_liner(parser.spec, True,
                 CodePart(token=Token.Punctuation, text='<'),
                 CodePart(token=Token.Name.Tag, text='html'),
-                CodePart(token=Token.Punctuation, text='>'),], True),
-
-            CodeLine(parser.spec, [
+                CodePart(token=Token.Punctuation, text='>')
+            ),
+            code_liner(parser.spec, False,
                 CodePart(token=Token.Text, text='     '),
                 CodePart(token=Token.Comment.Multiline,
-                    text='<!-- comment -->'),], False),
+                    text='<!-- comment -->')
+            ),
         ]
 
         lines = parser.parse(content)
-        #self.print_code_lines(lines, expected)
         self.assertEqual(expected, lines)
 
     def test_empty_token(self):
@@ -296,16 +301,16 @@ class TestParser(TestCase):
         content = """Traceback (most recent call last):\n>>> """
 
         expected = [
-            CodeLine(parser.spec, [
+            code_liner(parser.spec, True,
                 CodePart(token=Token.Generic.Traceback,
-                    text='Traceback (most recent call last):'),], True),
-
-            CodeLine(parser.spec, [
-                CodePart(token=Token.Generic.Prompt, text='>>> '),], False),
+                    text='Traceback (most recent call last):')
+            ),
+            code_liner(parser.spec, False,
+                CodePart(token=Token.Generic.Prompt, text='>>> ')
+            ),
         ]
 
         lines = parser.parse(content)
-        #self.print_code_lines(lines)
         self.assertEqual(expected, lines)
 
 #    def test_foo(self):

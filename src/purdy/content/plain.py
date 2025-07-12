@@ -18,14 +18,18 @@ class _PlainMixin:
             return None
 
         # Transform line into plain text
-        line = self.lines[index]
+        if self.wrap:
+            wrapped = self.wrap_line(index)
+        else:
+            wrapped = [self.lines[index]]
 
         output = ""
-        for part in line.parts:
-            output += part.text
+        for line in wrapped:
+            for part in line.parts:
+                output += part.text
 
-        if line.has_newline:
-            output += "\n"
+            if line.has_newline:
+                output += "\n"
 
         return output
 

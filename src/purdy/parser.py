@@ -142,9 +142,12 @@ class CodePart:
 class PartsList(list):
     """Subclass of list that tracks the length of the text fields within the
     :class:`CodePart` objects inside of it."""
-    def __init__(self):
+    def __init__(self, iterable=None):
         super().__init__()
         self.text_length = 0
+        if iterable:
+            for item in iterable:
+                self.append(item)
 
     def __setitem__(self, index, value):
         # Replacing a value, remove the old length, add the new one
@@ -169,6 +172,12 @@ class PartsList(list):
         for part in other:
             self.text_length += len(part.text)
 
+    @property
+    def all_text(self):
+        # Mostly for debugging, prints out all the text as one blob, ignoring
+        # tokens
+        return "".join([part.text for part in self])
+
 
 @dataclass
 class CodeLine:
@@ -185,6 +194,9 @@ class CodeLine:
             return False
 
         if len(self.parts) != len(compare.parts):
+            return False
+
+        if self.has_newline != compare.has_newline:
             return False
 
         for num, part in enumerate(self.parts):
@@ -278,7 +290,8 @@ class Parser:
     def _newline_handler(self, token_type):
         # hit a CR, time to create a new line
         if not self.line.parts:
-            self.line = CodeLine(self.spec, [CodePart(token_type, '')])
+            self.line = CodeLine(self.spec,
+                PartsList([CodePart(token_type, '')]))
 
         self.line.has_newline = True
         self.lines.append(self.line)
@@ -293,8 +306,9 @@ class Parser:
             self.line.parts.append(part)
 
             if row[-1] == '\n':
+                self.line.has_newline = True
                 self.lines.append(self.line)
-                self.line = CodeLine(self.spec, [])
+                self.line = CodeLine(self.spec)
 
     def _default_handler(self, token_type, text):
         if text[-1] == '\n':

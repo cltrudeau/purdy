@@ -1,20 +1,42 @@
 # tests/utils.py
 
+from purdy.parser import CodeLine
+
+# ===========================================================================
+
+def code_liner(spec, newline, *args):
+    line = CodeLine(spec, has_newline=newline)
+    for arg in args:
+        line.parts.append(arg)
+
+    return line
+
+# ===========================================================================
+# Print Debug Info
+# ===========================================================================
+
+def print_cr(text):
+    output = text.replace("\n", "↩️\n")
+    print("****")
+    print(output)
+    print("****")
+
+
 def print_plain_output(code):
     # Prints output from the plain.TextCode
     print("****")
     for line in code:
         if line is None:
-            print(line)
+            print(None)
         else:
-            print(line, end='')
+            print("➡️", line, "⬅️", end='')
     print("****")
 
 
 def print_code_lines(lines):
     print("****")
     for line in lines:
-        print(f"CodeLine({line.spec.lexer_cls.__name__}")
+        print(f"CodeLine({line.spec.lexer_cls.__name__}, {line.has_newline}")
         for part in line.parts:
             print(f"   ➡️{part.text}⬅️  -- {part.token}")
     print("****")

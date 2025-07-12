@@ -118,14 +118,14 @@ class _BaseCode:
                     return next_line
 
                 # Stuff everything to the left into the current line
-                left = CodePart(part.token, part.text[:split_point])
+                left = CodePart(part.token, part.text[:split_point + 1])
                 wrapped.parts.append(left)
                 output.append(wrapped)
 
                 # Everything else goes into the next line
                 next_line = CodeLine(spec=compare.spec, has_newline=True)
 
-                right = CodePart(part.token, part.text[split_point:])
+                right = CodePart(part.token, part.text[split_point + 1:])
                 next_line.parts.append(right)
                 next_line.parts.extend(compare.parts[part_count + 1:])
                 return next_line

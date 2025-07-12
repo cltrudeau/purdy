@@ -4,6 +4,22 @@ from unittest import TestCase
 from purdy.content.plain import TextCode, Code
 
 # =============================================================================
+# Result Constants
+# =============================================================================
+
+WRAPPED_SIMPLE = "\n".join([
+    r'# Small file for simple parser ',
+    r'testing',
+    r'def simple(thing):',
+    r'    """This tests',
+    r'    multi-line strings"""',
+    r'    return thing + "\nDone"',
+    r'',
+    r'simple("A string\nWith newline")',
+    r'',
+])
+
+# =============================================================================
 
 class TestCodeHandlers(TestCase):
     def test_access(self):
@@ -75,15 +91,22 @@ class TestCodeHandlers(TestCase):
         # wrap.py line 3:
         #
         # if (alpha == 3 or alpha == "a long string") and beta == 5:
-        #                    |              ^=35               |
-        #                    ^=20              ^=split + 20    ^=split + 20
+        #                    |              ^=35                |
+        #                    ^=20              ^=split + 20     ^=split + 20
 
-        # Wrap once on the space at point 34
+        # Wrap once on the space at point 35
         code.wrap = 35
         result = code.wrap_line(2)
         self.assertEqual(2, len(result))
-        self.assertEqual("a long", result[0].parts[-1].text)
-        self.assertEqual(" string", result[1].parts[0].text)
+        self.assertEqual("a long ", result[0].parts[-1].text)
+        self.assertEqual("string", result[1].parts[0].text)
+
+        # Wrap once midword at point 37
+        code.wrap = 37
+        result = code.wrap_line(2)
+        self.assertEqual(2, len(result))
+        self.assertEqual("a long ", result[0].parts[-1].text)
+        self.assertEqual("string", result[1].parts[0].text)
 
         # Wrap twice at size 20
         code.wrap = 20
@@ -91,7 +114,15 @@ class TestCodeHandlers(TestCase):
         self.assertEqual(4, len(result))
         self.assertEqual(" ", result[0].parts[-1].text)
         self.assertEqual("alpha", result[1].parts[0].text)
-        self.assertEqual("a long", result[1].parts[-1].text)
-        self.assertEqual(" string", result[2].parts[0].text)
-        self.assertEqual(" ", result[2].parts[-1].text)
-        self.assertEqual("==", result[3].parts[0].text)
+        self.assertEqual("a long ", result[1].parts[-1].text)
+        self.assertEqual("string", result[2].parts[0].text)
+        self.assertEqual("==", result[2].parts[-1].text)
+        self.assertEqual(" ", result[3].parts[0].text)
+
+        # Test full handling of plain.Code
+        path = (Path(__file__).parent / Path("data/simple.py")).resolve()
+        code = Code(path)
+        code.wrap = 35
+
+        result = "".join(code)
+        self.assertEqual(WRAPPED_SIMPLE, result)
