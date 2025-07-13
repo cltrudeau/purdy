@@ -171,3 +171,79 @@ class TestCodeHandlers(TestCase):
 
         result = "".join(code)
         self.assertEqual(NUMBERED_SIMPLE, result)
+
+    def test_highlighting(self):
+        text = "zero\none\ntwo\nthree and a bit\nfour and a bit"
+        code = TextCode(text, "plain")
+
+        # Int index
+        code.highlight(1)
+        self.assertEqual(set([1]), code.highlighting)
+        code.highlight_all_off()
+
+        # Negative index
+        code.highlight(-1)
+        self.assertEqual(set([4]), code.highlighting)
+        code.highlight_all_off()
+
+        # Tuple (start, length)
+        code.highlight( (1, 3) )
+        self.assertEqual(set([1, 2, 3]), code.highlighting)
+        code.highlight_all_off()
+
+        # Tuple (negative, length)
+        code.highlight( (-2, 2) )
+        self.assertEqual(set([3, 4]), code.highlighting)
+        code.highlight_all_off()
+
+        # String range
+        code.highlight("0-2")
+        self.assertEqual(set([0, 1]), code.highlighting)
+        code.highlight_all_off()
+
+        # Partial Highlighting
+        code.highlight("3:6,3")
+        self.assertEqual({3:(6, 3)}, code.partial_highlighting)
+        code.highlight_all_off()
+
+        # Partial Highlighting, negative index
+        code.highlight("-1:5,3")
+        self.assertEqual({4:(5, 3)}, code.partial_highlighting)
+        code.highlight_all_off()
+
+        # Mixed
+        code.highlight(0, -1, "3:10,1")
+        self.assertEqual(set([0, 4]), code.highlighting)
+        self.assertEqual({3:(10, 1)}, code.partial_highlighting)
+
+        # --- Test Highlight Off
+        code.highlight_all_off() # start empty
+
+        # Int
+        code.highlight(1)
+        code.highlight_off(1)
+        self.assertEqual(set(), code.highlighting)
+
+        # Negative Int
+        code.highlight(-1)
+        code.highlight_off(-1)
+        self.assertEqual(set(), code.highlighting)
+
+        # Tuple (start, length)
+        code.highlight( (3, 2) )
+        code.highlight_off( (3, 2) )
+        self.assertEqual(set(), code.highlighting)
+
+        # Tuple (negative start, length)
+        code.highlight( (-1, 1) )
+        code.highlight_off( (-1, 1) )
+        self.assertEqual(set(), code.highlighting)
+
+        # String range, and goes past limit
+        code.highlight("0-2")
+        code.highlight_off("0-4")
+        self.assertEqual(set(), code.highlighting)
+
+        # Error handling: rejects partial
+        with self.assertRaises(ValueError):
+            code.highlight_off("0:1,4")

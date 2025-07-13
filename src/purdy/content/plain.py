@@ -17,6 +17,11 @@ class _PlainMixin:
             # If you get here, then it wasn't the starting point in the fold
             return None
 
+        #??? Need some sort of line transformation thing that does the line
+        #numbers, wraps, highlight tokens, etc. This method then becomes only
+        #about token and text translation. Transformation can be a list of
+        #CodeLines
+
         # Transform line into plain text
         if self.wrap:
             wrapped = self.wrap_line(index)

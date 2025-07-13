@@ -19,7 +19,8 @@ class _BaseCode:
         self.wrap = None
         self.enable_line_numbers = False
         self.starting_line_number = 1
-        self.highlighting = {}
+        self.highlighting = set()
+        self.partial_highlighting = {}
 
         self.folds = []
         self.fold_set = set()
@@ -195,9 +196,105 @@ class _BaseCode:
         max_line = len(self.lines) + self.starting_line_number
         return int(math.log10(max_line) + 2) * " "
 
+    # --- Highlighting
+    def _parse_partial_highlight(self, indicator):
+        indicator = indicator.replace(" ", "")
+        index, scope = indicator.split(":")
+        start, length = scope.split(",")
+
+        index = int(index)
+        if index < 0:
+            # Negative indexing
+            index = len(self.lines) + index
+
+        self.partial_highlighting[index] = (int(start), int(length))
+
+    def highlight(self, *args):
+        """Turn highlighting on for one or more code lines. Each argument can
+        be an int (index value, supports negative indexing), a tuple
+        (specifying starting line and number of lines to highlight, start line
+        can be negative), a string specifying a range ("1-3" highlights lines
+        1 through 3 inclusive), or a partial highlight.
+
+        Partial highlights support highlighting a subset of a line and are
+        specified by a line number, a colon, a startng character position and
+        a length.  Example "3:15,5" highlights characters 15-20 on index line
+        3. The line number indicator supports negative indexing.
+
+        All start positions are zero indexed.
+        """
+        for arg in args:
+            if isinstance(arg, str) and ":" in arg:
+                # Partial highlights are a special case
+                self._parse_partial_highlight(arg)
+                return
+
+            # Argument is for a full line add it to the highlighting set
+            match arg:
+                case int(indicator):
+                    if indicator < 0:
+                        indicator = len(self.lines) + indicator
+
+                    self.highlighting.add(indicator)
+                case (start, length):
+                    if start < 0:
+                        start = len(self.lines) + start
+
+                    self.highlighting.update(
+                        [x for x in range(start, start + length)])
+                case str(indicator):
+                    indicator = indicator.strip()
+                    start, length = indicator.split("-")
+                    start = int(start)
+                    self.highlighting.update(
+                        [x for x in range(start, start + int(length))])
+
+    def highlight_off(self, *args):
+        """Turns highlighting for one or more code lines. Each argument can be
+        an int line index (negative indexing supported), a tuple (start
+        indexing and number of lines to turn off) or a string specifying a range
+        ("3-5" turns off line indexes 3 through 5).
+
+        This turns off highlighting for both full lines and partial
+        highlights. There is no way of turning off just a single partial
+        inside of a line, if this is needed, turn off the line and turn
+        partial back on for any segments you wish to keep.
+
+        Turning off a line that is not highlighted is ignored.
+        """
+        for arg in args:
+            if isinstance(arg, str) and ":" in arg:
+                raise ValueError("Partials not supported. Turn off full line")
+
+            # Argument is for a full line add it to the highlighting set
+            match arg:
+                case int(indicator):
+                    if indicator < 0:
+                        indicator = len(self.lines) + indicator
+
+                    self.highlighting.remove(indicator)
+                case (start, length):
+                    if start < 0:
+                        start = len(self.lines) + start
+
+                    self.highlighting -= set(
+                        [x for x in range(start, start + length)])
+                case str(indicator):
+                    indicator = indicator.strip()
+                    start, length = indicator.split("-")
+                    start = int(start)
+                    self.highlighting -= set(
+                        [x for x in range(start, start + int(length))])
+
+    def highlight_all_off(self):
+        """Removes all highlighting"""
+        self.highlighting = set()
+        self.partial_highlighting = {}
+
 
 class _Code(_BaseCode):
-    """Content handler for code read in from a file.
+    """Abstract base class for a content handler that reads code read in from
+    a file.
 
     :param filename: Name of file to read of :class:`pathlib.Path` object
     :param parser_identifier: Identifier for :class:`purdy.parser.Parser` to
@@ -212,7 +309,8 @@ class _Code(_BaseCode):
 
 
 class _TextCode(_BaseCode):
-    """Content handler for code read in from a string.
+    """Abstract base class for a content handler that reads code read in from
+    a string.
 
     :param text: Text to parse
     :param parser_identifier: Identifier for :class:`purdy.parser.Parser` to
