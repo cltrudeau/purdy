@@ -23,8 +23,11 @@ class _PlainMixin:
         else:
             wrapped = [self.lines[index]]
 
-        output = ""
-        for line in wrapped:
+        output = self.line_number(index)
+        for count, line in enumerate(wrapped):
+            if count > 0:
+                output += self.line_number_gap()
+
             for part in line.parts:
                 output += part.text
 

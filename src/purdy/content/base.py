@@ -1,6 +1,8 @@
 # handlers/base.py
 #
 # Common classes for code content handlers
+import math
+
 from copy import deepcopy
 from pathlib import Path
 
@@ -17,7 +19,6 @@ class _BaseCode:
         self.wrap = None
         self.enable_line_numbers = False
         self.starting_line_number = 1
-        self.line_number_size = 0
         self.highlighting = {}
 
         self.folds = []
@@ -168,6 +169,31 @@ class _BaseCode:
         # Match the newline state of the last line
         output[-1].has_newline = line.has_newline
         return output
+
+    # --- Line Numbers
+    def line_number(self, index):
+        """Returns the line number for the given index
+
+        :returns: Line number right justified and padded, or empty string if
+            line numbers are not enabled.
+        """
+        if not self.enable_line_numbers:
+            return ""
+
+        max_line = len(self.lines) + self.starting_line_number
+        width = int(math.log10(max_line) + 1)
+        return f"{self.starting_line_number + index:{width}d} "
+
+    def line_number_gap(self):
+        """Returns a whitespace string the width of a line number, useful for
+        when dealing with wrapping
+        """
+        if not self.enable_line_numbers:
+            return ""
+
+        # log10 + 1 = width; add another 1 for the gutter space
+        max_line = len(self.lines) + self.starting_line_number
+        return int(math.log10(max_line) + 2) * " "
 
 
 class _Code(_BaseCode):

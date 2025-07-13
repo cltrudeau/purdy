@@ -19,6 +19,17 @@ WRAPPED_SIMPLE = "\n".join([
     r'',
 ])
 
+NUMBERED_SIMPLE = "\n".join([
+    r' 8 # Small file for simple parser testing',
+    r' 9 def simple(thing):',
+    r'10     """This tests',
+    r'11     multi-line strings"""',
+    r'12     return thing + "\nDone"',
+    r'13 ',
+    r'14 simple("A string\nWith newline")',
+    r'',
+])
+
 # =============================================================================
 
 class TestCodeHandlers(TestCase):
@@ -126,3 +137,37 @@ class TestCodeHandlers(TestCase):
 
         result = "".join(code)
         self.assertEqual(WRAPPED_SIMPLE, result)
+
+    def test_line_numbers(self):
+        text = "\n".join(["a" for x in range(0, 1001)]) + "\n"
+        code = TextCode(text, "plain")
+
+        # Line numbers off
+        self.assertEqual("", code.line_number(0))
+
+        # Starting at 1 (default)
+        code.enable_line_numbers = True
+        self.assertEqual("   1 ", code.line_number(0))
+        self.assertEqual("1001 ", code.line_number(1000))
+
+        # Starting at 10
+        code.starting_line_number = 10
+        self.assertEqual("  10 ", code.line_number(0))
+        self.assertEqual("1010 ", code.line_number(1000))
+
+        # Starting at 9_000
+        code.starting_line_number = 9000
+        self.assertEqual(" 9000 ", code.line_number(0))
+        self.assertEqual("10000 ", code.line_number(1000))
+
+        # Gap
+        self.assertEqual("      ", code.line_number_gap())
+
+        # Test full handling of plain.Code
+        path = (Path(__file__).parent / Path("data/simple.py")).resolve()
+        code = Code(path)
+        code.enable_line_numbers = True
+        code.starting_line_number = 8
+
+        result = "".join(code)
+        self.assertEqual(NUMBERED_SIMPLE, result)

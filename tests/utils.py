@@ -1,6 +1,12 @@
 # tests/utils.py
+from rich.console import Console
 
 from purdy.parser import CodeLine
+
+# ===========================================================================
+
+console = Console(highlight=False)
+rprint = console.print
 
 # ===========================================================================
 
@@ -17,42 +23,48 @@ def code_liner(spec, newline, *args):
 
 def print_cr(text):
     output = text.replace("\n", "↩️\n")
-    print("****")
-    print(output)
-    print("****")
+    console.rule()
+    rprint(output, style="reverse")
+    console.rule()
 
 
 def print_plain_output(code):
     # Prints output from the plain.TextCode
-    print("****")
+    console.rule()
     for line in code:
         if line is None:
-            print(None)
+            rprint(None, style="bold")
         else:
-            print("➡️", line, "⬅️", end='')
-    print("****")
+            rprint("[reverse]" + line + "[/reverse]", end='')
+
+    console.rule()
 
 
 def print_code_lines(lines):
-    print("****")
+    console.rule()
     for line in lines:
-        print(f"CodeLine({line.spec.lexer_cls.__name__}, {line.has_newline}")
+        rprint(f"CodeLine({line.spec.lexer_cls.__name__}, {line.has_newline}")
         for part in line.parts:
-            print(f"   ➡️{part.text}⬅️  -- {part.token}")
-    print("****")
+            rprint(f"   [reverse]{part.text}[/]  -- {part.token}")
+
+    console.rule()
 
 
-def compare_code_lines(self, lines, compare=None):
+def compare_code_lines(lines, compare=None):
+    console.rule()
     for index, line in enumerate(lines):
-        print("---------")
         if compare:
             try:
+                console.rule(style="blue")
                 for part in compare[index].parts:
-                    print(f"   ➡️{part.text}⬅️  -- {part.token}")
-                print(">>>")
+                    rprint(f"   [reverse]{part.text}[/]  -- {part.token}")
+
             except IndexError:
-                print("!!!!! Size mismatch, only printing lines now")
+                rprint("[bold red]" +
+                    "!!!!! Size mismatch, only printing first arg now")
                 compare = False
 
         for part in line.parts:
-            print(f"   ➡️{part.text}⬅️  -- {part.token}")
+            rprint(f"   [reverse]{part.text}[/]  -- {part.token}")
+
+    console.rule()
