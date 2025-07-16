@@ -433,11 +433,6 @@ class Stylizer:
                 part = CodePart(LineNumber, line_no)
                 wrapped[0].parts.insert(0, part)
 
-                for piece in wrapped[1:]:
-                    gap = self.line_number_gap()
-                    part = CodePart(LineNumber, gap)
-                    piece.parts.insert(0, part)
-
             for piece in wrapped:
                 code_copy.append(piece)
 

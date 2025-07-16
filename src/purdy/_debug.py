@@ -34,6 +34,12 @@ if True: # pragma: no cover
         console.rule()
 
 
+    def print_rich_output(text, title=""):
+        console.rule(title)
+        rprint(text)
+        console.rule()
+
+
     def print_code_lines(lines, title=""):
         console.rule(title)
         for line in lines:

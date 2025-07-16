@@ -6,7 +6,7 @@ from pygments.token import Token
 from purdy.parser import (CodeLine, CodePart, HighlightOn, HighlightOff,
     LexerSpec)
 from purdy.content import Code, Stylizer
-from purdy.renderers import plain
+from purdy.renderers.plain import plain
 
 # =============================================================================
 # Result Constants
@@ -37,7 +37,7 @@ NUMBERED_SIMPLE = "\n".join([
 
 WRAPPED_NUMBERED_SIMPLE = "\n".join([
     r' 8 # Small file for simple parser ',
-    r'   testing',
+    r'testing',
     r' 9 def simple(thing):',
     r"10 ⠇",
     r'13 ',
@@ -458,3 +458,27 @@ class TestStylizer(TestCase):
 
         result = style.apply(plain)
         self.assertEqual(WRAPPED_NUMBERED_SIMPLE, result)
+
+
+## Dummy test to play with printing to the screen via rich
+#class TestRich(TestCase):
+#    def test_rich(self):
+#        from purdy.renderers.rich_xfrm import rich_xfrm
+#        from rich.console import Console
+#
+#        console = Console(highlight=False)
+#
+#        console.rule()
+#
+#        path = (Path(__file__).parent.parent /
+#            Path("extras/display_code/code.py")).resolve()
+#        style = Stylizer(Code(path))
+#        style.wrap = 80
+#        style.line_numbers_enabled = True
+#        style.starting_line_number = 8
+#        style.fold(2, 3)
+#
+#        result = style.apply(rich_xfrm)
+#        console.print(result)
+#
+#        console.rule()
