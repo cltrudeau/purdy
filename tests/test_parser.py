@@ -7,7 +7,7 @@ from pygments.token import Token
 from purdy.parser import (CodeLine, CodePart, LexerSpec, Parser, PartsList,
     token_is_a, token_ancestor)
 
-from utils import code_liner
+from shared import code_liner
 
 # =============================================================================
 
@@ -118,6 +118,12 @@ class TestCodeLine(TestCase):
         line2 = code_liner(plain, False, CodePart(Token.Keyword, 'if'))
         self.assertFalse(line == line2)
 
+        # Spawn
+        result = line.spawn()
+        self.assertEqual(line.spec, result.spec)
+        self.assertEqual(line.has_newline, result.has_newline)
+        self.assertEqual(0, len(result.parts))
+
 
 class TestParser(TestCase):
     def test_constructor(self):
@@ -151,13 +157,15 @@ class TestParser(TestCase):
 
         # With newline
         content = "x=1\n"
-        result = parser.parse(content)
+        result = []
+        parser.parse(content, result)
         self.assertEqual(1, len(result))
         self.assertTrue(result[0].has_newline)
 
         # Without newline
         content = "x=1"
-        result = parser.parse(content)
+        result = []
+        parser.parse(content, result)
         self.assertEqual(1, len(result))
         self.assertFalse(result[0].has_newline)
 
@@ -217,8 +225,9 @@ class TestParser(TestCase):
             ),
         ]
 
-        lines = parser.parse(content)
-        self.assertEqual(expected, lines)
+        result = []
+        parser.parse(content, result)
+        self.assertEqual(expected, result)
 
     def test_blank_lines(self):
         parser = Parser("py")
@@ -238,8 +247,9 @@ class TestParser(TestCase):
             ),
         ]
 
-        lines = parser.parse(content)
-        self.assertEqual(expected, lines)
+        result = []
+        parser.parse(content, result)
+        self.assertEqual(expected, result)
 
     def test_multiline_output(self):
         parser = Parser("con")
@@ -270,8 +280,9 @@ class TestParser(TestCase):
             ),
         ]
 
-        lines = parser.parse(content)
-        self.assertEqual(expected, lines)
+        result = []
+        parser.parse(content, result)
+        self.assertEqual(expected, result)
 
     def test_after_newline(self):
         # Some lexers aren't line oriented so you can end up with stuff after
@@ -292,8 +303,9 @@ class TestParser(TestCase):
             ),
         ]
 
-        lines = parser.parse(content)
-        self.assertEqual(expected, lines)
+        result = []
+        parser.parse(content, result)
+        self.assertEqual(expected, result)
 
     def test_empty_token(self):
         # Some lexers spit out empty tokens, purdy should ignore them
@@ -310,16 +322,6 @@ class TestParser(TestCase):
             ),
         ]
 
-        lines = parser.parse(content)
-        self.assertEqual(expected, lines)
-
-#    def test_foo(self):
-#        # Test to experiment with original sample code pieces
-#        path = Path("/Users/ctrudeau/s/purdy1/extras/display_code")
-#
-#        path = path / Path("console.repl")
-#        parser = Parser("repl")
-#
-#        content = path.read_text()
-#        lines = parser.parse(content)
-#
+        result = []
+        parser.parse(content, result)
+        self.assertEqual(expected, result)

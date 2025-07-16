@@ -185,18 +185,23 @@ class CodeLine:
     parts: PartsList = field(default_factory=PartsList)
     has_newline: bool = False
 
+    def spawn(self):
+        """Returns a new :class:`CodeLine` with the same settings as this one
+        but an empty parts list."""
+        return CodeLine(self.spec, has_newline=self.has_newline)
+
     def __repr__(self):
-        return (f"CodeLine({self.spec.lexer_cls.__name__=}, {self.parts=}, "
+        return (f"CodeLine({self.spec.lexer_cls.__name__=}, {self.parts=},"
             f"{self.has_newline=})")
 
     def __eq__(self, compare):
         if self.spec.lexer_cls != compare.spec.lexer_cls:
             return False
 
-        if len(self.parts) != len(compare.parts):
+        if self.has_newline != compare.has_newline:
             return False
 
-        if self.has_newline != compare.has_newline:
+        if len(self.parts) != len(compare.parts):
             return False
 
         for num, part in enumerate(self.parts):
@@ -204,6 +209,21 @@ class CodeLine:
                 return False
 
         return True
+
+    def compress(self):
+        """Looks for sequence of parts in a row with the same token type and
+        merges them.
+        """
+        output = PartsList()
+        previous = None
+        for part in self.parts:
+            if previous and output[-1].token == part.token:
+                output[-1].text += part.text
+            else:
+                output.append(part)
+                previous = part
+
+        self.parts = output
 
 # =============================================================================
 # Parsing
@@ -247,59 +267,63 @@ class Parser:
                 name = 'custom_' + identifier.__name__
                 self.spec = LexerSpec(name, identifier, False, 'code')
 
-    def parse(self, content):
+    def parse(self, content, container):
+        """Parses the given content using the class's associated lexer, adds
+        :class:`CodeLine` objects to the given container.
+
+        :param content: String to be parsed
+        :param container: A list or object with a matching duck-type to
+            populate with `CodeLine` objects
+        """
         # Instantiate the lexer so that it doesn't remove starting newlines,
         # just keeps it the way the content is.
         #
         # NB: it would be nice to also use "ensurenl=False" to stop the stupid
         # appending newlines, but that breaks a whole bunch of the lexers
         lexer = self.spec.lexer_cls(stripnl=False)
-        self.lines = []
         self.line = CodeLine(self.spec)
         for token_type, text in lexer.get_tokens(content):
             if text.startswith('\n'):
-                self._newline_handler(token_type)
+                self._newline_handler(token_type, container)
                 if len(text) > 1:
                     # something came after the \n, handle it
                     #
                     # Example: HTML lexer isn't line oriented, so a \n
                     # followed by in indent is seeing as one chunk of text
-                    self._string_handler(token_type, text[1:])
+                    self._string_handler(token_type, text[1:], container)
             elif text == '':
                 # tokenizer sometimes puts in empty stuff, skip it
                 #
                 # Example: Python Console Lexer and Traceback output
                 continue
             elif token_is_a(token_type, String) and '\n' in text:
-                self._string_handler(token_type, text)
+                self._string_handler(token_type, text, container)
             else:
-                self._default_handler(token_type, text)
+                self._default_handler(token_type, text, container)
 
         # Pygments adds newlines because some of the lexers need it there,
         # get rid of it
-        last_line = self.lines[-1]
+        last_line = container[-1]
         if len(last_line.parts) == 1 and last_line.parts[0].text == '':
             # Got a garbage extra line, remove it
-            del self.lines[-1]
+            del container[-1]
 
         # Fix the last lines newline state
-        self.lines[-1].has_newline = content[-1] == "\n"
+        container[-1].has_newline = content[-1] == "\n"
 
-        return self.lines
-
-    def _newline_handler(self, token_type):
+    def _newline_handler(self, token_type, container):
         # hit a CR, time to create a new line
         if not self.line.parts:
             self.line = CodeLine(self.spec,
                 PartsList([CodePart(token_type, '')]))
 
         self.line.has_newline = True
-        self.lines.append(self.line)
+        container.append(self.line)
 
         # reset to start the next set of tokens
         self.line = CodeLine(self.spec)
 
-    def _string_handler(self, token_type, text):
+    def _string_handler(self, token_type, text, container):
         # String tokens may be multi-line
         for row in text.splitlines(True):
             part = CodePart(token_type, row.rstrip('\n'))
@@ -307,10 +331,10 @@ class Parser:
 
             if row[-1] == '\n':
                 self.line.has_newline = True
-                self.lines.append(self.line)
+                container.append(self.line)
                 self.line = CodeLine(self.spec)
 
-    def _default_handler(self, token_type, text):
+    def _default_handler(self, token_type, text, container):
         if text[-1] == '\n':
             # there is a \n at the end of the text, need to strip it out then
             # start a newline using the same token
@@ -322,7 +346,7 @@ class Parser:
 
             # text caused a CR, create a new line object
             self.line.has_newline = True
-            self.lines.append(self.line)
+            container.append(self.line)
 
             # reset to start the next group of tokens
             self.line = CodeLine(self.spec)
