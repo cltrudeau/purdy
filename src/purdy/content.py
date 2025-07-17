@@ -296,10 +296,22 @@ class Stylizer:
                     self.meta[index].highlight = value
             case str(indicator):
                 indicator = indicator.strip()
-                start, stop = indicator.split("-")
+                if indicator.startswith("-"):
+                    # Negative Number
+                    index = int(indicator)
+                    index = len(self.code) + index
 
-                for index in range(int(start), int(stop) + 1):
                     self.meta[index].highlight = value
+                elif "-" in indicator:
+                    # Range
+                    start, stop = indicator.split("-")
+
+                    for index in range(int(start), int(stop) + 1):
+                        self.meta[index].highlight = value
+                else:
+                    # Positive number
+                    self.meta[int(indicator)].highlight = value
+
 
     def highlight(self, *args):
         """Turn highlighting on for one or more code lines. Each argument can

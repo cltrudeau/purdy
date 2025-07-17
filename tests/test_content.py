@@ -238,6 +238,16 @@ class TestStylizer(TestCase):
         self.assertTrue(style.meta[4].highlight)
         style.reset_metadata()
 
+        # String int
+        style.highlight("0")
+        self.assertTrue(style.meta[0].highlight)
+        style.reset_metadata()
+
+        # String int negative
+        style.highlight("-1")
+        self.assertTrue(style.meta[4].highlight)
+        style.reset_metadata()
+
         # String range
         style.highlight("0-2")
         self.assertTrue(style.meta[0].highlight)
@@ -458,27 +468,3 @@ class TestStylizer(TestCase):
 
         result = style.apply(plain)
         self.assertEqual(WRAPPED_NUMBERED_SIMPLE, result)
-
-
-## Dummy test to play with printing to the screen via rich
-#class TestRich(TestCase):
-#    def test_rich(self):
-#        from purdy.renderers.rich_xfrm import rich_xfrm
-#        from rich.console import Console
-#
-#        console = Console(highlight=False)
-#
-#        console.rule()
-#
-#        path = (Path(__file__).parent.parent /
-#            Path("extras/display_code/code.py")).resolve()
-#        style = Stylizer(Code(path))
-#        style.wrap = 80
-#        style.line_numbers_enabled = True
-#        style.starting_line_number = 8
-#        style.fold(2, 3)
-#
-#        result = style.apply(rich_xfrm)
-#        console.print(result)
-#
-#        console.rule()

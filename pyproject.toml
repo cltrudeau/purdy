@@ -43,8 +43,8 @@ dev = [
     "waelstow==0.12.0",
 ]
 
-#[project.scripts]
-#makemanage = "awl.appmanage:_make_manage"
+[project.scripts]
+subpurdy = "purdy.cmds.subpurdy:main"
 
 [project.urls]
 repository = "https://github.com/cltrudeau/purdy"

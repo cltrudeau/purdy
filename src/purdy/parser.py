@@ -102,6 +102,18 @@ class LexerSpec:
             raise ValueError("Invalid LexerSpec name. Choices are:" +
                 ",".join(cls.names))
 
+    @classmethod
+    def names(cls):
+        return list(LexerSpec.built_ins.keys()) + list(LexerSpec.aliases.keys())
+
+    @classmethod
+    def display_choices(cls):
+        result = []
+        for key, value in cls.built_ins.items():
+            result.append(f"'{key}': {value.description}")
+
+        return ", ".join(result)
+
 
 LexerSpec.built_ins = {
     'repl': LexerSpec('Interactive Python 3 console', PythonConsoleLexer,

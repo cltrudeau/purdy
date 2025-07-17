@@ -4,59 +4,60 @@ from pygments.token import Keyword, Name, Comment, String, Error, \
 
 from purdy.parser import (HighlightOn, HighlightOff, Fold, LineNumber,
     token_ancestor)
+from purdy.renderers.utils import percent_s_formatter, format_setup
 
 # ===========================================================================
 
 _code_theme = {
     Token:              "",
     Whitespace:         "",
-    Comment:            "[#66dddd]",
-    Keyword:            "[#dd88dd]",
-    Keyword.Constant:   "[green]",
-    Operator:           "[#aaaaaa]",
-    Punctuation:        "[#88ddff]",
-    Text:               "[#dddddd]",
-    Name:               "[#dddddd]",
-    Name.Builtin:       "[#88aaff]",
-    Name.Builtin.Pseudo:"[#aa6666 bold]",
-    Name.Function:      "[#aaddff]",
-    Name.Class:         "[#aaddff]",
-    Name.Exception:     "[#ffdd66 bold]",
-    Name.Decorator:     "[#ffdd66 bold]",
-    String:             "[#dddddd]",
-    Number:             "[#ff8866]",
-    Generic.Prompt:     "[#ffffff bold]",
-    Generic.Error:      "[#ffdd66 bold]",
-    Generic.Traceback:  "[#dddddd]",
-    Error:              "[#ffdd66 bold]",
+    Comment:            "[#66dddd]%s[/]",
+    Keyword:            "[#dd88dd]%s[/]",
+    Keyword.Constant:   "[green]%s[/]",
+    Operator:           "[#aaaaaa]%s[/]",
+    Punctuation:        "[#88ddff]%s[/]",
+    Text:               "[#dddddd]%s[/]",
+    Name:               "[#dddddd]%s[/]",
+    Name.Builtin:       "[#88aaff]%s[/]",
+    Name.Builtin.Pseudo:"[#aa6666 bold]%s[/]",
+    Name.Function:      "[#aaddff]%s[/]",
+    Name.Class:         "[#aaddff]%s[/]",
+    Name.Exception:     "[#ffdd66 bold]%s[/]",
+    Name.Decorator:     "[#ffdd66 bold]%s[/]",
+    String:             "[#dddddd]%s[/]",
+    Number:             "[#ff8866]%s[/]",
+    Generic.Prompt:     "[#ffffff bold]%s[/]",
+    Generic.Error:      "[#ffdd66 bold]%s[/]",
+    Generic.Traceback:  "[#dddddd]%s[/]",
+    Error:              "[#ffdd66 bold]%s[/]",
 
     # Purdy tokens
-    HighlightOn:        "[reverse]",
+    HighlightOn:        "[reverse]%s",
     HighlightOff:       "[/reverse]",
-    Fold:               "[white]",
-    LineNumber:         "[#7f7f7f]",
+    Fold:               "[white]%s[/]",
+    LineNumber:         "[#7f7f7f]%s[/]",
 }
 
 
 _xml_theme = dict(_code_theme)
 _xml_theme.update({
-    Name.Attribute: "[#cdcd00]",
-    Keyword:        "[#88aaff]",
-    Name.Tag:       "[#88aaff]",
-    Punctuation:    "[#88aaff]",
+    Name.Attribute: "[#cdcd00]%s[/]",
+    Keyword:        "[#88aaff]%s[/]",
+    Name.Tag:       "[#88aaff]%s[/]",
+    Punctuation:    "[#88aaff]%s[/]",
 })
 
 
 _doc_theme = dict(_code_theme)
 _doc_theme.update({
-    Name.Tag:           "[#cdcd00]",
-    Name.Attribute:     "[#cdcd00]",
-    Literal:            "[#88aaf]f",
-    Generic.Heading:    "[#cdcd00]",
-    Generic.Subheading: "[#cdcd00]",
-    Generic.Emph:       "[dark_blue]",
-    Generic.Strong:     "[dark_green]",
-    String:             "[dark_magenta]",
+    Name.Tag:           "[#cdcd00]%s[/]",
+    Name.Attribute:     "[#cdcd00]%s[/]",
+    Literal:            "[#88aaff]%s[/]",
+    Generic.Heading:    "[#cdcd00]%s[/]",
+    Generic.Subheading: "[#cdcd00]%s[/]",
+    Generic.Emph:       "[dark_blue]%s[/]",
+    Generic.Strong:     "[dark_green]%s[/]",
+    String:             "[dark_magenta]%s[/]",
 })
 
 
@@ -68,7 +69,7 @@ themes = {
 
 # ===========================================================================
 
-def rich_xfrm(code, theme="code"):
+def rich_xfrm(code, theme="code", no_colour=False):
     """Transforms tokenized content in a :class:`Code` object into a string
     with Rich library formatting.
 
@@ -76,21 +77,6 @@ def rich_xfrm(code, theme="code"):
     :param theme: String for built-in theme name, or dictionary with Rich
         Token:colour attributes pairs
     """
-    if isinstance(theme, str):
-        theme = themes[theme]
-
-    ancestor_list = theme.keys()
-
-    result = ""
-    for line in code:
-        for part in line.parts:
-            token = token_ancestor(part.token, ancestor_list)
-            marker = theme[token]
-            result += marker + part.text
-            if marker:
-                result += "[/]"
-
-        if line.has_newline:
-            result += "\n"
-
+    theme, ancestor_list = format_setup(no_colour, theme, themes)
+    result = percent_s_formatter(code, theme, ancestor_list)
     return result
