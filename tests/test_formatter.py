@@ -24,6 +24,13 @@ text='keyword' fg:'223344' bg:'556677' attrs:'bold'
 no_percent
 """
 
+DUMMY_FORMATTED_ESCAPED = """\
+<not_ancestor>
+text='<comment>' fg:'112233' bg:'' attrs:''
+text='<keyword>' fg:'223344' bg:'556677' attrs:'bold'
+no_percent
+"""
+
 # =============================================================================
 
 class TestFormatter(TestCase):
@@ -53,3 +60,9 @@ class TestFormatter(TestCase):
         formatter = Formatter(theme, dummy_builder, exceptions)
         result = formatter.percent_s(code, ancestor_list)
         self.assertEqual(DUMMY_FORMATTED, result)
+
+        # Test with escape
+        escape = lambda x: f"<{x}>"
+        formatter = Formatter(theme, dummy_builder, exceptions)
+        result = formatter.percent_s(code, ancestor_list, escape)
+        self.assertEqual(DUMMY_FORMATTED_ESCAPED, result)

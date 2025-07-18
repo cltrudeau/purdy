@@ -1,4 +1,6 @@
 # renderers/html.py
+from html import escape
+
 from pygments.token import Token, Whitespace
 
 from purdy.parser import HighlightOn, HighlightOff
@@ -96,7 +98,7 @@ def to_html(style, snippet=True):
         'padding:.2em .6em;"><pre style="margin: 0; line-height:125%">'
     )
 
-    result += formatter.percent_s(code, ancestor_list)
+    result += formatter.percent_s(code, ancestor_list, escape)
 
     if not snippet:
         result += HTML_FOOTER

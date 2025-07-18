@@ -10,7 +10,7 @@ class Thing:
 
     @classmethod
     def stuff(cls, index):
-        """This is a doc string on a class method that has a lot to say in fact so much so that it wraps the line. Twice even, it just goes on forever.
+        """This is a doc string on a class method that has a lot to say in fact so much so that it wraps the line. Twice even, it just goes on forever. It even has some f&nny <haracters in it.
 
         :param index: a parameter whose name is index
         """

@@ -9,7 +9,10 @@ class Formatter:
         for token, fg, bg, attrs in theme.values():
             builder_fn(self.tag_map, token, fg, bg, attrs, exceptions)
 
-    def percent_s(self, code, ancestor_list):
+    def percent_s(self, code, ancestor_list, escape=None):
+        if escape is None:
+            escape = lambda x:x
+
         result = ""
         for line in code:
             for part in line.parts:
@@ -17,11 +20,11 @@ class Formatter:
                 try:
                     marker = self.tag_map[token]
                     if "%s" in marker:
-                        result += marker % part.text
+                        result += marker % escape(part.text)
                     else:
                         result += marker
                 except KeyError:
-                    result += part.text
+                    result += escape(part.text)
 
             if line.has_newline:
                 result += "\n"
