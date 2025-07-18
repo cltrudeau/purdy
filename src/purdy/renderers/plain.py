@@ -1,13 +1,12 @@
 # renderers/plain.py
 
-# ===========================================================================
-
-def plain(code):
+def to_plain(style):
     """Transforms tokenized content in a :class:`Code` object into a plain
     text string.
 
     :param code: `Code` object to translate
     """
+    code = style.decorate()
 
     result = ""
     for line in code:

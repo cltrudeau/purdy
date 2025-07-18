@@ -21,10 +21,6 @@ def lexer_arg(parser):
     for key, value in LexerSpec.aliases.items():
         lexer_help += f"   * '{key}' -- Alias for {value}\n"
 
-    print("***")
-    print(lexer_help)
-    print("***")
-
     parser.add_argument("-l", "--lexer", choices=LexerSpec.names,
         default="detect", help=lexer_help)
 

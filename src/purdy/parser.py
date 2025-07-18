@@ -88,7 +88,7 @@ class LexerSpec:
     description: str
     lexer_cls: object
     console: bool
-    style: str
+    category: str
 
     @classmethod
     def find(cls, name):
@@ -101,10 +101,6 @@ class LexerSpec:
         except KeyError:
             raise ValueError("Invalid LexerSpec name. Choices are:" +
                 ",".join(cls.names))
-
-    @classmethod
-    def names(cls):
-        return list(LexerSpec.built_ins.keys()) + list(LexerSpec.aliases.keys())
 
     @classmethod
     def display_choices(cls):
@@ -321,7 +317,11 @@ class Parser:
             del container[-1]
 
         # Fix the last lines newline state
-        container[-1].has_newline = content[-1] == "\n"
+        try:
+            container[-1].has_newline = content[-1] == "\n"
+        except IndexError:
+            # Empty container case can be ignored
+            pass
 
     def _newline_handler(self, token_type, container):
         # hit a CR, time to create a new line

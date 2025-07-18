@@ -61,6 +61,14 @@ class TestLexerSpec(TestCase):
         with self.assertRaises(ValueError):
             LexerSpec.find("not_a_lexer_name")
 
+    def test_display(self):
+        # Not a full check as that really is just a doubling of the code, but
+        # make sure it doesn't blow up
+        self.assertIn("repl", LexerSpec.names)
+
+        result = LexerSpec.display_choices()
+        self.assertIn("repl", result)
+
 
 class TestPartsList(TestCase):
     def test_partslist(self):

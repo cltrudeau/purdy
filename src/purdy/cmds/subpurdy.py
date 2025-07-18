@@ -4,12 +4,14 @@ import argparse
 from argparse_formatter import FlexiFormatter
 from rich.console import Console
 
-from purdy.content import Code, Stylizer
+from purdy.content import Code
 from purdy.cmds.arg_helpers import (filename_arg, general_args,
     no_colour_arg, style_args)
-from purdy.renderers.html_xfrm import html_xfrm
-from purdy.renderers.rich_xfrm import rich_xfrm
+from purdy.renderers.html import to_html
+from purdy.renderers.rich import to_rich
 from purdy.scribe import print_code_lines
+from purdy.style import Style
+from purdy.themes import THEME_MAP
 
 # =============================================================================
 
@@ -30,7 +32,13 @@ rprint = console.print
 
 def style_factory(code, args):
     ### Set common style parameters based on argparse value
-    style = Stylizer(code)
+    theme_name = "default"
+    if args.nocolour:
+        theme_name = "no_colour"
+
+    theme = THEME_MAP[theme_name][code.parser.spec.category]
+    style = Style(code, theme)
+
     if args.num:
         style.line_numbers_enabled = True
         style.starting_line_number = args.num
@@ -57,7 +65,7 @@ def ansi(args):
     ### 'ansi' sub-command: prints content with ANSI colour highlighting
     code = Code(args.filename, args.lexer)
     style = style_factory(code, args)
-    output = style.apply(rich_xfrm, no_colour=args.nocolour)
+    output = to_rich(style)
     rprint(output)
 
 
@@ -65,10 +73,7 @@ def html(args):
     ### 'html' sub-command: prints content as an HTML div
     code = Code(args.filename, args.lexer)
     style = style_factory(code, args)
-    if args.fullhtml:
-        output = style.apply(html_xfrm, no_colour=args.nocolour, snippet=False)
-    else:
-        output = style.apply(html_xfrm, no_colour=args.nocolour)
+    output = to_html(style, not args.fullhtml)
     print(output)
 
 # =============================================================================
