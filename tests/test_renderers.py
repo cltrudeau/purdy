@@ -18,4 +18,8 @@ class TestRenderers(TestCase):
             fn = getattr(shared, f"generate_{name}")
             text = fn()
 
-            self.assertEqual(expected, text)
+            try:
+                self.assertEqual(expected, text)
+            except AssertionError: # pragma: no cover
+                print(f"*** Failed when testing {name}")
+                raise

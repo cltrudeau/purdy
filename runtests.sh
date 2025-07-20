@@ -2,7 +2,7 @@
 
 find . -name "*.pyc" -exec rm {} \;
 coverage run -p --source=tests,purdy \
-    --omit=src/purdy/_debug.py,tests/gen_compare.py,tests/prich.py \
+    --omit=src/purdy/_debug.py,tests/gen_compare.py,tests/prich.py,tests/print_compare.py \
     ./load_tests.py $@
 
 if [ "$?" = "0" ]; then

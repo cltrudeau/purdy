@@ -9,6 +9,7 @@ from purdy.cmds.arg_helpers import (filename_arg, general_args,
     no_colour_arg, style_args)
 from purdy.renderers.html import to_html
 from purdy.renderers.rich import to_rich
+from purdy.renderers.rtf import to_rtf
 from purdy.scribe import print_code_lines
 from purdy.style import Style
 from purdy.themes import THEME_MAP
@@ -30,14 +31,18 @@ rprint = console.print
 # Utilities
 # =============================================================================
 
-def style_factory(code, args):
+def style_factory(code, args, theme="default"):
     ### Set common style parameters based on argparse value
-    theme_name = "default"
-    if args.nocolour:
-        theme_name = "no_colour"
+    if isinstance(theme, str):
+        if args.nocolour:
+            # Override theme
+            theme = "no_colour"
 
-    theme = THEME_MAP[theme_name][code.parser.spec.category]
+        theme = THEME_MAP[theme][code.parser.spec.category]
+        # else: theme was a Theme object, just use it
+
     style = Style(code, theme)
+    style.background = args.bg
 
     if args.num:
         style.line_numbers_enabled = True
@@ -76,6 +81,15 @@ def html(args):
     output = to_html(style, not args.fullhtml)
     print(output)
 
+
+def rtf(args):
+    ### 'rtf' sub-command: prints content in RTF format
+    code = Code(args.filename, args.lexer)
+    theme = THEME_MAP["rtf"][code.parser.spec.category]
+    style = style_factory(code, args, theme)
+    output = to_rtf(style)
+    print(output)
+
 # =============================================================================
 # Main
 # =============================================================================
@@ -108,6 +122,11 @@ sub.add_argument("--fullhtml", help=("By default only a div with the code is "
     "shown. This flag causes a full HTML doc."), action="store_true")
 style_args(sub)
 sub.set_defaults(func=html)
+
+# --- rtf cmd
+sub = subparsers.add_parser("rtf", help="Prints code as RTF")
+style_args(sub)
+sub.set_defaults(func=rtf)
 
 # === Positional filename argument common to all subs
 filename_arg(parser)

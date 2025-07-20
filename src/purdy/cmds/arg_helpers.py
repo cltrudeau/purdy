@@ -62,6 +62,13 @@ def highlight_arg(parser):
             "characters"
         ), action="append")
 
+
+def bg_arg(parser):
+    parser.add_argument("--bg", help=(
+            "Change the background colour. Indicated using hex RRGGBB format, "
+            "like HTML #AABBCC, but without the leading #"
+        ), type=int, default=None)
+
 # =============================================================================
 # Grouped Argument Builders
 # =============================================================================
@@ -76,3 +83,4 @@ def style_args(parser):
     wrap_arg(parser)
     no_colour_arg(parser)
     highlight_arg(parser)
+    bg_arg(parser)

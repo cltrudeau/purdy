@@ -92,6 +92,58 @@ default_xml = Theme({
 }, default_code)
 
 # ===========================================================================
+# RTF Themes
+# ===========================================================================
+
+rtf_code = Theme({
+    Token:              "",
+    Whitespace:         "",
+    Comment:            ("8f5902", "", "italic"),
+    Keyword:            ("2048a7", "", "bold"),
+    Operator:           ("ce5c00", "", "bold"),
+    Name:               "000000",
+    Name.Builtin:       "3465a4",
+    Name.Function:      "000000",
+    Name.Class:         "000000",
+    Name.Exception:     ("cc0000", "", "bold"),
+    Name.Decorator:     ("5c35cc", "", "bold"),
+    Name.Variable:      "",
+    Name.Constant:      "",
+    Name.Attribute:     "",
+    Name.Tag:           "",
+    Punctuation:        ("000000", "", "bold"),
+    String:             "4e9a06",
+    String.Doc:         ("8f5902", "", "italic"),
+    Number:             ("0000cf", "", "bold"),
+    Generic.Prompt:     "8f5902",
+    Generic.Error:      "ef2929",
+    Generic.Traceback:  ("a40000", "", "bold"),
+    Error:              "ef2929",
+
+    # Purdy tokens
+    HighlightOn:         ("", "d5d5d5", ""),
+    HighlightOff:        "",
+    Fold:                "000000",
+    LineNumber:          "000000",
+})
+
+rtf_xml = Theme({
+    Name.Attribute: ("2048a7", "", "bold"),
+    Name.Tag:       "3465a4",
+    Keyword:        "3465a4",
+    Punctuation:    "3465a4",
+}, rtf_code)
+
+rtf_doc = Theme({
+    Generic.Emph:       "ef2929",
+    Generic.Strong:     ("a40000", "", "bold"),
+    Literal:            "",
+    Generic.Heading:    "a40000",
+    Generic.Subheading: "a40000",
+}, rtf_code)
+
+
+# ===========================================================================
 # Theme Map
 # ===========================================================================
 
@@ -105,5 +157,10 @@ THEME_MAP = {
         "code": no_colour,
         "doc": no_colour,
         "xml": no_colour,
+    },
+    "rtf": {
+        "code": rtf_code,
+        "doc": rtf_doc,
+        "xml": rtf_xml,
     },
 }

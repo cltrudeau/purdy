@@ -4,45 +4,50 @@ from html import escape
 from pygments.token import Token, Whitespace
 
 from purdy.parser import HighlightOn, HighlightOff
-from purdy.renderers.formatter import Formatter
+from purdy.renderers.formatter import Formatter, FormatHookBase
 
 # ===========================================================================
 
-def _format_builder(tag_map, token, fg, bg, attrs, exceptions):
-    if token in exceptions:
-        tag_map[token] = exceptions[token]
-        return
+class HTMLHook(FormatHookBase):
+    def __init__(self):
+        super().__init__()
+        self.hook = escape
 
-    # Default handling
-    if not (fg or bg or attrs):
-        # No formatting
-        tag_map[token] = "%s"
-        return
+    def map_tag(self, tag_map, token, fg, bg, attrs, exceptions):
+        if token in exceptions:
+            tag_map[token] = exceptions[token]
+            return
 
-    tag = ""
-    if fg or bg:
-        tag = '<span style="'
+        # Default handling
+        if not (fg or bg or attrs):
+            # No formatting
+            tag_map[token] = "%s"
+            return
 
-        if fg:
-            tag += f"color: #{fg}; "
+        tag = ""
+        if fg or bg:
+            tag = '<span style="'
 
-        if bg:
-            tag += f"background: #{bg}; "
+            if fg:
+                tag += f"color: #{fg}; "
 
-        tag += '">'
+            if bg:
+                tag += f"background: #{bg}; "
 
-    if "bold" in attrs:
-        tag += "<b>"
+            tag += '">'
 
-    tag += "%s"
+        if "bold" in attrs:
+            tag += "<b>"
 
-    if "bold" in attrs:
-        tag += "</b>"
+        tag += "%s"
 
-    if fg or bg:
-        tag += '</span>'
+        if "bold" in attrs:
+            tag += "</b>"
 
-    tag_map[token] = tag
+        if fg or bg:
+            tag += '</span>'
+
+        tag_map[token] = tag
 
 
 _CODE_TAG_EXCEPTIONS = {
@@ -71,13 +76,14 @@ def to_html(style, snippet=True):
     """Transforms tokenized content in a :class:`Code` object into a string
     representation of HTML.
 
-    :param code: `Code` object to translate
-    :param theme: Theme used for colourization
+    :param style: :class:`Style` object containing `Code` and `Theme` to
+        translate
     :param snippet: When True [default] only show the code in a <div>,
         otherwise wrap it in full HTML document tags.
     """
     code = style.decorate()
-    formatter = Formatter(style.theme, _format_builder, _CODE_TAG_EXCEPTIONS)
+    hook = HTMLHook()
+    formatter = Formatter(style.theme, hook, _CODE_TAG_EXCEPTIONS)
 
     ancestor_list = style.theme.colour_map.keys()
 
@@ -98,7 +104,7 @@ def to_html(style, snippet=True):
         'padding:.2em .6em;"><pre style="margin: 0; line-height:125%">'
     )
 
-    result += formatter.percent_s(code, ancestor_list, escape)
+    result += formatter.percent_s(code, ancestor_list)
 
     if not snippet:
         result += HTML_FOOTER
