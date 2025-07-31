@@ -45,6 +45,7 @@ dev = [
 
 [project.scripts]
 subpurdy = "purdy.cmds.subpurdy:main"
+purdy = "purdy.cmds.purdy:main"
 
 [project.urls]
 repository = "https://github.com/cltrudeau/purdy"

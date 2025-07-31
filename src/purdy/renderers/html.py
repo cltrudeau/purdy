@@ -1,27 +1,27 @@
 # renderers/html.py
-from html import escape
+from html import escape as html_escape
 
 from pygments.token import Token, Whitespace
 
 from purdy.parser import HighlightOn, HighlightOff
-from purdy.renderers.formatter import Formatter, FormatHookBase
+from purdy.renderers.formatter import StrFormatter
 
 # ===========================================================================
 
-class HTMLHook(FormatHookBase):
+class HTMLFormatter(StrFormatter):
     def __init__(self):
         super().__init__()
-        self.hook = escape
+        self.escape = html_escape
 
-    def map_tag(self, tag_map, token, fg, bg, attrs, exceptions):
+    def _map_tag(self, token, fg, bg, attrs, exceptions):
         if token in exceptions:
-            tag_map[token] = exceptions[token]
+            self.tag_map[token] = exceptions[token]
             return
 
         # Default handling
         if not (fg or bg or attrs):
             # No formatting
-            tag_map[token] = "%s"
+            self.tag_map[token] = "{text}"
             return
 
         tag = ""
@@ -39,7 +39,7 @@ class HTMLHook(FormatHookBase):
         if "bold" in attrs:
             tag += "<b>"
 
-        tag += "%s"
+        tag += "{text}"
 
         if "bold" in attrs:
             tag += "</b>"
@@ -47,12 +47,12 @@ class HTMLHook(FormatHookBase):
         if fg or bg:
             tag += '</span>'
 
-        tag_map[token] = tag
+        self.tag_map[token] = tag
 
 
 _CODE_TAG_EXCEPTIONS = {
-    Token:              '%s',
-    Whitespace:         '%s',
+    Token:              '{text}',
+    Whitespace:         '{text}',
 
     # Purdy tokens
     HighlightOn:        '<span style="background: white;">',
@@ -82,8 +82,8 @@ def to_html(style, snippet=True):
         otherwise wrap it in full HTML document tags.
     """
     code = style.decorate()
-    hook = HTMLHook()
-    formatter = Formatter(style.theme, hook, _CODE_TAG_EXCEPTIONS)
+    formatter = HTMLFormatter()
+    formatter.create_tag_map(style.theme, _CODE_TAG_EXCEPTIONS)
 
     ancestor_list = style.theme.colour_map.keys()
 
@@ -104,7 +104,7 @@ def to_html(style, snippet=True):
         'padding:.2em .6em;"><pre style="margin: 0; line-height:125%">'
     )
 
-    result += formatter.percent_s(code, ancestor_list)
+    result += formatter.format_doc(code, ancestor_list)
 
     if not snippet:
         result += HTML_FOOTER

@@ -3,44 +3,48 @@ from purdy.parser import token_ancestor
 
 # =============================================================================
 
-class FormatHookBase:
+class Formatter:
     def __init__(self):
+        self.tag_map = {}
         self.newline = "\n"
         self.escape = lambda x:x
 
-    def map_tag(self, tag_map, token, fg, bg, attrs, exceptions):
-        raise NotImplementedError()
-
-# -----------------------------------------------------------------------------
-
-class Formatter:
-    def __init__(self, theme, hook, exceptions=None):
-        self.tag_map = {}
-        self.hook = hook
+    def create_tag_map(self, theme, exceptions):
         for token, fg, bg, attrs in theme.values():
-            hook.map_tag(self.tag_map, token, fg, bg, attrs, exceptions)
+            self._map_tag(token, fg, bg, attrs, exceptions)
 
-    def percent_s_line(self, line, ancestor_list):
+    def format_doc(self, code, ancestor_list):
         result = ""
-        for part in line.parts:
-            token = token_ancestor(part.token, ancestor_list)
-            try:
-                marker = self.tag_map[token]
-                if "%s" in marker:
-                    result += marker % self.hook.escape(part.text)
-                else:
-                    result += marker
-            except KeyError:
-                result += self.hook.escape(part.text)
-
-        if line.has_newline:
-            result += self.hook.newline
+        for line in code:
+            result += self.format_line(line, ancestor_list)
 
         return result
 
-    def percent_s(self, code, ancestor_list):
+    def _map_tag(self, token, fg, bg, attrs, exceptions):
+        raise NotImplementedError()
+
+    def format_line(self, line, ancestor_list):
+        raise NotImplementedError()
+
+
+class StrFormatter(Formatter):
+    ### Uses str.format() to create stylized output from code; assumes the
+    # ._map_tag() method populated using {text} for any token text to be
+    # inserted
+
+    def format_line(self, line, ancestor_list):
         result = ""
-        for line in code:
-            result += self.percent_s_line(line, ancestor_list)
+        for part in line.parts:
+            token = token_ancestor(part.token, ancestor_list)
+            token_text = self.escape(part.text)
+
+            try:
+                marker = self.tag_map[token]
+                result += marker.format(text=token_text)
+            except KeyError:
+                result += token_text
+
+        if line.has_newline:
+            result += self.newline
 
         return result

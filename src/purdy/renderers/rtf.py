@@ -4,13 +4,13 @@ import struct
 from pygments.token import Token, Whitespace
 
 from purdy.parser import HighlightOn, HighlightOff
-from purdy.renderers.formatter import Formatter, FormatHookBase
+from purdy.renderers.formatter import StrFormatter
 
 # ===========================================================================
 # RTF Specific Utilities
 # ===========================================================================
 
-class RTFHook(FormatHookBase):
+class RTFFormatter(StrFormatter):
     def __init__(self, rtf_doc):
         super().__init__()
         self.newline = "\\\n"
@@ -91,23 +91,23 @@ class RTFHook(FormatHookBase):
         tag += r"\cf0 \cb1"
         return tag
 
-    def map_tag(self, tag_map, token, fg, bg, attrs, exceptions):
+    def _map_tag(self, token, fg, bg, attrs, exceptions):
         if token in exceptions:
-            tag_map[token] = exceptions[token]
+            self.tag_map[token] = exceptions[token]
             return
 
         # Default handling
         if not (fg or bg or attrs):
             # No formatting
-            tag_map[token] = "%s"
+            self.tag_map[token] = "{text}"
             return
 
         tag = self.tag_open(fg, bg, attrs)
-        tag += "%s"
+        tag += "{text}"
         tag += self.tag_close(attrs)
         tag += "\n"
 
-        tag_map[token] = tag
+        self.tag_map[token] = tag
 
 
 class RTFDoc(list):
@@ -207,32 +207,32 @@ def to_rtf(style):
     """
     code = style.decorate()
     doc = RTFDoc(style.background, style.theme)
-    hook = RTFHook(doc)
+    formatter = RTFFormatter(doc)
 
     code_tag_exceptions = {
-        Token:              r"\cf0 %s" + "\n",
-        Whitespace:         r"\cf0 %s" + "\n",
+        Token:      r"\cf0 {text}" + "\n",
+        Whitespace: r"\cf0 {text}" + "\n",
     }
 
     hl_colour = style.theme.colour_map[HighlightOn]
     if isinstance(hl_colour, str):
         index, _ = doc.colour_table[hl_colour]
         code_tag_exceptions.update({
-            HighlightOn:  r"\cf{index} %s" + "\n",
+            HighlightOn:  fr"\cf{index} " + "{text}\n",
             HighlightOff: r"\cf0" + "\n",
         })
     else:
         # Close tag using the auto colour (0) for fg & bg, pass thru attrs
         code_tag_exceptions.update({
-            HighlightOn:  hook.tag_open(*hl_colour) + "%s",
-            HighlightOff: hook.tag_close(hl_colour[2]),
+            HighlightOn:  formatter.tag_open(*hl_colour) + "{text}",
+            HighlightOff: formatter.tag_close(hl_colour[2]),
         })
 
-    formatter = Formatter(style.theme, hook, code_tag_exceptions)
+    formatter.create_tag_map(style.theme, code_tag_exceptions)
     ancestor_list = style.theme.colour_map.keys()
 
     for line in code:
-        doc.append(formatter.percent_s_line(line, ancestor_list))
+        doc.append(formatter.format_line(line, ancestor_list))
 
     result = doc.render()
     return result

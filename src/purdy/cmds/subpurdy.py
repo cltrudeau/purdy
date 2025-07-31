@@ -6,12 +6,11 @@ from rich.console import Console
 
 from purdy.content import Code
 from purdy.cmds.arg_helpers import (filename_arg, general_args,
-    no_colour_arg, style_args)
+    no_colour_arg, style_args, style_factory)
 from purdy.renderers.html import to_html
 from purdy.renderers.rich import to_rich
 from purdy.renderers.rtf import to_rtf
 from purdy.scribe import print_code_lines
-from purdy.style import Style
 from purdy.themes import THEME_MAP
 
 # =============================================================================
@@ -26,35 +25,6 @@ styles of code to the screen.
 
 console = Console(highlight=False)
 rprint = console.print
-
-# =============================================================================
-# Utilities
-# =============================================================================
-
-def style_factory(code, args, theme="default"):
-    ### Set common style parameters based on argparse value
-    if isinstance(theme, str):
-        if args.nocolour:
-            # Override theme
-            theme = "no_colour"
-
-        theme = THEME_MAP[theme][code.parser.spec.category]
-        # else: theme was a Theme object, just use it
-
-    style = Style(code, theme)
-    style.background = args.bg
-
-    if args.num:
-        style.line_numbers_enabled = True
-        style.starting_line_number = args.num
-
-    if args.wrap:
-        style.wrap = args.wrap
-
-    if args.highlight:
-        style.highlight(*args.highlight)
-
-    return style
 
 # =============================================================================
 # Subcommands

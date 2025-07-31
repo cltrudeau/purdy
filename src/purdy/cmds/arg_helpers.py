@@ -4,6 +4,37 @@
 # 'subpurdy'
 from purdy.__init__ import __version__
 from purdy.parser import LexerSpec
+from purdy.style import Style
+from purdy.themes import THEME_MAP
+
+# =============================================================================
+# Style Factory
+# =============================================================================
+
+def style_factory(code, args, theme="default"):
+    ### Set common style parameters based on argparse value
+    if isinstance(theme, str):
+        if args.nocolour:
+            # Override theme
+            theme = "no_colour"
+
+        theme = THEME_MAP[theme][code.parser.spec.category]
+        # else: theme was a Theme object, just use it
+
+    style = Style(code, theme)
+    style.background = args.bg
+
+    if args.num:
+        style.line_numbers_enabled = True
+        style.starting_line_number = args.num
+
+    if args.wrap:
+        style.wrap = args.wrap
+
+    if args.highlight:
+        style.highlight(*args.highlight)
+
+    return style
 
 # =============================================================================
 # Argument Builders for argparse

@@ -3,7 +3,7 @@ from unittest import TestCase
 from pygments.token import Comment, Keyword, Name
 
 from purdy.themes import Theme
-from purdy.renderers.rtf import RTFDoc, RTFHook
+from purdy.renderers.rtf import RTFDoc, RTFFormatter
 
 # =============================================================================
 
@@ -41,17 +41,17 @@ class TestRTF(TestCase):
 
     def test_encode(self):
         # ASCII text
-        self.assertEqual("a", RTFHook.rtf_encode("a"))
-        self.assertEqual(r"a\\b", RTFHook.rtf_encode(r"a\b"))
+        self.assertEqual("a", RTFFormatter.rtf_encode("a"))
+        self.assertEqual(r"a\\b", RTFFormatter.rtf_encode(r"a\b"))
 
         # ASCII above 127
         c = chr(200)  # hex C8
-        self.assertEqual(r"\'c8", RTFHook.rtf_encode(c))
+        self.assertEqual(r"\'c8", RTFFormatter.rtf_encode(c))
 
         # Unicode above 256 but below word boundary
         c = chr(257)
-        self.assertEqual(r"\uc0\u257", RTFHook.rtf_encode(c))
+        self.assertEqual(r"\uc0\u257", RTFFormatter.rtf_encode(c))
 
         # Unicode above 0xD800 is two words
         c = "😂"
-        self.assertEqual(r"\uc0\u55357 \u56834", RTFHook.rtf_encode(c))
+        self.assertEqual(r"\uc0\u55357 \u56834", RTFFormatter.rtf_encode(c))

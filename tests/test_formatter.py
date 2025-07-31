@@ -3,20 +3,21 @@ from unittest import TestCase
 from pygments.token import Keyword, Name, Comment, Whitespace
 
 from purdy.parser import Parser, CodePart
-from purdy.renderers.formatter import Formatter, FormatHookBase
+from purdy.renderers.formatter import Formatter, StrFormatter
 from purdy.themes import Theme
 
 from shared import code_liner
 
 # =============================================================================
 
-class DummyHook(FormatHookBase):
-    def map_tag(self, tags, token, fg, bg, attrs, exceptions):
+class DummyFormatter(StrFormatter):
+    def _map_tag(self, token, fg, bg, attrs, exceptions):
         if token in exceptions:
-            tags[token] = exceptions[token]
+            self.tag_map[token] = exceptions[token]
             return
 
-        tags[token] = f"text='%s' fg:'{fg}' bg:'{bg}' attrs:'{attrs}'"
+        self.tag_map[token] = "text='{text}' " + \
+            f"fg:'{fg}' bg:'{bg}' attrs:'{attrs}'"
 
 DUMMY_FORMATTED = """\
 not_ancestor
@@ -58,18 +59,20 @@ class TestFormatter(TestCase):
         }
 
         # Default theme
-        hook = DummyHook()
-        formatter = Formatter(theme, hook, exceptions)
-        result = formatter.percent_s(code, ancestor_list)
+        formatter = DummyFormatter()
+        formatter.create_tag_map(theme, exceptions)
+        result = formatter.format_doc(code, ancestor_list)
         self.assertEqual(DUMMY_FORMATTED, result)
 
         # Test with escape
-        hook.escape = lambda x: f"<{x}>"
-        formatter = Formatter(theme, hook, exceptions)
-        result = formatter.percent_s(code, ancestor_list)
+        formatter.escape = lambda x: f"<{x}>"
+        result = formatter.format_doc(code, ancestor_list)
         self.assertEqual(DUMMY_FORMATTED_ESCAPED, result)
 
         # Ensure abstractness
-        base = FormatHookBase()
+        base = Formatter()
         with self.assertRaises(NotImplementedError):
-            base.map_tag(None, None, None, None, None, None)
+            base._map_tag(None, None, None, None, None)
+
+        with self.assertRaises(NotImplementedError):
+            base.format_line(None, None)
