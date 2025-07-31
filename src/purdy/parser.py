@@ -82,8 +82,8 @@ class LexerSpec:
     :param console: True if the content is a REPL or console, False otherwise.
         This setting effects how animations and certain kinds of output are
         displayed
-    :param style: Style classification to use for the colourization and
-        rendering map
+    :param category: Classification to use for the colourization and rendering
+        map
     """
     description: str
     lexer_cls: object

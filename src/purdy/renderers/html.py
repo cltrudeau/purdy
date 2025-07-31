@@ -72,20 +72,20 @@ HTML_FOOTER = """\
 </html>
 """
 
-def to_html(style, snippet=True):
+def to_html(motif, snippet=True):
     """Transforms tokenized content in a :class:`Code` object into a string
     representation of HTML.
 
-    :param style: :class:`Style` object containing `Code` and `Theme` to
+    :param motif: :class:`Motif` object containing `Code` and `Theme` to
         translate
     :param snippet: When True [default] only show the code in a <div>,
         otherwise wrap it in full HTML document tags.
     """
-    code = style.decorate()
+    code = motif.decorate()
     formatter = HTMLFormatter()
-    formatter.create_tag_map(style.theme, _CODE_TAG_EXCEPTIONS)
+    formatter.create_tag_map(motif.theme, _CODE_TAG_EXCEPTIONS)
 
-    ancestor_list = style.theme.colour_map.keys()
+    ancestor_list = motif.theme.colour_map.keys()
 
     result = ""
 
@@ -93,10 +93,10 @@ def to_html(style, snippet=True):
     if not snippet:
         result += HTML_HEADER
 
-    if style.background is None:
+    if motif.background is None:
         bg = "222222"
     else:
-        bg = style.background
+        bg = motif.background
 
     result += (
         f'<div style="background :#{bg}; overflow:auto; width:auto; '

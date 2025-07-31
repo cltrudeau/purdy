@@ -4,15 +4,15 @@
 # 'subpurdy'
 from purdy.__init__ import __version__
 from purdy.parser import LexerSpec
-from purdy.style import Style
+from purdy.motif import Motif
 from purdy.themes import THEME_MAP
 
 # =============================================================================
-# Style Factory
+# Motif Factory
 # =============================================================================
 
-def style_factory(code, args, theme="default"):
-    ### Set common style parameters based on argparse value
+def motif_factory(code, args, theme="default"):
+    ### Set common motif parameters based on argparse value
     if isinstance(theme, str):
         if args.nocolour:
             # Override theme
@@ -21,20 +21,20 @@ def style_factory(code, args, theme="default"):
         theme = THEME_MAP[theme][code.parser.spec.category]
         # else: theme was a Theme object, just use it
 
-    style = Style(code, theme)
-    style.background = args.bg
+    motif = Motif(code, theme)
+    motif.background = args.bg
 
     if args.num:
-        style.line_numbers_enabled = True
-        style.starting_line_number = args.num
+        motif.line_numbers_enabled = True
+        motif.starting_line_number = args.num
 
     if args.wrap:
-        style.wrap = args.wrap
+        motif.wrap = args.wrap
 
     if args.highlight:
-        style.highlight(*args.highlight)
+        motif.highlight(*args.highlight)
 
-    return style
+    return motif
 
 # =============================================================================
 # Argument Builders for argparse
@@ -109,7 +109,7 @@ def general_args(parser):
     version_arg(parser)
 
 
-def style_args(parser):
+def motif_args(parser):
     num_arg(parser)
     wrap_arg(parser)
     no_colour_arg(parser)

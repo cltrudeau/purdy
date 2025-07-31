@@ -199,14 +199,15 @@ class RTFDoc(list):
 
 # ===========================================================================
 
-def to_rtf(style):
+def to_rtf(motif):
     """Transforms tokenized content in a :class:`Code` object into a string
     representation of RTF.
 
-    :param style: `Style` object containing the code and theme to translate
+    :param motif: :class:`Motif` object containing the code and theme to
+    translate
     """
-    code = style.decorate()
-    doc = RTFDoc(style.background, style.theme)
+    code = motif.decorate()
+    doc = RTFDoc(motif.background, motif.theme)
     formatter = RTFFormatter(doc)
 
     code_tag_exceptions = {
@@ -214,7 +215,7 @@ def to_rtf(style):
         Whitespace: r"\cf0 {text}" + "\n",
     }
 
-    hl_colour = style.theme.colour_map[HighlightOn]
+    hl_colour = motif.theme.colour_map[HighlightOn]
     if isinstance(hl_colour, str):
         index, _ = doc.colour_table[hl_colour]
         code_tag_exceptions.update({
@@ -228,8 +229,8 @@ def to_rtf(style):
             HighlightOff: formatter.tag_close(hl_colour[2]),
         })
 
-    formatter.create_tag_map(style.theme, code_tag_exceptions)
-    ancestor_list = style.theme.colour_map.keys()
+    formatter.create_tag_map(motif.theme, code_tag_exceptions)
+    ancestor_list = motif.theme.colour_map.keys()
 
     for line in code:
         doc.append(formatter.format_line(line, ancestor_list))

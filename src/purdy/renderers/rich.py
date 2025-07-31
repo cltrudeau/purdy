@@ -40,18 +40,18 @@ _CODE_TAG_EXCEPTIONS = {
 
 # ===========================================================================
 
-def to_rich(style):
+def to_rich(motif):
     """Transforms tokenized content in a :class:`Code` object into a string
     with Rich library formatting.
 
-    :param style: :class:`Style` object containing `Code` and `Theme` to
+    :param motif: :class:`Motif` object containing `Code` and `Theme` to
         translate
     """
-    code = style.decorate()
+    code = motif.decorate()
     formatter = RichFormatter()
-    formatter.create_tag_map(style.theme, _CODE_TAG_EXCEPTIONS)
+    formatter.create_tag_map(motif.theme, _CODE_TAG_EXCEPTIONS)
 
-    ancestor_list = style.theme.colour_map.keys()
+    ancestor_list = motif.theme.colour_map.keys()
     result = formatter.format_doc(code, ancestor_list)
 
     return result

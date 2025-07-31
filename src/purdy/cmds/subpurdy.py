@@ -6,7 +6,7 @@ from rich.console import Console
 
 from purdy.content import Code
 from purdy.cmds.arg_helpers import (filename_arg, general_args,
-    no_colour_arg, style_args, style_factory)
+    no_colour_arg, motif_args, motif_factory)
 from purdy.renderers.html import to_html
 from purdy.renderers.rich import to_rich
 from purdy.renderers.rtf import to_rtf
@@ -39,16 +39,16 @@ def tokens(args):
 def ansi(args):
     ### 'ansi' sub-command: prints content with ANSI colour highlighting
     code = Code(args.filename, args.lexer)
-    style = style_factory(code, args)
-    output = to_rich(style)
+    motif = motif_factory(code, args)
+    output = to_rich(motif)
     rprint(output)
 
 
 def html(args):
     ### 'html' sub-command: prints content as an HTML div
     code = Code(args.filename, args.lexer)
-    style = style_factory(code, args)
-    output = to_html(style, not args.fullhtml)
+    motif = motif_factory(code, args)
+    output = to_html(motif, not args.fullhtml)
     print(output)
 
 
@@ -56,8 +56,8 @@ def rtf(args):
     ### 'rtf' sub-command: prints content in RTF format
     code = Code(args.filename, args.lexer)
     theme = THEME_MAP["rtf"][code.parser.spec.category]
-    style = style_factory(code, args, theme)
-    output = to_rtf(style)
+    motif = motif_factory(code, args, theme)
+    output = to_rtf(motif)
     print(output)
 
 # =============================================================================
@@ -83,19 +83,19 @@ sub.set_defaults(func=tokens)
 # --- ansi cmd
 sub = subparsers.add_parser("ansi", help=("Prints code with colourized ANSI "
     "results in your terminal"))
-style_args(sub)
+motif_args(sub)
 sub.set_defaults(func=ansi)
 
 # --- html cmd
 sub = subparsers.add_parser("html", help="Prints code as HTML")
 sub.add_argument("--fullhtml", help=("By default only a div with the code is "
     "shown. This flag causes a full HTML doc."), action="store_true")
-style_args(sub)
+motif_args(sub)
 sub.set_defaults(func=html)
 
 # --- rtf cmd
 sub = subparsers.add_parser("rtf", help="Prints code as RTF")
-style_args(sub)
+motif_args(sub)
 sub.set_defaults(func=rtf)
 
 # === Positional filename argument common to all subs
