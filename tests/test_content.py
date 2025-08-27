@@ -1,3 +1,4 @@
+from copy import deepcopy
 from pathlib import Path
 from unittest import TestCase
 
@@ -28,3 +29,18 @@ class TestCode(TestCase):
         spawn = code.spawn()
         self.assertEqual(code.parser, spawn.parser)
         self.assertEqual(0, len(spawn))
+
+    def test_chunk(self):
+        text = "\n".join([str(x) for x in range(0, 5)]) + "\n"
+        code = Code.text(text, "plain")
+
+        expected = [deepcopy(line) for line in code[0:3]]
+        result = list(code.chunk(3))
+        self.assertEqual(expected, result)
+
+        expected = [deepcopy(line) for line in code[3:5]]
+        result = list(code.chunk(3))
+        self.assertEqual(expected, result)
+
+        result = list(code.chunk(3))
+        self.assertEqual([], result)

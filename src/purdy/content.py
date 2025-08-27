@@ -28,6 +28,9 @@ class Code(list):
 
         self.parser.parse(path.read_text(), self)
 
+        # !!! Stuff under here has to be copied to the text factory!!!
+        self.current = 0
+
     @classmethod
     def text(cls, text, parser_identifier="py"):
         """Factory method for reading code from a string instead of a file.
@@ -40,6 +43,9 @@ class Code(list):
         obj = Code.__new__(Code)
         obj.parser = Parser(parser_identifier)
         obj.parser.parse(text, obj)
+
+        # !!! Dupe init code
+        obj.current = 0
         return obj
 
     def spawn(self):
@@ -48,3 +54,15 @@ class Code(list):
         obj = Code.__new__(Code)
         obj.parser = self.parser
         return obj
+
+    def chunk(self, amount):
+        """Stateful iterator on a slice of this `Code` object, yields `amount`
+        `CodeLine` objects starting at `self.current`.
+
+        :param amount: Number of `CodeLine` objects to return.
+        :returns: yields a slice of `CodeLine` objects
+        """
+        for line in self[self.current:self.current + amount]:
+            yield line
+
+        self.current += amount
