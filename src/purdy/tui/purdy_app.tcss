@@ -1,0 +1,16 @@
+CodeBox {
+    layers: box_below box_above;
+}
+
+AlwaysVerticalScroll {
+    layer: box_below;
+}
+
+.box_overlay {
+    layer: box_above;
+    visibility: hidden;
+}
+
+.label_overlay {
+    visibility: visible;
+}
