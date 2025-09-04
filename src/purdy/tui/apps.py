@@ -15,53 +15,10 @@ from textual.widget import Widget
 from textual.widgets import Button, Static, Label
 
 from purdy.renderers.textual import to_textual
-from purdy.tui.widgets import CodeBox
+from purdy.tui.animate import AnimationController
+from purdy.tui.codebox import BoxSpec, CodeBox, RowSpec
 
 # =============================================================================
-# App
-# =============================================================================
-
-@dataclass
-class BoxSpec:
-    """Used to describe each text area in the app that will be showing
-    code.
-
-    :param width: relative width based on other boxes in the row. For example,
-        row_specs=[Box_Spec(2), BoxSpec(1)] results in a single row where the
-        first box takes up 2/3rds of the space.
-
-    :param line_number: Starting line number for code displayed in the box.
-        Defaults to None
-
-    :param auto_scroll: True to scroll down when content gets added
-
-    :param border: A string specifying which borders are on for this box.
-        Expects the letters "t", "b", "l", "r" in any order for turning on the
-        top, bottom, left, and right borders respectively. Defaults to no
-        borders.
-    """
-
-    width: int
-    line_number: int = None
-    auto_scroll: bool = False
-    border: str = ""
-
-
-@dataclass
-class RowSpec:
-    """Container for a row of :class:`BoxSpec` objects to describe a row in
-    the display grid.
-
-    :param height: relative height of this row in comparison to others in the
-        grid. For example [RowSpec(2, ...), RowSpec(1,...)] produces two rows
-        with the first taking up 2/3rds of the height of the screen.
-
-    :param boxes: a list of :class:`BoxSpec` objects in this row
-    """
-    height: int
-    boxes: list
-
-# -----------------------------------------------------------------------------
 
 class PurdyApp(App):
     CSS_PATH = "purdy_app.tcss"
@@ -86,10 +43,7 @@ class PurdyApp(App):
                     # Use the first row as the blueprint for the width
                     self.grid_width += box_spec.width
 
-                id_string = f"code_box_{row_num}x{box_num}"
-                box = CodeBox(id=id_string, border=box_spec.border)
-                box.styles.row_span = row_spec.height
-                box.styles.column_span = box_spec.width
+                box = CodeBox(row_spec, box_spec)
                 self.rows[-1].append(box)
 
     def compose(self) -> ComposeResult:
@@ -97,15 +51,22 @@ class PurdyApp(App):
             if self.max_height is not None:
                 self.grid.styles.max_height = self.max_height
 
+            # Loop through the CodeBoxes and compose their widgets
             for row in self.rows:
                 for box in row:
-                    yield box
+                    yield box.holder
 
             self.grid.styles.grid_size_rows = self.grid_height
             self.grid.styles.grid_size_columns = self.grid_width
 
-    def on_mount(self):
-        self.set_focus(self.query_one("#code_box_0x0"))
+    async def on_mount(self):
+        # Force focus to our first CodeBox, then start animation
+        self.set_focus(self.rows[0][0].holder.code_display)
+        await self.controller.forwards()
+
+    def run(self):
+        self.controller = AnimationController(self)
+        super().run()
 
     async def on_key(self, event):
         key = event.key
@@ -113,11 +74,25 @@ class PurdyApp(App):
         match key:
             case "q" | "Q":
                 exit()
+            case "right":
+                await self.controller.forwards()
+            case "left":
+                await self.controller.backwards()
             case "s":
-                print("Got s")
-#                self.box.vs.scroll_to(y=15)
+                await self.controller.skip()
             case "h":
                 print(50*"=")
+
+        from purdy.tui import animate
+        stuff = []
+        for num, cell in enumerate(animate.cell_list):
+            ptr = " "
+            if num == self.controller.current:
+                ptr = "→"
+
+            stuff.append(f"{ptr} {num} {cell}")
+
+        print("\n".join(stuff))
 
 # =============================================================================
 # Factory Methods
@@ -167,7 +142,7 @@ def split(max_height=None, line_number_top=None, auto_scroll_top=False,
     """
     row_specs = [
         RowSpec(relative_height_top, [
-            BoxSpec(1, line_number_top, auto_scroll_top)]),
+            BoxSpec(1, line_number_top, auto_scroll_top, "b")]),
         RowSpec(relative_height_bottom, [
             BoxSpec(1, line_number_bottom, auto_scroll_bottom)])
     ]

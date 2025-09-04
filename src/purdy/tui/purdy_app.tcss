@@ -1,16 +1,12 @@
-CodeBox {
-    layers: box_below box_above;
+.code_holder {
+    layer: effect_below;
 }
 
-AlwaysVerticalScroll {
-    layer: box_below;
+.effect_holder {
+    layers: effect_below effect_above;
 }
 
-.box_overlay {
-    layer: box_above;
+.effect_overlay {
+    layer: effect_above;
     visibility: hidden;
-}
-
-.label_overlay {
-    visibility: visible;
 }

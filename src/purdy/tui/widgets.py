@@ -141,29 +141,42 @@ class AlwaysVerticalScroll(ScrollableContainer):
         self.vertical_scrollbar.renderer = BlurredTriangleScrollRender
 
 
+class CodeWidget(Container):
+    def __init__(self, border=""):
+        super().__init__(classes="code_widget")
 
-
-class CodeBox(Widget):
-    def __init__(self, id: str, border=""):
         self.border = border.lower()
-        super().__init__(id=id, classes="code_box")
+        self.pad_top = 0
+        self.pad_bottom = 0
+        self.pad_left = 0
+        self.pad_right = 0
+
+        self.code_display = Static("", classes="code_display")
 
     def compose(self) -> ComposeResult:
-        self.overlay = Container(classes="box_overlay")
-        yield self.overlay
+        with Container(classes="effect_holder") as self.effect_holder:
+            self.overlay = Container(classes="effect_overlay")
+            yield self.overlay
 
-        with AlwaysVerticalScroll(classes="vscroller") as self.vs:
-            self.vs.vertical_scrollbar.renderer = BlurredTriangleScrollRender
-            yield Static(self.content, id=self.id + "-static")
+            with Container(classes="code_holder") as self.code_holder:
+                with AlwaysVerticalScroll(classes="vscroller") as self.vs:
+                    self.vs.vertical_scrollbar.renderer = \
+                        BlurredTriangleScrollRender
 
-            if "t" in self.border:
-                self.vs.styles.border_top = ("solid", "white")
-            if "b" in self.border:
-                self.vs.styles.border_bottom = ("solid", "white")
-            if "r" in self.border:
-                self.vs.styles.border_right = ("solid", "white")
-            if "l" in self.border:
-                self.vs.styles.border_left = ("solid", "white")
+                    yield self.code_display
+
+                    if "t" in self.border:
+                        self.vs.styles.border_top = ("solid", "white")
+                        self.pad_top = 1
+                    if "b" in self.border:
+                        self.vs.styles.border_bottom = ("solid", "white")
+                        self.pad_bottom = 1
+                    if "r" in self.border:
+                        self.vs.styles.border_right = ("solid", "white")
+                        self.pad_right = 1
+                    if "l" in self.border:
+                        self.vs.styles.border_left = ("solid", "white")
+                        self.pad_left = 1
 
     async def on_key(self, event):
         key = event.key
@@ -184,7 +197,3 @@ class CodeBox(Widget):
 
                 # Eat event
                 event.stop()
-            case "f":
-                curtain = CurtainEffect(self, pad_right=1, pad_bottom=1)
-                self.overlay.mount(curtain)
-                self.run_worker(curtain.fill_worker(), exclusive=True)
