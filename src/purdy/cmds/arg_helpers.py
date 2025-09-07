@@ -3,38 +3,37 @@
 # Helper utilities for the command line arguments used by 'purdy' and
 # 'subpurdy'
 from purdy.__init__ import __version__
+from purdy.content import Code, MultiCode
 from purdy.parser import LexerSpec
-from purdy.motif import Motif
-from purdy.themes import THEME_MAP
 
 # =============================================================================
 # Motif Factory
 # =============================================================================
 
-def motif_factory(code, args, theme="default"):
-    ### Set common motif parameters based on argparse value
-    if isinstance(theme, str):
-        if args.nocolour:
-            # Override theme
-            theme = "no_colour"
+def multicode_factory(args, theme_name="default"):
+    if args.nocolour:
+        # Override theme
+        theme_name = "no_colour"
 
-        theme = THEME_MAP[theme][code.parser.spec.category]
-        # else: theme was a Theme object, just use it
+    code = Code(args.filename, args.lexer, theme_name)
+    mc = MultiCode(code)
 
-    motif = Motif(code, theme)
-    motif.background = args.bg
+    # Arguments are conditional on the subcommand, so not all args are
+    # available all the time
+    if hasattr(args, "bg"):
+        mc.background = args.bg
 
-    if args.num:
-        motif.line_numbers_enabled = True
-        motif.starting_line_number = args.num
+    if hasattr(args, "num") and args.num:
+        mc.line_numbers_enabled = True
+        mc.starting_line_number = args.num
 
-    if args.wrap:
-        motif.wrap = args.wrap
+    if hasattr(args, "wrap") and args.wrap:
+        mc.wrap = args.wrap
 
-    if args.highlight:
-        motif.highlight(*args.highlight)
+    if hasattr(args, "highlight") and args.highlight:
+        code.highlight(*args.highlight)
 
-    return motif
+    return mc
 
 # =============================================================================
 # Argument Builders for argparse
@@ -98,7 +97,7 @@ def bg_arg(parser):
     parser.add_argument("--bg", help=(
             "Change the background colour. Indicated using hex RRGGBB format, "
             "like HTML #AABBCC, but without the leading #"
-        ), type=int, default=None)
+        ), type=str, default=None)
 
 # =============================================================================
 # Grouped Argument Builders
@@ -109,7 +108,7 @@ def general_args(parser):
     version_arg(parser)
 
 
-def motif_args(parser):
+def mc_args(parser):
     num_arg(parser)
     wrap_arg(parser)
     no_colour_arg(parser)

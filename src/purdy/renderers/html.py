@@ -3,6 +3,7 @@ from html import escape as html_escape
 
 from pygments.token import Token, Whitespace
 
+from purdy.content import Code, MultiCode
 from purdy.parser import HighlightOn, HighlightOff
 from purdy.renderers.formatter import StrFormatter
 
@@ -72,39 +73,39 @@ HTML_FOOTER = """\
 </html>
 """
 
-def to_html(motif, snippet=True):
+def to_html(container, snippet=True):
     """Transforms tokenized content in a :class:`Code` object into a string
     representation of HTML.
 
-    :param motif: :class:`Motif` object containing `Code` and `Theme` to
-        translate
+    :param container: :class:`Code` or :class:`MultiCode` object to translate
     :param snippet: When True [default] only show the code in a <div>,
         otherwise wrap it in full HTML document tags.
     """
-    code = motif.decorate()
-    formatter = HTMLFormatter()
-    formatter.create_tag_map(motif.theme, _CODE_TAG_EXCEPTIONS)
-
-    ancestor_list = motif.theme.colour_map.keys()
-
     result = ""
+    if isinstance(container, Code):
+        container = MultiCode(container)
 
     # Header
     if not snippet:
         result += HTML_HEADER
 
-    if motif.background is None:
-        bg = "222222"
-    else:
-        bg = motif.background
+    for code_index in range(0, len(container)):
+        formatter = HTMLFormatter()
+        formatter.create_tag_map(container[code_index].theme,
+            _CODE_TAG_EXCEPTIONS)
 
-    result += (
-        f'<div style="background :#{bg}; overflow:auto; width:auto; '
-        'border:solid gray; border-width:.1em .1em .1em .8em; '
-        'padding:.2em .6em;"><pre style="margin: 0; line-height:125%">'
-    )
+        if container.background is None:
+            bg = "222222"
+        else:
+            bg = container.background
 
-    result += formatter.format_doc(code, ancestor_list)
+        result += (
+            f'<div style="background :#{bg}; overflow:auto; width:auto; '
+            'border:solid gray; border-width:.1em .1em .1em .8em; '
+            'padding:.2em .6em;"><pre style="margin: 0; line-height:125%">'
+        )
+
+        result += formatter.format_doc(container, code_index)
 
     if not snippet:
         result += HTML_FOOTER

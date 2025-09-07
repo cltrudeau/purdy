@@ -3,6 +3,7 @@ from pygments.token import Token, Whitespace
 
 from rich.markup import escape as rich_escape
 
+from purdy.content import Code, MultiCode
 from purdy.parser import HighlightOn, HighlightOff
 from purdy.renderers.formatter import StrFormatter
 
@@ -40,18 +41,21 @@ _CODE_TAG_EXCEPTIONS = {
 
 # ===========================================================================
 
-def to_rich(motif):
+def to_rich(container):
     """Transforms tokenized content in a :class:`Code` object into a string
     with Rich library formatting.
 
-    :param motif: :class:`Motif` object containing `Code` and `Theme` to
-        translate
+    :param container: `Code` or :class:`MultiCode` object to render
     """
-    code = motif.decorate()
-    formatter = RichFormatter()
-    formatter.create_tag_map(motif.theme, _CODE_TAG_EXCEPTIONS)
+    result = ""
+    if isinstance(container, Code):
+        container = MultiCode(container)
 
-    ancestor_list = motif.theme.colour_map.keys()
-    result = formatter.format_doc(code, ancestor_list)
+    for code_index in range(0, len(container)):
+        formatter = RichFormatter()
+        formatter.create_tag_map(container[code_index].theme,
+            _CODE_TAG_EXCEPTIONS)
+
+        result += formatter.format_doc(container, code_index)
 
     return result

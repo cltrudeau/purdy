@@ -1,20 +1,7 @@
 # purdy.tui.apps.py
-
-import asyncio
-from dataclasses import dataclass
-
-from rich.color import Color
-from rich.segment import Segments
-from textual import on
 from textual.app import App, ComposeResult
-from textual.containers import Grid, Vertical, VerticalScroll
-from textual.markup import escape
-from textual.screen import ModalScreen, Screen
-from textual.scrollbar import ScrollBarRender
-from textual.widget import Widget
-from textual.widgets import Button, Static, Label
+from textual.containers import Grid
 
-from purdy.renderers.textual import to_textual
 from purdy.tui.animate import AnimationController
 from purdy.tui.codebox import BoxSpec, CodeBox, RowSpec
 

@@ -11,7 +11,9 @@ from purdy.parser import HighlightOn, HighlightOff, Fold, LineNumber
 # ===========================================================================
 
 class Theme:
-    def __init__(self, colour_map, inherit=None):
+    def __init__(self, full_name, colour_map, inherit=None):
+        self.full_name = full_name
+
         if inherit is not None:
             # Inherit from another theme
             self.colour_map = copy(inherit.colour_map)
@@ -35,13 +37,13 @@ class Theme:
 # Empty Theme
 # ===========================================================================
 
-no_colour = Theme({})
+no_colour = Theme("no_colour", {})
 
 # ===========================================================================
 # Default Themes
 # ===========================================================================
 
-default_code = Theme({
+default_code = Theme("default_code", {
     Token:               "",
     Whitespace:          "",
     Comment:             "66dddd",
@@ -72,7 +74,7 @@ default_code = Theme({
 })
 
 
-default_doc = Theme({
+default_doc = Theme("default_doc", {
     Name.Tag:           "cdcd00",
     Name.Attribute:     "cdcd00",
     Literal:            "88aaff",
@@ -84,7 +86,7 @@ default_doc = Theme({
 }, default_code)
 
 
-default_xml = Theme({
+default_xml = Theme("default_xml", {
     Name.Attribute: "cdcd00",
     Keyword:        "88aaff",
     Name.Tag:       "88aaff",
@@ -95,7 +97,7 @@ default_xml = Theme({
 # RTF Themes
 # ===========================================================================
 
-rtf_code = Theme({
+rtf_code = Theme("rtf_code", {
     Token:              "",
     Whitespace:         "",
     Comment:            ("8f5902", "", "italic"),
@@ -127,14 +129,14 @@ rtf_code = Theme({
     LineNumber:          "000000",
 })
 
-rtf_xml = Theme({
+rtf_xml = Theme("rtf_xml", {
     Name.Attribute: ("2048a7", "", "bold"),
     Name.Tag:       "3465a4",
     Keyword:        "3465a4",
     Punctuation:    "3465a4",
 }, rtf_code)
 
-rtf_doc = Theme({
+rtf_doc = Theme("rtf_doc", {
     Generic.Emph:       "ef2929",
     Generic.Strong:     ("a40000", "", "bold"),
     Literal:            "",

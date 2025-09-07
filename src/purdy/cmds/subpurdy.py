@@ -4,14 +4,12 @@ import argparse
 from argparse_formatter import FlexiFormatter
 from rich.console import Console
 
-from purdy.content import Code
-from purdy.cmds.arg_helpers import (filename_arg, general_args,
-    no_colour_arg, motif_args, motif_factory)
+from purdy.cmds.arg_helpers import (filename_arg, general_args, no_colour_arg,
+    mc_args, multicode_factory)
 from purdy.renderers.html import to_html
 from purdy.renderers.rich import to_rich
 from purdy.renderers.rtf import to_rtf
 from purdy.scribe import print_code_lines
-from purdy.themes import THEME_MAP
 
 # =============================================================================
 
@@ -32,32 +30,28 @@ rprint = console.print
 
 def tokens(args):
     ### 'tokens' sub-command: prints lines and tokens to screen
-    code = Code(args.filename, args.lexer)
-    print_code_lines(code, title_enabled=False, no_colour=args.nocolour)
+    mc = multicode_factory(args)
+    print_code_lines(mc[0].lines, title_enabled=False, no_colour=args.nocolour)
 
 
 def ansi(args):
     ### 'ansi' sub-command: prints content with ANSI colour highlighting
-    code = Code(args.filename, args.lexer)
-    motif = motif_factory(code, args)
-    output = to_rich(motif)
+    mc = multicode_factory(args)
+    output = to_rich(mc)
     rprint(output)
 
 
 def html(args):
     ### 'html' sub-command: prints content as an HTML div
-    code = Code(args.filename, args.lexer)
-    motif = motif_factory(code, args)
-    output = to_html(motif, not args.fullhtml)
+    mc = multicode_factory(args)
+    output = to_html(mc, not args.fullhtml)
     print(output)
 
 
 def rtf(args):
     ### 'rtf' sub-command: prints content in RTF format
-    code = Code(args.filename, args.lexer)
-    theme = THEME_MAP["rtf"][code.parser.spec.category]
-    motif = motif_factory(code, args, theme)
-    output = to_rtf(motif)
+    mc = multicode_factory(args, "rtf")
+    output = to_rtf(mc)
     print(output)
 
 # =============================================================================
@@ -83,19 +77,19 @@ sub.set_defaults(func=tokens)
 # --- ansi cmd
 sub = subparsers.add_parser("ansi", help=("Prints code with colourized ANSI "
     "results in your terminal"))
-motif_args(sub)
+mc_args(sub)
 sub.set_defaults(func=ansi)
 
 # --- html cmd
 sub = subparsers.add_parser("html", help="Prints code as HTML")
 sub.add_argument("--fullhtml", help=("By default only a div with the code is "
     "shown. This flag causes a full HTML doc."), action="store_true")
-motif_args(sub)
+mc_args(sub)
 sub.set_defaults(func=html)
 
 # --- rtf cmd
 sub = subparsers.add_parser("rtf", help="Prints code as RTF")
-motif_args(sub)
+mc_args(sub)
 sub.set_defaults(func=rtf)
 
 # === Positional filename argument common to all subs

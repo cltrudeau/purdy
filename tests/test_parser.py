@@ -4,6 +4,7 @@ from unittest import TestCase
 from pygments.lexers import PythonConsoleLexer
 from pygments.token import Token
 
+from purdy.content import Code
 from purdy.parser import (CodeLine, CodePart, LexerSpec, Parser, PartsList,
     token_is_a, token_ancestor)
 
@@ -37,14 +38,40 @@ class TestTokenComparison(TestCase):
 
 
 class TestLexerSpec(TestCase):
+    def test_get_spec(self):
+        # Auto detect case
+        expected = LexerSpec.built_ins["py"]
+        result = LexerSpec.get_spec("detect", hint="data/simple.py")
+        self.assertEqual(expected, result)
+
+        # Named case
+        expected = LexerSpec.built_ins["py"]
+        result = LexerSpec.get_spec("py")
+        self.assertEqual(expected, result)
+
+        # LexerSpec case
+        expected = LexerSpec.built_ins["py"]
+        result = LexerSpec.get_spec(expected)
+        self.assertEqual(expected, result)
+
+        # Pygments Lexer Case
+        result = LexerSpec.get_spec(PythonConsoleLexer)
+        self.assertEqual("custom_PythonConsoleLexer", result.description)
+        self.assertEqual(PythonConsoleLexer, result.lexer_cls)
+
+        # Error handling: deal with class that isn't a Pygments Lexer, any old
+        # class will do as long as it isn't a useful one
+        with self.assertRaises(ValueError):
+            LexerSpec.get_spec(TestCase)
+
     def test_find(self):
         # Test straight look-up
-        spec = LexerSpec.find("repl")
-        self.assertEqual(LexerSpec.built_ins["repl"], spec)
+        lexer_spec = LexerSpec.find("repl")
+        self.assertEqual(LexerSpec.built_ins["repl"], lexer_spec)
 
         # Test alias
-        spec = LexerSpec.find("txt")
-        self.assertEqual(LexerSpec.built_ins["plain"], spec)
+        lexer_spec = LexerSpec.find("txt")
+        self.assertEqual(LexerSpec.built_ins["plain"], lexer_spec)
 
         # Test name listing
         expected = len(LexerSpec.built_ins) + len(LexerSpec.aliases)
@@ -128,67 +155,41 @@ class TestCodeLine(TestCase):
 
         # Spawn
         result = line.spawn()
-        self.assertEqual(line.spec, result.spec)
+        self.assertEqual(line.lexer_spec, result.lexer_spec)
         self.assertEqual(line.has_newline, result.has_newline)
         self.assertEqual(0, len(result.parts))
 
 
 class TestParser(TestCase):
-    def test_constructor(self):
-        # Auto detect case
-        expected = LexerSpec.built_ins["py"]
-        parser = Parser("detect", hint="data/simple.py")
-        self.assertEqual(expected, parser.spec)
-
-        # Named case
-        expected = LexerSpec.built_ins["py"]
-        parser = Parser("py")
-        self.assertEqual(expected, parser.spec)
-
-        # LexerSpec case
-        expected = LexerSpec.built_ins["py"]
-        parser = Parser(expected)
-        self.assertEqual(expected, parser.spec)
-
-        # Pygments Lexer Case
-        parser = Parser(PythonConsoleLexer)
-        self.assertEqual("custom_PythonConsoleLexer", parser.spec.description)
-        self.assertEqual(PythonConsoleLexer, parser.spec.lexer_cls)
-
-        # Error handling: deal with class that isn't a Pygments Lexer, any old
-        # class will do as long as it isn't a useful one
-        with self.assertRaises(ValueError):
-            Parser(TestCase)
-
     def test_newline_handling(self):
-        parser = Parser("py")
+        parser = Parser(LexerSpec.get_spec("py"))
 
         # With newline
         content = "x=1\n"
-        result = []
+        result = Code.text("", "py")
         parser.parse(content, result)
-        self.assertEqual(1, len(result))
-        self.assertTrue(result[0].has_newline)
+        self.assertEqual(1, len(result.lines))
+        self.assertTrue(result.lines[0].has_newline)
 
         # Without newline
         content = "x=1"
-        result = []
+        result = Code.text("", "py")
         parser.parse(content, result)
-        self.assertEqual(1, len(result))
-        self.assertFalse(result[0].has_newline)
+        self.assertEqual(1, len(result.lines))
+        self.assertFalse(result.lines[0].has_newline)
 
     def test_simple(self):
-        parser = Parser("py")
+        parser = Parser(LexerSpec.get_spec("py"))
 
         path = (Path(__file__).parent / Path("data/simple.py")).resolve()
         content = path.read_text()
 
         expected = [
-            code_liner(parser.spec, True,
+            code_liner(parser.lexer_spec, True,
                 CodePart(Token.Comment.Single,
                     '# Small file for simple parser testing')
             ),
-            code_liner(parser.spec, True,
+            code_liner(parser.lexer_spec, True,
                 CodePart(Token.Keyword, 'def'),
                 CodePart(Token.Text.Whitespace, ' '),
                 CodePart(Token.Name.Function, 'simple'),
@@ -197,16 +198,16 @@ class TestParser(TestCase):
                 CodePart(Token.Punctuation, ')'),
                 CodePart(Token.Punctuation, ':')
             ),
-            code_liner(parser.spec, True,
+            code_liner(parser.lexer_spec, True,
                 CodePart(token=Token.Text.Whitespace, text='    '),
                 CodePart(token=Token.Literal.String.Doc,
                     text='"""This tests')
             ),
-            code_liner(parser.spec, True,
+            code_liner(parser.lexer_spec, True,
                 CodePart(token=Token.Literal.String.Doc,
                     text='    multi-line strings"""')
             ),
-            code_liner(parser.spec, True,
+            code_liner(parser.lexer_spec, True,
                 CodePart(token=Token.Text, text='    '),
                 CodePart(token=Token.Keyword, text='return'),
                 CodePart(token=Token.Text, text=' '),
@@ -219,8 +220,9 @@ class TestParser(TestCase):
                 CodePart(token=Token.Literal.String.Double, text='Done'),
                 CodePart(token=Token.Literal.String.Double, text='"')
             ),
-            code_liner(parser.spec, True, CodePart(Token.Text.Whitespace, '')),
-            code_liner(parser.spec, True,
+            code_liner(parser.lexer_spec, True,
+                CodePart(Token.Text.Whitespace, '')),
+            code_liner(parser.lexer_spec, True,
                 CodePart(token=Token.Name, text='simple'),
                 CodePart(token=Token.Punctuation, text='('),
                 CodePart(token=Token.Literal.String.Double, text='"'),
@@ -233,43 +235,43 @@ class TestParser(TestCase):
             ),
         ]
 
-        result = []
+        result = Code.text("", "py")
         parser.parse(content, result)
-        self.assertEqual(expected, result)
+        self.assertEqual(expected, result.lines)
 
     def test_blank_lines(self):
-        parser = Parser("py")
+        parser = Parser(LexerSpec.get_spec("py"))
 
         content = "   \n\nx=1\n"
         expected = [
-            code_liner(parser.spec, True,
+            code_liner(parser.lexer_spec, True,
                 CodePart(token=Token.Text, text='   ')
             ),
-            code_liner(parser.spec, True,
+            code_liner(parser.lexer_spec, True,
                 CodePart(token=Token.Text.Whitespace, text='')
             ),
-            code_liner(parser.spec, True,
+            code_liner(parser.lexer_spec, True,
                 CodePart(token=Token.Name, text='x'),
                 CodePart(token=Token.Operator, text='='),
                 CodePart(token=Token.Literal.Number.Integer, text='1')
             ),
         ]
 
-        result = []
+        result = Code.text("", "py")
         parser.parse(content, result)
-        self.assertEqual(expected, result)
+        self.assertEqual(expected, result.lines)
 
     def test_multiline_output(self):
-        parser = Parser("con")
+        parser = Parser(LexerSpec.get_spec("con"))
 
         path = (Path(__file__).parent / Path("data/curl.con")).resolve()
         content = path.read_text()
 
         expected = [
-            code_liner(parser.spec, True,
+            code_liner(parser.lexer_spec, True,
                 CodePart(token=Token.Generic.Output, text='')
             ),
-            code_liner(parser.spec, True,
+            code_liner(parser.lexer_spec, True,
                 CodePart(token=Token.Generic.Prompt, text='$ '),
                 CodePart(token=Token.Text, text='curl'),
                 CodePart(token=Token.Text.Whitespace, text=' '),
@@ -278,58 +280,58 @@ class TestParser(TestCase):
                 CodePart(token=Token.Text,
                     text='http://127.0.0.1:8000/redirect/')
             ),
-            code_liner(parser.spec, True,
+            code_liner(parser.lexer_spec, True,
                 CodePart(token=Token.Generic.Output,
                     text='HTTP/1.1 302 Found')
             ),
-            code_liner(parser.spec, True,
+            code_liner(parser.lexer_spec, True,
                 CodePart(token=Token.Generic.Output,
                     text='Date: Tue, 21 Apr 2020 19:31:07 GMT')
             ),
         ]
 
-        result = []
+        result = Code.text("", "con")
         parser.parse(content, result)
-        self.assertEqual(expected, result)
+        self.assertEqual(expected, result.lines)
 
     def test_after_newline(self):
         # Some lexers aren't line oriented so you can end up with stuff after
         # a \n character
         content = "<html>\n     <!-- comment -->"
-        parser = Parser("html")
+        parser = Parser(LexerSpec.get_spec("html"))
 
         expected = [
-            code_liner(parser.spec, True,
+            code_liner(parser.lexer_spec, True,
                 CodePart(token=Token.Punctuation, text='<'),
                 CodePart(token=Token.Name.Tag, text='html'),
                 CodePart(token=Token.Punctuation, text='>')
             ),
-            code_liner(parser.spec, False,
+            code_liner(parser.lexer_spec, False,
                 CodePart(token=Token.Text, text='     '),
                 CodePart(token=Token.Comment.Multiline,
                     text='<!-- comment -->')
             ),
         ]
 
-        result = []
+        result = Code.text("", "html")
         parser.parse(content, result)
-        self.assertEqual(expected, result)
+        self.assertEqual(expected, result.lines)
 
     def test_empty_token(self):
         # Some lexers spit out empty tokens, purdy should ignore them
-        parser = Parser("repl")
+        parser = Parser(LexerSpec.get_spec("repl"))
         content = """Traceback (most recent call last):\n>>> """
 
         expected = [
-            code_liner(parser.spec, True,
+            code_liner(parser.lexer_spec, True,
                 CodePart(token=Token.Generic.Traceback,
                     text='Traceback (most recent call last):')
             ),
-            code_liner(parser.spec, False,
+            code_liner(parser.lexer_spec, False,
                 CodePart(token=Token.Generic.Prompt, text='>>> ')
             ),
         ]
 
-        result = []
+        result = Code.text("", "repl")
         parser.parse(content, result)
-        self.assertEqual(expected, result)
+        self.assertEqual(expected, result.lines)

@@ -2,20 +2,25 @@ from unittest import TestCase
 
 from pygments.token import Comment, Keyword, Name
 
-from purdy.themes import Theme
+from purdy.content import Code, MultiCode
 from purdy.renderers.rtf import RTFDoc, RTFFormatter
+from purdy.themes import Theme
 
 # =============================================================================
 
 class TestRTF(TestCase):
     def test_rtf_colour(self):
-        theme = Theme({
+        theme = Theme("dummy_theme", {
             Comment: "112233",
             Keyword: ("223344", "556677", "bold"),
             Name: "abc",
         })
 
-        doc = RTFDoc("222222", theme)
+        code = Code.text("", "plain")
+        code.theme = theme
+        mc = MultiCode(code)
+
+        doc = RTFDoc("222222", mc)
 
         # Test map (0 is the auto value, starts at 1)
         expected = {

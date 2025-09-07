@@ -2,6 +2,7 @@
 from pygments.token import Token, Whitespace
 from textual.content import Content
 
+from purdy.content import Code, MultiCode
 from purdy.parser import HighlightOn, HighlightOff, token_ancestor
 from purdy.renderers.formatter import Formatter
 
@@ -32,7 +33,7 @@ class TextualFormatter(Formatter):
                 marker = self.tag_map[token]
                 result += Content.from_markup(marker, text=part.text)
             except KeyError:
-                result += token_text
+                result += part.text
 
         if line.has_newline:
             result += self.newline
@@ -51,18 +52,20 @@ _CODE_TAG_EXCEPTIONS = {
 
 # ===========================================================================
 
-def to_textual(motif):
+def to_textual(container):
     """Transforms tokenized content in a :class:`Code` object into a string
     with Textual library formatting.
 
-    :param motif: :class:`Motif` object containing `Code` and `Theme` to
-        translate
+    :param container: :class:`Code` or :class:`MultiCode` object to translate
     """
-    code = motif.decorate()
-    formatter = TextualFormatter()
-    formatter.create_tag_map(motif.theme, _CODE_TAG_EXCEPTIONS)
+    result = ""
+    if isinstance(container, Code):
+        container = MultiCode(container)
 
-    ancestor_list = motif.theme.colour_map.keys()
-    result = formatter.format_doc(code, ancestor_list)
+    for code in container:
+        formatter = TextualFormatter()
+        formatter.create_tag_map(code.theme, _CODE_TAG_EXCEPTIONS)
+
+        result += formatter.format_doc(code)
 
     return result

@@ -1,5 +1,6 @@
 # purdy.tui.animate.py
 import asyncio
+import typing
 
 from dataclasses import dataclass
 from enum import Enum
@@ -14,7 +15,10 @@ cell_list = []
 
 @dataclass
 class Cell:
-    box: 'purdy.tui.codebox.CodeBox'
+    box: typing.Any  # should be CodeBox, but that causes a circular reference
+                     # and pyflakes doesn't handle string based typing, so
+                     # once again, pretending Python can have type safety is
+                     # just so much fun
     before: str
     after: str
 

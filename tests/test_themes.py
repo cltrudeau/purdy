@@ -10,15 +10,15 @@ class TestThemes(TestCase):
     def test_themes(self):
 
         # Theme inheritance
-        theme = Theme({Comment: "778899"})
-        second = Theme({Keyword: "889900"}, theme)
+        theme = Theme("first", {Comment: "778899"})
+        second = Theme("second", {Keyword: "889900"}, theme)
 
         self.assertEqual(2, len(second.colour_map))
         self.assertIn(Comment, second.colour_map)
         self.assertIn(Keyword, second.colour_map)
 
         # Values iterator
-        theme = Theme({
+        theme = Theme("third", {
             Comment: "112233",
             Keyword: ("223344", "556677", "bold"),
         })

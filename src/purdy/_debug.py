@@ -50,7 +50,7 @@ def print_rich_output(text, title=""):
 def print_code_lines(lines, title=""):
     console.rule(title)
     for line in lines:
-        rprint( (f"CodeLine({line.spec.lexer_cls.__name__}, "
+        rprint( (f"CodeLine({line.lexer_spec.lexer_cls.__name__}, "
             f"{line.has_newline}") )
         for part in line.parts:
             rprint(f"   [reverse]{part.text}[/]  -- {part.token}")

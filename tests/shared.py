@@ -1,12 +1,11 @@
 # tests/shared.py
 from pathlib import Path
 
-from purdy.content import Code
+from purdy.content import Code, MultiCode
 from purdy.parser import CodeLine
 from purdy.renderers.rich import to_rich
 from purdy.renderers.html import to_html
 from purdy.renderers.rtf import to_rtf
-from purdy.motif import Motif
 from purdy.themes import THEME_MAP
 
 # ===========================================================================
@@ -26,31 +25,35 @@ def code_liner(spec, newline, *args):
 # Renderer Testing
 # ===========================================================================
 
-def _motif_factory(theme=None):
+def _multicode_factory(theme=None):
     path = (Path(__file__).parent / Path("data/code.py")).resolve()
-    motif = Motif(Code(str(path)), theme)
-    motif.wrap = 80
-    motif.line_numbers_enabled = True
-    motif.starting_line_number = 5
-    motif.highlight(2, "17:8,5")   # 3:pass, 18:while
-    motif.fold(6, 4)               # 7-11: __init__ method
-    return motif
+    code = Code(str(path))
+    if theme is not None:
+        code.theme = theme
+
+    mc = MultiCode(code)
+    mc.wrap = 80
+    mc.line_numbers_enabled = True
+    mc.starting_line_number = 5
+    code.highlight(2, "17:8,5")   # 3:pass, 18:while
+    code.fold(6, 4)               # 7-11: __init__ method
+    return mc
 
 
 def generate_rich():
-    motif = _motif_factory()
-    text = to_rich(motif)
+    mc = _multicode_factory()
+    text = to_rich(mc)
     return text
 
 
 def generate_html():
-    motif = _motif_factory()
-    text = to_html(motif, snippet=False)
+    mc = _multicode_factory()
+    text = to_html(mc, snippet=False)
     return text
 
 
 def generate_rtf():
     theme = THEME_MAP["rtf"]["code"]
-    motif = _motif_factory(theme)
-    text = to_rtf(motif)
+    mc = _multicode_factory(theme)
+    text = to_rtf(mc)
     return text

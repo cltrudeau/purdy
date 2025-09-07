@@ -1,22 +1,14 @@
 # purdy.tui.widgets.py
-import asyncio
 import math
 
 from rich.color import Color
-from rich.console import Console, ConsoleOptions, RenderableType, RenderResult
 from rich.segment import Segment, Segments
-from rich.style import Style, StyleType
+from rich.style import Style
 
-from textual import on
-from textual.app import App, ComposeResult
-from textual.containers import ScrollableContainer, Vertical, Container
-from textual.markup import escape
-from textual.screen import ModalScreen, Screen
+from textual.app import ComposeResult
+from textual.containers import ScrollableContainer, Container
 from textual.scrollbar import ScrollBarRender
-from textual.widget import Widget
-from textual.widgets import Button, Static, Label
-
-from purdy.renderers.textual import to_textual
+from textual.widgets import Static
 
 # =============================================================================
 
@@ -65,7 +57,6 @@ class TriangleScrollRender(ScrollBarRender):
             segments[0] = Segment(cls.NO_INDICATOR, Style(color=cls.COLOUR))
             return Segments(segments, new_lines=True)
 
-        width_thickness = 1 # hard code override
         bg_segment = Segment(cls.BLANK, Style(bgcolor=back_color))
         segments = [bg_segment] * int(size)
         segments[0] = Segment(cls.UP_INDICATOR, Style(color=cls.COLOUR))

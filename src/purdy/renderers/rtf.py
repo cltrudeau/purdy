@@ -3,6 +3,7 @@ import struct
 
 from pygments.token import Token, Whitespace
 
+from purdy.content import Code, MultiCode
 from purdy.parser import HighlightOn, HighlightOff
 from purdy.renderers.formatter import StrFormatter
 
@@ -115,7 +116,7 @@ class RTFDoc(list):
     FONT_TABLE = r"{\fonttbl\f0\fnil\fcharset0 %s;}" + "\n"
     FONT_SPEC = r'\f0\fs28' + '\n'
 
-    def __init__(self, background, theme, fontname="RobotoMono-Regular"):
+    def __init__(self, background, container, fontname="RobotoMono-Regular"):
         """RTF uses a look-up table for colouring. This class builds a table
         for lookups and provides mapping utilities."""
         self.has_background = background is not None
@@ -129,17 +130,18 @@ class RTFDoc(list):
             # Default to white
             self.colour_table[background] = (1, self.rgb_to_rtf("ffffff"))
 
-        for token, value in theme.colour_map.items():
-            if not value:
-                continue
+        for code in container:
+            for token, value in code.theme.colour_map.items():
+                if not value:
+                    continue
 
-            if isinstance(value, tuple):
-                # Add the fg and bg colours
-                self._set_colour(value[0])
-                self._set_colour(value[1])
-            else:
-                # Single value, add it
-                self._set_colour(value)
+                if isinstance(value, tuple):
+                    # Add the fg and bg colours
+                    self._set_colour(value[0])
+                    self._set_colour(value[1])
+                else:
+                    # Single value, add it
+                    self._set_colour(value)
 
     def _set_colour(self, value):
         if not value or value in self.colour_table:
@@ -185,9 +187,10 @@ class RTFDoc(list):
         # Font table
         result += self.FONT_SPEC + "\n"
 
-        # Set background colour
+        # Set background colour (\cb0 is the default colour, \cb1 is the first
+        # colour in our table which has been set to the background)
         if self.has_background:
-            result += r"\chsdng10000\chcbpat0\cb0" + "\n"
+            result += r"\chsdng10000\chcbpat0\cb1" + "\n"
 
         return result
 
@@ -199,41 +202,47 @@ class RTFDoc(list):
 
 # ===========================================================================
 
-def to_rtf(motif):
+def to_rtf(container):
     """Transforms tokenized content in a :class:`Code` object into a string
     representation of RTF.
 
-    :param motif: :class:`Motif` object containing the code and theme to
-    translate
+    :param container: `Code` or :class:`MultiCode` object to render
     """
-    code = motif.decorate()
-    doc = RTFDoc(motif.background, motif.theme)
-    formatter = RTFFormatter(doc)
+    result = ""
+    if isinstance(container, Code):
+        container = MultiCode(container)
 
-    code_tag_exceptions = {
-        Token:      r"\cf0 {text}" + "\n",
-        Whitespace: r"\cf0 {text}" + "\n",
-    }
+    doc = RTFDoc(container.background, container)
 
-    hl_colour = motif.theme.colour_map[HighlightOn]
-    if isinstance(hl_colour, str):
-        index, _ = doc.colour_table[hl_colour]
-        code_tag_exceptions.update({
-            HighlightOn:  fr"\cf{index} " + "{text}\n",
-            HighlightOff: r"\cf0" + "\n",
-        })
-    else:
-        # Close tag using the auto colour (0) for fg & bg, pass thru attrs
-        code_tag_exceptions.update({
-            HighlightOn:  formatter.tag_open(*hl_colour) + "{text}",
-            HighlightOff: formatter.tag_close(hl_colour[2]),
-        })
+    for code_index in range(0, len(container)):
+        code = container[code_index]
+        formatter = RTFFormatter(doc)
 
-    formatter.create_tag_map(motif.theme, code_tag_exceptions)
-    ancestor_list = motif.theme.colour_map.keys()
+        code_tag_exceptions = {
+            Token:      r"\cf0 {text}" + "\n",
+            Whitespace: r"\cf0 {text}" + "\n",
+        }
 
-    for line in code:
-        doc.append(formatter.format_line(line, ancestor_list))
+        hl_colour = code.theme.colour_map[HighlightOn]
+        if isinstance(hl_colour, str):
+            index, _ = doc.colour_table[hl_colour]
+            code_tag_exceptions.update({
+                HighlightOn:  fr"\cf{index} " + "{text}\n",
+                HighlightOff: r"\cf0" + "\n",
+            })
+        else:
+            # Close tag using the auto colour (0) for fg & bg, pass thru attrs
+            code_tag_exceptions.update({
+                HighlightOn:  formatter.tag_open(*hl_colour) + "{text}",
+                HighlightOff: formatter.tag_close(hl_colour[2]),
+            })
 
-    result = doc.render()
+        formatter.create_tag_map(code.theme, code_tag_exceptions)
+
+        ancestor_list = code.theme.colour_map.keys()
+        for line in formatter.get_decorated_lines(container, code_index):
+            doc.append(formatter.format_line(line, ancestor_list))
+
+        result += doc.render()
+
     return result

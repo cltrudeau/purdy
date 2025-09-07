@@ -91,6 +91,36 @@ class LexerSpec:
     category: str
 
     @classmethod
+    def get_spec(cls, identifier, hint=''):
+        """Return a `LexerSpec` object based on a given identifier.
+
+        :param identifier: An indicator as to what underlying lexer to use. It
+            can be the string "detect" to attempt to auto-detect the
+            appropriate lexer, a string corresponding to one of the built-in
+            :class:`LexerSpec` objects, a :class:`LexerSpec` itself, or a
+            Pygments :class:`pygments.lexers.Lexer` class. When a Pygments
+            Lexer is provided it is assumed to be for code and not in console
+            mode.
+        :param hint: when using identifier="detect", this provides information
+            for doing the detection
+        """
+        match identifier:
+            case "detect":
+                # Assume the hint is a file name
+                path = Path(hint)
+                return LexerSpec.find(path.suffix[1:])
+            case str(name):
+                return LexerSpec.find(name)
+            case LexerSpec():
+                return identifier
+            case _:
+                if not issubclass(identifier, Pygments_Lexer):
+                    raise ValueError("Could not determine Parser type")
+
+                name = 'custom_' + identifier.__name__
+                return LexerSpec(name, identifier, False, 'code')
+
+    @classmethod
     def find(cls, name):
         name = name.lower()
         if name in cls.aliases:
@@ -189,21 +219,21 @@ class PartsList(list):
 
 @dataclass
 class CodeLine:
-    spec: LexerSpec
+    lexer_spec: LexerSpec
     parts: PartsList = field(default_factory=PartsList)
     has_newline: bool = False
 
     def spawn(self):
         """Returns a new :class:`CodeLine` with the same settings as this one
         but an empty parts list."""
-        return CodeLine(self.spec, has_newline=self.has_newline)
+        return CodeLine(self.lexer_spec, has_newline=self.has_newline)
 
     def __repr__(self):
-        return (f"CodeLine({self.spec.lexer_cls.__name__=}, {self.parts=},"
-            f"{self.has_newline=})")
+        return (f"CodeLine(lexer_spec={self.lexer_spec.lexer_cls.__name__}, "
+            f"parts={self.parts}, has_newline={self.has_newline})")
 
     def __eq__(self, compare):
-        if self.spec.lexer_cls != compare.spec.lexer_cls:
+        if self.lexer_spec.lexer_cls != compare.lexer_spec.lexer_cls:
             return False
 
         if self.has_newline != compare.has_newline:
@@ -238,104 +268,76 @@ class CodeLine:
 # =============================================================================
 
 class Parser:
-    """Parser is responsible for parsing code and turning it into a series of
-    :class:`CodeLine` objects. You configure a Parser with a
-    :class:`LexerSpec` which wraps a Pygments Lexer. Several are built-in for
-    ease of use, but you can also pass in any
-    :class:`pygments.lexers.Lexer` class.
+    """Parser is responsible for parsing code and returning a :class:`Code`
+    object containing :class:`CodeLine` objects. You configure a Parser with a
+    :class:`LexerSpec` which you can get through the
+    :method:`LexerSpec.get_spec` method.
+
+    :param lexer_spec: a :class:`LexerSpec` object
     """
+    def __init__(self, lexer_spec):
+        self.lexer_spec = lexer_spec
 
-    def __init__(self, identifier, hint=''):
-        """Create a Parser object
-
-        :param identifier: An indicator as to what underlying lexer to use. It
-            can be the string "detect" to attempt to auto-detect the
-            appropriate lexer, a string corresponding to one of the built-in
-            :class:`LexerSpec` objects, a :class:`LexerSpec` itself, or a
-            Pygments :class:`pygments.lexers.Lexer` class. When a Pygments
-            Lexer is provided it is assumed to be for code and not in console
-            mode.
-
-        :param hint: when using identifier="detect", this provides information
-            for doing the detection
-        """
-        match identifier:
-            case "detect":
-                # Assume the hint is a file name
-                path = Path(hint)
-                self.spec = LexerSpec.find(path.suffix[1:])
-            case str(name):
-                self.spec = LexerSpec.find(name)
-            case LexerSpec():
-                self.spec = identifier
-            case _:
-                if not issubclass(identifier, Pygments_Lexer):
-                    raise ValueError("Could not determine Parser type")
-
-                name = 'custom_' + identifier.__name__
-                self.spec = LexerSpec(name, identifier, False, 'code')
-
-    def parse(self, content, container):
-        """Parses the given content using the class's associated lexer, adds
-        :class:`CodeLine` objects to the given container.
+    def parse(self, content, code_obj):
+        """Parses the given content using the class's associated lexer.
 
         :param content: String to be parsed
-        :param container: A list or object with a matching duck-type to
-            populate with `CodeLine` objects
+        :param code_obj: A :class:`Code` object to add the resulting
+            `CodeLine` objects into
         """
         # Instantiate the lexer so that it doesn't remove starting newlines,
         # just keeps it the way the content is.
         #
         # NB: it would be nice to also use "ensurenl=False" to stop the stupid
         # appending newlines, but that breaks a whole bunch of the lexers
-        lexer = self.spec.lexer_cls(stripnl=False)
-        self.line = CodeLine(self.spec)
+        lexer = self.lexer_spec.lexer_cls(stripnl=False)
+        self.line = CodeLine(self.lexer_spec)
         for token_type, text in lexer.get_tokens(content):
             if text.startswith('\n'):
-                self._newline_handler(token_type, container)
+                self._newline_handler(token_type, code_obj)
                 if len(text) > 1:
                     # something came after the \n, handle it
                     #
                     # Example: HTML lexer isn't line oriented, so a \n
                     # followed by in indent is seeing as one chunk of text
-                    self._string_handler(token_type, text[1:], container)
+                    self._string_handler(token_type, text[1:], code_obj)
             elif text == '':
                 # tokenizer sometimes puts in empty stuff, skip it
                 #
                 # Example: Python Console Lexer and Traceback output
                 continue
             elif token_is_a(token_type, String) and '\n' in text:
-                self._string_handler(token_type, text, container)
+                self._string_handler(token_type, text, code_obj)
             else:
-                self._default_handler(token_type, text, container)
+                self._default_handler(token_type, text, code_obj)
 
         # Pygments adds newlines because some of the lexers need it there,
         # get rid of it
-        last_line = container[-1]
+        last_line = code_obj.lines[-1]
         if len(last_line.parts) == 1 and last_line.parts[0].text == '':
             # Got a garbage extra line, remove it
-            del container[-1]
+            del code_obj.lines[-1]
 
         # Fix the last lines newline state
         try:
-            container[-1].has_newline = content[-1] == "\n"
+            code_obj.lines[-1].has_newline = content[-1] == "\n"
         except IndexError:
             # Empty container case can be ignored
             pass
 
-    def _newline_handler(self, token_type, container):
+    def _newline_handler(self, token_type, code_obj):
         # hit a CR, time to create a new line
         if not self.line.parts:
-            self.line = CodeLine(self.spec,
+            self.line = CodeLine(self.lexer_spec,
                 PartsList([CodePart(token_type, '')]))
 
         self.line.has_newline = True
-        container.append(self.line)
+        code_obj.lines.append(self.line)
 
         # reset to start the next set of tokens
-        self.line = CodeLine(self.spec)
+        self.line = CodeLine(self.lexer_spec)
 
-    def _string_handler(self, token_type, text, container):
+    def _string_handler(self, token_type, text, code_obj):
         # String tokens may be multi-line
         for row in text.splitlines(True):
             part = CodePart(token_type, row.rstrip('\n'))
@@ -343,10 +345,10 @@ class Parser:
 
             if row[-1] == '\n':
                 self.line.has_newline = True
-                container.append(self.line)
-                self.line = CodeLine(self.spec)
+                code_obj.lines.append(self.line)
+                self.line = CodeLine(self.lexer_spec)
 
-    def _default_handler(self, token_type, text, container):
+    def _default_handler(self, token_type, text, code_obj):
         if text[-1] == '\n':
             # there is a \n at the end of the text, need to strip it out then
             # start a newline using the same token
@@ -358,10 +360,10 @@ class Parser:
 
             # text caused a CR, create a new line object
             self.line.has_newline = True
-            container.append(self.line)
+            code_obj.lines.append(self.line)
 
             # reset to start the next group of tokens
-            self.line = CodeLine(self.spec)
+            self.line = CodeLine(self.lexer_spec)
         else:
             part = CodePart(token_type, text)
             self.line.parts.append(part)
