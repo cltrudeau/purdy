@@ -9,7 +9,7 @@ authors = [{name="Christopher Trudeau", email="ctrudeau+pypi@arsensa.com"}]
 readme = "README.rst"
 license = {file="LICENSE"}
 classifiers = [
-    "Development Status :: 4 - Beta",
+    "Development Status :: 3 - Alpha",
     "Environment :: Web Environment",
     "Intended Audience :: Developers",
     "License :: OSI Approved :: MIT License",
@@ -26,21 +26,23 @@ classifiers = [
 ]
 dynamic = ["version"]
 dependencies = [
-    "Pygments==2.19.2",
-    "textual==3.2.0",
+    "argparse_formatter~=1.4",
+    "Pygments~=2.19.2",
+    "textual~=6.1",
+    "textual-transitions>=0.0.3",
 ]
 requires-python = ">=3.10"
 
 [project.optional-dependencies]
-build = ["build==1.2.2.post1", "twine==6.1.0"]
+build = ["build~=1.3", "twine~=6.2"]
 dev = [
-    "coverage==7.9.2",
+    "coverage~=7.10",
     "nox==2025.5.1",
     "pudb==2025.1",
     "pyflakes==3.4.0",
     "Sphinx==8.2.3",
     "sphinx-rtd-theme==3.0.2",
-    "waelstow==0.12.0",
+    "waelstow~=0.12",
 ]
 
 [project.scripts]
