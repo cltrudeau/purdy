@@ -1,8 +1,30 @@
 # renderers/formatter.py
 from copy import deepcopy
 
+from purdy.content import Code, MultiCode
 from purdy.parser import (CodeLine, CodePart, Fold, HighlightOff, HighlightOn,
     LineNumber, token_ancestor)
+
+# =============================================================================
+
+def conversion_handler(formatter_cls, container, exceptions):
+    """Helper function for the most common case of rendering a :class:`Code`
+    or :class:`MultiCode` object.
+
+    :param formatter_cls: Reference to a class (not an object) to instantiate
+        as the formatter for each `Code` block in the container
+    :param container: `Code` or `MultiCode` object to translate
+    """
+    result = ""
+    if isinstance(container, Code):
+        container = MultiCode(container)
+
+    for code_index in range(0, len(container)):
+        formatter = formatter_cls()
+        formatter.create_tag_map(container[code_index].theme, exceptions)
+        result += formatter.format_doc(container, code_index)
+
+    return result
 
 # =============================================================================
 
@@ -281,6 +303,7 @@ class Formatter:
         # Else: no highlighting
         return output
 
+# ---------------------------------------------------------------------------
 
 class StrFormatter(Formatter):
     ### Uses str.format() to create stylized output from code; assumes the

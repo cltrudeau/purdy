@@ -227,6 +227,7 @@ class TestCode(TestCase):
         with self.assertRaises(ValueError):
             code.highlight_off("0:1,4")
 
+
 class TestMultiCode(TestCase):
     def test_multicode_init(self):
         mc = MultiCode()

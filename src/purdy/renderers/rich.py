@@ -3,9 +3,8 @@ from pygments.token import Token, Whitespace
 
 from rich.markup import escape as rich_escape
 
-from purdy.content import Code, MultiCode
 from purdy.parser import HighlightOn, HighlightOff
-from purdy.renderers.formatter import StrFormatter
+from purdy.renderers.formatter import StrFormatter, conversion_handler
 
 # ===========================================================================
 
@@ -47,15 +46,4 @@ def to_rich(container):
 
     :param container: `Code` or :class:`MultiCode` object to render
     """
-    result = ""
-    if isinstance(container, Code):
-        container = MultiCode(container)
-
-    for code_index in range(0, len(container)):
-        formatter = RichFormatter()
-        formatter.create_tag_map(container[code_index].theme,
-            _CODE_TAG_EXCEPTIONS)
-
-        result += formatter.format_doc(container, code_index)
-
-    return result
+    return conversion_handler(RichFormatter, container, _CODE_TAG_EXCEPTIONS)

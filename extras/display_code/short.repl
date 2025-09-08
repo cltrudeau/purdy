@@ -1,0 +1,3 @@
+>>> # Short sample REPL session
+>>> print("Bonjour tout le monde")
+Bonjour tout le monde

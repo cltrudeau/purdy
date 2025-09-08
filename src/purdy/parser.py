@@ -176,6 +176,9 @@ class CodePart:
     token: Token
     text: str
 
+    def __repr__(self):
+        return f"CodePart(id={id(self)}, token={self.token}, text={self.text})"
+
 
 class PartsList(list):
     """Subclass of list that tracks the length of the text fields within the
@@ -229,7 +232,7 @@ class CodeLine:
         return CodeLine(self.lexer_spec, has_newline=self.has_newline)
 
     def __repr__(self):
-        return (f"CodeLine(lexer_spec={self.lexer_spec.lexer_cls.__name__}, "
+        return (f"CodeLine(id={id(self)}, lexer_spec={self.lexer_spec.lexer_cls.__name__}, "
             f"parts={self.parts}, has_newline={self.has_newline})")
 
     def __eq__(self, compare):

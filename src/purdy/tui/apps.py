@@ -57,7 +57,6 @@ class PurdyApp(App):
 
     async def on_key(self, event):
         key = event.key
-        print("app key", key)
         match key:
             case "q" | "Q":
                 exit()
@@ -67,19 +66,6 @@ class PurdyApp(App):
                 await self.controller.backwards()
             case "s":
                 await self.controller.skip()
-            case "h":
-                print(50*"=")
-
-        from purdy.tui import animate
-        stuff = []
-        for num, cell in enumerate(animate.cell_list):
-            ptr = " "
-            if num == self.controller.current:
-                ptr = "→"
-
-            stuff.append(f"{ptr} {num} {cell}")
-
-        print("\n".join(stuff))
 
 # =============================================================================
 # Factory Methods

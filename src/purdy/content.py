@@ -135,6 +135,17 @@ class Code:
         self.current += amount
         return code
 
+    def remaining_chunk(self):
+        """Associated with the :method:`Code.chunk` call, but returns whatever
+        is left in the block.
+
+        :returns: A copy of this `Code` object but containing the lines
+            remaining in the chunkification process
+        """
+        code = self[self.current:]
+        self.current = len(self.lines)
+        return code
+
     # === Style Methods
 
     # --- Fold Management

@@ -2,9 +2,8 @@
 from pygments.token import Token, Whitespace
 from textual.content import Content
 
-from purdy.content import Code, MultiCode
 from purdy.parser import HighlightOn, HighlightOff, token_ancestor
-from purdy.renderers.formatter import Formatter
+from purdy.renderers.formatter import conversion_handler, Formatter
 
 # ===========================================================================
 
@@ -25,20 +24,43 @@ class TextualFormatter(Formatter):
         self.tag_map[token] = f"[#{fg} {attrs}]$text[/]"
 
     def format_line(self, line, ancestor_list):
-        result = ""
+        # Textual really doesn't like piecemeal creation of content or
+        # strings, and they way the code works elsewhere you can just append a
+        # close attr, but here you can't
+        #
+        # You need to construct a single string for the Content.from_markup
+        # method, which means having to be a bit hacky, creating then
+        # re-parsing the individual pieces
+
+        part_map = {}
+        counter = 0
+        markup = ""
+
         for part in line.parts:
             token = token_ancestor(part.token, ancestor_list)
 
             try:
+                # Get the tag from the general map and replace $text with the
+                # counted version
                 marker = self.tag_map[token]
-                result += Content.from_markup(marker, text=part.text)
+                name = f"text_{counter}"
+                dname = "$" + name
+                marker = marker.replace("$text", dname)
+
+                # Store the text for Content's kwargs and update our markup
+                # string
+                part_map[name] = part.text
+                markup += marker
+                counter += 1
             except KeyError:
-                result += part.text
+                # No map tags, just add to our markup string
+                markup += part.text
 
         if line.has_newline:
-            result += self.newline
+            markup += self.newline
 
-        return result
+        # Now get Textual to render that mess
+        return Content.from_markup(markup, **part_map)
 
 
 _CODE_TAG_EXCEPTIONS = {
@@ -58,14 +80,5 @@ def to_textual(container):
 
     :param container: :class:`Code` or :class:`MultiCode` object to translate
     """
-    result = ""
-    if isinstance(container, Code):
-        container = MultiCode(container)
-
-    for code in container:
-        formatter = TextualFormatter()
-        formatter.create_tag_map(code.theme, _CODE_TAG_EXCEPTIONS)
-
-        result += formatter.format_doc(code)
-
-    return result
+    return conversion_handler(TextualFormatter, container,
+        _CODE_TAG_EXCEPTIONS)
