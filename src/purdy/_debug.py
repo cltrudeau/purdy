@@ -47,6 +47,10 @@ def print_rich_output(text, title=""):
     console.rule()
 
 
+def print_code(code, title=""):
+    print_code_lines(code.lines, title)
+
+
 def print_code_lines(lines, title=""):
     console.rule(title)
     for line in lines:

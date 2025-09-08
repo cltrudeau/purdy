@@ -11,6 +11,7 @@ from purdy.content import Code, MultiCode
 from purdy.renderers.textual import to_textual
 from purdy.tui import animate
 from purdy.tui.widgets import CodeWidget
+from purdy.typewriter import Typewriter
 
 # =============================================================================
 # Specs Used to Define The Layout
@@ -197,15 +198,33 @@ class CodeBox:
         self.last_after = after
         return self
 
-    def typewriter(self, content):
+    def typewriter(self, content, skip_comments=True, skip_whitespace=True,
+            delay=0.13, delay_variance=0.03):
+        if not isinstance(content, Code):
+            raise ValueError("Only Code is supported for typewriter right now")
+
         if self.last_after is not None:
             before = self.last_after
         else:
             before = ""
 
         self.doc.append(content)
-        after = self.doc.render()
-        animate.cell_list.append(animate.Cell(self, before, after))
+        typewriter_steps = Typewriter.typewriterize(content, skip_comments,
+            skip_whitespace)
+
+        # Adding the content to the doc made sure there was a MultiCode as the
+        # last item, remove the last Code object from it, and then iterate
+        # through each of the typewriter versions with it
+        del self.doc.items[-1][-1]
+        for code in typewriter_steps:
+            self.doc.items[-1].append(code)
+            after = self.doc.render()
+            animate.cell_list.append(animate.Cell(self, before, after))
+            self.pause(delay, delay_variance)
+
+            before = after
+            del self.doc.items[-1][-1]
+
         self.last_after = after
         return self
 

@@ -144,6 +144,32 @@ rtf_doc = Theme("rtf_doc", {
     Generic.Subheading: "a40000",
 }, rtf_code)
 
+# ===========================================================================
+# Python REPL Theme (as of 3.14)
+# ===========================================================================
+
+pyrepl_code = Theme("pyrepl_code", {
+    Token:               "",
+    Whitespace:          "",
+
+    Comment:             "c91b00",
+    Keyword:             ("6972ff", "", "bold"),
+    Name.Builtin:        "00c5c8",
+    Name.Builtin.Pseudo: "c7c7c7",
+    Name.Class:          ("ffffff", "", "bold"),
+    Name.Decorator:      "00c5c8",
+    Name.Exception:      "00c5c8",
+    Name.Function:       ("ffffff", "", "bold"),
+    Number:              "c7c400",
+    Punctuation.Marker:  ("ff6e67", "", "bold"),
+    String:              "00c200",
+
+    Operator:            "c7c7c7",
+    Operator.Word:       ("6972ff", "", "bold"),
+    Generic.Prompt:      ("ff77ff", "", "bold"),
+    Generic.Error:       ("ff77ff", "", "bold"),
+    Error:               ("cc0000", "", "bold"),
+})
 
 # ===========================================================================
 # Theme Map
@@ -164,5 +190,8 @@ THEME_MAP = {
         "code": rtf_code,
         "doc": rtf_doc,
         "xml": rtf_xml,
+    },
+    "pyrepl": {
+        "code": pyrepl_code,
     },
 }

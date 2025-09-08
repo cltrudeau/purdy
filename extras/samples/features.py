@@ -28,6 +28,7 @@ con = Code.text(shell, "con")
 repl = Code("../display_code/short.repl")
 code = Code("../display_code/short.py")
 
+# Intro
 (top
     .append(TText(INTRO))
     .wait()
@@ -38,6 +39,7 @@ code = Code("../display_code/short.py")
     .wait()
 )
 
+# Bash + REPL
 (bottom
     .append(con)
     .wait()
@@ -53,6 +55,7 @@ code = Code("../display_code/short.py")
     .wait()
 )
 
+# Transition to code
 (top
     .append("\n\nThere are a variety of transition animations →")
     .wait()
@@ -63,6 +66,7 @@ code = Code("../display_code/short.py")
     .wait()
 )
 
+# Highlights
 (top
     .append("\n\nYou can highlighting a line of code →")
     .wait()
@@ -83,6 +87,18 @@ code = Code("../display_code/short.py")
     .highlight("1:4,18")
     .wait()
     .highlight_all_off()
+    .wait()
+)
+
+# Typewriter
+(top
+    .append("\n\nYou can emulate typing →")
+    .wait()
+)
+
+(bottom
+    .transition()
+    .typewriter(repl)
     .wait()
 )
 

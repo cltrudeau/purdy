@@ -3,7 +3,7 @@
 # Utility class for emulating the typing of a Code object
 from copy import deepcopy
 
-from pygments.token import Comment, Text, Whitespace
+from pygments.token import Comment, Generic, Text, Whitespace
 
 from purdy.parser import CodePart, token_is_a
 
@@ -20,6 +20,8 @@ class Typewriter:
         self.skip_comments = skip_comments
         self.skip_whitespace = skip_whitespace
 
+        self.is_console = src_code.parser.lexer_spec.console
+
         self.current = src_code.spawn()
         self.results = []
 
@@ -34,35 +36,67 @@ class Typewriter:
         self.line = deepcopy(self.line)
         self.part = deepcopy(self.part)
 
+    def _skip_part(self, text):
+        self.part.text = text
+        self._commit_part()
+        del self.current.lines[-1]
+
     def _run(self):
         """Returns a list of `Code` objects representing a series of steps
         used to emulate typing of this source object.
         """
+        prev_was_output = False
         for src_line in self.src_code.lines:
+            # Handle multi-line console output
+            if self.is_console:
+                first_token = src_line.parts[0].token
+
+                if token_is_a(first_token, Generic.Output):
+                    if prev_was_output:
+                        # nth output line, don't commit a new Code object,
+                        # just update the previous one
+                        prev_code = self.results[-1]
+                        line = deepcopy(src_line)
+                        prev_code.lines.append(line)
+                        continue
+                    else:
+                        # First output line
+                        prev_was_output = True
+                        self.current.lines.append(src_line)
+                        self.results.append(self.current)
+
+                        # Reset for the next pass
+                        self.current = deepcopy(self.current)
+                        continue
+                else:
+                    prev_was_output = False
+
             self.line = src_line.spawn()
 
             for src_part in src_line.parts:
-                self.part = CodePart(token=src_part.token, text="")
+                src_token = src_part.token
+                self.part = CodePart(token=src_token, text="")
 
-                if self.skip_comments and token_is_a(src_part.token, Comment):
+                if self.is_console and token_is_a(src_token, Generic.Prompt):
+                    # Don't animate prompts
+                    self._skip_part(src_part.text)
+                    continue
+
+                if self.skip_comments and token_is_a(src_token, Comment):
                     # Don't animate comments
-                    self.part.text = src_part.text
-                    self._commit_part()
-                    del self.current.lines[-1]
+                    self._skip_part(src_part.text)
                     continue
 
                 if self.skip_whitespace:
                     # Don't animate whitespace; this can be a specific token,
                     # or just blank text
-                    skip_it = token_is_a(src_part.token, Whitespace)
+                    skip_it = token_is_a(src_token, Whitespace)
 
-                    if token_is_a(src_part.token, Text):
+                    if token_is_a(src_token, Text):
                         skip_it |= src_part.text.isspace()
 
                     if skip_it:
-                        self.part.text = src_part.text
-                        self._commit_part()
-                        del self.current.lines[-1]
+                        self._skip_part(src_part.text)
                         continue
 
                 for char in src_part.text:

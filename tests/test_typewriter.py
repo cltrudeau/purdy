@@ -1,6 +1,9 @@
 from unittest import TestCase
 
+from pygments.token import Generic
+
 from purdy.content import Code
+from purdy.parser import token_is_a
 from purdy.typewriter import Typewriter
 
 # =============================================================================
@@ -8,6 +11,12 @@ from purdy.typewriter import Typewriter
 CODE = """\
 if x == 3:    # Comment
     return 4
+"""
+
+CONSOLE = """\
+>>> x
+This is a whole
+bunch of output text
 """
 
 class TestTypewriter(TestCase):
@@ -45,3 +54,27 @@ class TestTypewriter(TestCase):
         # Should get back 35 Code objects, one for each character
         self.assertEqual(35, len(result))
         self._spot_check_contents(result)
+
+    def test_typewriter_console(self):
+        source = Code.text(CONSOLE, "repl")
+
+        result = Typewriter.typewriterize(source)
+
+        # Console example has a prompt and two output lines, so there should
+        # only be 3 Code objects as a result
+        self.assertEqual(3, len(result))
+
+        # Spot check some of the contents, first Code obj should have one line
+        # with the prompt in it
+        self.assertEqual(1, len(result[0].lines))
+        self.assertEqual(">>> ", result[0].lines[0].parts[0].text)
+
+        # Second Code obj shouldn't have any output in it
+        self.assertEqual(1, len(result[1].lines))
+
+        # Last Code obj should have three lines two of which are Output
+        self.assertEqual(3, len(result[2].lines))
+        self.assertTrue(
+            token_is_a(result[2].lines[1].parts[0].token, Generic.Output))
+        self.assertTrue(
+            token_is_a(result[2].lines[2].parts[0].token, Generic.Output))

@@ -36,7 +36,8 @@ def tokens(args):
 
 def ansi(args):
     ### 'ansi' sub-command: prints content with ANSI colour highlighting
-    mc = multicode_factory(args)
+#    mc = multicode_factory(args)
+    mc = multicode_factory(args, theme_name="pyrepl")
     output = to_rich(mc)
     rprint(output)
 
