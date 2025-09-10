@@ -1,14 +1,12 @@
+#!/usr/bin/env python
 # features.py
 #
 # Shows off the main features of the purdy coding interface
-
-from purdy.content import Code
-from purdy.tui.codebox import TText
-from purdy.tui.apps import split
+from purdy.tui import AppFactory, Code, TText
 
 # =============================================================================
 
-app = split(relative_height_bottom=2, auto_scroll_top=True)
+app = AppFactory.split(relative_height_bottom=2, auto_scroll_top=True)
 top = app.top
 bottom = app.bottom
 
@@ -32,6 +30,9 @@ code = Code("../display_code/short.py")
 (top
     .append(TText(INTRO))
     .wait()
+)
+
+(top
     .append("\nThe left arrow allows you to back up ←")
     .wait()
     .append("\n\nPurdy lets you present like you're coding")
@@ -92,13 +93,34 @@ code = Code("../display_code/short.py")
 
 # Typewriter
 (top
-    .append("\n\nYou can emulate typing →")
+    .append("\n\nYou can emulate typing → → →")
     .wait()
 )
 
 (bottom
     .transition()
     .typewriter(repl)
+    .wait()
+)
+
+(top
+    .append("\nTyping with arbitrary text →")
+    .wait()
+)
+
+(bottom
+    .transition()
+    .text_typewriter("one two three [not markup]")
+    .wait()
+)
+
+(top
+    .append("\nAnd Textual markup text →")
+    .wait()
+)
+
+(bottom
+    .text_typewriter(TText("\nfour [green]five[/] six"))
     .wait()
 )
 

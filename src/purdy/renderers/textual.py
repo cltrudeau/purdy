@@ -39,22 +39,24 @@ class TextualFormatter(Formatter):
         for part in line.parts:
             token = token_ancestor(part.token, ancestor_list)
 
+            name = f"text_{counter}"
+            dname = "$" + name
+
             try:
                 # Get the tag from the general map and replace $text with the
                 # counted version
                 marker = self.tag_map[token]
-                name = f"text_{counter}"
-                dname = "$" + name
                 marker = marker.replace("$text", dname)
-
-                # Store the text for Content's kwargs and update our markup
-                # string
-                part_map[name] = part.text
-                markup += marker
-                counter += 1
             except KeyError:
-                # No map tags, just add to our markup string
-                markup += part.text
+                # No map tags, use just the placeholder for the content
+                marker = dname
+
+            # Store the text for Content's kwargs and update our markup
+            # string
+            part_map[name] = part.text
+            markup += marker
+
+            counter += 1
 
         if line.has_newline:
             markup += self.newline

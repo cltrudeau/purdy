@@ -4,17 +4,13 @@
 from copy import deepcopy
 
 from pygments.token import Comment, Generic, Text, Whitespace
+from textual.markup import MarkupTokenizer
 
 from purdy.parser import CodePart, token_is_a
 
 # ===========================================================================
 
-class Typewriter:
-    @classmethod
-    def typewriterize(cls, src_code, skip_comments=True, skip_whitespace=True):
-        tw = Typewriter(src_code, skip_comments, skip_whitespace)
-        return tw._run()
-
+class _CodeTypewriter:
     def __init__(self, src_code, skip_comments, skip_whitespace):
         self.src_code = src_code
         self.skip_comments = skip_comments
@@ -51,7 +47,10 @@ class Typewriter:
             if self.is_console:
                 first_token = src_line.parts[0].token
 
-                if token_is_a(first_token, Generic.Output):
+                is_output = token_is_a(first_token, Generic.Output)
+                is_output |= not token_is_a(first_token, Generic.Prompt)
+
+                if is_output:
                     if prev_was_output:
                         # nth output line, don't commit a new Code object,
                         # just update the previous one
@@ -112,3 +111,44 @@ class Typewriter:
             self.current.lines.append(self.line)
 
         return self.results
+
+
+def code_typewriterize(src_code, skip_comments=True, skip_whitespace=True):
+    tw = _CodeTypewriter(src_code, skip_comments, skip_whitespace)
+    return tw._run()
+
+# ---------------------------------------------------------------------------
+
+def textual_typewriterize(content):
+    results = []
+    tokenizer = MarkupTokenizer()
+    current = ""
+
+    for token in tokenizer(content, ("inline", "")):
+        if token.name == "text":
+            for char in token.value:
+                current += char
+                results.append(current)
+        elif token.name == "eof":
+            pass
+        elif token.name == "end_tag":
+            current += token.value
+            results.append(current)
+        else:
+            # Token is some part of a tag except the end of it, accumulate
+            # it in current
+            current += token.value
+
+    return results
+
+# ---------------------------------------------------------------------------
+
+def string_typewriterize(content):
+    results = []
+    current = ""
+
+    for char in content:
+        current += char
+        results.append(current)
+
+    return results

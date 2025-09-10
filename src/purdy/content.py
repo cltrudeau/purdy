@@ -33,17 +33,18 @@ class Code:
     :param filename: Name of file to read of :class:`pathlib.Path` object
     :param parser_identifier: Identifier for :class:`purdy.parser.Parser` to
         use when parsing the code. Defaults to "detect"
-    :param theme_name: Name of a theme to associate with lines parsed by the
-        construction process. Defaults to `None` which causes the class
-        attribute `default_theme_name` to be used instead.
+    :param theme: Either a string containing the base name of a theme (without
+        the category type like code, con, etc) or a :class:Theme object.
+        Defaults to `None` in which case it uses the class attribute
+        `default_theme_name` as the theme name.
     """
     default_theme_name = "default"
 
-    def __init__(self, filename, parser_identifier="detect", theme_name=None):
+    def __init__(self, filename, parser_identifier="detect", theme=None):
         # !!! If any defaults in here change make sure to update the .text()
         # factory
         lexer_spec = LexerSpec.get_spec(parser_identifier, hint=filename)
-        self._pre_parse_init(theme_name, lexer_spec)
+        self._pre_parse_init(theme, lexer_spec)
 
         path = Path(filename).resolve()
         self.parser = Parser(lexer_spec)
@@ -53,7 +54,7 @@ class Code:
         # and the spawn methods!!!
 
     @classmethod
-    def text(cls, text, parser_identifier="py", theme_name=None):
+    def text(cls, text, parser_identifier="py", theme=None):
         """Factory method for reading code from a string instead of a file.
 
         :param text: Text to parse
@@ -64,7 +65,7 @@ class Code:
         obj = Code.__new__(Code)
 
         lexer_spec = LexerSpec.get_spec(parser_identifier)
-        obj._pre_parse_init(theme_name, lexer_spec)
+        obj._pre_parse_init(theme, lexer_spec)
 
         obj.parser = Parser(lexer_spec)
         obj.parser.parse(text, obj)
@@ -72,7 +73,7 @@ class Code:
         # !!! Anything added under here has to match __init__ and spawn!
         return obj
 
-    def _pre_parse_init(self, theme_name, lexer_spec):
+    def _pre_parse_init(self, theme, lexer_spec):
         ### Since the `.text` method does tricky stuff with `__new__`, common
         # initialization is done in this method
         self.lines = []
@@ -80,10 +81,13 @@ class Code:
 
         self.meta = defaultdict(_CodeLineMetadata)
 
-        if theme_name is None:
-            theme_name = self.default_theme_name
+        if theme is None:
+            theme = self.default_theme_name
 
-        self.theme = THEME_MAP[theme_name][lexer_spec.category]
+        if isinstance(theme, str):
+            self.theme = THEME_MAP[theme][lexer_spec.category]
+        else:
+            self.theme = theme
 
     def reset_metadata(self):
         """Sets all the style metadata back to defaults. Mostly used for

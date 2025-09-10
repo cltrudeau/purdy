@@ -4,7 +4,8 @@ from pygments.token import Generic
 
 from purdy.content import Code
 from purdy.parser import token_is_a
-from purdy.typewriter import Typewriter
+from purdy.typewriter import (code_typewriterize, string_typewriterize,
+    textual_typewriterize)
 
 # =============================================================================
 
@@ -40,7 +41,7 @@ class TestTypewriter(TestCase):
         #print_code_lines(source.lines)
 
         # Test with skipping comments and whitespace
-        result = Typewriter.typewriterize(source)
+        result = code_typewriterize(source)
 
         # Should get back 21 Code objects for the characters in the parsed
         # code, spot check certain aspects to make sure it worked
@@ -48,7 +49,7 @@ class TestTypewriter(TestCase):
         self._spot_check_contents(result)
 
         # --- Do it again, this time not skipping comments or whitespace
-        result = Typewriter.typewriterize(source, skip_comments=False,
+        result = code_typewriterize(source, skip_comments=False,
             skip_whitespace=False)
 
         # Should get back 35 Code objects, one for each character
@@ -58,7 +59,7 @@ class TestTypewriter(TestCase):
     def test_typewriter_console(self):
         source = Code.text(CONSOLE, "repl")
 
-        result = Typewriter.typewriterize(source)
+        result = code_typewriterize(source)
 
         # Console example has a prompt and two output lines, so there should
         # only be 3 Code objects as a result
@@ -78,3 +79,13 @@ class TestTypewriter(TestCase):
             token_is_a(result[2].lines[1].parts[0].token, Generic.Output))
         self.assertTrue(
             token_is_a(result[2].lines[2].parts[0].token, Generic.Output))
+
+#    def test_textual_typewriter(self):
+#        results = textual_typewriterize("one [blue]two[/] three")
+#        for item in results:
+#            print(item)
+
+#    def test_string_typewriter(self):
+#        results = string_typewriterize("one two three")
+#        for item in results:
+#            print(item)

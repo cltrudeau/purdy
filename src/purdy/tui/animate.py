@@ -5,8 +5,6 @@ import typing
 from dataclasses import dataclass
 from enum import Enum
 
-from purdy.content import Code, MultiCode
-
 # ===========================================================================
 # Cells and Cell Management
 #

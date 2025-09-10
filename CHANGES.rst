@@ -1,3 +1,13 @@
+2.0.0.a4
+========
+
+* 2025/09/10
+* Updates to typewriter so it handles consoles properly
+* Fix bug where textual markup wasn't getting escaped properly
+* Moved factory functions into a common AppFactory class
+* Added things you need for the code API into tui/__init__ so you only need to
+  know about one import
+
 2.0.0.a3
 ========
 

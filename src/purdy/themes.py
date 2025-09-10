@@ -186,6 +186,11 @@ THEME_MAP = {
         "doc": no_colour,
         "xml": no_colour,
     },
+    "no_color": {
+        "code": no_colour,
+        "doc": no_colour,
+        "xml": no_colour,
+    },
     "rtf": {
         "code": rtf_code,
         "doc": rtf_doc,

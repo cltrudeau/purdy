@@ -1,17 +1,19 @@
 # purdy.tui.codebox.py
 import random
-
 from dataclasses import dataclass
 
+from pygments.token import Generic
 from textual.content import Content
-
-from textual_effects import Curtain
+from textual.markup import escape as textual_escape
+from textual_transitions import Curtain
 
 from purdy.content import Code, MultiCode
+from purdy.parser import token_is_a
 from purdy.renderers.textual import to_textual
 from purdy.tui import animate
 from purdy.tui.widgets import CodeWidget
-from purdy.typewriter import Typewriter
+from purdy.typewriter import (code_typewriterize, string_typewriterize,
+    textual_typewriterize)
 
 # =============================================================================
 # Specs Used to Define The Layout
@@ -107,7 +109,8 @@ class Document:
             elif isinstance(item, TText):
                 result += item.render()
             elif isinstance(item, str):
-                result += item
+                text = textual_escape(item)
+                result += Content.from_markup(text)
             else:
                 raise ValueError(f"Unrecognizable content in doc {item}")
 
@@ -198,10 +201,11 @@ class CodeBox:
         self.last_after = after
         return self
 
+    # --- Typewriter actions
     def typewriter(self, content, skip_comments=True, skip_whitespace=True,
             delay=0.13, delay_variance=0.03):
         if not isinstance(content, Code):
-            raise ValueError("Only Code is supported for typewriter right now")
+            raise ValueError("Code only! Use text_typewriter instead")
 
         if self.last_after is not None:
             before = self.last_after
@@ -209,7 +213,7 @@ class CodeBox:
             before = ""
 
         self.doc.append(content)
-        typewriter_steps = Typewriter.typewriterize(content, skip_comments,
+        typewriter_steps = code_typewriterize(content, skip_comments,
             skip_whitespace)
 
         # Adding the content to the doc made sure there was a MultiCode as the
@@ -220,10 +224,59 @@ class CodeBox:
             self.doc.items[-1].append(code)
             after = self.doc.render()
             animate.cell_list.append(animate.Cell(self, before, after))
-            self.pause(delay, delay_variance)
+
+            if token_is_a(code.lines[-1].parts[-1].token, Generic.Prompt):
+                # Wait at prompts, pause at everything else
+                self.wait()
+            else:
+                self.pause(delay, delay_variance)
 
             before = after
             del self.doc.items[-1][-1]
+
+        # Add the content back in after the last pass of the for-loop
+        self.doc.append(content)
+        self.last_after = after
+        return self
+
+    def text_typewriter(self, content, delay=0.13, delay_variance=0.03):
+        if self.last_after is not None:
+            before = self.last_after
+        else:
+            before = ""
+
+        if isinstance(content, TText):
+            results = textual_typewriterize(content)
+            for item in results:
+                self.doc.append(TText(item))
+                after = self.doc.render()
+                animate.cell_list.append(animate.Cell(self, before, after))
+
+                self.pause(delay, delay_variance)
+
+                # Will replace the last item next time through
+                before = after
+                del self.doc.items[-1]
+
+            # Final value should be the whole thing
+            self.doc.append(TText(content))
+            after = self.doc.render()
+        else: # Should be a plain string
+            results = string_typewriterize(content)
+            for item in results:
+                self.doc.append(item)
+                after = self.doc.render()
+                animate.cell_list.append(animate.Cell(self, before, after))
+
+                self.pause(delay, delay_variance)
+
+                # Will replace the last item next time through
+                before = after
+                del self.doc.items[-1]
+
+            # Final value should be the whole thing
+            self.doc.append(content)
+            after = self.doc.render()
 
         self.last_after = after
         return self
