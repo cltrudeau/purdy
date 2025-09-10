@@ -55,3 +55,9 @@ documentation = "http://purdy.readthedocs.io/en/latest/"
 
 [tool.setuptools.dynamic]
 version = {attr = "purdy.__version__"}
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.setuptools.package-data]
+"purdy.tui" = ["*.tcss"]
