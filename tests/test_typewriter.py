@@ -3,7 +3,7 @@ from unittest import TestCase
 from pygments.token import Generic
 
 from purdy.content import Code
-from purdy.parser import token_is_a
+from purdy.parser import token_is_a, CURSOR_CHAR
 from purdy.typewriter import (code_typewriterize, string_typewriterize,
     textual_typewriterize)
 
@@ -26,13 +26,15 @@ class TestTypewriter(TestCase):
         self.assertEqual(1, len(result[0].lines))
         self.assertEqual(2, len(result[-1].lines))
 
-        # First Code object's line has one part, just the letter "i" from "if"
-        self.assertEqual(1, len(result[0].lines[0].parts))
+        # First Code object's line has two parts, the letter "i" from "if" and
+        # the CURSOR
+        self.assertEqual(2, len(result[0].lines[0].parts))
         self.assertEqual("i", result[0].lines[0].parts[0].text)
+        self.assertEqual(CURSOR_CHAR, result[0].lines[0].parts[1].text)
 
-        # Last Code object's second line has four parts: space, return, space,
-        # 4
-        self.assertEqual(4, len(result[-1].lines[-1].parts))
+        # Last Code object's second line has five parts: space, return, space,
+        # 4, and the cursor
+        self.assertEqual(5, len(result[-1].lines[-1].parts))
         self.assertEqual("return", result[-1].lines[1].parts[1].text)
 
     def test_typewriter(self):
@@ -80,12 +82,20 @@ class TestTypewriter(TestCase):
         self.assertTrue(
             token_is_a(result[2].lines[2].parts[0].token, Generic.Output))
 
+#    def test_foo_typewriter(self):
+#        source = Code.text(CONSOLE, "repl")
+#        results = code_typewriterize(source)
+#
+#        from purdy._debug import print_code_lines
+#        for item in results:
+#            print_code_lines(item.lines)
+#
 #    def test_textual_typewriter(self):
 #        results = textual_typewriterize("one [blue]two[/] three")
 #        for item in results:
 #            print(item)
-
+#
 #    def test_string_typewriter(self):
-#        results = string_typewriterize("one two three")
+#        results = string_typewriterize("four five six")
 #        for item in results:
 #            print(item)

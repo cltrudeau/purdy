@@ -23,7 +23,8 @@ Type "help", "copyright", "credits" or "license" for more information.
 """
 
 con = Code.text(shell, "con")
-repl = Code("../display_code/short.repl")
+repl = Code("../display_code/really_short.repl")
+#repl = Code("../display_code/short.repl")
 code = Code("../display_code/short.py")
 
 # Intro

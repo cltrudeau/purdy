@@ -1,5 +1,6 @@
 # purdy.tui.animate.py
 import asyncio
+import random
 import typing
 
 from dataclasses import dataclass
@@ -23,6 +24,16 @@ class Cell:
 @dataclass
 class PauseCell:
     pause: float
+
+
+@dataclass
+class TypingCell:
+    codebox: typing.Any
+    change_list: list
+    pause: float
+    pause_variance: float
+    before: str
+    after: str
 
 
 class WaitCell:
@@ -64,6 +75,7 @@ class AnimationController:
         TRANSITION = "t"
         WAIT = "w"
         DONE = "d"
+        TYPING = "y"
 
     def __init__(self, app):
         self.app = app
@@ -81,6 +93,16 @@ class AnimationController:
     # --- Coroutines
     async def pause_running(self, amount):
         await asyncio.sleep(amount)
+        self.wait_state = None
+        await self.forwards()
+
+    async def typing_running(self, cell):
+        for change in cell.change_list:
+            cell.codebox.update(change)
+
+            pause = random.uniform(cell.pause, cell.pause + cell.pause_variance)
+            await asyncio.sleep(pause)
+
         self.wait_state = None
         await self.forwards()
 
@@ -117,6 +139,11 @@ class AnimationController:
                 self.wait_state = self.State.PAUSE
                 self.worker = self.app.run_worker(
                     self.pause_running(cell.pause))
+                return
+            if isinstance(cell, TypingCell):
+                # Typing directive, kick off the timer and leave
+                self.wait_state = self.State.TYPING
+                self.worker = self.app.run_worker(self.typing_running(cell))
                 return
             elif isinstance(cell, TransitionCell):
                 self.wait_state = self.State.TRANSITION

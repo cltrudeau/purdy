@@ -220,19 +220,28 @@ class CodeBox:
         # last item, remove the last Code object from it, and then iterate
         # through each of the typewriter versions with it
         del self.doc.items[-1][-1]
+        change_list = []
         for code in typewriter_steps:
             self.doc.items[-1].append(code)
             after = self.doc.render()
-            animate.cell_list.append(animate.Cell(self, before, after))
+            change_list.append(after)
 
-            if token_is_a(code.lines[-1].parts[-1].token, Generic.Prompt):
+            if code.lines[-1].is_prompt():
                 # Wait at prompts, pause at everything else
+                cell = animate.TypingCell(self, change_list, delay,
+                    delay_variance, before, after)
+                animate.cell_list.append(cell)
                 self.wait()
-            else:
-                self.pause(delay, delay_variance)
+                change_list = []
 
             before = after
             del self.doc.items[-1][-1]
+
+        if change_list:
+            # Animate the rest of the change list
+            cell = animate.TypingCell(self, change_list, delay, delay_variance,
+                before, after)
+            animate.cell_list.append(cell)
 
         # Add the content back in after the last pass of the for-loop
         self.doc.append(content)
@@ -247,36 +256,25 @@ class CodeBox:
 
         if isinstance(content, TText):
             results = textual_typewriterize(content)
-            for item in results:
-                self.doc.append(TText(item))
-                after = self.doc.render()
-                animate.cell_list.append(animate.Cell(self, before, after))
-
-                self.pause(delay, delay_variance)
-
-                # Will replace the last item next time through
-                before = after
-                del self.doc.items[-1]
-
-            # Final value should be the whole thing
-            self.doc.append(TText(content))
-            after = self.doc.render()
-        else: # Should be a plain string
+            cls = TText
+        else:
             results = string_typewriterize(content)
-            for item in results:
-                self.doc.append(item)
-                after = self.doc.render()
-                animate.cell_list.append(animate.Cell(self, before, after))
+            cls = str
 
-                self.pause(delay, delay_variance)
-
-                # Will replace the last item next time through
-                before = after
-                del self.doc.items[-1]
-
-            # Final value should be the whole thing
-            self.doc.append(content)
+        for item in results:
+            self.doc.append(cls(item))
             after = self.doc.render()
+            animate.cell_list.append(animate.Cell(self, before, after))
+
+            self.pause(delay, delay_variance)
+
+            # Will replace the last item next time through
+            before = after
+            del self.doc.items[-1]
+
+        # Final value should be the whole thing
+        self.doc.append(cls(content))
+        after = self.doc.render()
 
         self.last_after = after
         return self

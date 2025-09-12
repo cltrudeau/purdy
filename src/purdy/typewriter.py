@@ -6,7 +6,7 @@ from copy import deepcopy
 from pygments.token import Comment, Generic, Text, Whitespace
 from textual.markup import MarkupTokenizer
 
-from purdy.parser import CodePart, token_is_a
+from purdy.parser import CodePart, CURSOR, token_is_a
 
 # ===========================================================================
 
@@ -22,14 +22,17 @@ class _CodeTypewriter:
         self.results = []
 
     def _commit_part(self):
+        # Add part to line with temporary cursor symbol, put in results
         self.line.parts.append(self.part)
+        self.line.parts.append(CURSOR)
         self.current.lines.append(self.line)
 
         self.results.append(self.current)
 
-        # Reset for the next pass
+        # Reset for the next pass, removing cursor along the way
         self.current = deepcopy(self.current)
         self.line = deepcopy(self.line)
+        del self.line.parts[-1]
         self.part = deepcopy(self.part)
 
     def _skip_part(self, text):

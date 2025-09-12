@@ -13,7 +13,7 @@ from pygments.lexers import (PythonConsoleLexer, PythonLexer, BashSessionLexer,
 from pygments.lexers.data import YamlLexer
 from pygments.lexers.markup import MarkdownLexer, RstLexer
 from pygments.lexers.templates import HtmlDjangoLexer
-from pygments.token import String, Token
+from pygments.token import Generic, String, Token
 
 from purdy.lexers import DollarBashSessionLexer, NewlineLexer
 
@@ -220,6 +220,11 @@ class PartsList(list):
         return "".join([part.text for part in self])
 
 
+# Cursor used in typewriting animations
+CURSOR_CHAR = "\u2588"
+CURSOR = CodePart(token=Generic.Text, text=CURSOR_CHAR)
+
+
 @dataclass
 class CodeLine:
     lexer_spec: LexerSpec
@@ -250,6 +255,23 @@ class CodeLine:
                 return False
 
         return True
+
+    def is_prompt(self):
+        try:
+            prompt_prefix = token_is_a(self.parts[0].token, Generic.Prompt)
+
+            # Only prompt
+            if len(self.parts) == 1 and prompt_prefix:
+                return True
+
+            # Prompt and cursor
+            if len(self.parts) == 2 and prompt_prefix and \
+                    self.parts[1] == CURSOR:
+                return True
+        except IndexError:
+            pass
+
+        return False
 
     def compress(self):
         """Looks for sequence of parts in a row with the same token type and

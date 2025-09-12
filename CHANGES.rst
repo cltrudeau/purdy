@@ -1,10 +1,16 @@
-2.0.0.a5
+2.0.0a6
+=======
+
+* 2025/09/??
+
+
+2.0.0a5
 ========
 
 * 2025/09/10
 * Fix packaging problem that failed to include .tcss file
 
-2.0.0.a4
+2.0.0a4
 ========
 
 * 2025/09/10
@@ -14,7 +20,7 @@
 * Added things you need for the code API into tui/__init__ so you only need to
   know about one import
 
-2.0.0.a3
+2.0.0a3
 ========
 
 * !!! BREAKING CHANGE RELEASE
