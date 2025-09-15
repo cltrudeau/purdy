@@ -147,46 +147,23 @@ class CodeBox:
     #
     # --- Editing Actions
     def append(self, content):
-        if self.last_after is not None:
-            before = self.last_after
-        else:
-            before = ""
-
         self.doc.append(content)
         after = self.doc.render()
-        animate.cell_list.append(animate.Cell(self, before, after))
-        self.last_after = after
+        animate.cell_list.append(animate.Cell(self, after))
         return self
 
     def clear(self):
-        if self.last_after is not None:
-            before = self.last_after
-        else:
-            before = ""
-
         self.doc = Document()
-        animate.cell_list.append(animate.Cell(self, before, ""))
-        self.last_after = ""
+        animate.cell_list.append(animate.Cell(self, ""))
         return self
 
     def replace(self, content):
-        if self.last_after is not None:
-            before = self.last_after
-        else:
-            before = ""
-
         self.doc.replace(content)
         after = self.doc.render()
-        animate.cell_list.append(animate.Cell(self, before, after))
-        self.last_after = after
+        animate.cell_list.append(animate.Cell(self, after))
         return self
 
     def transition(self, content=None, speed=1):
-        if self.last_after is not None:
-            before = self.last_after
-        else:
-            before = ""
-
         self.doc = Document()
         if content is None:
             self.doc = Document()
@@ -195,10 +172,8 @@ class CodeBox:
             self.doc.append(content)
             after = self.doc.render()
 
-        tx = animate.TransitionCell(self, before, after, Curtain,
-            {"seconds":speed})
+        tx = animate.TransitionCell(self, after, Curtain, {"seconds":speed})
         animate.cell_list.append(tx)
-        self.last_after = after
         return self
 
     # --- Typewriter actions
@@ -206,11 +181,6 @@ class CodeBox:
             delay=0.13, delay_variance=0.03):
         if not isinstance(content, Code):
             raise ValueError("Code only! Use text_typewriter instead")
-
-        if self.last_after is not None:
-            before = self.last_after
-        else:
-            before = ""
 
         self.doc.append(content)
         typewriter_steps = code_typewriterize(content, skip_comments,
@@ -223,7 +193,7 @@ class CodeBox:
         for code in typewriter_steps:
             self.doc.items[-1].append(code)
             after = self.doc.render()
-            animate.cell_list.append(animate.Cell(self, before, after))
+            animate.cell_list.append(animate.Cell(self, after))
 
             if code.lines[-1].is_prompt():
                 # Wait at prompts, pause at everything else
@@ -231,20 +201,13 @@ class CodeBox:
             else:
                 self.pause(delay, delay_variance)
 
-            before = after
             del self.doc.items[-1][-1]
 
         # Add the content back in after the last pass of the for-loop
         self.doc.append(content)
-        self.last_after = after
         return self
 
     def text_typewriter(self, content, delay=0.13, delay_variance=0.03):
-        if self.last_after is not None:
-            before = self.last_after
-        else:
-            before = ""
-
         if isinstance(content, TText):
             results = textual_typewriterize(content)
             cls = TText
@@ -255,19 +218,15 @@ class CodeBox:
         for item in results:
             self.doc.append(cls(item))
             after = self.doc.render()
-            animate.cell_list.append(animate.Cell(self, before, after))
+            animate.cell_list.append(animate.Cell(self, after))
 
             self.pause(delay, delay_variance)
 
             # Will replace the last item next time through
-            before = after
             del self.doc.items[-1]
 
         # Final value should be the whole thing
         self.doc.append(cls(content))
-        after = self.doc.render()
-
-        self.last_after = after
         return self
 
     # --- Timing actions
@@ -312,18 +271,12 @@ class CodeBox:
         :param container_indicator: which `Code` block to highlight
 
         """
-        if self.last_after is not None:
-            before = self.last_after
-        else:
-            before = ""
-
         # Turn highlighting on and re-render
         code = self._code_from_container_indicator(container_indicator)
         code.highlight(*args)
         after = self.doc.render()
 
-        animate.cell_list.append(animate.Cell(self, before, after))
-        self.last_after = after
+        animate.cell_list.append(animate.Cell(self, after))
         return self
 
     def highlight_off(self, *args, container_indicator=None):
@@ -343,27 +296,16 @@ class CodeBox:
         :param container_indicator: which `Code` block to highlight
 
         """
-        if self.last_after is not None:
-            before = self.last_after
-        else:
-            before = ""
-
         # Turn highlighting off and re-render
         code = self._code_from_container_indicator(container_indicator)
         code.highlight_off(*args)
         after = self.doc.render()
 
-        animate.cell_list.append(animate.Cell(self, before, after))
-        self.last_after = after
+        animate.cell_list.append(animate.Cell(self, after))
         return self
 
     def highlight_all_off(self):
         """Removes all highlighting from all :class:`MultiCode` containers"""
-        if self.last_after is not None:
-            before = self.last_after
-        else:
-            before = ""
-
         # Turn all highlighting off and re-render
         for item in self.doc.items:
             if isinstance(item, MultiCode):
@@ -372,6 +314,5 @@ class CodeBox:
 
         after = self.doc.render()
 
-        animate.cell_list.append(animate.Cell(self, before, after))
-        self.last_after = after
+        animate.cell_list.append(animate.Cell(self, after))
         return self

@@ -11,14 +11,19 @@ from enum import Enum
 #
 # These define the possible steps that can happen during screen animation
 
+class BeforeCell:
+    # Marker class for any cells with a "before" state
+    pass
+
+
 @dataclass
-class Cell:
+class Cell(BeforeCell):
     codebox: typing.Any  # should be CodeBox, but that causes a circular
                          # reference and pyflakes doesn't handle string based
                          # typing, so once again, pretending Python can have
                          # type safety is just so much fun
-    before: str
     after: str
+    before: str = ""
 
 
 @dataclass
@@ -30,13 +35,13 @@ class WaitCell:
     pass
 
 
-class TransitionCell:
-    def __init__(self, codebox, before, after, effect_cls, effect_kwargs):
+class TransitionCell(BeforeCell):
+    def __init__(self, codebox, after, effect_cls, effect_kwargs):
         self.codebox = codebox
-        self.before = before
         self.after = after
         self.effect_cls = effect_cls
         self.effect_kwargs = effect_kwargs
+        self.before = ""
 
     async def run(self, control):
         effect_holder = self.codebox.holder.effect_holder
@@ -72,12 +77,21 @@ class AnimationController:
         self.worker = None
         self.wait_state = None
 
-        # Find the first Wait cell in our collection
+        # Loop through and calculate the "before" states, also mark the first
+        # Wait cell in our collection
         self.first_wait = None
+        before_cells = {}
         for index, cell in enumerate(cell_list):
-            if isinstance(cell, WaitCell):
+            if isinstance(cell, WaitCell) and self.first_wait is None:
+                # Found first wait
                 self.first_wait = index
-                break
+
+            if isinstance(cell, BeforeCell):
+                if cell.codebox in before_cells:
+                    prev = before_cells[cell.codebox]
+                    cell.before = prev.after
+
+                before_cells[cell.codebox] = cell
 
     # --- Coroutines
     async def pause_running(self, amount):
