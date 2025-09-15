@@ -185,12 +185,11 @@ class Formatter:
             splitting the given one. If no wrap was needed the list contain
             the original :class:`CodeLine`
         """
-        compare = deepcopy(line)
-
         # If wrapping is off, or the line is shorter than the wrap
         if container.wrap is None or line.parts.text_length < container.wrap:
-            return [compare]
+            return [line]
 
+        compare = deepcopy(line)
         # Perform wrapping
         #
         # When a line is split into more than two, the wrap of the second line
@@ -286,11 +285,12 @@ class Formatter:
         :param line_index: Index value of `CodeLine` inside the :class:`Code`
             container to  highlight
         """
-        output = deepcopy(code.lines[line_index])
         if line_index not in code.meta:
             # No highlighting (this is checked here to remove "and" clauses
             # from below reducing line length)
-            return output
+            return code.lines[line_index]
+
+        output = deepcopy(code.lines[line_index])
 
         if code.meta[line_index].highlight:
             output.parts.insert(0, CodePart(HighlightOn, ""))

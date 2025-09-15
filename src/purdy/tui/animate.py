@@ -26,16 +26,6 @@ class PauseCell:
     pause: float
 
 
-@dataclass
-class TypingCell:
-    codebox: typing.Any
-    change_list: list
-    pause: float
-    pause_variance: float
-    before: str
-    after: str
-
-
 class WaitCell:
     pass
 
@@ -75,7 +65,6 @@ class AnimationController:
         TRANSITION = "t"
         WAIT = "w"
         DONE = "d"
-        TYPING = "y"
 
     def __init__(self, app):
         self.app = app
@@ -139,11 +128,6 @@ class AnimationController:
                 self.wait_state = self.State.PAUSE
                 self.worker = self.app.run_worker(
                     self.pause_running(cell.pause))
-                return
-            if isinstance(cell, TypingCell):
-                # Typing directive, kick off the timer and leave
-                self.wait_state = self.State.TYPING
-                self.worker = self.app.run_worker(self.typing_running(cell))
                 return
             elif isinstance(cell, TransitionCell):
                 self.wait_state = self.State.TRANSITION
