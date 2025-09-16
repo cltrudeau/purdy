@@ -2,8 +2,8 @@ from unittest import TestCase
 
 from pygments.token import Comment, Keyword, Name
 
-from purdy.content import Code, MultiCode
-from purdy.renderers.rtf import RTFDoc, RTFFormatter
+from purdy.content import Code, Document
+from purdy.renderers.rtf import RTFPage, RTFFormatter
 from purdy.themes import Theme
 
 # =============================================================================
@@ -18,9 +18,9 @@ class TestRTF(TestCase):
 
         code = Code.text("", "plain")
         code.theme = theme
-        mc = MultiCode(code)
+        doc = Document(code)
 
-        doc = RTFDoc("222222", mc)
+        page = RTFPage("222222", doc)
 
         # Test map (0 is the auto value, starts at 1)
         expected = {
@@ -30,7 +30,7 @@ class TestRTF(TestCase):
             "556677": (4, r"\red85\green102\blue119"),
             "abc": (5, r"\red170\green187\blue204"),
         }
-        self.assertEqual(expected, doc.colour_table)
+        self.assertEqual(expected, page.colour_table)
 
         # Test table
         expected = (
@@ -42,7 +42,7 @@ class TestRTF(TestCase):
             r"\red170\green187\blue204;"
             r"}"
         )
-        self.assertIn(expected, doc.header_string)
+        self.assertIn(expected, page.header_string())
 
     def test_encode(self):
         # ASCII text

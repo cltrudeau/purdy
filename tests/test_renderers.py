@@ -19,7 +19,10 @@ class TestRenderers(TestCase):
             text = fn()
 
             try:
-                self.assertEqual(expected, text)
+                # Convert to list as it makes finding the problem easier
+                nexpected = expected.split("\n")
+                ntext = text.split("\n")
+                self.assertEqual(nexpected, ntext)
             except AssertionError: # pragma: no cover
                 print(f"*** Failed when testing {name}")
                 raise

@@ -27,6 +27,7 @@ HighlightOff = Token.HighlightOff
 Fold = Token.Fold
 LineNumber = Token.LineNumber
 
+# -----------------------------------------------------------------------------
 
 def token_is_a(token1, token2):
     """Returns true if token1 is the same type as or a child type of token2"""

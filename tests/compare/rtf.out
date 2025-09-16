@@ -6,7 +6,6 @@
 \cf5  5 \cf0 \cb1
 \cf2 \i # Sample Code\i0 \cf0 \cb1
 \
-
 \cf5  6 \cf0 \cb1
 \cf3 \b def\b0 \cf0 \cb1
 \cf0  
@@ -15,23 +14,19 @@
 \cf5 \b )\b0 \cf0 \cb1
 \cf5 \b :\b0 \cf0 \cb1
 \
-
 \cf5  7 \cf0 \cb1
 \cb13 \cf0     
 \cf3 \b pass\b0 \cf0 \cb1
 \cf0 \cb1\
-
 \cf5  8 \cf0 \cb1
 \cf0 
 \
-
 \cf5  9 \cf0 \cb1
 \cf3 \b class\b0 \cf0 \cb1
 \cf0  
 \cf5 Thing\cf0 \cb1
 \cf5 \b :\b0 \cf0 \cb1
 \
-
 \cf5 10 \cf0 \cb1
 \cf0     
 \cf5 bar\cf0 \cb1
@@ -40,16 +35,13 @@
 \cf0  
 \cf10 \b 1\b0 \cf0 \cb1
 \
-
 \cf5 11 \cf0 \cb1
 \cf5 \uc0\u10247\cf0 \cb1
 \
-
 \cf5 15 \cf0 \cb1
 \cf0     
 \cf8 \b @classmethod\b0 \cf0 \cb1
 \
-
 \cf5 16 \cf0 \cb1
 \cf0     
 \cf3 \b def\b0 \cf0 \cb1
@@ -63,30 +55,23 @@
 \cf5 \b )\b0 \cf0 \cb1
 \cf5 \b :\b0 \cf0 \cb1
 \
-
 \cf5 17 \cf0 \cb1
 \cf0         
-\cf2 \i """This is a doc string on a class method that has a lot to say in fact \i0 \cf0 \cb1
+\cf2 \i """This is a doc string on a class method that has a lot to say in \i0 \cf0 \cb1
 \
-
-\cf2 \i so much so that it wraps the line. Twice even, it just goes on forever. It even \i0 \cf0 \cb1
+\cf2 \i fact so much so that it wraps the line. Twice even, it just goes on forever. It \i0 \cf0 \cb1
 \
-
-\cf2 \i has some f&nny <haracters in it.\i0 \cf0 \cb1
+\cf2 \i even has some f&nny <haracters in it.\i0 \cf0 \cb1
 \
-
 \cf5 18 \cf0 \cb1
 \cf2 \i \i0 \cf0 \cb1
 \
-
 \cf5 19 \cf0 \cb1
 \cf2 \i         :param index: a parameter whose name is index\i0 \cf0 \cb1
 \
-
 \cf5 20 \cf0 \cb1
 \cf2 \i         """\i0 \cf0 \cb1
 \
-
 \cf5 21 \cf0 \cb1
 \cf0         
 \cf5 x\cf0 \cb1
@@ -95,7 +80,6 @@
 \cf0  
 \cf10 \b 0\b0 \cf0 \cb1
 \
-
 \cf5 22 \cf0 \cb1
 \cf0         
 \cb13 \cf3 \b while\b0 \cf0 \cb1
@@ -107,12 +91,10 @@
 \cf10 \b 0\b0 \cf0 \cb1
 \cf5 \b ):\b0 \cf0 \cb1
 \
-
 \cf5 23 \cf0 \cb1
 \cf0             
 \cf2 \i # never get here\i0 \cf0 \cb1
 \
-
 \cf5 24 \cf0 \cb1
 \cf0             
 \cf3 \b for\b0 \cf0 \cb1
@@ -130,7 +112,6 @@
 \cf5 \b )\b0 \cf0 \cb1
 \cf5 \b :\b0 \cf0 \cb1
 \
-
 \cf5 25 \cf0 \cb1
 \cf0                 
 \cf6 print\cf0 \cb1
@@ -140,11 +121,9 @@
 \cf9 '\cf0 \cb1
 \cf5 \b )\b0 \cf0 \cb1
 \
-
 \cf5 26 \cf0 \cb1
 \cf0 
 \
-
 \cf5 27 \cf0 \cb1
 \cf0         
 \cf3 \b if\b0 \cf0 \cb1
@@ -156,7 +135,6 @@
 \cf3 \b False\b0 \cf0 \cb1
 \cf5 \b :\b0 \cf0 \cb1
 \
-
 \cf5 28 \cf0 \cb1
 \cf0             
 \cf6 print\cf0 \cb1
@@ -177,7 +155,6 @@
 \cf5 \b ]\b0 \cf0 \cb1
 \cf5 \b )\b0 \cf0 \cb1
 \
-
 \cf5 29 \cf0 \cb1
 \cf0         
 \cf3 \b elif\b0 \cf0 \cb1
@@ -185,7 +162,6 @@
 \cf3 \b True\b0 \cf0 \cb1
 \cf5 \b :\b0 \cf0 \cb1
 \
-
 \cf5 30 \cf0 \cb1
 \cf0             
 \cf6 print\cf0 \cb1
@@ -208,13 +184,11 @@
 \cf0  
 \cf5 \b )\b0 \cf0 \cb1
 \
-
 \cf5 31 \cf0 \cb1
 \cf0         
 \cf3 \b else\b0 \cf0 \cb1
 \cf5 \b :\b0 \cf0 \cb1
 \
-
 \cf5 32 \cf0 \cb1
 \cf0             
 \cf6 print\cf0 \cb1
@@ -237,18 +211,15 @@
 \cf0  
 \cf5 \b )\b0 \cf0 \cb1
 \
-
 \cf5 33 \cf0 \cb1
 \cf0 
 \
-
 \cf5 34 \cf0 \cb1
 \cf0         
 \cf5 do_nothing\cf0 \cb1
 \cf5 \b (\b0 \cf0 \cb1
 \cf5 \b )\b0 \cf0 \cb1
 \
-
 \cf5 35 \cf0 \cb1
 \cf0         
 \cf3 \b raise\b0 \cf0 \cb1
@@ -257,11 +228,9 @@
 \cf5 \b (\b0 \cf0 \cb1
 \cf5 \b )\b0 \cf0 \cb1
 \
-
 \cf5 36 \cf0 \cb1
 \cf0 
 \
-
 \cf5 37 \cf0 \cb1
 \cf5 thing\cf0 \cb1
 \cf0  
@@ -271,7 +240,6 @@
 \cf5 \b (\b0 \cf0 \cb1
 \cf5 \b )\b0 \cf0 \cb1
 \
-
 \cf5 38 \cf0 \cb1
 \cf5 thing\cf0 \cb1
 \cf4 \b .\b0 \cf0 \cb1

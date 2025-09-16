@@ -1,9 +1,8 @@
 # renderers/plain.py
-from purdy.content import Code, MultiCode
-from purdy.renderers.formatter import Formatter
+from purdy.content import Code, Document, RenderState
 
-class PlainFormatter(Formatter):
-    def format_line(self, line, ancestor_list):
+class PlainFormatter:
+    def render_code_line(self, render_state, line):
         result = ""
         for part in line.parts:
             result += part.text
@@ -11,21 +10,24 @@ class PlainFormatter(Formatter):
         if line.has_newline:
             result += "\n"
 
-        return result
+        render_state.content += result
+
 
 def to_plain(container):
-    """Transforms tokenized content in a :class:`Code` object into a plain
-    text string.
+    """Renders content without any formatting.
 
-    :param container: `Code` or :class:`MultiCode` object to render
+    :param container: :class:`Document` or :class:`Code` content to be
+        rendered
+
+    :returns: rendered string
     """
-    result = ""
     formatter = PlainFormatter()
 
     if isinstance(container, Code):
-        container = MultiCode(container)
+        container = Document(container)
 
-    for code_index in range(0, len(container)):
-        result += formatter.format_doc(container, code_index)
+    render_state = RenderState(container)
+    for section in container:
+        section.render(render_state, formatter)
 
-    return result
+    return render_state.content

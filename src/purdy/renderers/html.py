@@ -3,15 +3,15 @@ from html import escape as html_escape
 
 from pygments.token import Token, Whitespace
 
-from purdy.content import Code, MultiCode
+from purdy.content import Code, Document, RenderState
 from purdy.parser import HighlightOn, HighlightOff
 from purdy.renderers.formatter import StrFormatter
 
 # ===========================================================================
 
 class HTMLFormatter(StrFormatter):
-    def __init__(self):
-        super().__init__()
+    def __init__(self, section, exceptions):
+        super().__init__(section, exceptions)
         self.escape = html_escape
 
     def _map_tag(self, token, fg, bg, attrs, exceptions):
@@ -77,37 +77,35 @@ def to_html(container, snippet=True):
     """Transforms tokenized content in a :class:`Code` object into a string
     representation of HTML.
 
-    :param container: :class:`Code` or :class:`MultiCode` object to translate
+    :param container: :class:`Code` or :class:`Document` object to translate
     :param snippet: When True [default] only show the code in a <div>,
         otherwise wrap it in full HTML document tags.
     """
-    result = ""
     if isinstance(container, Code):
-        container = MultiCode(container)
+        container = Document(container)
+
+    render_state = RenderState(container)
 
     # Header
     if not snippet:
-        result += HTML_HEADER
+        render_state.content += HTML_HEADER
 
-    for code_index in range(0, len(container)):
-        formatter = HTMLFormatter()
-        formatter.create_tag_map(container[code_index].theme,
-            _CODE_TAG_EXCEPTIONS)
-
+    for section in container:
         if container.background is None:
             bg = "222222"
         else:
             bg = container.background
 
-        result += (
+        render_state.content += (
             f'<div style="background :#{bg}; overflow:auto; width:auto; '
             'border:solid gray; border-width:.1em .1em .1em .8em; '
             'padding:.2em .6em;"><pre style="margin: 0; line-height:125%">'
         )
 
-        result += formatter.format_doc(container, code_index)
+        formatter = HTMLFormatter(section, _CODE_TAG_EXCEPTIONS)
+        section.render(render_state, formatter)
 
     if not snippet:
-        result += HTML_FOOTER
+        render_state.content += HTML_FOOTER
 
-    return result
+    return render_state.content

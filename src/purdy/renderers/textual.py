@@ -23,7 +23,7 @@ class TextualFormatter(Formatter):
         # brace brackets expected by .format_doc()
         self.tag_map[token] = f"[#{fg} {attrs}]$text[/]"
 
-    def format_line(self, line, ancestor_list):
+    def render_code_line(self, render_state, line):
         # Textual really doesn't like piecemeal creation of content or
         # strings, and they way the code works elsewhere you can just append a
         # close attr, but here you can't
@@ -37,7 +37,7 @@ class TextualFormatter(Formatter):
         markup = ""
 
         for part in line.parts:
-            token = token_ancestor(part.token, ancestor_list)
+            token = token_ancestor(part.token, self.ancestor_list)
 
             name = f"text_{counter}"
             dname = "$" + name
@@ -62,7 +62,7 @@ class TextualFormatter(Formatter):
             markup += self.newline
 
         # Now get Textual to render that mess
-        return Content.from_markup(markup, **part_map)
+        render_state.content += Content.from_markup(markup, **part_map)
 
 
 _CODE_TAG_EXCEPTIONS = {
@@ -82,5 +82,4 @@ def to_textual(container):
 
     :param container: :class:`Code` or :class:`MultiCode` object to translate
     """
-    return conversion_handler(TextualFormatter, container,
-        _CODE_TAG_EXCEPTIONS)
+    return conversion_handler(TextualFormatter, container, _CODE_TAG_EXCEPTIONS)

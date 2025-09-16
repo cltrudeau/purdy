@@ -96,7 +96,8 @@ class PurdyApp(App):
             case "s":
                 await self.controller.skip()
             case "d":
-                print(self._debug_info())
+                if "devtools" in self.features:
+                    print(self._debug_info())
 
 # =============================================================================
 # Factory Methods

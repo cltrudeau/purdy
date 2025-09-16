@@ -3,37 +3,37 @@
 # Helper utilities for the command line arguments used by 'purdy' and
 # 'subpurdy'
 from purdy.__init__ import __version__
-from purdy.content import Code, MultiCode
+from purdy.content import Code, Document
 from purdy.parser import LexerSpec
 
 # =============================================================================
-# Motif Factory
+# Document Factory
 # =============================================================================
 
-def multicode_factory(args, theme_name="default"):
+def document_factory(args, theme_name="default"):
     if args.nocolour:
         # Override theme
         theme_name = "no_colour"
 
     code = Code(args.filename, args.lexer, theme_name)
-    mc = MultiCode(code)
+    doc = Document(code)
 
     # Arguments are conditional on the subcommand, so not all args are
     # available all the time
     if hasattr(args, "bg"):
-        mc.background = args.bg
+        doc.background = args.bg
 
     if hasattr(args, "num") and args.num:
-        mc.line_numbers_enabled = True
-        mc.starting_line_number = args.num
+        doc.line_numbers_enabled = True
+        doc.starting_line_number = args.num
 
     if hasattr(args, "wrap") and args.wrap:
-        mc.wrap = args.wrap
+        doc.wrap = args.wrap
 
     if hasattr(args, "highlight") and args.highlight:
         code.highlight(*args.highlight)
 
-    return mc
+    return doc
 
 # =============================================================================
 # Argument Builders for argparse
@@ -108,7 +108,7 @@ def general_args(parser):
     version_arg(parser)
 
 
-def mc_args(parser):
+def doc_args(parser):
     num_arg(parser)
     wrap_arg(parser)
     no_colour_arg(parser)

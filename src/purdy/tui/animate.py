@@ -99,16 +99,6 @@ class AnimationController:
         self.wait_state = None
         await self.forwards()
 
-    async def typing_running(self, cell):
-        for change in cell.change_list:
-            cell.codebox.update(change)
-
-            pause = random.uniform(cell.pause, cell.pause + cell.pause_variance)
-            await asyncio.sleep(pause)
-
-        self.wait_state = None
-        await self.forwards()
-
     async def curtain_complete(self):
         # Called by Curtain effect when it is done
         self.wait_state = None

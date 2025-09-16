@@ -3,7 +3,7 @@ import random
 from dataclasses import dataclass
 
 from pygments.token import Generic
-from textual.content import Content
+from textual.content import Content as TContent
 from textual.markup import escape as textual_escape
 from textual_transitions import Curtain
 
@@ -12,7 +12,7 @@ from purdy.parser import token_is_a
 from purdy.renderers.textual import to_textual
 from purdy.tui import animate
 from purdy.tui.widgets import CodeWidget
-from purdy.typewriter import (code_typewriterize, string_typewriterize,
+from purdy.tui.typewriter import (code_typewriterize, string_typewriterize,
     textual_typewriterize)
 
 # =============================================================================
@@ -65,7 +65,7 @@ class RowSpec:
 
 class TText(str):
     def render(self):
-        return Content.from_markup(self)
+        return TContent.from_markup(self)
 
 
 class Document:
@@ -84,9 +84,7 @@ class Document:
             else:
                 # Last thing wasn't MultiCode, need new MultiCode
                 self.items.append(MultiCode(content))
-        elif isinstance(content, TText):
-            self.items.append(content)
-        elif isinstance(content, str):
+        elif isinstance(content, (TContent, TText, str)):
             self.items.append(content)
         else:
             raise ValueError("Unrecognizable content")
@@ -94,9 +92,7 @@ class Document:
     def replace(self, content):
         if isinstance(content, Code):
             self.items = [MultiCode(content), ]
-        elif isinstance(content, TText):
-            self.items = [content, ]
-        elif isinstance(content, str):
+        elif isinstance(content, (TContent, TText, str)):
             self.items = [content, ]
         else:
             raise ValueError("Unrecognizable content")
@@ -106,11 +102,13 @@ class Document:
         for item in self.items:
             if isinstance(item, MultiCode):
                 result += to_textual(item)
+            elif isinstance(item, TContent):
+                result += item
             elif isinstance(item, TText):
                 result += item.render()
             elif isinstance(item, str):
                 text = textual_escape(item)
-                result += Content.from_markup(text)
+                result += TContent.from_markup(text)
             else:
                 raise ValueError(f"Unrecognizable content in doc {item}")
 

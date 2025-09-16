@@ -9,8 +9,8 @@ from purdy.renderers.formatter import StrFormatter, conversion_handler
 # ===========================================================================
 
 class RichFormatter(StrFormatter):
-    def __init__(self):
-        super().__init__()
+    def __init__(self, section, exceptions):
+        super().__init__(section, exceptions)
         self.escape = rich_escape
 
     def _map_tag(self, token, fg, bg, attrs, exceptions):
@@ -44,6 +44,6 @@ def to_rich(container):
     """Transforms tokenized content in a :class:`Code` object into a string
     with Rich library formatting.
 
-    :param container: `Code` or :class:`MultiCode` object to render
+    :param container: `Code` or :class:`Document` object to render
     """
     return conversion_handler(RichFormatter, container, _CODE_TAG_EXCEPTIONS)

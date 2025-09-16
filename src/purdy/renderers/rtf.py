@@ -1,9 +1,10 @@
 # renderers/rtf.py
 import struct
+from copy import deepcopy
 
 from pygments.token import Token, Whitespace
 
-from purdy.content import Code, MultiCode
+from purdy.content import Code, Document, RenderState
 from purdy.parser import HighlightOn, HighlightOff
 from purdy.renderers.formatter import StrFormatter
 
@@ -12,11 +13,27 @@ from purdy.renderers.formatter import StrFormatter
 # ===========================================================================
 
 class RTFFormatter(StrFormatter):
-    def __init__(self, rtf_doc):
-        super().__init__()
+    def __init__(self, rtf_page, section, exceptions):
+        self.rtf_page = rtf_page
+        exceptions = deepcopy(exceptions)
+
+        hl_colour = section.theme.colour_map[HighlightOn]
+        if isinstance(hl_colour, str):
+            index, _ = rtf_page.colour_table[hl_colour]
+            exceptions.update({
+                HighlightOn:  fr"\cf{index} " + "{text}\n",
+                HighlightOff: r"\cf0" + "\n",
+            })
+        else:
+            # Close tag using the auto colour (0) for fg & bg, pass thru attrs
+            exceptions.update({
+                HighlightOn:  self.tag_open(*hl_colour) + "{text}",
+                HighlightOff: self.tag_close(hl_colour[2]),
+            })
+
+        super().__init__(section, exceptions)
         self.newline = "\\\n"
         self.escape = self.rtf_encode
-        self.rtf_doc = rtf_doc
 
     @classmethod
     def rtf_encode(cls, text):
@@ -66,10 +83,10 @@ class RTFFormatter(StrFormatter):
     def tag_open(self, fg, bg, attrs):
         tag = ""
         if fg:
-            index, _ = self.rtf_doc.colour_table[fg]
+            index, _ = self.rtf_page.colour_table[fg]
             tag += fr"\cf{index} "
         if bg:
-            index, _ = self.rtf_doc.colour_table[bg]
+            index, _ = self.rtf_page.colour_table[bg]
             tag += fr"\cb{index} "
 
         if "bold" in attrs:
@@ -111,7 +128,7 @@ class RTFFormatter(StrFormatter):
         self.tag_map[token] = tag
 
 
-class RTFDoc(list):
+class RTFPage:
     PREAMBLE = r"{\rtf1\ansi\ansicpg1252" + "\n"
     FONT_TABLE = r"{\fonttbl\f0\fnil\fcharset0 %s;}" + "\n"
     FONT_SPEC = r'\f0\fs28' + '\n'
@@ -130,8 +147,8 @@ class RTFDoc(list):
             # Default to white
             self.colour_table[background] = (1, self.rgb_to_rtf("ffffff"))
 
-        for code in container:
-            for token, value in code.theme.colour_map.items():
+        for section in container:
+            for token, value in section.theme.colour_map.items():
                 if not value:
                     continue
 
@@ -168,7 +185,6 @@ class RTFDoc(list):
 
         return fr'\red{red}\green{green}\blue{blue}'
 
-    @property
     def header_string(self):
         result = self.PREAMBLE
         result += self.FONT_TABLE % self.fontname
@@ -194,11 +210,8 @@ class RTFDoc(list):
 
         return result
 
-    def render(self):
-        output = self.header_string
-        output += "\n".join(self)
-        output += "}\n"
-        return output
+    def footer_string(self):
+        return "}\n"
 
 # ===========================================================================
 
@@ -208,41 +221,22 @@ def to_rtf(container):
 
     :param container: `Code` or :class:`MultiCode` object to render
     """
-    result = ""
     if isinstance(container, Code):
-        container = MultiCode(container)
+        container = Document(container)
 
-    doc = RTFDoc(container.background, container)
+    render_state = RenderState(container)
 
-    for code_index in range(0, len(container)):
-        code = container[code_index]
-        formatter = RTFFormatter(doc)
+    page = RTFPage(container.background, container)
+    render_state.content += page.header_string()
 
+    for section in container:
         code_tag_exceptions = {
             Token:      r"\cf0 {text}" + "\n",
             Whitespace: r"\cf0 {text}" + "\n",
         }
 
-        hl_colour = code.theme.colour_map[HighlightOn]
-        if isinstance(hl_colour, str):
-            index, _ = doc.colour_table[hl_colour]
-            code_tag_exceptions.update({
-                HighlightOn:  fr"\cf{index} " + "{text}\n",
-                HighlightOff: r"\cf0" + "\n",
-            })
-        else:
-            # Close tag using the auto colour (0) for fg & bg, pass thru attrs
-            code_tag_exceptions.update({
-                HighlightOn:  formatter.tag_open(*hl_colour) + "{text}",
-                HighlightOff: formatter.tag_close(hl_colour[2]),
-            })
+        formatter = RTFFormatter(page, section, code_tag_exceptions)
+        section.render(render_state, formatter)
 
-        formatter.create_tag_map(code.theme, code_tag_exceptions)
-
-        ancestor_list = code.theme.colour_map.keys()
-        for line in formatter.get_decorated_lines(container, code_index):
-            doc.append(formatter.format_line(line, ancestor_list))
-
-        result += doc.render()
-
-    return result
+    render_state.content += page.footer_string()
+    return render_state.content

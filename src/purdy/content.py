@@ -8,8 +8,21 @@ from copy import deepcopy
 from dataclasses import dataclass, field
 from pathlib import Path
 
-from purdy.parser import LexerSpec, Parser
+from purdy.parser import (CodeLine, CodePart, Fold, HighlightOff, HighlightOn,
+    LexerSpec, LineNumber, Parser)
 from purdy.themes import THEME_MAP
+
+# ===========================================================================
+
+class Section:
+    """Abstract base class for classes that contain a list of lines which can
+    be collected inside of a class:`Document`"""
+    def render(self, render_state, formatter):
+        for line_index, line in enumerate(self.lines):
+            self.render_line(render_state, formatter, line, line_index)
+
+    def render_line(self, render_state, formatter, line, line_index):
+        raise NotImplementedError()
 
 # ===========================================================================
 
@@ -23,7 +36,7 @@ class _CodeLineMetadata:
     hidden: bool = False
 
 
-class Code:
+class Code(Section):
     """Encapsulates :class:`CodeLine` objects to track lines of code and any
     associated style information."""
 
@@ -108,7 +121,7 @@ class Code:
         if isinstance(index, slice):
             code.lines = deepcopy(self.lines[index.start:index.stop])
         else:
-            code.lines = deepcopy(self.lines[index])
+            code.lines = [deepcopy(self.lines[index])]
 
         return code
 
@@ -273,18 +286,259 @@ class Code:
             value.highlight = False
             value.highlight_partial = defaultdict(list)
 
+    def is_highlighted(self, line_index):
+        if line_index not in self.meta:
+            return False
+
+        meta_info = self.meta[line_index]
+        return meta_info.highlight or meta_info.highlight_partial
+
+    # === Rendering
+    def render_line(self, render_state, formatter, line, line_index):
+        """Responsible for rendering the given line and appending the result
+        into the :class:`RenderState` object.
+        """
+        if line_index in self.meta and self.meta[line_index].hidden:
+            # No change to render_state, but may need to advance line count
+            if render_state.doc.line_numbers_enabled:
+                render_state.line_number += 1
+            return
+
+        if line_index in self.meta and self.meta[line_index].folded:
+            # This is the parent line in a fold, display an indicator
+            # instead
+            output = CodeLine(lexer_spec=line.lexer_spec, has_newline=True)
+            output.parts.append(CodePart(Fold, text=render_state.doc.fold_char))
+
+            if render_state.doc.line_numbers_enabled:
+                part = render_state.next_line_number_part()
+                output.parts.insert(0, part)
+
+            formatter.render_code_line(render_state, output)
+            return
+
+        # Handle the actual line, adding line numbers, dealing with
+        # highlighting and wrapping it if needed
+        if self.is_highlighted(line_index):
+            line = self._apply_highlight(line_index)
+
+        output = deepcopy(line)
+        if render_state.doc.line_numbers_enabled:
+            part = render_state.next_line_number_part()
+            output.parts.insert(0, part)
+
+        lwr = _LineWrapRenderer(render_state, formatter, output)
+        lwr.run()
+
+    # --- Highlighting Application
+    @classmethod
+    def _expand_parts(cls, line):
+        """Creates a new list of parts expanding the text of each part into
+        its own :class:`CodePart`, essentially creating parts consisting of a
+        single letter.
+
+        :param line: :class:`CodeLine` to expand
+        :returns: list of :class:`CodePart` objects
+        """
+        char_parts = []
+        for part in line.parts:
+            if len(part.text) == 0:
+                char_parts.append(deepcopy(part))
+                continue
+
+            for char in part.text:
+                char_parts.append(CodePart(part.token, char))
+
+        return char_parts
+
+    @classmethod
+    def _chop_partial_highlight(cls, line, cutpoints):
+        """Creates a new CodeLine with highlight tokens at partial highlight
+        spots
+
+        :param line: CodeLine to copy and transform
+        :param cutpoints: iterable of (start, length) cut point tuples
+        """
+        cutpoints.sort()
+        char_parts = cls._expand_parts(line)
+
+        # Loop through our single-character listing and insert the appropriate
+        # highlight on and off tokens
+        char_count = 0
+        start = cutpoints[0][0]   # start char for first marker
+        end = cutpoints[0][0] + cutpoints[0][1]  - 1 # end char for first marker
+        cut_index = 0
+        output = CodeLine(line.lexer_spec, has_newline=line.has_newline)
+        highlighting = False
+        for part in char_parts:
+            if char_count == start and len(part.text) != 0 and not highlighting:
+                output.parts.append(CodePart(HighlightOn, ""))
+                output.parts.append(part)
+                char_count += 1
+                highlighting = True
+                continue
+
+            if char_count == end and len(part.text) != 0 and highlighting:
+                char_count += 1
+                output.parts.append(part)
+                output.parts.append(CodePart(HighlightOff, ""))
+                highlighting = False
+                try:
+                    # Was ended, advance to next cutpoint
+                    cut_index += 1
+                    start = cutpoints[cut_index][0]
+                    end = cutpoints[cut_index][0] + cutpoints[0][1] - 1
+
+                except IndexError:
+                    # No cutpoints left, do nothing
+                    pass
+
+                continue
+
+            output.parts.append(part)
+            char_count += len(part.text)
+
+        # Recompress our output
+        output.compress()
+        return output
+
+    def _apply_highlight(self, line_index):
+        """If there is highlighting to apply, creates a new :class:`CodeLine`
+        as a copy of the given one but with highlight tokens applied. If there
+        is no highlighting, just returns the given line.
+
+        :param line_index: Index value of `CodeLine` inside this `Code` object
+        """
+        if line_index not in self.meta:
+            # No highlighting (this is checked here to remove "and" clauses
+            # from below reducing line length)
+            return self.lines[line_index]
+
+        output = deepcopy(self.lines[line_index])
+
+        if self.meta[line_index].highlight:
+            # Highlight whole line, stick tokens at beginning and end
+            output.parts.insert(0, CodePart(HighlightOn, ""))
+            output.parts.append(CodePart(HighlightOff, ""))
+        elif self.meta[line_index].highlight_partial:
+            # Partial highlighting, insert tokens as needed inside the line
+            output = self._chop_partial_highlight(output,
+                self.meta[line_index].highlight_partial)
+
+        # Else: no highlighting
+        return output
+
+# ---------------------------------------------------------------------------
+
+class _LineWrapRenderer:
+    """Splits a line up into multiple parts based on the wrap length and
+    updates renders content with each new line."""
+    def __init__(self, render_state, formatter, line):
+        self.render_state = render_state
+        self.formatter = formatter
+        self.line = line
+
+    def run(self):
+        # If wrapping is off
+        if self.render_state.doc.wrap is None:
+            self.formatter.render_code_line(self.render_state, self.line)
+            return
+
+        # If the line is shorter than the wrap
+        line_width = self.line.parts.text_length
+        if line_width < self.render_state.doc.wrap:
+            self.formatter.render_code_line(self.render_state, self.line)
+            return
+
+        chunkify = deepcopy(self.line)
+        self._chunk_line(chunkify)
+
+    def _reset_current_line(self):
+        self.current = self.line.spawn()
+        self.length = 0
+
+    def _split_part(self, part):
+        # Split line here, -ve value to get chars from RHS
+        cut_at = self.render_state.doc.wrap - self.length
+        left_of = part.text[0:cut_at]
+        split_point = left_of.rfind(" ")
+
+        if split_point == -1:
+            # No split point in the text, render what we have so far
+            self.formatter.render_code_line(self.render_state,
+                self.current)
+
+            # Set up for next line
+            self._reset_current_line()
+            self.current.parts.append(part)
+            self.length += len(part.text)
+            return None
+
+        # Stuff everything to the left of the split point into the
+        # current line and render it
+        left = CodePart(part.token, part.text[:split_point + 1])
+        self.current.parts.append(left)
+        self.formatter.render_code_line(self.render_state, self.current)
+
+        # Everything else goes into the next line
+        self._reset_current_line()
+        right = CodePart(part.token, part.text[split_point + 1:])
+        return right
+
+    def _chunk_line(self, chunkify):
+        """Splits given line into chunks of rendered lines. Modifies line in
+        place, so it what is passed in should be a copy."""
+        self._reset_current_line()
+
+        for part in chunkify.parts:
+            self.length += len(part.text)
+            if self.length > self.render_state.doc.wrap:
+                right = self._split_part(part)
+                while(right):
+                    if len(right.text) > self.render_state.doc.wrap:
+                        right = self._split_part(right)
+                    else:
+                        self.length = len(right.text)
+                        self.current.parts.append(right)
+                        break
+            else:
+                # Not a split point, Copy the CodePart into the wrapped line
+                full = CodePart(part.token, part.text)
+                self.current.parts.append(full)
+
+        if len(self.current.parts) > 0:
+            # Render whatever is left
+            self.formatter.render_code_line(self.render_state, self.current)
+
 # ===========================================================================
 
-class MultiCode(list):
-    """Container for multiple :class:`Code` objects. Constructor optionally
-    takes a `Code` object or iterable of `Code` objects to initialize the set"""
-    def __init__(self, contents=None):
-        if isinstance(contents, Code):
-            super().__init__([contents])
-        elif contents is not None:
-            super().__init__(contents)
+class StringSection(Section):
+    def __init__(self, content=None):
+        if content is None:
+            self.lines = []
+        elif isinstance(content, str):
+            self.lines = [content, ]
+        elif isinstance(content, list):
+            self.lines = content
         else:
-            super().__init__()
+            raise ValueError("StringSection requires string or list of strings")
+
+# ===========================================================================
+
+class Document(list):
+    """Container for renderable :class:`Section` objects like :class:`Code`
+    and :class:`StringSection`. Constructor optionally takes a `section` to
+    include. Manages display attributes that get used across multiple sections
+    like line numbering.
+    """
+    def __init__(self, sections=None):
+        super().__init__()
+
+        if isinstance(sections, Section):
+            self.append(sections)
+        elif sections is not None:
+            for item in sections:
+                self.append(item)
 
         self.background = None
         self.line_numbers_enabled = False
@@ -300,47 +554,39 @@ class MultiCode(list):
         """
         self.append(code)
 
-    # --- Line Numbers
-    def line_number(self, code_index, line_index):
-        """Returns the line number for the given indexes
+# ---------------------------------------------------------------------------
 
-        :param code_index: index of :class:`Code` in this container
-        :param line_index: index of the :class:`CodeLine` within the `Code`
-            object
+class RenderState:
+    def __init__(self, document):
+        self.doc = document
+        self.content = ""
+        self.line_number = None
 
-        :returns: Line number right justified and padded, or empty string if
-            line numbers are not enabled.
-        """
-        if not self.line_numbers_enabled:
-            return ""
+        if document.line_numbers_enabled:
+            self.line_number = document.starting_line_number
 
-        # Calculate the spacing
-        max_line = self.starting_line_number
-        for code in self:
-            max_line += len(code.lines)
+            max_line = document.starting_line_number
+            for section in document:
+                max_line += len(section.lines)
 
-        # log10 + 1 = width; add another 1 for the gutter space
-        width = int(math.log10(max_line) + 1)
+            self.line_number_width = int(math.log10(max_line) + 1)
 
-        # Calculate the line number
-        line_number = self.starting_line_number
-        for code in self[:code_index]:
-            line_number += len(code.lines)
+    def next_line_number(self):
+        """Gets the next line number and increments the count."""
+        output = self.line_number
+        self.line_number += 1
+        return f"{output:{self.line_number_width}d} "
 
-        line_number += line_index
-
-        return f"{line_number:{width}d} "
+    def next_line_number_part(self):
+        """Gets the next line number as a :class:`CodePart` and increments the
+        count."""
+        output = self.line_number
+        self.line_number += 1
+        return CodePart(LineNumber, f"{output:{self.line_number_width}d} ")
 
     def line_number_gap(self):
         """Returns a whitespace string the width of a line number, useful for
         when dealing with wrapping
         """
-        if not self.line_numbers_enabled:
-            return ""
-
-        max_line = self.starting_line_number
-        for code in self:
-            max_line += len(code.lines)
-
-        # log10 + 1 = width; add another 1 for the gutter space
-        return int(math.log10(max_line) + 2) * " "
+        # Width of line number plus a gutter
+        return (self.line_number_width + 1) * " "

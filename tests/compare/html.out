@@ -10,9 +10,9 @@
 <span style="color: #7f7f7f; ">11 </span><span style="color: #ffffff; ">⠇</span>
 <span style="color: #7f7f7f; ">15 </span><span style="color: #dddddd; ">    </span><span style="color: #ffdd66; "><b>@classmethod</b></span>
 <span style="color: #7f7f7f; ">16 </span><span style="color: #dddddd; ">    </span><span style="color: #dd88dd; ">def</span> <span style="color: #aaddff; ">stuff</span><span style="color: #88ddff; ">(</span><span style="color: #aa6666; "><b>cls</b></span><span style="color: #88ddff; ">,</span><span style="color: #dddddd; "> </span><span style="color: #dddddd; ">index</span><span style="color: #88ddff; ">)</span><span style="color: #88ddff; ">:</span>
-<span style="color: #7f7f7f; ">17 </span>        <span style="color: #dddddd; ">&quot;&quot;&quot;This is a doc string on a class method that has a lot to say in fact </span>
-<span style="color: #dddddd; ">so much so that it wraps the line. Twice even, it just goes on forever. It even </span>
-<span style="color: #dddddd; ">has some f&amp;nny &lt;haracters in it.</span>
+<span style="color: #7f7f7f; ">17 </span>        <span style="color: #dddddd; ">&quot;&quot;&quot;This is a doc string on a class method that has a lot to say in </span>
+<span style="color: #dddddd; ">fact so much so that it wraps the line. Twice even, it just goes on forever. It </span>
+<span style="color: #dddddd; ">even has some f&amp;nny &lt;haracters in it.</span>
 <span style="color: #7f7f7f; ">18 </span><span style="color: #dddddd; "></span>
 <span style="color: #7f7f7f; ">19 </span><span style="color: #dddddd; ">        :param index: a parameter whose name is index</span>
 <span style="color: #7f7f7f; ">20 </span><span style="color: #dddddd; ">        &quot;&quot;&quot;</span>

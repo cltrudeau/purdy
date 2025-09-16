@@ -2,7 +2,91 @@ from copy import deepcopy
 from pathlib import Path
 from unittest import TestCase
 
-from purdy.content import Code, MultiCode
+from purdy.content import Code, Document, RenderState
+from purdy.parser import HighlightOn, HighlightOff, token_is_a
+from purdy.renderers.plain import to_plain
+
+# =============================================================================
+# Result Constants
+# =============================================================================
+
+WRAP_SIMPLE = "\n".join([
+    r'# Small file for simple parser ',
+    r'testing',
+    r'def simple(thing):',
+    r'    """This tests',
+    r'    multi-line strings"""',
+    r'    return thing + "\nDone"',
+    r'',
+    r'simple("A string\nWith newline")',
+    r'',
+])
+
+NUM_SIMPLE = "\n".join([
+    r' 8 # Small file for simple parser testing',
+    r' 9 def simple(thing):',
+    r'10     """This tests',
+    r'11     multi-line strings"""',
+    r'12     return thing + "\nDone"',
+    r'13 ',
+    r'14 simple("A string\nWith newline")',
+    r'',
+])
+
+WRAP_NUM_SIMPLE = "\n".join([
+    r' 8 # Small file for simple parser ',
+    r'testing',
+    r' 9 def simple(thing):',
+    r'10     """This tests',
+    r'11     multi-line strings"""',
+    r'12     return thing + "\nDone"',
+    r'13 ',
+    r'14 simple("A string\nWith newline")',
+    r'',
+])
+
+WRAP_BIG_NUM_SIMPLE = "\n".join([
+    r'10000 # Small file for simple ',
+    r'parser testing',
+    r'10001 def simple(thing):',
+    r'10002     """This tests',
+    r'10003     multi-line strings"""',
+    r'10004     return thing + "\nDone"',
+    r'10005 ',
+    r'10006 simple("A string\nWith ',
+    r'newline")',
+    r'',
+])
+
+WRAP_FOLD_BIG_NUM_SIMPLE = "\n".join([
+    r'10000 # Small file for simple ',
+    r'parser testing',
+    r'10001 def simple(thing):',
+    r"10002 ⠇",
+    r'10005 ',
+    r'10006 simple("A string\nWith ',
+    r'newline")',
+    r'',
+])
+
+# =============================================================================
+
+class BraceFormatter:
+    ### Text based formatter that marks highlights with special characters
+    def render_code_line(self, render_state, line):
+        result = ""
+        for part in line.parts:
+            if token_is_a(part.token, HighlightOn):
+                result += "{"
+            elif token_is_a(part.token, HighlightOff):
+                result += "}"
+            else:
+                result += part.text
+
+        if line.has_newline:
+            result += "\n"
+
+        render_state.content += result
 
 # =============================================================================
 
@@ -30,6 +114,17 @@ class TestCode(TestCase):
         self.assertEqual(code.parser, spawn.parser)
         self.assertEqual(0, len(spawn.lines))
 
+        # Slice access
+        result = code[0:2]
+        self.assertEqual(2, len(result.lines))
+        self.assertEqual("0", result.lines[0].parts[0].text)
+        self.assertEqual("1", result.lines[1].parts[0].text)
+
+        result = code[1]
+        self.assertEqual(1, len(result.lines))
+        self.assertEqual("1", result.lines[0].parts[0].text)
+
+
     def test_chunk(self):
         text = "\n".join([str(x) for x in range(0, 5)]) + "\n"
         code = Code.text(text, "plain")
@@ -44,6 +139,13 @@ class TestCode(TestCase):
 
         result = code.chunk(3)
         self.assertEqual([], result.lines)
+
+        # Remaining chunk
+        code.current = 0
+        _ = code.chunk(3)
+        expected_lines = deepcopy(code.lines[3:5])
+        result = code.remaining_chunk()
+        self.assertEqual(expected_lines, result.lines)
 
     def test_folding(self):
         # Sample text numbers 1-10 separated by newlines
@@ -114,13 +216,16 @@ class TestCode(TestCase):
         with self.assertRaises(ValueError):
             code.unfold(0)
 
-    def test_highlight_activation(self):
+    def test_highlight(self):
+        # Tests the meta data portion of highlighting
         text = "zero\none\ntwo\nthree and a bit\nfour and a bit"
         code = Code.text(text, "plain")
 
         # Int index
         code.highlight(1)
         self.assertTrue(code.meta[1].highlight)
+        self.assertTrue(code.is_highlighted(1))
+        self.assertFalse(code.is_highlighted(2))
         code.reset_metadata()
 
         # Negative index
@@ -161,6 +266,7 @@ class TestCode(TestCase):
         # Partial Highlighting
         code.highlight("3:6,3")
         self.assertEqual( [(6, 3)], code.meta[3].highlight_partial)
+        self.assertTrue(code.is_highlighted(3))
         code.reset_metadata()
 
         # Partial Highlighting, negative index
@@ -227,27 +333,147 @@ class TestCode(TestCase):
         with self.assertRaises(ValueError):
             code.highlight_off("0:1,4")
 
+    def test_apply_highlight(self):
+        # Tests the token manipulation portion of highlighted lines
+        text = "zero\none\ntwo\nthree and a bit\nfour and a bit"
+        code = Code.text(text, "plain")
 
-class TestMultiCode(TestCase):
-    def test_multicode_init(self):
-        mc = MultiCode()
-        self.assertEqual(0, len(mc))
+        code.highlight(2, "3:6,3")
+
+        # No highlighting
+        line = code._apply_highlight(0)
+        self.assertEqual(line, code.lines[0])
+
+        # Full line
+        line = code._apply_highlight(2)
+        self.assertTrue(token_is_a(line.parts[0].token, HighlightOn))
+        self.assertTrue(token_is_a(line.parts[-1].token, HighlightOff))
+
+        # Partial line
+        line = code._apply_highlight(3)
+        self.assertTrue(token_is_a(line.parts[1].token, HighlightOn))
+        self.assertTrue(token_is_a(line.parts[3].token, HighlightOff))
+
+    def test_render_highlight(self):
+        text = "zero\none\ntwo\nthree and a bit\nfour and a bit"
+        code = Code.text(text, "plain")
+        code.highlight(1)
+        code.highlight("3:6,3")
+
+        doc = Document(code)
+        rs = RenderState(doc)
+        formatter = BraceFormatter()
+
+        expected = "zero\n{one}\ntwo\nthree {and} a bit\nfour and a bit"
+        doc[0].render(rs, formatter)
+        self.assertEqual(expected, rs.content)
+
+    def test_wrapping(self):
+        path = (Path(__file__).parent / Path("data/wrap.py")).resolve()
+        code = Code(path)
+        doc = Document(code)
+
+        # Default, no wrapping case
+        expected = path.read_text()
+        result = to_plain(doc)
+        self.assertEqual(expected, result)
+
+        # Test wrapping at different places.
+        #
+        # wrap.py line 3:
+        #
+        # if (alpha == 3 or alpha == "a long string") and beta == 5:
+        #                    |              ^=35                |
+        #                    ^=20              ^=split + 20     ^=split + 20
+
+        # Wrap once on the space at point 35
+        doc.wrap = 35
+        result = to_plain(doc).split("\n")
+        self.assertEqual(6, len(result))
+        self.assertEqual("a long ", result[2][-7:])
+        self.assertEqual("string", result[3][0:6])
+
+        # Wrap once midword at point 37, should get same result
+        doc.wrap = 37
+        result = to_plain(doc).split("\n")
+        self.assertEqual(6, len(result))
+        self.assertEqual("a long ", result[2][-7:])
+        self.assertEqual("string", result[3][0:6])
+
+        # Wrap twice at size 20
+        doc.wrap = 20
+        result = to_plain(doc).split("\n")
+        self.assertEqual(8, len(result))
+        self.assertEqual("or ", result[2][-3:])
+        self.assertEqual("alpha", result[3][0:5])
+        self.assertEqual("a long ", result[3][-7:])
+        self.assertEqual("string", result[4][0:6])
+        self.assertEqual("==", result[4][-2:])
+        self.assertEqual(" 5:", result[5])
+
+        # Test really wide wrapping
+        code = Code.text("# One two three four five six seven eight nine ten eleven twelve thirteen fourteen fifteen sixteen seventeen eighteen nineteen twenty twenty-one twenty-two twenty-three twenty-four twenty-five\n")
+        doc = Document(code)
+        doc.wrap = 80
+        result = to_plain(doc).split("\n")
+        self.assertEqual(4, len(result))
+        self.assertEqual("thirteen ", result[0][-9:])
+        self.assertEqual("-one ", result[1][-5:])
+        self.assertEqual("-five", result[2][-5:])
+        self.assertEqual("", result[3])
+
+    def test_render_variations(self):
+        # Test full handling of plain.Code
+        path = (Path(__file__).parent / Path("data/simple.py")).resolve()
+        code = Code(path)
+        doc = Document(code)
+        doc.wrap = 35
+        result = to_plain(doc)
+        self.assertEqual(WRAP_SIMPLE, result)
+
+        # Test wrapping with numbers
+        doc.line_numbers_enabled = True
+        doc.starting_line_number = 8
+        result = to_plain(doc)
+        self.assertEqual(WRAP_NUM_SIMPLE, result)
+
+        # Test wrapping with numbers that bump the wrap point
+        doc.starting_line_number = 10_000
+        result = to_plain(doc)
+        self.assertEqual(WRAP_BIG_NUM_SIMPLE, result)
+
+        # Test wrapping and folding
+        code.fold(2, 3)
+        doc = Document(code)
+        doc.wrap = 35
+        doc.line_numbers_enabled = True
+        doc.starting_line_number = 10_000
+        result = to_plain(doc)
+        self.assertEqual(WRAP_FOLD_BIG_NUM_SIMPLE, result)
+
+
+class TestDocument(TestCase):
+    def test_document_init(self):
+        doc = Document()
+        self.assertEqual(0, len(doc))
 
         text = "one"
         code1 = Code.text(text, "plain")
 
-        mc = MultiCode(code1)
-        self.assertEqual(1, len(mc))
-        self.assertEqual(code1, mc[0])
+        doc = Document(code1)
+        self.assertEqual(1, len(doc))
+        self.assertEqual(code1, doc[0])
 
         text = "two"
         code2 = Code.text(text, "plain")
 
-        mc = MultiCode([code1, code2])
-        self.assertEqual(2, len(mc))
-        self.assertEqual(code1, mc[0])
-        self.assertEqual(code2, mc[1])
+        doc = Document([code1, code2])
+        self.assertEqual(2, len(doc))
+        self.assertEqual(code1, doc[0])
+        self.assertEqual(code2, doc[1])
 
+
+class TestRenderState(TestCase):
     def test_line_numbers(self):
         text = "\n".join(["a" for x in range(0, 500)]) + "\n"
         code1 = Code.text(text, "plain")
@@ -255,26 +481,28 @@ class TestMultiCode(TestCase):
         text = "\n".join(["a" for x in range(500, 1001)]) + "\n"
         code2 = Code.text(text, "plain")
 
-        mc = MultiCode([code1, code2])
+        doc = Document([code1, code2])
+        doc.line_numbers_enabled = True
 
-        # Line numbers off
-        self.assertEqual("", mc.line_number(0, 0))
-        self.assertEqual("", mc.line_number_gap())
-
-        # Starting at 1 (default)
-        mc.line_numbers_enabled = True
-        self.assertEqual("   1 ", mc.line_number(0, 0))
-        self.assertEqual("1001 ", mc.line_number(1, 500))
+        # Default, starting at 1
+        rs = RenderState(doc)
+        self.assertEqual(1, rs.line_number)
+        self.assertEqual("   1 ", rs.next_line_number())
+        self.assertEqual("   2 ", rs.next_line_number())
 
         # Starting at 10
-        mc.starting_line_number = 10
-        self.assertEqual("  10 ", mc.line_number(0, 0))
-        self.assertEqual("1010 ", mc.line_number(1, 500))
+        doc.starting_line_number = 10
+        rs = RenderState(doc)
+        self.assertEqual(10, rs.line_number)
+        self.assertEqual("  10 ", rs.next_line_number())
+        self.assertEqual("  11 ", rs.next_line_number())
 
         # Starting at 9_000
-        mc.starting_line_number = 9000
-        self.assertEqual(" 9000 ", mc.line_number(0, 0))
-        self.assertEqual("10000 ", mc.line_number(1, 500))
+        doc.starting_line_number = 9999
+        rs = RenderState(doc)
+        self.assertEqual(9999, rs.line_number)
+        self.assertEqual(" 9999 ", rs.next_line_number())
+        self.assertEqual("10000 ", rs.next_line_number())
 
         # Gap
-        self.assertEqual("      ", mc.line_number_gap())
+        self.assertEqual("      ", rs.line_number_gap())
