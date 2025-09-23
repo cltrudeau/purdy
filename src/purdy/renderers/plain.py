@@ -21,13 +21,12 @@ def to_plain(container):
 
     :returns: rendered string
     """
-    formatter = PlainFormatter()
-
     if isinstance(container, Code):
         container = Document(container)
 
     render_state = RenderState(container)
+    render_state.formatter = PlainFormatter()
     for section in container:
-        section.render(render_state, formatter)
+        section.render(render_state)
 
     return render_state.content

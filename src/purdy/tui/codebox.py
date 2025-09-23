@@ -1,19 +1,17 @@
 # purdy.tui.codebox.py
 import random
+from copy import deepcopy
 from dataclasses import dataclass
 
-from pygments.token import Generic
-from textual.content import Content as TContent
-from textual.markup import escape as textual_escape
 from textual_transitions import Curtain
 
-from purdy.content import Code, MultiCode
-from purdy.parser import token_is_a
-from purdy.renderers.textual import to_textual
+from purdy.content import Code, Document, RenderState
+from purdy.renderers.textual import (TextualFormatter, to_textual,
+    _CODE_TAG_EXCEPTIONS)
 from purdy.tui import animate
 from purdy.tui.widgets import CodeWidget
-from purdy.tui.typewriter import (code_typewriterize, string_typewriterize,
-    textual_typewriterize)
+from purdy.tui.tui_content import EscapeText, TextSection
+from purdy.tui.typewriter import code_typewriterize, textual_typewriterize
 
 # =============================================================================
 # Specs Used to Define The Layout
@@ -60,64 +58,12 @@ class RowSpec:
     boxes: list
 
 # =============================================================================
-# Code Abstraction
+# Code Abstractions
 # =============================================================================
 
-class TText(str):
-    def render(self):
-        return TContent.from_markup(self)
-
-
-class Document:
-    """Container for things being displayed in a :class:`CodeBox`."""
-    def __init__(self):
-        self.items = []
-
-    def append(self, content):
-        if isinstance(content, Code):
-            if not self.items:
-                # Empty
-                self.items.append(MultiCode(content))
-            elif isinstance(self.items[-1], MultiCode):
-                # Last thing is MultiCode
-                self.items[-1].extend(content)
-            else:
-                # Last thing wasn't MultiCode, need new MultiCode
-                self.items.append(MultiCode(content))
-        elif isinstance(content, (TContent, TText, str)):
-            self.items.append(content)
-        else:
-            raise ValueError("Unrecognizable content")
-
-    def replace(self, content):
-        if isinstance(content, Code):
-            self.items = [MultiCode(content), ]
-        elif isinstance(content, (TContent, TText, str)):
-            self.items = [content, ]
-        else:
-            raise ValueError("Unrecognizable content")
-
-    def render(self):
-        result = ""
-        for item in self.items:
-            if isinstance(item, MultiCode):
-                result += to_textual(item)
-            elif isinstance(item, TContent):
-                result += item
-            elif isinstance(item, TText):
-                result += item.render()
-            elif isinstance(item, str):
-                text = textual_escape(item)
-                result += TContent.from_markup(text)
-            else:
-                raise ValueError(f"Unrecognizable content in doc {item}")
-
-        return result
-
-# -----------------------------------------------------------------------------
-
 class CodeBox:
-    def __init__(self, row_spec, box_spec):
+    def __init__(self, id, row_spec, box_spec):
+        self.id = id
         self.box_spec = box_spec
         self.last_after = None
 
@@ -128,7 +74,7 @@ class CodeBox:
         self.doc = Document()
 
     def __repr__(self):
-        return "CodeBox()"
+        return f"CodeBox({self.id})"
 
     def update(self, content):
         self.holder.code_display.update(content)
@@ -145,8 +91,18 @@ class CodeBox:
     #
     # --- Editing Actions
     def append(self, content):
-        self.doc.append(content)
-        after = self.doc.render()
+        if isinstance(content, str):
+            # If there is already a text section add to it, otherwise create
+            # one
+            if len(self.doc) > 0 and isinstance(self.doc[-1], TextSection):
+                self.doc[-1].lines.append(content)
+            else:
+                self.doc.append(TextSection(content))
+        else:
+            # Must be Code
+            self.doc.append(content)
+
+        after = to_textual(self.doc)
         animate.cell_list.append(animate.Cell(self, after))
         return self
 
@@ -156,75 +112,90 @@ class CodeBox:
         return self
 
     def replace(self, content):
-        self.doc.replace(content)
-        after = self.doc.render()
+        if isinstance(content, str):
+            self.doc = Document(TextSection(content))
+        else:
+            self.doc = Document(content)
+
+        after = to_textual(self.doc)
         animate.cell_list.append(animate.Cell(self, after))
         return self
 
     def transition(self, content=None, speed=1):
-        self.doc = Document()
         if content is None:
             self.doc = Document()
             after = ""
         else:
-            self.doc.append(content)
-            after = self.doc.render()
+            if isinstance(content, str):
+                self.doc = Document(TextSection(content))
+            else:
+                self.doc = Document(content)
+
+            after = to_textual(self.doc)
 
         tx = animate.TransitionCell(self, after, Curtain, {"seconds":speed})
         animate.cell_list.append(tx)
         return self
 
     # --- Typewriter actions
-    def typewriter(self, content, skip_comments=True, skip_whitespace=True,
+    def _pre_render(self, future_length=0):
+        render_state = RenderState(self.doc, future_length=future_length)
+
+        for section in self.doc:
+            formatter = TextualFormatter(section, _CODE_TAG_EXCEPTIONS)
+            render_state.formatter = formatter
+            section.render(render_state)
+
+        return render_state
+
+    def typewriter(self, code, skip_comments=True, skip_whitespace=True,
             delay=0.13, delay_variance=0.03):
-        if not isinstance(content, Code):
+        if not isinstance(code, Code):
             raise ValueError("Code only! Use text_typewriter instead")
 
-        self.doc.append(content)
-        typewriter_steps = code_typewriterize(content, skip_comments,
+        render_state = self._pre_render(len(code.lines))
+        steps = code_typewriterize(render_state, code, skip_comments,
             skip_whitespace)
 
-        # Adding the content to the doc made sure there was a MultiCode as the
-        # last item, remove the last Code object from it, and then iterate
-        # through each of the typewriter versions with it
-        del self.doc.items[-1][-1]
-        for code in typewriter_steps:
-            self.doc.items[-1].append(code)
-            after = self.doc.render()
-            animate.cell_list.append(animate.Cell(self, after))
-
-            if code.lines[-1].is_prompt():
-                # Wait at prompts, pause at everything else
-                self.wait()
+        for step, state in steps:
+            if isinstance(step, animate.WaitCell):
+                animate.cell_list.append(step)
             else:
-                self.pause(delay, delay_variance)
+                after = deepcopy(render_state.content) + step
+                animate.cell_list.append(animate.Cell(self, after))
 
-            del self.doc.items[-1][-1]
+                match state:
+                    case "P":
+                        self.pause(delay, delay_variance)
+                    case "W":
+                        animate.cell_list.append(animate.WaitCell())
+                    # fall-through has no action
 
-        # Add the content back in after the last pass of the for-loop
-        self.doc.append(content)
+        # Final value should be the whole thing
+        self.doc.append(code)
+        render_state = self._pre_render()
+        animate.cell_list.append(animate.Cell(self, render_state.content))
         return self
 
     def text_typewriter(self, content, delay=0.13, delay_variance=0.03):
-        if isinstance(content, TText):
-            results = textual_typewriterize(content)
-            cls = TText
+        if isinstance(content, (str, EscapeText)):
+            section = TextSection(content)
         else:
-            results = string_typewriterize(content)
-            cls = str
+            section = content
 
-        for item in results:
-            self.doc.append(cls(item))
-            after = self.doc.render()
+        render_state = self._pre_render(len(section.lines))
+        steps = textual_typewriterize(render_state, section)
+
+        for step in steps:
+            after = deepcopy(render_state.content) + step
             animate.cell_list.append(animate.Cell(self, after))
 
             self.pause(delay, delay_variance)
 
-            # Will replace the last item next time through
-            del self.doc.items[-1]
-
         # Final value should be the whole thing
-        self.doc.append(cls(content))
+        self.doc.append(section)
+        render_state = self._pre_render()
+        animate.cell_list.append(animate.Cell(self, render_state.content))
         return self
 
     # --- Timing actions
@@ -239,78 +210,72 @@ class CodeBox:
         animate.cell_list.append(animate.WaitCell())
         return self
 
-    # --- Highlight actions
-    def _code_from_container_indicator(self, container_indicator):
-        ### See `highlight` docstring for explanation on container_indicator
-        if container_indicator is None:
-            # Assume last thing in doc is a MultiCode object and use its last
-            # `Code` object
-            return self.doc.items[-1][-1]
-        elif isinstance(container_indicator, int):
-            return self.doc.items[-1][container_indicator]
+    # --- Formatting actions
+    def set_numbers(self, starting_num):
+        if starting_num is None:
+            self.doc.line_numbers_enabled = False
+            self.doc.starting_line_number = 1
+        else:
+            self.doc.line_numbers_enabled = True
+            self.doc.starting_line_number = starting_num
 
-        # else: tuple indicating index of MultiCode and index of Code within it
-        return self.doc.items[container_indicator[0]][container_indicator[1]]
-
-    def highlight(self, *args, container_indicator=None):
-        """Issue highlight commands to a :class:`Code` block. See
-        :func:`Code.highlight` for details on highlight specifiers.
-
-        There can be multiple :class:`MultiCode` objects in the rendering
-        document, and multiple :class:`Code` objects within the `MultiCode`.
-        Use `container_indicator` to specify which `Code` block to apply the
-        highlighting to. It defaults to `None`. For `None` or an integer, it
-        assumes the last item in the document is a `MultiCode` object and
-        either uses the last `Code` object in it, or the one given by the
-        number. You can also pass in a tuple containing an index into the
-        document and an index into the `MultiCode` object to reference.
-
-        :param args: series of highlight specifiers
-        :param container_indicator: which `Code` block to highlight
-
-        """
-        # Turn highlighting on and re-render
-        code = self._code_from_container_indicator(container_indicator)
-        code.highlight(*args)
-        after = self.doc.render()
+        after = to_textual(self.doc)
 
         animate.cell_list.append(animate.Cell(self, after))
         return self
 
-    def highlight_off(self, *args, container_indicator=None):
+    # --- Highlight actions
+    def highlight(self, *args, section_index=None):
+        """Issue highlight commands to a :class:`Code` block. See
+        :func:`Code.highlight` for details on highlight specifiers.
+
+        :param args: series of highlight specifiers
+        :param section_indicator: The index number of the section to apply the
+            highlighting to. Defaults to None, meaning use the last section.
+            It is up to you to make sure the section is the kind that supports
+            highlighting.
+        """
+        # Turn highlighting on and re-render
+        if section_index is None:
+            code = self.doc[-1]
+        else:
+            code = self.doc[section_index]
+
+        code.highlight(*args)
+        after = to_textual(self.doc)
+
+        animate.cell_list.append(animate.Cell(self, after))
+        return self
+
+    def highlight_off(self, *args, section_index=None):
         """Issue highlight_off commands to a :class:`Code` block. See
         :func:`Code.highlight_off` for details on highlight specifiers.
 
-        There can be multiple :class:`MultiCode` objects in the rendering
-        document, and multiple :class:`Code` objects within the `MultiCode`.
-        Use `container_indicator` to specify which `Code` block to apply the
-        highlighting to. It defaults to `None`. For `None` or an integer, it
-        assumes the last item in the document is a `MultiCode` object and
-        either uses the last `Code` object in it, or the one given by the
-        number. You can also pass in a tuple containing an index into the
-        document and an index into the `MultiCode` object to reference.
-
         :param args: series of highlight specifiers
-        :param container_indicator: which `Code` block to highlight
-
+        :param section_indicator: The index number of the section to apply the
+            highlighting to. Defaults to None, meaning use the last section.
+            It is up to you to make sure the section is the kind that supports
+            highlighting.
         """
         # Turn highlighting off and re-render
-        code = self._code_from_container_indicator(container_indicator)
+        if section_index is None:
+            code = self.doc[-1]
+        else:
+            code = self.doc[section_index]
+
         code.highlight_off(*args)
-        after = self.doc.render()
+        after = to_textual(self.doc)
 
         animate.cell_list.append(animate.Cell(self, after))
         return self
 
     def highlight_all_off(self):
-        """Removes all highlighting from all :class:`MultiCode` containers"""
+        """Removes all highlighting from all :class:`Code` containers"""
         # Turn all highlighting off and re-render
-        for item in self.doc.items:
-            if isinstance(item, MultiCode):
-                for code in item:
-                    code.highlight_all_off()
+        for section in self.doc:
+            if isinstance(section, Code):
+                section.highlight_all_off()
 
-        after = self.doc.render()
-
+        after = to_textual(self.doc)
         animate.cell_list.append(animate.Cell(self, after))
         return self

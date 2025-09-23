@@ -235,8 +235,9 @@ def to_rtf(container):
             Whitespace: r"\cf0 {text}" + "\n",
         }
 
-        formatter = RTFFormatter(page, section, code_tag_exceptions)
-        section.render(render_state, formatter)
+        render_state.formatter = RTFFormatter(page, section,
+            code_tag_exceptions)
+        section.render(render_state)
 
     render_state.content += page.footer_string()
     return render_state.content

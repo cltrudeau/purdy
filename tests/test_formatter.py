@@ -65,12 +65,13 @@ class TestFormatter(TestCase):
 
         # Default theme
         rs = RenderState(doc)
-        formatter = DummyFormatter(section, exceptions)
-        section.render(rs, formatter)
+        rs.formatter = DummyFormatter(section, exceptions)
+        section.render(rs)
         self.assertEqual(DUMMY_FORMATTED, rs.content)
 
         # Test with escape
-        formatter.escape = lambda x: f"<{x}>"
         rs = RenderState(doc)
-        section.render(rs, formatter)
+        rs.formatter = DummyFormatter(section, exceptions)
+        rs.formatter.escape = lambda x: f"<{x}>"
+        section.render(rs)
         self.assertEqual(DUMMY_FORMATTED_ESCAPED, rs.content)

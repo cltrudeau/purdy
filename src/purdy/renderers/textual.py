@@ -64,6 +64,22 @@ class TextualFormatter(Formatter):
         # Now get Textual to render that mess
         render_state.content += Content.from_markup(markup, **part_map)
 
+    def part_to_content(self, token, value):
+        token = token_ancestor(token, self.ancestor_list)
+        part_map = {
+            "text": value,
+        }
+
+        try:
+            # Use the tag from the general map
+            markup = self.tag_map[token]
+        except KeyError:
+            # No map tags, use just the placeholder for the content
+            markup = "$text"
+
+        # Get Textual to render that mess
+        return Content.from_markup(markup, **part_map)
+
 
 _CODE_TAG_EXCEPTIONS = {
     Token:              "$text",
@@ -77,9 +93,9 @@ _CODE_TAG_EXCEPTIONS = {
 # ===========================================================================
 
 def to_textual(container):
-    """Transforms tokenized content in a :class:`Code` object into a string
-    with Textual library formatting.
+    """Transforms tokenized content in a :class:`Code` or :class:`Document`
+    object into a string with Textual library formatting.
 
-    :param container: :class:`Code` or :class:`MultiCode` object to translate
+    :param container: :class:`Code` or :class:`Document` object to translate
     """
     return conversion_handler(TextualFormatter, container, _CODE_TAG_EXCEPTIONS)

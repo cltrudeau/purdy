@@ -18,7 +18,8 @@ def conversion_handler(formatter_cls, container, exceptions):
     render_state = RenderState(container)
     for section in container:
         formatter = formatter_cls(section, exceptions)
-        section.render(render_state, formatter)
+        render_state.formatter = formatter
+        section.render(render_state)
 
     return render_state.content
 

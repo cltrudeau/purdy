@@ -2,7 +2,7 @@ from copy import deepcopy
 from pathlib import Path
 from unittest import TestCase
 
-from purdy.content import Code, Document, RenderState
+from purdy.content import Code, Document, RenderState, StringSection
 from purdy.parser import HighlightOn, HighlightOff, token_is_a
 from purdy.renderers.plain import to_plain
 
@@ -362,10 +362,10 @@ class TestCode(TestCase):
 
         doc = Document(code)
         rs = RenderState(doc)
-        formatter = BraceFormatter()
+        rs.formatter = BraceFormatter()
 
         expected = "zero\n{one}\ntwo\nthree {and} a bit\nfour and a bit"
-        doc[0].render(rs, formatter)
+        doc[0].render(rs)
         self.assertEqual(expected, rs.content)
 
     def test_wrapping(self):
@@ -471,6 +471,15 @@ class TestDocument(TestCase):
         self.assertEqual(2, len(doc))
         self.assertEqual(code1, doc[0])
         self.assertEqual(code2, doc[1])
+
+    def test_mixed_content(self):
+        doc = Document()
+        code = Code.text("one\n", "plain")
+        doc.append(code)
+        s = StringSection("two\n")
+        doc.append(s)
+        result = to_plain(doc)
+        self.assertEqual("one\ntwo\n", result)
 
 
 class TestRenderState(TestCase):

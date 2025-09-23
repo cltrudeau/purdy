@@ -102,8 +102,8 @@ def to_html(container, snippet=True):
             'padding:.2em .6em;"><pre style="margin: 0; line-height:125%">'
         )
 
-        formatter = HTMLFormatter(section, _CODE_TAG_EXCEPTIONS)
-        section.render(render_state, formatter)
+        render_state.formatter = HTMLFormatter(section, _CODE_TAG_EXCEPTIONS)
+        section.render(render_state)
 
     if not snippet:
         render_state.content += HTML_FOOTER

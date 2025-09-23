@@ -1,10 +1,11 @@
 # purdy.tui.animate.py
 import asyncio
-import random
 import typing
 
 from dataclasses import dataclass
 from enum import Enum
+
+from textual.content import Content as TContent
 
 # ===========================================================================
 # Cells and Cell Management
@@ -25,6 +26,19 @@ class Cell(BeforeCell):
     after: str
     before: str = ""
 
+    def __repr__(self):
+        result = f"Cell(codebox={self.codebox.id}, after="
+        if isinstance(self.after, TContent):
+            result += f"Content({repr(self.after.markup)}), "
+        else:
+            result += f"str({self.after}), "
+
+        if isinstance(self.before, TContent):
+            result += f"before=Content({repr(self.before.markup)}))"
+        else:
+            result += f"before=str({self.before}))"
+
+        return result
 
 @dataclass
 class PauseCell:

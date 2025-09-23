@@ -3,7 +3,7 @@ from textual.app import App, ComposeResult
 from textual.containers import Grid
 
 from purdy.tui.animate import AnimationController, cell_list
-from purdy.tui.codebox import BoxSpec, CodeBox, RowSpec, TText
+from purdy.tui.codebox import BoxSpec, CodeBox, RowSpec
 
 # =============================================================================
 
@@ -30,7 +30,7 @@ class PurdyApp(App):
                     # Use the first row as the blueprint for the width
                     self.grid_width += box_spec.width
 
-                box = CodeBox(row_spec, box_spec)
+                box = CodeBox(f"r{row_num}_b{box_num}", row_spec, box_spec)
                 self.rows[-1].append(box)
 
     def compose(self) -> ComposeResult:
@@ -57,26 +57,24 @@ class PurdyApp(App):
 
     def _debug_info(self):
         output = ["==== DEBUG INFO ===="]
+        from purdy.content import Code
 
         for row_index, row in enumerate(self.rows):
             for box_index, box in enumerate(row):
                 output.append(f"\nRow {row_index} Box {box_index}")
-                for item in box.doc.items:
-                    if isinstance(item, TText):
-                        output.append(f"   TText: *{repr(item)}*")
-                    elif isinstance(item, str):
-                        output.append(f"   String: *{repr(item)}*")
+                for section in box.doc:
+                    if not isinstance(section, Code):
+                        output.append(f"   {section.__class__.__name__}")
+                        for line in section.lines:
+                            output.append((f"      *{repr(line)}*"))
                     else:
-                        output.append("    MultiCode")
-                        for code in item:
-                            output.append("       Code")
-                            for line in code.lines:
-                                output.append("          Line")
-                                for part in line.parts:
-                                    output.append((
-                                        "             "
-                                        f"{part.token} : {part.text}*"
-                                    ))
+                        output.append("   Code")
+                        for line in section.lines:
+                            output.append("      Line")
+                            for part in line.parts:
+                                output.append((
+                                    f"      {part.token} : {part.text}*"
+                                ))
 
         output.append("\nCell list:")
         for count, cell in enumerate(cell_list):

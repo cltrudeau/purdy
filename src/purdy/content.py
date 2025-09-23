@@ -10,18 +10,18 @@ from pathlib import Path
 
 from purdy.parser import (CodeLine, CodePart, Fold, HighlightOff, HighlightOn,
     LexerSpec, LineNumber, Parser)
-from purdy.themes import THEME_MAP
+from purdy.themes import THEME_MAP, EMPTY_THEME
 
 # ===========================================================================
 
 class Section:
     """Abstract base class for classes that contain a list of lines which can
     be collected inside of a class:`Document`"""
-    def render(self, render_state, formatter):
+    def render(self, render_state):
         for line_index, line in enumerate(self.lines):
-            self.render_line(render_state, formatter, line, line_index)
+            self.render_line(render_state, line, line_index)
 
-    def render_line(self, render_state, formatter, line, line_index):
+    def render_line(self, render_state, line, line_index):
         raise NotImplementedError()
 
 # ===========================================================================
@@ -294,7 +294,7 @@ class Code(Section):
         return meta_info.highlight or meta_info.highlight_partial
 
     # === Rendering
-    def render_line(self, render_state, formatter, line, line_index):
+    def render_line(self, render_state, line, line_index):
         """Responsible for rendering the given line and appending the result
         into the :class:`RenderState` object.
         """
@@ -314,7 +314,7 @@ class Code(Section):
                 part = render_state.next_line_number_part()
                 output.parts.insert(0, part)
 
-            formatter.render_code_line(render_state, output)
+            render_state.formatter.render_code_line(render_state, output)
             return
 
         # Handle the actual line, adding line numbers, dealing with
@@ -327,7 +327,7 @@ class Code(Section):
             part = render_state.next_line_number_part()
             output.parts.insert(0, part)
 
-        lwr = _LineWrapRenderer(render_state, formatter, output)
+        lwr = _LineWrapRenderer(render_state, output)
         lwr.run()
 
     # --- Highlighting Application
@@ -433,9 +433,9 @@ class Code(Section):
 class _LineWrapRenderer:
     """Splits a line up into multiple parts based on the wrap length and
     updates renders content with each new line."""
-    def __init__(self, render_state, formatter, line):
+    def __init__(self, render_state, line):
         self.render_state = render_state
-        self.formatter = formatter
+        self.formatter = render_state.formatter
         self.line = line
 
     def run(self):
@@ -514,6 +514,9 @@ class _LineWrapRenderer:
 
 class StringSection(Section):
     def __init__(self, content=None):
+        super().__init__()
+        self.theme = EMPTY_THEME
+
         if content is None:
             self.lines = []
         elif isinstance(content, str):
@@ -522,6 +525,10 @@ class StringSection(Section):
             self.lines = content
         else:
             raise ValueError("StringSection requires string or list of strings")
+
+    def render_line(self, render_state, line, line_index):
+        # Strings have no formatting, just append it
+        render_state.content += line
 
 # ===========================================================================
 
@@ -547,17 +554,18 @@ class Document(list):
         self.wrap = None
         self.fold_char = "⠇"
 
-    def extend(self, code):
-        """Adds a new :class:`Code` object to this container
-
-        :param code: a `Code` object to add to the container
-        """
-        self.append(code)
-
 # ---------------------------------------------------------------------------
 
 class RenderState:
-    def __init__(self, document):
+    """Encapsulates the data needed for rendering and will contain the
+    rendered output of of a :class:`Document`.
+
+    :param document: `Document` that will be rendered
+    :param future_length: When calculating width for line numbers, add this
+        value to the max length. Useful when the `RenderState` needs to be
+        created before content gets added to the `Document`.
+    """
+    def __init__(self, document, future_length=0):
         self.doc = document
         self.content = ""
         self.line_number = None
@@ -565,7 +573,7 @@ class RenderState:
         if document.line_numbers_enabled:
             self.line_number = document.starting_line_number
 
-            max_line = document.starting_line_number
+            max_line = document.starting_line_number + future_length
             for section in document:
                 max_line += len(section.lines)
 
