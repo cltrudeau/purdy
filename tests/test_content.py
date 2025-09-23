@@ -311,6 +311,13 @@ class TestCode(TestCase):
         self.assertFalse(code.meta[4].highlight)
         code.reset_metadata()
 
+        # Partial Highlighting
+        code.highlight("3:6,3")
+        code.highlight_off("3:6,3")
+        self.assertEqual(1, len(code.meta))
+        self.assertEqual([], code.meta[3].highlight_partial)
+        code.reset_metadata()
+
         # String range, and goes past limit
         code.highlight("0-2")
         code.highlight_off("0-4")
@@ -329,7 +336,7 @@ class TestCode(TestCase):
         for i in range(0, 3):
             self.assertFalse(code.meta[i].highlight)
 
-        # Error handling: rejects partial
+        # Error handling: rejects partial that isn't on
         with self.assertRaises(ValueError):
             code.highlight_off("0:1,4")
 

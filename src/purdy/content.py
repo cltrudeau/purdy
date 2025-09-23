@@ -201,17 +201,20 @@ class Code(Section):
     def _set_highlight(self, indicator, value):
         match indicator:
             case int(index):
+                # Single number, highlight full line
                 if index < 0:
                     index = len(self.lines) + index
 
                 self.meta[index].highlight = value
             case (start, length):
+                # Tuple, highlight start and length following lines
                 if start < 0:
                     start = len(self.lines) + start
 
                 for index in range(start, start + length):
                     self.meta[index].highlight = value
             case str(indicator):
+                # String can be an integer, or a range
                 indicator = indicator.strip()
                 if indicator.startswith("-"):
                     # Negative Number
@@ -227,6 +230,21 @@ class Code(Section):
                 else:
                     # Positive number
                     self.meta[int(indicator)].highlight = value
+
+    def _parse_partial(self, indicator):
+        indicator = indicator.replace(" ", "")
+        index, scope = indicator.split(":")
+        start, length = scope.split(",")
+
+        # Meta storage is a dictionary so need to turn the negative index into
+        # its positive equivalent as the dict doesn't know -1 is the last item
+        # in the list
+        index = int(index)
+        if index < 0:
+            # Negative indexing
+            index = len(self.lines) + index
+
+        return index, (int(start), int(length))
 
     def highlight(self, *args):
         """Turn highlighting on for one or more code lines. Each argument can
@@ -244,17 +262,9 @@ class Code(Section):
         """
         for arg in args:
             if isinstance(arg, str) and ":" in arg:
-                arg = arg.replace(" ", "")
-                index, scope = arg.split(":")
-                start, length = scope.split(",")
+                index, spec = self._parse_partial(arg)
 
-                index = int(index)
-                if index < 0:
-                    # Negative indexing
-                    index = len(self.lines) + index
-
-                self.meta[index].highlight_partial.append( (int(start),
-                    int(length)) )
+                self.meta[index].highlight_partial.append(spec)
                 continue
 
             # Argument is for a full line add it to the highlighting set
@@ -275,7 +285,15 @@ class Code(Section):
         """
         for arg in args:
             if isinstance(arg, str) and ":" in arg:
-                raise ValueError("Partials not supported. Turn off full line")
+                index, spec = self._parse_partial(arg)
+                if index in self.meta:
+                    # Only turn it off it was already on
+                    try:
+                        self.meta[index].highlight_partial.remove(spec)
+                    except ValueError:
+                        raise ValueError("Can only turn off existing partials")
+
+                continue
 
             # Argument is for one or more full lines, turn them off
             self._set_highlight(arg, False)
@@ -284,7 +302,7 @@ class Code(Section):
         """Removes all highlighting"""
         for value in self.meta.values():
             value.highlight = False
-            value.highlight_partial = defaultdict(list)
+            value.highlight_partial = []
 
     def is_highlighted(self, line_index):
         if line_index not in self.meta:

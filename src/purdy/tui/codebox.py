@@ -247,6 +247,37 @@ class CodeBox:
         animate.cell_list.append(animate.Cell(self, after))
         return self
 
+    def highlight_chain(self, *args, section_index=None):
+        """Issue a series of highlight commands in sequence. Highlights the
+        first, waits, turns it off, then highlights the next. Only works with
+        :class:`Code` blocks. See :func:`Code.highlight` for details on
+        highlight specifiers.
+
+        :param args: series of highlight specifiers
+        :param section_indicator: The index number of the section to apply the
+            highlighting to. Defaults to None, meaning use the last section.
+            It is up to you to make sure the section is the kind that supports
+            highlighting.
+        """
+        # Turn highlighting on and re-render
+        if section_index is None:
+            code = self.doc[-1]
+        else:
+            code = self.doc[section_index]
+
+        for arg in args:
+            code.highlight(arg)
+            after = to_textual(self.doc)
+            animate.cell_list.append(animate.Cell(self, after))
+            animate.cell_list.append(animate.WaitCell())
+
+            code.highlight_off(arg)
+            after = to_textual(self.doc)
+            animate.cell_list.append(animate.Cell(self, after))
+
+        return self
+
+
     def highlight_off(self, *args, section_index=None):
         """Issue highlight_off commands to a :class:`Code` block. See
         :func:`Code.highlight_off` for details on highlight specifiers.
