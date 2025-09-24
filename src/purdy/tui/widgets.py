@@ -188,7 +188,7 @@ class PurdyContainer(Container):
 # transition overlay
 
 class CodeWidget(Container):
-    def __init__(self, border=""):
+    def __init__(self, border="", title=None):
         super().__init__(classes="code_widget")
 
         self.border = border.lower()
@@ -197,6 +197,8 @@ class CodeWidget(Container):
         self.pad_left = 0
         self.pad_right = 0
 
+        self.title = title
+
         self.code_display = Static("", classes="code_display")
 
     def compose(self) -> ComposeResult:
@@ -204,42 +206,47 @@ class CodeWidget(Container):
             self.overlay = Container(classes="cw_effect_overlay")
             yield self.overlay
 
-            with AlwaysVerticalScroll(classes="code_holder vscroller") \
-                    as self.code_holder:
-                self.code_holder.vertical_scrollbar.renderer = \
-                    BlurredTriangleScrollRender
+            with Container(classes="code_holder") as self.code_holder:
+                print("title is", self.title)
+                if self.title is not None:
+                    yield Static(self.title, classes="code_title")
+                    print("yielded widget")
 
-                yield self.code_display
+                with AlwaysVerticalScroll(classes="vscroller") as self.vs:
+                    self.vs.vertical_scrollbar.renderer = \
+                        BlurredTriangleScrollRender
 
-                if "t" in self.border:
-                    self.code_holder.styles.border_top = ("solid", "white")
-                    self.pad_top = 1
-                if "b" in self.border:
-                    self.code_holder.styles.border_bottom = ("solid", "white")
-                    self.pad_bottom = 1
-                if "r" in self.border:
-                    self.code_holder.styles.border_right = ("solid", "white")
-                    self.pad_right = 1
-                if "l" in self.border:
-                    self.code_holder.styles.border_left = ("solid", "white")
-                    self.pad_left = 1
+                    yield self.code_display
+
+                    if "t" in self.border:
+                        self.vs.styles.border_top = ("solid", "white")
+                        self.pad_top = 1
+                    if "b" in self.border:
+                        self.vs.styles.border_bottom = ("solid", "white")
+                        self.pad_bottom = 1
+                    if "r" in self.border:
+                        self.vs.styles.border_right = ("solid", "white")
+                        self.pad_right = 1
+                    if "l" in self.border:
+                        self.vs.styles.border_left = ("solid", "white")
+                        self.pad_left = 1
 
     async def on_key(self, event):
         key = event.key
         match key:
             case "alt+pagedown":
                 # Scroll down half a page
-                pos = (self.code_holder.scroll_y +
-                    self.code_holder.scrollable_content_region.height // 2)
-                self.code_holder.scroll_to(y=pos)
+                pos = (self.vs.scroll_y +
+                    self.vs.scrollable_content_region.height // 2)
+                self.vs.scroll_to(y=pos)
 
                 # Eat event
                 event.stop()
             case "alt+pageup":
                 # Scroll up half a page
-                pos = (self.code_holder.scroll_y -
-                    self.code_holder.scrollable_content_region.height // 2)
-                self.code_holder.scroll_to(y=pos)
+                pos = (self.vs.scroll_y -
+                    self.vs.scrollable_content_region.height // 2)
+                self.vs.scroll_to(y=pos)
 
                 # Eat event
                 event.stop()

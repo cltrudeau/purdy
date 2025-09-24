@@ -224,7 +224,7 @@ class AnimationController:
                 continue
             elif isinstance(cell, MoveByCell):
                 print("I think I'm moving by", cell.amount)
-                cell.codebox.widget.code_holder.scroll_relative(y=cell.amount)
+                cell.codebox.widget.vs.scroll_relative(y=cell.amount)
                 continue
             elif isinstance(cell, PauseCell):
                 # Pause directive, kick off the timer and leave
@@ -279,7 +279,7 @@ class AnimationController:
                 # Ignore it
                 continue
             elif isinstance(cell, MoveByCell):
-                cell.codebox.widget.code_holder.scroll_relative(y=cell.amount,
+                cell.codebox.widget.vs.scroll_relative(y=cell.amount,
                     animate=False)
                 continue
             elif isinstance(cell, PauseCell):
@@ -325,7 +325,7 @@ class AnimationController:
                 continue
             elif isinstance(cell, MoveByCell):
                 scroll_by = -1 * cell.amount
-                cell.codebox.widget.code_holder.scroll_relative(y=scroll_by)
+                cell.codebox.widget.vs.scroll_relative(y=scroll_by)
                 continue
             if isinstance(cell, PauseCell):
                 # Ignore pauses during backwards

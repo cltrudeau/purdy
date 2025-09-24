@@ -36,11 +36,11 @@ class BoxSpec:
         top, bottom, left, and right borders respectively. Defaults to no
         borders.
     """
-
     width: int
     line_number: int = None
     auto_scroll: bool = False
     border: str = ""
+    title: str = ""
 
 
 @dataclass
@@ -67,7 +67,7 @@ class CodeBox:
         self.box_spec = box_spec
         self.last_after = None
 
-        self.widget = CodeWidget(border=box_spec.border)
+        self.widget = CodeWidget(border=box_spec.border, title=box_spec.title)
         self.widget.styles.row_span = row_spec.height
         self.widget.styles.column_span = box_spec.width
 
@@ -81,7 +81,7 @@ class CodeBox:
 
         if self.box_spec.auto_scroll:
             # Scroll down without any animation, we're already near the bottom
-            self.widget.code_holder.scroll_end(animate=False)
+            self.widget.vs.scroll_end(animate=False)
 
     def _process_content(self, content):
         if isinstance(content, Code):
@@ -262,7 +262,8 @@ class CodeBox:
         :class:`Code` blocks. See :func:`Code.highlight` for details on
         highlight specifiers.
 
-        :param args: series of highlight specifiers
+        :param args: series of highlight specifiers. Each argument can also
+            be a list to activate a set of highlight specifiers together
         :param section_indicator: The index number of the section to apply the
             highlighting to. Defaults to None, meaning use the last section.
             It is up to you to make sure the section is the kind that supports
@@ -275,23 +276,28 @@ class CodeBox:
             code = self.doc[section_index]
 
         for arg in args:
-            code.highlight(arg)
+            if isinstance(arg, list):
+                specifiers = arg
+            else:
+                specifiers = [arg]
+
+            code.highlight(*specifiers)
             after = to_textual(self.doc)
             animate.cell_list.append(animate.Cell(self, after))
             animate.cell_list.append(animate.WaitCell())
 
-            code.highlight_off(arg)
+            code.highlight_off(*specifiers)
             after = to_textual(self.doc)
             animate.cell_list.append(animate.Cell(self, after))
 
         return self
 
-
     def highlight_off(self, *args, section_index=None):
         """Issue highlight_off commands to a :class:`Code` block. See
         :func:`Code.highlight_off` for details on highlight specifiers.
 
-        :param args: series of highlight specifiers
+        :param args: series of highlight specifiers. Each argument can also
+            be a list to deactivate a set of highlight specifiers together
         :param section_indicator: The index number of the section to apply the
             highlighting to. Defaults to None, meaning use the last section.
             It is up to you to make sure the section is the kind that supports

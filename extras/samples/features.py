@@ -6,16 +6,13 @@ from purdy.tui import AppFactory, Code, EscapeText
 
 # =============================================================================
 
-app = AppFactory.split(relative_height_bottom=2, auto_scroll_top=True)
+app = AppFactory.split(relative_height_bottom=2, auto_scroll_top=True,
+    top_title="[on blue]Welcome to the purdy features demo[/]")
 top = app.top
 bottom = app.bottom
 control = app.control
 
-INTRO = """\
-[on blue]Welcome to the purdy features demo[/]
-
-Press right arrow to show the next animation step →
-"""
+INTRO = "\nPress right arrow to show the next animation step →"
 
 shell = """\
 $ python

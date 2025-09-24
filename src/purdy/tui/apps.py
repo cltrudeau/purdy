@@ -79,7 +79,8 @@ class PurdyApp(App):
 
 class AppFactory:
     @classmethod
-    def simple(cls, max_height=None, line_number=None, auto_scroll=False):
+    def simple(cls, max_height=None, line_number=None, auto_scroll=False,
+            title=None):
         """Creates a purdy display with a single code box inside of it.
 
         :param max_height: limit the height of the content in the terminal,
@@ -88,10 +89,11 @@ class AppFactory:
             defaults to None
         :param auto_scroll: when True, if content is added to the code box it
             scrolls to the bottom. Defaults to False.
+        :param title: a title to include at the top of the codebox, defaults
+            to None
         """
-
         row_specs = [
-            RowSpec(1, [BoxSpec(1, line_number, auto_scroll)])
+            RowSpec(1, [BoxSpec(1, line_number, auto_scroll, title=title)])
         ]
 
         app = PurdyApp(row_specs, max_height)
@@ -101,7 +103,8 @@ class AppFactory:
     @classmethod
     def split(cls, max_height=None, line_number_top=None, auto_scroll_top=False,
             relative_height_top=1, line_number_bottom=None,
-            auto_scroll_bottom=False, relative_height_bottom=1):
+            auto_scroll_bottom=False, relative_height_bottom=1,
+            top_title=None, bottom_title=None):
         """Creates a purdy display with two code boxes one on top of the other.
 
         :param max_height: limit the height of the content in the terminal,
@@ -120,12 +123,18 @@ class AppFactory:
             code box it scrolls to the bottom. Defaults to False.
         :param relative_height_bottom: specify the height of the bottom code box
             against the top one.
+        :param top_title: a title to include over the top codebox, defaults
+            to None
+        :param bottom_title: a title to include over the bottom codebox,
+            defaults to None
         """
         row_specs = [
             RowSpec(relative_height_top, [
-                BoxSpec(1, line_number_top, auto_scroll_top, "b")]),
+                BoxSpec(1, line_number_top, auto_scroll_top, "b",
+                    title=top_title)]),
             RowSpec(relative_height_bottom, [
-                BoxSpec(1, line_number_bottom, auto_scroll_bottom)])
+                BoxSpec(1, line_number_bottom, auto_scroll_bottom,
+                    title=bottom_title)])
         ]
 
         app = PurdyApp(row_specs, max_height)

@@ -20,16 +20,18 @@ def a1():
     return app
 
 def a2():
-    app = AppFactory.simple()
+    app = AppFactory.simple(title="[yellow]Static title[/]")
     app.box.append("[blue]" + 7 * CONTENT + "[/]")
     return app
 
 def a3():
-    app = AppFactory.split(20, relative_height_top=3)
+    app = AppFactory.split(20, relative_height_top=3,
+        top_title="[yellow]Top static title[/]",
+        bottom_title="[yellow]Top static title[/]")
     app.top.append("[blue]" + 7 * CONTENT + "[/]")
     app.bottom.append("[red]" + 7 * CONTENT + "[/]")
     return app
 
-a1().run()
+#a1().run()
 #a2().run()
-#a3().run()
+a3().run()
