@@ -67,9 +67,9 @@ class CodeBox:
         self.box_spec = box_spec
         self.last_after = None
 
-        self.holder = CodeWidget(border=box_spec.border)
-        self.holder.styles.row_span = row_spec.height
-        self.holder.styles.column_span = box_spec.width
+        self.widget = CodeWidget(border=box_spec.border)
+        self.widget.styles.row_span = row_spec.height
+        self.widget.styles.column_span = box_spec.width
 
         self.doc = Document()
 
@@ -77,11 +77,11 @@ class CodeBox:
         return f"CodeBox({self.id})"
 
     def update(self, content):
-        self.holder.code_display.update(content)
+        self.widget.code_display.update(content)
 
         if self.box_spec.auto_scroll:
             # Scroll down without any animation, we're already near the bottom
-            self.holder.vs.scroll_end(animate=False)
+            self.widget.vs.scroll_end(animate=False)
 
     def _process_content(self, content):
         if isinstance(content, Code):

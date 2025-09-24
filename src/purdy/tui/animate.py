@@ -65,8 +65,8 @@ class TransitionCell(BeforeCell):
         self.before = ""
 
     async def run(self, control):
-        effect_holder = self.codebox.holder.effect_holder
-        overlay = self.codebox.holder.overlay
+        effect_holder = self.codebox.widget.effect_holder
+        overlay = self.codebox.widget.overlay
 
         self.effect = self.effect_cls(effect_holder, callback=self.callback,
             post_callback=control.curtain_complete, **self.effect_kwargs)
@@ -150,7 +150,7 @@ class AnimationController:
 
             if isinstance(cell, MoveByCell):
                 print("I think I'm moving by", cell.amount)
-                cell.codebox.holder.vs.scroll_relative(y=cell.amount)
+                cell.codebox.widget.vs.scroll_relative(y=cell.amount)
                 continue
             elif isinstance(cell, PauseCell):
                 # Pause directive, kick off the timer and leave
@@ -198,7 +198,7 @@ class AnimationController:
 
             cell = cell_list[self.current]
             if isinstance(cell, MoveByCell):
-                cell.codebox.holder.vs.scroll_relative(y=cell.amount,
+                cell.codebox.widget.vs.scroll_relative(y=cell.amount,
                     animate=False)
                 continue
             elif isinstance(cell, PauseCell):
@@ -241,7 +241,7 @@ class AnimationController:
             cell = cell_list[self.current]
             if isinstance(cell, MoveByCell):
                 scroll_by = -1 * cell.amount
-                cell.codebox.holder.vs.scroll_relative(y=scroll_by)
+                cell.codebox.widget.vs.scroll_relative(y=scroll_by)
                 continue
             if isinstance(cell, PauseCell):
                 # Ignore pauses during backwards

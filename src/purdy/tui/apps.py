@@ -41,14 +41,14 @@ class PurdyApp(App):
             # Loop through the CodeBoxes and compose their widgets
             for row in self.rows:
                 for box in row:
-                    yield box.holder
+                    yield box.widget
 
             self.grid.styles.grid_size_rows = self.grid_height
             self.grid.styles.grid_size_columns = self.grid_width
 
     async def on_mount(self):
         # Force focus to our first CodeBox, then start animation
-        self.set_focus(self.rows[0][0].holder.code_display)
+        self.set_focus(self.rows[0][0].widget.code_display)
         await self.controller.forwards()
 
     def run(self):
