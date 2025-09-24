@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 # box.py
-from purdy.tui import AppFactory, BoxSpec, Code, RowSpec, TText
+from purdy.tui import AppFactory, BoxSpec, Code, RowSpec
 
 # =============================================================================
 
@@ -13,21 +13,21 @@ def a1():
     ]
 
     app = AppFactory.full(row_specs)
-    app.rows[0][0].append(TText("[blue]" + 3 * CONTENT + "[/]"))
-    app.rows[0][1].append(TText("[green]" + 5 * CONTENT + "[/]"))
-    app.rows[1][0].append(TText("[red]" + 7 * CONTENT + "[/]"))
-    app.rows[1][1].append(TText("[orange]" + 7 * CONTENT + "[/]"))
+    app.rows[0][0].append("[blue]" + 3 * CONTENT + "[/]")
+    app.rows[0][1].append("[green]" + 5 * CONTENT + "[/]")
+    app.rows[1][0].append("[red]" + 7 * CONTENT + "[/]")
+    app.rows[1][1].append("[orange]" + 7 * CONTENT + "[/]")
     return app
 
 def a2():
     app = AppFactory.simple()
-    app.box.append(TText("[blue]" + 7 * CONTENT + "[/]"))
+    app.box.append("[blue]" + 7 * CONTENT + "[/]")
     return app
 
 def a3():
     app = AppFactory.split(20, relative_height_top=3)
-    app.top.append(TText("[blue]" + 7 * CONTENT + "[/]"))
-    app.bottom.append(TText("[red]" + 7 * CONTENT + "[/]"))
+    app.top.append("[blue]" + 7 * CONTENT + "[/]")
+    app.bottom.append("[red]" + 7 * CONTENT + "[/]")
     return app
 
 a1().run()

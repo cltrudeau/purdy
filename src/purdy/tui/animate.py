@@ -40,6 +40,13 @@ class Cell(BeforeCell):
 
         return result
 
+
+@dataclass
+class MoveByCell:
+    codebox: typing.Any
+    amount: int
+
+
 @dataclass
 class PauseCell:
     pause: float
@@ -141,7 +148,11 @@ class AnimationController:
 
             cell = cell_list[self.current]
 
-            if isinstance(cell, PauseCell):
+            if isinstance(cell, MoveByCell):
+                print("I think I'm moving by", cell.amount)
+                cell.codebox.holder.vs.scroll_relative(y=cell.amount)
+                continue
+            elif isinstance(cell, PauseCell):
                 # Pause directive, kick off the timer and leave
                 self.wait_state = self.State.PAUSE
                 self.worker = self.app.run_worker(
@@ -155,10 +166,10 @@ class AnimationController:
                 # Wait until the next time forwards is called
                 self.wait_state = self.State.WAIT
                 return
-            else:
-                # Perform cell action
-                self.wait_state = None
-                cell.codebox.update(cell.after)
+
+            # Perform cell action
+            self.wait_state = None
+            cell.codebox.update(cell.after)
 
     async def skip(self):
         if self.current is not None and self.current >= len(cell_list):
@@ -186,7 +197,11 @@ class AnimationController:
                 return
 
             cell = cell_list[self.current]
-            if isinstance(cell, PauseCell):
+            if isinstance(cell, MoveByCell):
+                cell.codebox.holder.vs.scroll_relative(y=cell.amount,
+                    animate=False)
+                continue
+            elif isinstance(cell, PauseCell):
                 # Ignore pauses during skip
                 continue
             if isinstance(cell, TransitionCell):
@@ -197,10 +212,10 @@ class AnimationController:
                 # Skipping done
                 self.wait_state = self.State.WAIT
                 return
-            else:
-                # Perform cell actions
-                self.wait_state = None
-                cell.codebox.update(cell.after)
+
+            # Perform cell actions
+            self.wait_state = None
+            cell.codebox.update(cell.after)
 
     async def backwards(self):
         if self.current is None:
@@ -224,6 +239,10 @@ class AnimationController:
 
         for self.current in range(start, end - 1, -1):
             cell = cell_list[self.current]
+            if isinstance(cell, MoveByCell):
+                scroll_by = -1 * cell.amount
+                cell.codebox.holder.vs.scroll_relative(y=scroll_by)
+                continue
             if isinstance(cell, PauseCell):
                 # Ignore pauses during backwards
                 continue
@@ -231,11 +250,11 @@ class AnimationController:
                 # Done moving backwards, set to next cell
                 self.wait_state = self.State.WAIT
                 return
-            else:
-                # Perform cell actions. TransitionCells get handled here as
-                # well, as they don't animate going backwards
-                self.wait_state = None
-                cell.codebox.update(cell.before)
+
+            # Perform cell actions. TransitionCells get handled here as
+            # well, as they don't animate going backwards
+            self.wait_state = None
+            cell.codebox.update(cell.before)
 
 # ===========================================================================
 

@@ -198,6 +198,11 @@ class CodeBox:
         animate.cell_list.append(animate.Cell(self, render_state.content))
         return self
 
+    # --- GUI Actions
+    def move_by(self, amount):
+        animate.cell_list.append(animate.MoveByCell(self, amount))
+        return self
+
     # --- Timing actions
     def pause(self, pause, pause_variance=None):
         if pause_variance is not None:
