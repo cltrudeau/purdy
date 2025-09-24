@@ -1,0 +1,17 @@
+PurdyContainer {
+    layers: code_layer code_overlay_layer purdy_overlay;
+}
+
+.code_holder {
+    layer: code_layer;
+}
+
+.cw_effect_overlay {
+    layer: code_overlay_layer;
+    visibility: hidden;
+}
+
+.pc_effect_overlay {
+    layer: purdy_overlay;
+    visibility: hidden;
+}

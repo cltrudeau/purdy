@@ -83,7 +83,7 @@ default_doc = Theme("default_doc", {
     Generic.Subheading: "cdcd00",
     Generic.Emph:       "000087",
     Generic.Strong:     "005f00",
-    String:             "8700af",
+    String:             "008000",
 }, default_code)
 
 

@@ -8,8 +8,8 @@ from dataclasses import dataclass, field
 from pathlib import Path
 
 from pygments.lexer import Lexer as Pygments_Lexer
-from pygments.lexers import (PythonConsoleLexer, PythonLexer, BashSessionLexer,
-    NodeConsoleLexer)
+from pygments.lexers import (BashSessionLexer, CssLexer, JsonLexer,
+    NodeConsoleLexer, PythonConsoleLexer, PythonLexer, TOMLLexer)
 from pygments.lexers.data import YamlLexer
 from pygments.lexers.markup import MarkdownLexer, RstLexer
 from pygments.lexers.templates import HtmlDjangoLexer
@@ -143,24 +143,29 @@ class LexerSpec:
 
 
 LexerSpec.built_ins = {
+    'py': LexerSpec('Python 3 Source', PythonLexer, False, 'code'),
     'repl': LexerSpec('Interactive Python 3 console', PythonConsoleLexer,
         True, 'code'),
-    'py': LexerSpec('Python 3 Source', PythonLexer, False, 'code'),
     'con': LexerSpec('Interactive bash console', BashSessionLexer, True,
         'code'),
+
+    'css': LexerSpec('CSS', CssLexer, False, 'doc'),
     'dbash': LexerSpec('Interactive bash Console with a dollar-sign prompt',
         DollarBashSessionLexer, True, 'code'),
+    'html': LexerSpec('HTML/Django/Jinja', HtmlDjangoLexer, False, 'xml'),
+    'json': LexerSpec('JSON', JsonLexer, False, 'doc'),
+    'md': LexerSpec('Markdown Doc', MarkdownLexer, False, 'doc'),
     'node': LexerSpec('Interactive JavaScript Node.js Console',
         NodeConsoleLexer, True, 'code'),
-    'yaml': LexerSpec('YAML Doc', YamlLexer, False, 'doc'),
-    'rst': LexerSpec('RST Doc', RstLexer, False, 'doc'),
-    'md': LexerSpec('Markdown Doc', MarkdownLexer, False, 'doc'),
     'plain': LexerSpec('Plain text, no parsing', NewlineLexer, False, 'doc'),
-    'html': LexerSpec('HTML/Django/Jinja', HtmlDjangoLexer, False, 'xml'),
+    'rst': LexerSpec('RST Doc', RstLexer, False, 'doc'),
+    'toml': LexerSpec('TOML', TOMLLexer, False, 'doc'),
+    'yaml': LexerSpec('YAML Doc', YamlLexer, False, 'doc'),
 }
 
 LexerSpec.aliases = {
     "htm": "html",
+    "tcss": "css",
     "txt": "plain",
     "yml": "yaml",
 }

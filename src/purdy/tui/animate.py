@@ -12,31 +12,49 @@ from textual.content import Content as TContent
 #
 # These define the possible steps that can happen during screen animation
 
-class BeforeCell:
-    # Marker class for any cells with a "before" state
-    pass
+def _content_to_repr(content):
+    if isinstance(content, TContent):
+        return f"Content({repr(content.markup)}), "
+
+    return f"str({content}), "
 
 
-@dataclass
-class Cell(BeforeCell):
-    codebox: typing.Any  # should be CodeBox, but that causes a circular
-                         # reference and pyflakes doesn't handle string based
-                         # typing, so once again, pretending Python can have
-                         # type safety is just so much fun
-    after: str
-    before: str = ""
+class UndoableCell:
+    def __init__(self):
+        self.forwards_map = {}
+        self.backwards_map = {}
+
+    def forwards(self):
+        for codebox, after in self.forwards_map.items():
+            codebox.update(after)
+
+    def backwards(self):
+        for codebox, back in self.backwards_map.items():
+            codebox.update(back)
+
+
+class Cell(UndoableCell):
+    def __init__(self, codebox, after):
+        super().__init__()
+        self.codebox = codebox
+        self.forwards_map[self.codebox] = after
+
+    @property
+    def after(self):
+        return self.forwards_map[self.codebox]
+
+    @property
+    def before(self):
+        try:
+            return self.backwards_map[self.codebox]
+        except:
+            return ""
 
     def __repr__(self):
         result = f"Cell(codebox={self.codebox.id}, after="
-        if isinstance(self.after, TContent):
-            result += f"Content({repr(self.after.markup)}), "
-        else:
-            result += f"str({self.after}), "
-
-        if isinstance(self.before, TContent):
-            result += f"before=Content({repr(self.before.markup)}))"
-        else:
-            result += f"before=str({self.before}))"
+        result += _content_to_repr(self.after)
+        result += " before="
+        result += _content_to_repr(self.before)
 
         return result
 
@@ -56,22 +74,44 @@ class WaitCell:
     pass
 
 
-class TransitionCell(BeforeCell):
+@dataclass
+class DebugCell:
+    content: str
+
+
+class TransitionCell(UndoableCell):
     def __init__(self, codebox, after, effect_cls, effect_kwargs):
+        super().__init__()
         self.codebox = codebox
-        self.after = after
+        self.forwards_map[self.codebox] = after
         self.effect_cls = effect_cls
         self.effect_kwargs = effect_kwargs
-        self.before = ""
 
-    async def run(self, control):
-        effect_holder = self.codebox.widget.effect_holder
+    def __repr__(self):
+        result = f"TransitionCell(codebox={self.codebox.id}, after="
+        result += _content_to_repr(self.forwards_map[self.codebox])
+        result += " before="
+        result += _content_to_repr(self.before)
+
+        return result
+
+    @property
+    def before(self):
+        try:
+            return self.backwards_map[self.codebox]
+        except:
+            return ""
+
+    async def run(self, animation_controller):
+        container = self.codebox.widget.container
         overlay = self.codebox.widget.overlay
 
-        self.effect = self.effect_cls(effect_holder, callback=self.callback,
-            post_callback=control.curtain_complete, **self.effect_kwargs)
+        self.effect = self.effect_cls(container, callback=self.callback,
+            post_callback=animation_controller.transition_complete,
+            **self.effect_kwargs)
         overlay.mount(self.effect)
-        self.worker = control.app.run_worker(self.effect.run(), exclusive=True)
+        self.worker = animation_controller.app.run_worker(self.effect.run(),
+            exclusive=True)
 
     async def cancel(self):
         self.worker.cancel()
@@ -79,7 +119,37 @@ class TransitionCell(BeforeCell):
         self.codebox.update(self.after)
 
     async def callback(self):
-        self.codebox.update(self.after)
+        self.forwards()
+
+
+class ScreenTransitionCell(UndoableCell):
+    def __init__(self, control, changes, effect_cls, effect_kwargs):
+        super().__init__()
+        self.control = control
+        self.effect_cls = effect_cls
+        self.effect_kwargs = effect_kwargs
+
+        for codebox, after in changes.items():
+            self.forwards_map[codebox] = after
+
+    async def run(self, animation_controller):
+        container = self.control.container.inner
+        overlay = self.control.container.overlay
+
+        self.effect = self.effect_cls(container, callback=self.callback,
+            post_callback=animation_controller.transition_complete,
+            **self.effect_kwargs)
+        overlay.mount(self.effect)
+        self.worker = animation_controller.app.run_worker(self.effect.run(),
+            exclusive=True)
+
+    async def cancel(self):
+        self.worker.cancel()
+        self.effect.remove()
+        self.forwards()
+
+    async def callback(self):
+        self.forwards()
 
 # ===========================================================================
 # Animation Controller
@@ -107,12 +177,13 @@ class AnimationController:
                 # Found first wait
                 self.first_wait = index
 
-            if isinstance(cell, BeforeCell):
-                if cell.codebox in before_cells:
-                    prev = before_cells[cell.codebox]
-                    cell.before = prev.after
+            if isinstance(cell, UndoableCell):
+                for codebox in cell.forwards_map.keys():
+                    if codebox in before_cells:
+                        prev = before_cells[codebox]
+                        cell.backwards_map[codebox] = prev.forwards_map[codebox]
 
-                before_cells[cell.codebox] = cell
+                    before_cells[codebox] = cell
 
     # --- Coroutines
     async def pause_running(self, amount):
@@ -120,8 +191,8 @@ class AnimationController:
         self.wait_state = None
         await self.forwards()
 
-    async def curtain_complete(self):
-        # Called by Curtain effect when it is done
+    async def transition_complete(self):
+        # Called by transition effect when it is done
         self.wait_state = None
         await self.forwards()
 
@@ -148,9 +219,12 @@ class AnimationController:
 
             cell = cell_list[self.current]
 
-            if isinstance(cell, MoveByCell):
+            if isinstance(cell, DebugCell):
+                # Ignore it
+                continue
+            elif isinstance(cell, MoveByCell):
                 print("I think I'm moving by", cell.amount)
-                cell.codebox.widget.vs.scroll_relative(y=cell.amount)
+                cell.codebox.widget.code_holder.scroll_relative(y=cell.amount)
                 continue
             elif isinstance(cell, PauseCell):
                 # Pause directive, kick off the timer and leave
@@ -162,6 +236,10 @@ class AnimationController:
                 self.wait_state = self.State.TRANSITION
                 await cell.run(self)
                 return
+            elif isinstance(cell, ScreenTransitionCell):
+                self.wait_state = self.State.TRANSITION
+                await cell.run(self)
+                return
             elif isinstance(cell, WaitCell):
                 # Wait until the next time forwards is called
                 self.wait_state = self.State.WAIT
@@ -169,7 +247,7 @@ class AnimationController:
 
             # Perform cell action
             self.wait_state = None
-            cell.codebox.update(cell.after)
+            cell.forwards()
 
     async def skip(self):
         if self.current is not None and self.current >= len(cell_list):
@@ -197,16 +275,19 @@ class AnimationController:
                 return
 
             cell = cell_list[self.current]
-            if isinstance(cell, MoveByCell):
-                cell.codebox.widget.vs.scroll_relative(y=cell.amount,
+            if isinstance(cell, DebugCell):
+                # Ignore it
+                continue
+            elif isinstance(cell, MoveByCell):
+                cell.codebox.widget.code_holder.scroll_relative(y=cell.amount,
                     animate=False)
                 continue
             elif isinstance(cell, PauseCell):
                 # Ignore pauses during skip
                 continue
-            if isinstance(cell, TransitionCell):
+            if isinstance(cell, (ScreenTransitionCell, TransitionCell)):
                 # Skip animation, but perform replacement
-                cell.codebox.update(cell.after)
+                cell.forwards()
                 continue
             elif isinstance(cell, WaitCell):
                 # Skipping done
@@ -215,7 +296,7 @@ class AnimationController:
 
             # Perform cell actions
             self.wait_state = None
-            cell.codebox.update(cell.after)
+            cell.forwards()
 
     async def backwards(self):
         if self.current is None:
@@ -239,9 +320,12 @@ class AnimationController:
 
         for self.current in range(start, end - 1, -1):
             cell = cell_list[self.current]
-            if isinstance(cell, MoveByCell):
+            if isinstance(cell, DebugCell):
+                # Ignore it
+                continue
+            elif isinstance(cell, MoveByCell):
                 scroll_by = -1 * cell.amount
-                cell.codebox.widget.vs.scroll_relative(y=scroll_by)
+                cell.codebox.widget.code_holder.scroll_relative(y=scroll_by)
                 continue
             if isinstance(cell, PauseCell):
                 # Ignore pauses during backwards
@@ -254,7 +338,7 @@ class AnimationController:
             # Perform cell actions. TransitionCells get handled here as
             # well, as they don't animate going backwards
             self.wait_state = None
-            cell.codebox.update(cell.before)
+            cell.backwards()
 
 # ===========================================================================
 

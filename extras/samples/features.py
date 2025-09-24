@@ -9,6 +9,7 @@ from purdy.tui import AppFactory, Code, EscapeText
 app = AppFactory.split(relative_height_bottom=2, auto_scroll_top=True)
 top = app.top
 bottom = app.bottom
+control = app.control
 
 INTRO = """\
 [on blue]Welcome to the purdy features demo[/]
@@ -92,14 +93,20 @@ long_code = Code("../display_code/code.py")
     .wait()
 )
 
-# Typewriter
+# Screen Transition
 (top
-    .append("\nYou can emulate typing → → →")
+    .append("\nYou can transition the whole screen →")
     .wait()
 )
 
+control.transition({
+    top: "You can emulate typing → → →",
+    bottom: None
+})
+
+# Typewriter
 (bottom
-    .transition()
+    .wait()
     .append(con)
     .typewriter(repl)
     .wait()
@@ -109,6 +116,8 @@ long_code = Code("../display_code/code.py")
     .append("Typing with Textual markup →")
     .wait()
 )
+
+top.debug(80*"=")
 
 (bottom
     .transition()
@@ -154,6 +163,10 @@ long_code = Code("../display_code/code.py")
 (bottom
     .move_by(10)
     .wait()
+)
+
+(top
+    .append("\n[yellow]Checkout the coding API for details[/]")
 )
 
 app.run()

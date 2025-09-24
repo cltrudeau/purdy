@@ -6,10 +6,12 @@ from rich.segment import Segment, Segments
 from rich.style import Style
 
 from textual.app import ComposeResult
-from textual.containers import ScrollableContainer, Container
+from textual.containers import Grid, ScrollableContainer, Container
 from textual.scrollbar import ScrollBarRender
 from textual.widgets import Static
 
+# =============================================================================
+# Scroll Renderers
 # =============================================================================
 
 class DarkThinBarRender(ScrollBarRender):
@@ -131,6 +133,59 @@ class AlwaysVerticalScroll(ScrollableContainer):
     def on_blur(self, event):
         self.vertical_scrollbar.renderer = BlurredTriangleScrollRender
 
+# =============================================================================
+# Purdy Container
+#
+# Single container for all the CodeWidgets with a transition overlay
+
+class PurdyContainer(Container):
+    def __init__(self, owner, row_specs, max_height=None):
+        # Import here to avoid circular import
+        from purdy.tui.codebox import CodeBox
+
+        super().__init__()
+        self.owner = owner
+        self.row_specs = row_specs
+        self.max_height = max_height
+
+        self.grid_width = 0
+        self.grid_height = 0
+
+        for row_num, row_spec in enumerate(self.row_specs):
+            self.grid_height += row_spec.height
+
+            self.owner.rows.append([])
+            for box_num, box_spec in enumerate(row_spec.boxes):
+                if row_num == 0:
+                    # Use the first row as the blueprint for the width
+                    self.grid_width += box_spec.width
+
+                box = CodeBox(f"r{row_num}_b{box_num}", row_spec, box_spec)
+                self.owner.rows[-1].append(box)
+
+    def compose(self) -> ComposeResult:
+        if self.max_height is not None:
+            self.styles.max_height = self.max_height
+            print(self.styles)
+
+        with Container(classes="pc_inner") as self.inner:
+            self.overlay = Container(classes="pc_effect_overlay")
+            yield self.overlay
+
+            with Grid(classes="pc_grid") as self.grid:
+                # Loop through the CodeBoxes and compose their widgets
+                for row in self.owner.rows:
+                    for box in row:
+                        yield box.widget
+
+                self.grid.styles.grid_size_rows = self.grid_height
+                self.grid.styles.grid_size_columns = self.grid_width
+
+# =============================================================================
+# Code Widget
+#
+# Scrollable container that displays one :class:`Document` and has a
+# transition overlay
 
 class CodeWidget(Container):
     def __init__(self, border=""):
@@ -145,46 +200,46 @@ class CodeWidget(Container):
         self.code_display = Static("", classes="code_display")
 
     def compose(self) -> ComposeResult:
-        with Container(classes="effect_holder") as self.effect_holder:
-            self.overlay = Container(classes="effect_overlay")
+        with Container(classes="cw_container") as self.container:
+            self.overlay = Container(classes="cw_effect_overlay")
             yield self.overlay
 
-            with Container(classes="code_holder") as self.code_holder:
-                with AlwaysVerticalScroll(classes="vscroller") as self.vs:
-                    self.vs.vertical_scrollbar.renderer = \
-                        BlurredTriangleScrollRender
+            with AlwaysVerticalScroll(classes="code_holder vscroller") \
+                    as self.code_holder:
+                self.code_holder.vertical_scrollbar.renderer = \
+                    BlurredTriangleScrollRender
 
-                    yield self.code_display
+                yield self.code_display
 
-                    if "t" in self.border:
-                        self.vs.styles.border_top = ("solid", "white")
-                        self.pad_top = 1
-                    if "b" in self.border:
-                        self.vs.styles.border_bottom = ("solid", "white")
-                        self.pad_bottom = 1
-                    if "r" in self.border:
-                        self.vs.styles.border_right = ("solid", "white")
-                        self.pad_right = 1
-                    if "l" in self.border:
-                        self.vs.styles.border_left = ("solid", "white")
-                        self.pad_left = 1
+                if "t" in self.border:
+                    self.code_holder.styles.border_top = ("solid", "white")
+                    self.pad_top = 1
+                if "b" in self.border:
+                    self.code_holder.styles.border_bottom = ("solid", "white")
+                    self.pad_bottom = 1
+                if "r" in self.border:
+                    self.code_holder.styles.border_right = ("solid", "white")
+                    self.pad_right = 1
+                if "l" in self.border:
+                    self.code_holder.styles.border_left = ("solid", "white")
+                    self.pad_left = 1
 
     async def on_key(self, event):
         key = event.key
         match key:
             case "alt+pagedown":
                 # Scroll down half a page
-                pos = (self.vs.scroll_y +
-                    self.vs.scrollable_content_region.height // 2)
-                self.vs.scroll_to(y=pos)
+                pos = (self.code_holder.scroll_y +
+                    self.code_holder.scrollable_content_region.height // 2)
+                self.code_holder.scroll_to(y=pos)
 
                 # Eat event
                 event.stop()
             case "alt+pageup":
                 # Scroll up half a page
-                pos = (self.vs.scroll_y -
-                    self.vs.scrollable_content_region.height // 2)
-                self.vs.scroll_to(y=pos)
+                pos = (self.code_holder.scroll_y -
+                    self.code_holder.scrollable_content_region.height // 2)
+                self.code_holder.scroll_to(y=pos)
 
                 # Eat event
                 event.stop()

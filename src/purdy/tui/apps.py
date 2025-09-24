@@ -1,54 +1,30 @@
 # purdy.tui.apps.py
 from textual.app import App, ComposeResult
-from textual.containers import Grid
 
 from purdy.tui.animate import AnimationController, cell_list
-from purdy.tui.codebox import BoxSpec, CodeBox, RowSpec
+from purdy.tui.codebox import BoxSpec, RowSpec
+from purdy.tui.purdybox import PurdyBox
 
 # =============================================================================
 
 class PurdyApp(App):
-    CSS_PATH = "purdy_app.tcss"
+    CSS_PATH = "style.tcss"
 
     def __init__(self, row_specs, max_height=None):
         super().__init__()
-        self.max_height = max_height
         self.row_specs = row_specs
-        self.rows = []
 
-        # Build the CodeBoxes first so that they can be populated before
-        # Textual mounts everything, then yield them in `compose`
-        self.grid_width = 0
-        self.grid_height = 0
-
-        for row_num, row_spec in enumerate(self.row_specs):
-            self.grid_height += row_spec.height
-
-            self.rows.append([])
-            for box_num, box_spec in enumerate(row_spec.boxes):
-                if row_num == 0:
-                    # Use the first row as the blueprint for the width
-                    self.grid_width += box_spec.width
-
-                box = CodeBox(f"r{row_num}_b{box_num}", row_spec, box_spec)
-                self.rows[-1].append(box)
+        # Build the PurdyBox containing all the CodeBoxes first so that
+        # they can be populated before Textual mounts everything, then yield
+        # it in `compose`
+        self.control = PurdyBox(self.row_specs, max_height)
 
     def compose(self) -> ComposeResult:
-        with Grid() as self.grid:
-            if self.max_height is not None:
-                self.grid.styles.max_height = self.max_height
-
-            # Loop through the CodeBoxes and compose their widgets
-            for row in self.rows:
-                for box in row:
-                    yield box.widget
-
-            self.grid.styles.grid_size_rows = self.grid_height
-            self.grid.styles.grid_size_columns = self.grid_width
+        yield self.control.container
 
     async def on_mount(self):
         # Force focus to our first CodeBox, then start animation
-        self.set_focus(self.rows[0][0].widget.code_display)
+        self.set_focus(self.control.rows[0][0].widget.code_display)
         await self.controller.forwards()
 
     def run(self):
@@ -59,7 +35,7 @@ class PurdyApp(App):
         output = ["==== DEBUG INFO ===="]
         from purdy.content import Code
 
-        for row_index, row in enumerate(self.rows):
+        for row_index, row in enumerate(self.control.rows):
             for box_index, box in enumerate(row):
                 output.append(f"\nRow {row_index} Box {box_index}")
                 for section in box.doc:
@@ -119,7 +95,7 @@ class AppFactory:
         ]
 
         app = PurdyApp(row_specs, max_height)
-        app.box = app.rows[0][0]
+        app.box = app.control.rows[0][0]
         return app
 
     @classmethod
@@ -153,8 +129,8 @@ class AppFactory:
         ]
 
         app = PurdyApp(row_specs, max_height)
-        app.top = app.rows[0][0]
-        app.bottom = app.rows[1][0]
+        app.top = app.control.rows[0][0]
+        app.bottom = app.control.rows[1][0]
         return app
 
     @classmethod
@@ -171,4 +147,5 @@ class AppFactory:
             Defaults to None.
         """
         app = PurdyApp(row_specs, max_height)
+        app.rows = app.control.rows
         return app

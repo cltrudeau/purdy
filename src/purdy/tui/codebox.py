@@ -81,7 +81,7 @@ class CodeBox:
 
         if self.box_spec.auto_scroll:
             # Scroll down without any animation, we're already near the bottom
-            self.widget.vs.scroll_end(animate=False)
+            self.widget.code_holder.scroll_end(animate=False)
 
     def _process_content(self, content):
         if isinstance(content, Code):
@@ -201,6 +201,10 @@ class CodeBox:
     # --- GUI Actions
     def move_by(self, amount):
         animate.cell_list.append(animate.MoveByCell(self, amount))
+        return self
+
+    def debug(self, content):
+        animate.cell_list.append(animate.DebugCell(content))
         return self
 
     # --- Timing actions
