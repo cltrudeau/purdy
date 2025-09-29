@@ -1,7 +1,13 @@
 2.0.0a6
 =======
 
-* 2025/09/??
+* 2025/09/29
+* overhauled when things get rendered and how to greatly reduce load time
+* add `.highlight_chain`
+* moved all UI components into a single parent container so that purdy can be
+  used as a widget
+* Added optional title to CodeWidget
+* Added `.move_by()` scroll control action
 
 
 2.0.0a5
