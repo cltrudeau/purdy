@@ -76,10 +76,10 @@ class CodeBox:
     def __repr__(self):
         return f"CodeBox({self.id})"
 
-    def update(self, content):
+    def update(self, content, ignore_auto_scroll=False):
         self.widget.code_display.update(content)
 
-        if self.box_spec.auto_scroll:
+        if not ignore_auto_scroll and self.box_spec.auto_scroll:
             # Scroll down without any animation, we're already near the bottom
             self.widget.vs.scroll_end(animate=False)
 
@@ -253,7 +253,8 @@ class CodeBox:
         code.highlight(*args)
         after = to_textual(self.doc)
 
-        animate.cell_list.append(animate.Cell(self, after))
+        animate.cell_list.append(animate.Cell(self, after,
+            ignore_auto_scroll=True))
         return self
 
     def highlight_chain(self, *args, section_index=None):
@@ -283,12 +284,14 @@ class CodeBox:
 
             code.highlight(*specifiers)
             after = to_textual(self.doc)
-            animate.cell_list.append(animate.Cell(self, after))
+            animate.cell_list.append(animate.Cell(self, after,
+                ignore_auto_scroll=True))
             animate.cell_list.append(animate.WaitCell())
 
             code.highlight_off(*specifiers)
             after = to_textual(self.doc)
-            animate.cell_list.append(animate.Cell(self, after))
+            animate.cell_list.append(animate.Cell(self, after,
+                ignore_auto_scroll=True))
 
         return self
 
@@ -323,5 +326,6 @@ class CodeBox:
                 section.highlight_all_off()
 
         after = to_textual(self.doc)
-        animate.cell_list.append(animate.Cell(self, after))
+        animate.cell_list.append(animate.Cell(self, after,
+            ignore_auto_scroll=True))
         return self

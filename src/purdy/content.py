@@ -44,8 +44,9 @@ class Code(Section):
     resulting lines to this object.
 
     :param filename: Name of file to read of :class:`pathlib.Path` object
-    :param parser_identifier: Identifier for :class:`purdy.parser.Parser` to
-        use when parsing the code. Defaults to "detect"
+    :param lexer: Identifier that determines which
+        :class:`purdy.parser.LexerSpec` to use when parsing the code. Defaults
+        to "detect"
     :param theme: Either a string containing the base name of a theme (without
         the category type like code, con, etc) or a :class:Theme object.
         Defaults to `None` in which case it uses the class attribute
@@ -53,10 +54,10 @@ class Code(Section):
     """
     default_theme_name = "default"
 
-    def __init__(self, filename, parser_identifier="detect", theme=None):
+    def __init__(self, filename, lexer="detect", theme=None):
         # !!! If any defaults in here change make sure to update the .text()
         # factory
-        lexer_spec = LexerSpec.get_spec(parser_identifier, hint=filename)
+        lexer_spec = LexerSpec.get_spec(lexer, hint=filename)
         self._pre_parse_init(theme, lexer_spec)
 
         path = Path(filename).resolve()
@@ -67,17 +68,18 @@ class Code(Section):
         # and the spawn methods!!!
 
     @classmethod
-    def text(cls, text, parser_identifier="py", theme=None):
+    def text(cls, text, lexer="py", theme=None):
         """Factory method for reading code from a string instead of a file.
 
         :param text: Text to parse
-        :param parser_identifier: Identifier for :class:`purdy.parser.Parser` to
-            use when parsing the code. Defaults to "py".
+        :param lexer: Identifier that determines which
+            :class:`purdy.parser.LexerSpec` to use when parsing the code.
+            Defaults to "detect"
         """
         # A bit tricky: construct the object without invoking __init__
         obj = Code.__new__(Code)
 
-        lexer_spec = LexerSpec.get_spec(parser_identifier)
+        lexer_spec = LexerSpec.get_spec(lexer)
         obj._pre_parse_init(theme, lexer_spec)
 
         obj.parser = Parser(lexer_spec)

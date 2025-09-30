@@ -20,13 +20,14 @@ def _content_to_repr(content):
 
 
 class UndoableCell:
-    def __init__(self):
+    def __init__(self, ignore_auto_scroll=False):
+        self.ignore_auto_scroll = ignore_auto_scroll
         self.forwards_map = {}
         self.backwards_map = {}
 
     def forwards(self):
         for codebox, after in self.forwards_map.items():
-            codebox.update(after)
+            codebox.update(after, self.ignore_auto_scroll)
 
     def backwards(self):
         for codebox, back in self.backwards_map.items():
@@ -34,8 +35,8 @@ class UndoableCell:
 
 
 class Cell(UndoableCell):
-    def __init__(self, codebox, after):
-        super().__init__()
+    def __init__(self, codebox, after, ignore_auto_scroll=False):
+        super().__init__(ignore_auto_scroll)
         self.codebox = codebox
         self.forwards_map[self.codebox] = after
 
@@ -248,6 +249,7 @@ class AnimationController:
             # Perform cell action
             self.wait_state = None
             cell.forwards()
+            self.app.set_focus(cell.codebox.widget.vs)
 
     async def skip(self):
         if self.current is not None and self.current >= len(cell_list):
@@ -297,6 +299,7 @@ class AnimationController:
             # Perform cell actions
             self.wait_state = None
             cell.forwards()
+            self.app.set_focus(cell.codebox.widget.vs)
 
     async def backwards(self):
         if self.current is None:
@@ -339,6 +342,7 @@ class AnimationController:
             # well, as they don't animate going backwards
             self.wait_state = None
             cell.backwards()
+            self.app.set_focus(cell.codebox.widget.vs)
 
 # ===========================================================================
 

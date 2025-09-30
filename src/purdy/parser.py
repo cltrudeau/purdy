@@ -92,20 +92,20 @@ class LexerSpec:
     category: str
 
     @classmethod
-    def get_spec(cls, identifier, hint=''):
-        """Return a `LexerSpec` object based on a given identifier.
+    def get_spec(cls, lexer, hint=''):
+        """Return a `LexerSpec` object based on the given identifier.
 
-        :param identifier: An indicator as to what underlying lexer to use. It
-            can be the string "detect" to attempt to auto-detect the
-            appropriate lexer, a string corresponding to one of the built-in
+        :param lexer: An indicator as to what underlying lexer to use. It can
+            be the string "detect" to attempt to auto-detect the appropriate
+            lexer, a string corresponding to one of the built-in
             :class:`LexerSpec` objects, a :class:`LexerSpec` itself, or a
             Pygments :class:`pygments.lexers.Lexer` class. When a Pygments
             Lexer is provided it is assumed to be for code and not in console
             mode.
-        :param hint: when using identifier="detect", this provides information
+        :param hint: when using lexer="detect", this provides information
             for doing the detection
         """
-        match identifier:
+        match lexer:
             case "detect":
                 # Assume the hint is a file name
                 path = Path(hint)
@@ -113,13 +113,13 @@ class LexerSpec:
             case str(name):
                 return LexerSpec.find(name)
             case LexerSpec():
-                return identifier
+                return lexer
             case _:
-                if not issubclass(identifier, Pygments_Lexer):
+                if not issubclass(lexer, Pygments_Lexer):
                     raise ValueError("Could not determine Parser type")
 
-                name = 'custom_' + identifier.__name__
-                return LexerSpec(name, identifier, False, 'code')
+                name = 'custom_' + lexer.__name__
+                return LexerSpec(name, lexer, False, 'code')
 
     @classmethod
     def find(cls, name):
