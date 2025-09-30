@@ -187,7 +187,7 @@ class CodeBox:
         steps = textual_typewriterize(render_state, section)
 
         for step in steps:
-            after = deepcopy(render_state.content) + step
+            after = deepcopy(render_state.content) + step.text
             animate.cell_list.append(animate.Cell(self, after))
 
             self.pause(delay, delay_variance)

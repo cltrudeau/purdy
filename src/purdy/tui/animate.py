@@ -117,7 +117,7 @@ class TransitionCell(UndoableCell):
     async def cancel(self):
         self.worker.cancel()
         self.effect.remove()
-        self.codebox.update(self.after)
+        self.forwards()
 
     async def callback(self):
         self.forwards()

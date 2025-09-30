@@ -240,7 +240,9 @@ def _plain_typewriterize(results, base_render_state, rendered, line):
 
     for char in line:
         current += char
-        results.append(rendered + current + CURSOR_CHAR)
+        result = TypewriterOutput(text=rendered + current + CURSOR_CHAR,
+            state="P")
+        results.append(result)
 
     return current
 
@@ -272,14 +274,18 @@ def textual_typewriterize(base_render_state, section):
                 for char in token.value:
                     current += char
                     output = TContent.from_markup(current + MARKUP_CURSOR)
-                    results.append(rendered + output)
+                    result = TypewriterOutput(text=rendered + output,
+                        state="P")
+                    results.append(result)
             elif token.name == "eof":
                 pass
             elif token.name == "end_tag":
                 tag += token.value
                 current += tag
                 output = TContent.from_markup(current + MARKUP_CURSOR)
-                results.append(rendered + output)
+                result = TypewriterOutput(text=rendered + output,
+                    state="P")
+                results.append(result)
                 tag = ""
             else:
                 # Token is some part of a tag, accumulate it in current
