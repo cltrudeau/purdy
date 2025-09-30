@@ -166,7 +166,6 @@ class PurdyContainer(Container):
     def compose(self) -> ComposeResult:
         if self.max_height is not None:
             self.styles.max_height = self.max_height
-            print(self.styles)
 
         with Container(classes="pc_inner") as self.inner:
             self.overlay = Container(classes="pc_effect_overlay")
@@ -207,10 +206,8 @@ class CodeWidget(Container):
             yield self.overlay
 
             with Container(classes="code_holder") as self.code_holder:
-                print("title is", self.title)
                 if self.title is not None:
                     yield Static(self.title, classes="code_title")
-                    print("yielded widget")
 
                 with AlwaysVerticalScroll(classes="vscroller") as self.vs:
                     self.vs.vertical_scrollbar.renderer = \

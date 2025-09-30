@@ -224,7 +224,6 @@ class AnimationController:
                 # Ignore it
                 continue
             elif isinstance(cell, MoveByCell):
-                print("I think I'm moving by", cell.amount)
                 cell.codebox.widget.vs.scroll_relative(y=cell.amount)
                 continue
             elif isinstance(cell, PauseCell):
@@ -252,9 +251,6 @@ class AnimationController:
             self.app.set_focus(cell.codebox.widget.vs)
 
     async def skip(self):
-        if self.current is not None and self.current >= len(cell_list):
-            return
-
         if self.wait_state == self.State.PAUSE:
             self.worker.cancel()
             self.wait_state = None

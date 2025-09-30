@@ -19,6 +19,8 @@ class PurdyApp(App):
         # it in `compose`
         self.control = PurdyBox(self.row_specs, max_height)
 
+        self.repeat_count = ""
+
     def compose(self) -> ComposeResult:
         yield self.control.container
 
@@ -66,12 +68,30 @@ class PurdyApp(App):
             case "right":
                 await self.controller.forwards()
             case "left":
-                await self.controller.backwards()
+                count = 1
+                if self.repeat_count:
+                    count = int(self.repeat_count)
+
+                for _ in range(0, count):
+                    await self.controller.backwards()
+
+                self.repeat_count = ""
             case "s":
-                await self.controller.skip()
+                count = 1
+                if self.repeat_count:
+                    count = int(self.repeat_count)
+
+                for _ in range(0, count):
+                    await self.controller.skip()
+
+                self.repeat_count = ""
             case "d":
                 if "devtools" in self.features:
                     print(self._debug_info())
+            case "0" | "1" | "2" | "3" | "4" | "5" | "6" | "7" | "8" | "9":
+                self.repeat_count += key
+            case "ESC":
+                self.repeat_count += ""
 
 # =============================================================================
 # Factory Methods
