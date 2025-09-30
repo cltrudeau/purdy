@@ -114,3 +114,13 @@ def doc_args(parser):
     no_colour_arg(parser)
     highlight_arg(parser)
     bg_arg(parser)
+
+
+def purdy_client_args(parser):
+    filename_arg(parser)
+    lexer_arg(parser)
+    version_arg(parser)
+    num_arg(parser)
+    wrap_arg(parser)
+    no_colour_arg(parser)
+    highlight_arg(parser)

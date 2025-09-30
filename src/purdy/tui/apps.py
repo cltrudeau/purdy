@@ -1,9 +1,57 @@
 # purdy.tui.apps.py
+from textual import on
 from textual.app import App, ComposeResult
+from textual.containers import (Center, Container, Horizontal, Vertical,
+VerticalScroll)
+from textual.screen import ModalScreen
+from textual.widgets import Button, Static
 
 from purdy.tui.animate import AnimationController, cell_list
 from purdy.tui.codebox import BoxSpec, RowSpec
 from purdy.tui.purdybox import PurdyBox
+
+# =============================================================================
+
+HELP_TEXT_TITLE = "[white bold]Purdy Help[/]"
+
+HELP_TEXT = [
+    ("[white bold]right arrow[/] - ", "Advanced to next animation", False),
+    ("[white bold]left arrow[/] - ", "Go back an animation", False),
+    ("[white bold]s[/] - ",
+        "Skip the current animation, or past the next one", True),
+    ("[white bold]0-9[/] - ", "One or more numbers can be combined before pressing skip or backwards to perform multiple operations", True),
+    ("[white bold]alt+page down[/] - ",
+        "Half page down on a scrollable text window", False),
+    ("[white bold]alt+page up[/] - ",
+        "Half page up on a scrollable text window", True),
+    ("[white bold]ESC[/] - ", "Clear the number count", False),
+    ("[white bold]h[/] - ", "This help message, but you knew that", False),
+    ("[white bold]q[/] - ", "Quit", False),
+]
+
+class HelpDialogScreen(ModalScreen):
+    def compose(self):
+        with Vertical(id="help_dialog_box"):
+            yield Static(HELP_TEXT_TITLE, id="help_dialog_title")
+            with VerticalScroll():
+                for key, desc, space in HELP_TEXT:
+                    classes = "help_dialog_item_container"
+                    if space:
+                        classes += " help_dialog_extra_pad"
+
+                    with Horizontal(classes=classes):
+                        yield Static(key, classes="help_dialog_key_col")
+                        with Container(classes="help_dialog_desc_holder"):
+                            yield Static(desc, classes="help_dialog_desc_col")
+
+            with Center(id="help_dialog_button_holder"):
+                button = Button("Ok", id="help_dialog_ok")
+                yield button
+                button.focus()
+
+    @on(Button.Pressed, "#help_dialog_ok")
+    def on_button_pressed(self):
+        self.app.pop_screen()
 
 # =============================================================================
 
@@ -63,8 +111,8 @@ class PurdyApp(App):
     async def on_key(self, event):
         key = event.key
         match key:
-            case "q" | "Q":
-                exit()
+            case "ESC":
+                self.repeat_count += ""
             case "right":
                 await self.controller.forwards()
             case "left":
@@ -76,6 +124,15 @@ class PurdyApp(App):
                     await self.controller.backwards()
 
                 self.repeat_count = ""
+            case "0" | "1" | "2" | "3" | "4" | "5" | "6" | "7" | "8" | "9":
+                self.repeat_count += key
+            case "d":
+                if "devtools" in self.features:
+                    print(self._debug_info())
+            case "h":
+                self.push_screen(HelpDialogScreen())
+            case "q" | "Q":
+                exit()
             case "s":
                 count = 1
                 if self.repeat_count:
@@ -85,13 +142,22 @@ class PurdyApp(App):
                     await self.controller.skip()
 
                 self.repeat_count = ""
-            case "d":
-                if "devtools" in self.features:
-                    print(self._debug_info())
-            case "0" | "1" | "2" | "3" | "4" | "5" | "6" | "7" | "8" | "9":
-                self.repeat_count += key
-            case "ESC":
-                self.repeat_count += ""
+            case "ctrl+t":
+                from textual.screen import ModalScreen
+                from textual.widgets import Footer, Static
+                class CssTree(ModalScreen):
+                    BINDINGS = [
+                        ("escape", "app.pop_screen", "Cancel"),
+                    ]
+
+                    def __init__(self, info: str = "") -> None:
+                        super().__init__()
+                        self.info = info
+
+                    def compose(self) -> ComposeResult:
+                        yield Footer()
+                        yield Static(self.info, id="id_static")
+                self.push_screen(CssTree(self.screen_stack[-1].css_tree))
 
 # =============================================================================
 # Factory Methods

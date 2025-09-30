@@ -3,10 +3,8 @@ import argparse
 
 from argparse_formatter import FlexiFormatter
 
-from purdy.content import Code
-from purdy.cmds.arg_helpers import (filename_arg, general_args, motif_args,
-    motif_factory)
-from purdy.tui.apps import SimpleApp
+from purdy.cmds.arg_helpers import purdy_client_args
+from purdy.tui import AppFactory, Code
 
 # =============================================================================
 
@@ -22,14 +20,30 @@ use this program as a code viewer.
 parser = argparse.ArgumentParser(description=DESCRIPTION,
     formatter_class=FlexiFormatter)
 
-general_args(parser)
-motif_args(parser)
-filename_arg(parser)
+purdy_client_args(parser)
 
 def main():
     args = parser.parse_args()
-    code = Code(args.filename, args.lexer)
-    motif = motif_factory(code, args)
 
-    app = SimpleApp(motif)
+    theme_name = "default"
+    if args.nocolour:
+        # Override theme
+        theme_name = "no_colour"
+
+    code = Code(args.filename, args.lexer, theme_name)
+
+    app = AppFactory.simple()
+    doc = app.box.doc
+
+    if hasattr(args, "num") and args.num:
+        doc.line_numbers_enabled = True
+        doc.starting_line_number = args.num
+
+    if hasattr(args, "wrap") and args.wrap:
+        doc.wrap = args.wrap
+
+    if hasattr(args, "highlight") and args.highlight:
+        code.highlight(*args.highlight)
+
+    app.box.append(code)
     app.run()
