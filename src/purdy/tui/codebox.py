@@ -62,6 +62,10 @@ class RowSpec:
 # =============================================================================
 
 class CodeBox:
+    """Contains and controls content to be displayed to the screen. Wraps the
+    display widget and includes the action methods for the purdy
+    animations."""
+
     def __init__(self, id, row_spec, box_spec):
         self.id = id
         self.box_spec = box_spec
@@ -77,6 +81,8 @@ class CodeBox:
         return f"CodeBox({self.id})"
 
     def update(self, content, ignore_auto_scroll=False):
+        """Updates the content of the widget, typically shouldn't be called
+        directly."""
         self.widget.code_display.update(content)
 
         if not ignore_auto_scroll and self.box_spec.auto_scroll:
@@ -91,6 +97,15 @@ class CodeBox:
     #
     # --- Editing Actions
     def append(self, content):
+        """Action: appends content to the :class:`CodeBox`
+
+        :param content: Textual Markup,
+            :class:`~purdy.tui.tui_content.EscapeText`, or a
+            :class:`~purdy.content.Code` object
+
+        :returns: this :class:`CodeBox` so action calls can be chained
+        """
+
         if isinstance(content, str):
             # If there is already a text section add to it, otherwise create
             # one
@@ -107,11 +122,24 @@ class CodeBox:
         return self
 
     def clear(self):
+        """Action: wipes this :class:`CodeBox`
+
+        :returns: this :class:`CodeBox` so action calls can be chained
+        """
         self.doc = Document()
         animate.cell_list.append(animate.Cell(self, ""))
         return self
 
     def replace(self, content):
+        """Action: replaces the content in this :class:`CodeBox` with that
+        provided
+
+        :param content: Textual Markup,
+            :class:`~purdy.tui.tui_content.EscapeText`, or a
+            :class:`~purdy.content.Code` object
+
+        :returns: this :class:`CodeBox` so action calls can be chained
+        """
         if isinstance(content, str):
             self.doc = Document(TextSection(content))
         else:
@@ -122,6 +150,15 @@ class CodeBox:
         return self
 
     def transition(self, content=None, speed=1):
+        """Action: performs a transition wipe animation then replaces the
+        content in this :class:`CodeBox` with that provided
+
+        :param content: Textual Markup,
+            :class:`~purdy.tui.tui_content.EscapeText`, or a
+            :class:`~purdy.content.Code` object
+
+        :returns: this :class:`CodeBox` so action calls can be chained
+        """
         if content is None:
             self.doc = Document()
             after = ""
@@ -150,6 +187,23 @@ class CodeBox:
 
     def typewriter(self, code, skip_comments=True, skip_whitespace=True,
             delay=0.13, delay_variance=0.03):
+        """Action: performs a typing animation with the content in given
+        :class:`~purdy.content.Code` object. Note that unlike most actions
+        this one does not support Textual Markup, use
+        :func:`CodeBox.text_typewriter` for that instead.
+
+        :param code: :class:`~purdy.content.Code` content to animate
+        :param skip_comments: When True (default) a comment is animated as a
+            single item instead of typing it
+        :param skip_whitespace: When True (default) any block of whitespace is
+            treated as a single item instead of each character within it
+        :param delay: Length of time to sleep between characters. Defaults to
+            0.13 seconds
+        :param delay_variance: amount of random variability in the typing
+            delay. Defaults to 0.03 seconds
+
+        :returns: this :class:`CodeBox` so action calls can be chained
+        """
         if not isinstance(code, Code):
             raise ValueError("Code only! Use text_typewriter instead")
 
@@ -178,6 +232,17 @@ class CodeBox:
         return self
 
     def text_typewriter(self, content, delay=0.13, delay_variance=0.03):
+        """Action: performs a typing animation on Textual Markup or
+        :class:`~purdy.tui.tui_content.EscapeText`.
+
+        :param content: Content to animate
+        :param delay: Length of time to sleep between characters. Defaults to
+            0.13 seconds
+        :param delay_variance: amount of random variability in the typing
+            delay. Defaults to 0.03 seconds
+
+        :returns: this :class:`CodeBox` so action calls can be chained
+        """
         if isinstance(content, (str, EscapeText)):
             section = TextSection(content)
         else:
@@ -200,6 +265,13 @@ class CodeBox:
 
     # --- GUI Actions
     def move_by(self, amount):
+        """Action: scrolls this :class:`CodeBox` by the given amount
+
+        :param amount: number of characters to scroll down, supports negative
+            numbers for scrolling up
+
+        :returns: this :class:`CodeBox` so action calls can be chained
+        """
         animate.cell_list.append(animate.MoveByCell(self, amount))
         return self
 
@@ -209,6 +281,14 @@ class CodeBox:
 
     # --- Timing actions
     def pause(self, pause, pause_variance=None):
+        """Action: pause before next animation
+
+        :param pause: seconds to pause for
+        :param pause_variance: random amount to vary the pause by, defaults to
+            None
+
+        :returns: this :class:`CodeBox` so action calls can be chained
+        """
         if pause_variance is not None:
             pause = random.uniform(pause, pause + pause_variance)
 
@@ -216,11 +296,22 @@ class CodeBox:
         return self
 
     def wait(self):
+        """Action: wait for a right arrow or skip command before proceeding to
+        the next animation
+
+        :returns: this :class:`CodeBox` so action calls can be chained
+        """
         animate.cell_list.append(animate.WaitCell())
         return self
 
     # --- Formatting actions
     def set_numbers(self, starting_num):
+        """Action: turn line numbering on for this :class:`CodeBox`
+
+        :param starting_num: value to start the numbering with
+
+        :returns: this :class:`CodeBox` so action calls can be chained
+        """
         if starting_num is None:
             self.doc.line_numbers_enabled = False
             self.doc.starting_line_number = 1
@@ -235,14 +326,17 @@ class CodeBox:
 
     # --- Highlight actions
     def highlight(self, *args, section_index=None):
-        """Issue highlight commands to a :class:`Code` block. See
-        :func:`Code.highlight` for details on highlight specifiers.
+        """Action: issue highlight commands to a :class:`~purdy.content.Code`
+        block. See inside of this :class:`CodeBox`. See
+        :func:`~purdy.content.Code.highlight` for details on highlight
+        specifiers.
 
         :param args: series of highlight specifiers
-        :param section_indicator: The index number of the section to apply the
-            highlighting to. Defaults to None, meaning use the last section.
-            It is up to you to make sure the section is the kind that supports
-            highlighting.
+        :param section_indicator: Each thing added to the :class:`CodeBox` is
+            considered a section. This argument specifies the index of the
+            section to apply the highlighting to. Defaults to None, meaning
+            use the last section.  It is up to you to make sure the section is
+            the kind that supports highlighting.
         """
         # Turn highlighting on and re-render
         if section_index is None:
@@ -258,17 +352,21 @@ class CodeBox:
         return self
 
     def highlight_chain(self, *args, section_index=None):
-        """Issue a series of highlight commands in sequence. Highlights the
-        first, waits, turns it off, then highlights the next. Only works with
-        :class:`Code` blocks. See :func:`Code.highlight` for details on
-        highlight specifiers.
+        """Action: Issue a series of highlight commands in sequence.
+        Highlights the first, waits, turns it off, then highlights the next.
+        Only works with :class:`~purdy.content.Code` blocks. See
+        :func:`~purdy.content.Code.highlight` for details on highlight
+        specifiers.
 
         :param args: series of highlight specifiers. Each argument can also
             be a list to activate a set of highlight specifiers together
-        :param section_indicator: The index number of the section to apply the
-            highlighting to. Defaults to None, meaning use the last section.
-            It is up to you to make sure the section is the kind that supports
-            highlighting.
+        :param section_indicator: Each thing added to the :class:`CodeBox` is
+            considered a section. This argument specifies the index of the
+            section to apply the highlighting to. Defaults to None, meaning
+            use the last section.  It is up to you to make sure the section is
+            the kind that supports highlighting.
+
+        :returns: this :class:`CodeBox` so action calls can be chained
         """
         # Turn highlighting on and re-render
         if section_index is None:
@@ -296,8 +394,9 @@ class CodeBox:
         return self
 
     def highlight_off(self, *args, section_index=None):
-        """Issue highlight_off commands to a :class:`Code` block. See
-        :func:`Code.highlight_off` for details on highlight specifiers.
+        """Issue highlight_off commands to a :class:`~purdy.content.Code`
+        block. See :func:`~purdy.content.Code.highlight_off` for details on
+        highlight specifiers.
 
         :param args: series of highlight specifiers. Each argument can also
             be a list to deactivate a set of highlight specifiers together
@@ -305,6 +404,8 @@ class CodeBox:
             highlighting to. Defaults to None, meaning use the last section.
             It is up to you to make sure the section is the kind that supports
             highlighting.
+
+        :returns: this :class:`CodeBox` so action calls can be chained
         """
         # Turn highlighting off and re-render
         if section_index is None:
@@ -319,7 +420,11 @@ class CodeBox:
         return self
 
     def highlight_all_off(self):
-        """Removes all highlighting from all :class:`Code` containers"""
+        """Action: remove highlighting from all :class:`~purdy.content.Code`
+        sections within this :class:`CodeBox`
+
+        :returns: this :class:`CodeBox` so action calls can be chained
+        """
         # Turn all highlighting off and re-render
         for section in self.doc:
             if isinstance(section, Code):

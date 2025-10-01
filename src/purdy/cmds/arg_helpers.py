@@ -5,6 +5,7 @@
 from purdy.__init__ import __version__
 from purdy.content import Code, Document
 from purdy.parser import LexerSpec
+from purdy.themes import THEME_LIST
 
 # =============================================================================
 # Document Factory
@@ -124,3 +125,12 @@ def purdy_client_args(parser):
     wrap_arg(parser)
     no_colour_arg(parser)
     highlight_arg(parser)
+
+    parser.add_argument("--theme", choices=THEME_LIST,
+        help="Which colourization theme to use", default="default")
+
+    parser.add_argument("--maxheight", help=("Sets a maximum screen height "
+        "for the TUI screen viewer."), type=int, default=None)
+
+    parser.add_argument("--notyping", help="Turns off the typing animation",
+        action="store_true")

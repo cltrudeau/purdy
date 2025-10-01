@@ -14,15 +14,15 @@ from pygments.token import Generic, Text
 # =============================================================================
 
 class DollarBashSessionLexer(BashSessionLexer):
-    """Changes behaviour of the BashSessionLexer to assume a prompt uses a
-    '$'. This allows better handling of virtual-env style prompts with lots
-    of stuff left of the '$'.
+    """Changes behaviour of the Pygments `BashSessionLexer` to assume a prompt
+    uses a '$'. This allows better handling of virtual-env style prompts with
+    lots of stuff left of the '$'.
     """
     _ps1rgx = re.compile(r'^([^$]*[$]\s)(.*\n?)')
 
 
 class NewlineLexer(Lexer):
-    """Treats each line in the body as a Generic.Output token"""
+    """Treats each line in the body as a Pygments `Generic.Output` token"""
     name = "Newline output"
     aliases = ["newline"]
 

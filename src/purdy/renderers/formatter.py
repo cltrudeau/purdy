@@ -5,12 +5,13 @@ from purdy.parser import token_ancestor
 # =============================================================================
 
 def conversion_handler(formatter_cls, container, exceptions):
-    """Helper function for the most common case of rendering a :class:`Code`
-    or :class:`Document` object.
+    """Helper function for the most common case of rendering a
+    :class:`~purdy.content.Code` or :class:`~purdy.content.Document` object.
 
     :param formatter_cls: Reference to a class (not an object) to instantiate
         as the formatter for each section in the container
-    :param container: `Code` or `Document` object to translate
+    :param container: :class:`~purdy.content.Code` or
+        :class:`~purdy.content.Document` object to translate
     """
     if isinstance(container, Code):
         container = Document(container)
@@ -26,6 +27,7 @@ def conversion_handler(formatter_cls, container, exceptions):
 # =============================================================================
 
 class Formatter:
+    """Base class for format tools."""
     def __init__(self, section, exceptions):
         self.tag_map = {}
         self.newline = "\n"

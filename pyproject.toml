@@ -41,6 +41,7 @@ dev = [
     "pudb==2025.1",
     "pyflakes==3.4.0",
     "Sphinx==8.2.3",
+    "sphinx-argparse==0.5.2",
     "sphinx-rtd-theme==3.0.2",
     "waelstow~=0.12",
 ]

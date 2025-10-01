@@ -142,32 +142,19 @@ class PurdyApp(App):
                     await self.controller.skip()
 
                 self.repeat_count = ""
-            case "ctrl+t":
-                from textual.screen import ModalScreen
-                from textual.widgets import Footer, Static
-                class CssTree(ModalScreen):
-                    BINDINGS = [
-                        ("escape", "app.pop_screen", "Cancel"),
-                    ]
-
-                    def __init__(self, info: str = "") -> None:
-                        super().__init__()
-                        self.info = info
-
-                    def compose(self) -> ComposeResult:
-                        yield Footer()
-                        yield Static(self.info, id="id_static")
-                self.push_screen(CssTree(self.screen_stack[-1].css_tree))
 
 # =============================================================================
 # Factory Methods
 # =============================================================================
 
 class AppFactory:
+    """Factory methods for creating a purdy app."""
+
     @classmethod
     def simple(cls, max_height=None, line_number=None, auto_scroll=False,
             title=None):
-        """Creates a purdy display with a single code box inside of it.
+        """Creates a purdy display with a single
+        :class:`~purdy.tui.codebox.CodeBox` inside of it.
 
         :param max_height: limit the height of the content in the terminal,
             defaults to None
@@ -175,8 +162,8 @@ class AppFactory:
             defaults to None
         :param auto_scroll: when True, if content is added to the code box it
             scrolls to the bottom. Defaults to False.
-        :param title: a title to include at the top of the codebox, defaults
-            to None
+        :param title: a title to include at the top of the
+            :class:`purdy.tui.codebox.CodeBox`, defaults to None
         """
         row_specs = [
             RowSpec(1, [BoxSpec(1, line_number, auto_scroll, title=title)])
@@ -191,7 +178,8 @@ class AppFactory:
             relative_height_top=1, line_number_bottom=None,
             auto_scroll_bottom=False, relative_height_bottom=1,
             top_title=None, bottom_title=None):
-        """Creates a purdy display with two code boxes one on top of the other.
+        """Creates a purdy display with two :class:`~purdy.tui.codebox.CodeBox`
+        objects one on top of the other.
 
         :param max_height: limit the height of the content in the terminal,
             defaults to None
@@ -209,10 +197,10 @@ class AppFactory:
             code box it scrolls to the bottom. Defaults to False.
         :param relative_height_bottom: specify the height of the bottom code box
             against the top one.
-        :param top_title: a title to include over the top codebox, defaults
-            to None
-        :param bottom_title: a title to include over the bottom codebox,
-            defaults to None
+        :param top_title: a title to include over the top
+            :class:`~purdy.tui.codebox.CodeBox`, defaults to None
+        :param bottom_title: a title to include over the bottom
+            :class:`~purdy.tui.codebox.CodeBox`, defaults to None
         """
         row_specs = [
             RowSpec(relative_height_top, [
@@ -231,12 +219,13 @@ class AppFactory:
     @classmethod
     def full(cls, row_specs, max_height=None):
         """Creates a TUI screen based on a list of rows, where each row is a
-        list of :class:`BoxSpec` classes.
+        list of :class:`~purdy.tui.codebox.BoxSpec` classes.
 
-        :param row_specs: list of :class:`RowSpec` objects which describe the
-            layout information for each row in the resulting display grid. Each
-            `RowSpec` contains a list of :class:`BoxSpec` objects, the sum of
-            their widths in each row must be equal.
+        :param row_specs: list of :class:`~purdy.tui.codebox.RowSpec` objects
+            which describe the layout information for each row in the
+            resulting display grid. Each `RowSpec` contains a list of
+            :class:`~.purdy.tui.codebox.BoxSpec` objects, the sum of their
+            widths in each row must be equal.
 
         :param max_height: Max height of the app within your terminal.
             Defaults to None.

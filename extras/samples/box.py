@@ -32,6 +32,8 @@ def a3():
     app.bottom.append("[red]" + 7 * CONTENT + "[/]")
     return app
 
+# Uncomment each function to see the different app factories in action
+
 #a1().run()
 #a2().run()
 a3().run()

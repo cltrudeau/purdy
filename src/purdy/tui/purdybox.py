@@ -10,6 +10,10 @@ from purdy.tui.widgets import PurdyContainer
 # =============================================================================
 
 class PurdyBox:
+    """Groups the widgets used by the purdy app. In theory you could build
+    your own Textual application with a purdy widget. In practice the library
+    doesn't make that easy yet."""
+
     def __init__(self, row_specs, max_height=None):
         self.row_specs = row_specs
         self.rows = []

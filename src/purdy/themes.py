@@ -11,6 +11,9 @@ from purdy.parser import HighlightOn, HighlightOff, Fold, LineNumber
 # ===========================================================================
 
 class Theme:
+    """Encapsulates colourization theme information. Uses a dictionary
+    mapping Pygments tokens to a colour code.
+    """
     def __init__(self, full_name, colour_map, inherit=None):
         self.full_name = full_name
 
@@ -201,3 +204,6 @@ THEME_MAP = {
         "code": pyrepl_code,
     },
 }
+
+
+THEME_LIST = list(THEME_MAP.keys())

@@ -46,8 +46,8 @@ def token_is_a(token1, token2):
 
 def token_ancestor(token, ancestor_list):
     """Tokens are hierarchical, in some situations you need to translate a
-    token into one from a known list, e.g. turning a
-    "Token.Literal.Number.Integer" into a "Number". This method takes a token
+    token into one from a known list, e.g. turning a Pygments
+    `Token.Literal.Number.Integer` into a `Number`. This method takes a token
     and a list of approved ancestors and attempts to make the map. If no
     ancestor is found then a generic "Token" object is returned
 
@@ -75,10 +75,11 @@ def token_ancestor(token, ancestor_list):
 
 @dataclass
 class LexerSpec:
-    """LexerSpec wraps a Pygments Lexer and contains data that changes the
-    behaviour of the display of the code.
+    """:class:`LexerSpec` wraps a Pygments Lexer and contains data that
+    changes the behaviour of the display of the code.
 
-    :param description: description text about what this LexerSpec is for
+    :param description: description text about what this :class:`LexerSpec` is
+        for
     :param lexer_cls: The Pygments Lexer class used for parsing
     :param console: True if the content is a REPL or console, False otherwise.
         This setting effects how animations and certain kinds of output are
@@ -93,17 +94,17 @@ class LexerSpec:
 
     @classmethod
     def get_spec(cls, lexer, hint=''):
-        """Return a `LexerSpec` object based on the given identifier.
+        """Return a :class:`LexerSpec` object based on the given identifier.
 
         :param lexer: An indicator as to what underlying lexer to use. It can
-            be the string "detect" to attempt to auto-detect the appropriate
-            lexer, a string corresponding to one of the built-in
+            be the string value "detect" to attempt to auto-detect the
+            appropriate lexer, a string corresponding to one of the built-in
             :class:`LexerSpec` objects, a :class:`LexerSpec` itself, or a
-            Pygments :class:`pygments.lexers.Lexer` class. When a Pygments
-            Lexer is provided it is assumed to be for code and not in console
-            mode.
+            `Pygments Lexer <https://pygments.org/docs/lexers/>`_ class. When
+            a Pygments Lexer is provided it is assumed to be for code and not
+            in console mode.
         :param hint: when using lexer="detect", this provides information
-            for doing the detection
+            for doing the detection, like the filename
         """
         match lexer:
             case "detect":
@@ -142,6 +143,7 @@ class LexerSpec:
         return ", ".join(result)
 
 
+#: Map of all the built-in lexers
 LexerSpec.built_ins = {
     'py': LexerSpec('Python 3 Source', PythonLexer, False, 'code'),
     'repl': LexerSpec('Interactive Python 3 console', PythonConsoleLexer,
@@ -163,6 +165,7 @@ LexerSpec.built_ins = {
     'yaml': LexerSpec('YAML Doc', YamlLexer, False, 'doc'),
 }
 
+#: Map of aliases for lexer names
 LexerSpec.aliases = {
     "htm": "html",
     "tcss": "css",
@@ -179,6 +182,7 @@ LexerSpec.names = list(LexerSpec.built_ins.keys()) + \
 
 @dataclass
 class CodePart:
+    """Represents a token and its content in a line of code"""
     token: Token
     text: str
 
@@ -233,6 +237,7 @@ CURSOR = CodePart(token=Generic.Text, text=CURSOR_CHAR)
 
 @dataclass
 class CodeLine:
+    """Represents a line of code, made up of :class:`CodePart` objects."""
     lexer_spec: LexerSpec
     parts: PartsList = field(default_factory=PartsList)
     has_newline: bool = False
@@ -243,7 +248,8 @@ class CodeLine:
         return CodeLine(self.lexer_spec, has_newline=self.has_newline)
 
     def __repr__(self):
-        return (f"CodeLine(id={id(self)}, lexer_spec={self.lexer_spec.lexer_cls.__name__}, "
+        return (f"CodeLine(id={id(self)}, "
+            f"lexer_spec={self.lexer_spec.lexer_cls.__name__}, "
             f"parts={self.parts}, has_newline={self.has_newline})")
 
     def __eq__(self, compare):
@@ -299,10 +305,10 @@ class CodeLine:
 # =============================================================================
 
 class Parser:
-    """Parser is responsible for parsing code and returning a :class:`Code`
-    object containing :class:`CodeLine` objects. You configure a Parser with a
-    :class:`LexerSpec` which you can get through the
-    :method:`LexerSpec.get_spec` method.
+    """Parser is responsible for parsing code and returning a
+    :class:`~purdy.content.Code` object containing :class:`CodeLine` objects.
+    You configure a Parser with a :class:`LexerSpec` which you can get through
+    the :func:`LexerSpec.get_spec` method.
 
     :param lexer_spec: a :class:`LexerSpec` object
     """
@@ -313,8 +319,8 @@ class Parser:
         """Parses the given content using the class's associated lexer.
 
         :param content: String to be parsed
-        :param code_obj: A :class:`Code` object to add the resulting
-            `CodeLine` objects into
+        :param code_obj: A :class:`~purdy.content.Code` object to add the
+            resulting `CodeLine` objects into
         """
         # Instantiate the lexer so that it doesn't remove starting newlines,
         # just keeps it the way the content is.

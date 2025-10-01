@@ -37,20 +37,20 @@ class _CodeLineMetadata:
 
 
 class Code(Section):
-    """Encapsulates :class:`CodeLine` objects to track lines of code and any
-    associated style information."""
+    """Encapsulates :class:`~purdy.parser.CodeLine` objects to track lines of
+    code and any associated style information.
 
-    """Read code from a file, build an associated parser, and add the
-    resulting lines to this object.
+    Constructor reads code from a file, build an associated parser, and add
+    the resulting lines to this object.
 
-    :param filename: Name of file to read of :class:`pathlib.Path` object
+    :param filename: Name of file to read of `pathlib.Path` object
     :param lexer: Identifier that determines which
-        :class:`purdy.parser.LexerSpec` to use when parsing the code. Defaults
+        :class:`~purdy.parser.LexerSpec` to use when parsing the code. Defaults
         to "detect"
     :param theme: Either a string containing the base name of a theme (without
-        the category type like code, con, etc) or a :class:Theme object.
-        Defaults to `None` in which case it uses the class attribute
-        `default_theme_name` as the theme name.
+        the category type like code, con, etc) or a
+        :class:`~purdy.themes.Theme` object.  Defaults to `None` in which case
+        it uses the class attribute `default_theme_name` as the theme name.
     """
     default_theme_name = "default"
 
@@ -73,7 +73,7 @@ class Code(Section):
 
         :param text: Text to parse
         :param lexer: Identifier that determines which
-            :class:`purdy.parser.LexerSpec` to use when parsing the code.
+            :class:`~purdy.parser.LexerSpec` to use when parsing the code.
             Defaults to "detect"
         """
         # A bit tricky: construct the object without invoking __init__
@@ -112,12 +112,13 @@ class Code(Section):
 
     # --- Accessors
     def __getitem__(self, index):
-        """Returns a new `Code` object containing the subset of `CodeLine`
-        objects indicated by `index`
+        """Returns a new :class:`Code` object containing the subset of
+        :class:`~purdy.parser.CodeLine` objects indicated by `index`
 
         :param index: an integer or a slice
-        :returns: A copy of this `Code` object but containing only a subset of
-            ts lines
+
+        :returns: A copy of this :class:`Code` object but containing only a
+            subset of ts lines
         """
         code = self.spawn()
         if isinstance(index, slice):
@@ -140,25 +141,25 @@ class Code(Section):
         return obj
 
     def chunk(self, amount):
-        """This method is for doing iterator-like access to the `Code` object.
-        Each call returns a copy of the object containing a subset of lines,
-        with each subsequent call returning the next subset. To reset to the
-        beginning, set :attr:`Code.current` to 0.
+        """This method is for doing iterator-like access to the :class:`Code`
+        object.  Each call returns a copy of the object containing a subset of
+        lines, with each subsequent call returning the next subset. To reset
+        to the beginning, set `Code.current` to 0.
 
-        :param amount: Number of `CodeLine` objects to  include in the
-            result
-        :returns: A copy of this `Code` object but containing only a subset of
-            ts lines
+        :param amount: Number of :class:`~purdy.parser.CodeLine` objects to
+            include in the result
+        :returns: A copy of this :class:`Code` object but containing only a
+            subset of its lines
         """
         code = self[self.current:self.current + amount]
         self.current += amount
         return code
 
     def remaining_chunk(self):
-        """Associated with the :method:`Code.chunk` call, but returns whatever
+        """Associated with the :func:`Code.chunk` call, but returns whatever
         is left in the block.
 
-        :returns: A copy of this `Code` object but containing the lines
+        :returns: A copy of this :class:`Code` object but containing the lines
             remaining in the chunkification process
         """
         code = self[self.current:]
@@ -256,9 +257,19 @@ class Code(Section):
         1 through 3 inclusive), or a partial highlight.
 
         Partial highlights support highlighting a subset of a line and are
-        specified by a line number, a colon, a startng character position and
+        specified by a line number, a colon, a starting character position and
         a length.  Example "3:15,5" highlights characters 15-20 on index line
         3. The line number indicator supports negative indexing.
+
+        .. code-block:: python
+
+            # Example
+            code.highlight(
+                3,          # highlight fourth line
+                -1,         # last line
+                "5-7"       # lines 5 through 7, inclusive
+                "10:20,5"   # line 10, characters 20 through 25
+            )
 
         All start positions are zero indexed.
         """
@@ -273,17 +284,8 @@ class Code(Section):
             self._set_highlight(arg, True)
 
     def highlight_off(self, *args):
-        """Turns highlighting for one or more code lines. Each argument can be
-        an int line index (negative indexing supported), a tuple (start
-        indexing and number of lines to turn off) or a string specifying a range
-        ("3-5" turns off line indexes 3 through 5).
-
-        This turns off highlighting for both full lines and partial
-        highlights. There is no way of turning off just a single partial
-        inside of a line, if this is needed, turn off the line and turn
-        partial back on for any segments you wish to keep.
-
-        Turning off a line that is not highlighted is ignored.
+        """Turns highlighting for one or more code lines. See
+        :func:`Code.highlight` for a list of available highlight specifiers
         """
         for arg in args:
             if isinstance(arg, str) and ":" in arg:
@@ -354,11 +356,11 @@ class Code(Section):
     @classmethod
     def _expand_parts(cls, line):
         """Creates a new list of parts expanding the text of each part into
-        its own :class:`CodePart`, essentially creating parts consisting of a
-        single letter.
+        its own :class:`~purdy.parser.CodePart`, essentially creating parts
+        consisting of a single letter.
 
-        :param line: :class:`CodeLine` to expand
-        :returns: list of :class:`CodePart` objects
+        :param line: :class:`~purdy.parser.CodeLine` to expand
+        :returns: list of :class:`~purdy.parser.CodePart` objects
         """
         char_parts = []
         for part in line.parts:
@@ -373,10 +375,10 @@ class Code(Section):
 
     @classmethod
     def _chop_partial_highlight(cls, line, cutpoints):
-        """Creates a new CodeLine with highlight tokens at partial highlight
-        spots
+        """Creates a new :class:`~purdy.parser.CodeLine` with highlight tokens
+        at partial highlight spots
 
-        :param line: CodeLine to copy and transform
+        :param line: :class:`~purdy.parser.CodeLine` to copy and transform
         :param cutpoints: iterable of (start, length) cut point tuples
         """
         cutpoints.sort()
@@ -423,11 +425,13 @@ class Code(Section):
         return output
 
     def _apply_highlight(self, line_index):
-        """If there is highlighting to apply, creates a new :class:`CodeLine`
-        as a copy of the given one but with highlight tokens applied. If there
-        is no highlighting, just returns the given line.
+        """If there is highlighting to apply, creates a new
+        :class:`~purdy.parser.CodeLine` as a copy of the given one but with
+        highlight tokens applied. If there is no highlighting, just returns
+        the given line.
 
-        :param line_index: Index value of `CodeLine` inside this `Code` object
+        :param line_index: Index value of :class:`~purdy.parser.CodeLine`
+            inside this `Code` object
         """
         if line_index not in self.meta:
             # No highlighting (this is checked here to remove "and" clauses
@@ -582,8 +586,8 @@ class RenderState:
 
     :param document: `Document` that will be rendered
     :param future_length: When calculating width for line numbers, add this
-        value to the max length. Useful when the `RenderState` needs to be
-        created before content gets added to the `Document`.
+        value to the max length. Useful when the :class:`RenderState` needs to
+        be created before content gets added to the :class:`Document`.
     """
     def __init__(self, document, future_length=0):
         self.doc = document
@@ -606,8 +610,8 @@ class RenderState:
         return f"{output:{self.line_number_width}d} "
 
     def next_line_number_part(self):
-        """Gets the next line number as a :class:`CodePart` and increments the
-        count."""
+        """Gets the next line number as a :class:`~purdy.parser.CodePart` and
+        increments the count."""
         output = self.line_number
         self.line_number += 1
         return CodePart(LineNumber, f"{output:{self.line_number_width}d} ")

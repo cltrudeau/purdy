@@ -1,7 +1,7 @@
 # typewriter.py
 #
 # Utility class for emulating the typing of a Code object
-from copy import copy, deepcopy
+from copy import copy
 from collections import namedtuple
 
 from pygments.token import Comment, Generic, Text, Whitespace
@@ -144,86 +144,20 @@ class _CodeTypewriter:
 
         return self.results
 
-    def _old_run(self):
-        """Returns a list of :class:`textual.content.Content` objects
-        representing a series of steps used to emulate typing of this source
-        object.  """
-        prev_was_output = False
-        for src_line in self.src_code.lines:
-            # Handle multi-line console output
-            if self.is_console:
-                first_token = src_line.parts[0].token
-
-                is_output = token_is_a(first_token, Generic.Output)
-                is_output |= not token_is_a(first_token, Generic.Prompt)
-
-                if is_output:
-                    if prev_was_output:
-                        # nth output line, don't commit a new Code object,
-                        # just update the previous one
-                        prev_code = self.results[-1]
-                        line = deepcopy(src_line)
-                        prev_code.lines.append(line)
-                        continue
-                    else:
-                        # First output line
-                        prev_was_output = True
-                        self.current.lines.append(src_line)
-                        self.results.append(self.current)
-
-                        # Reset for the next pass
-                        self.current = deepcopy(self.current)
-                        continue
-                else:
-                    prev_was_output = False
-
-            self.line = src_line.spawn()
-
-            for src_part in src_line.parts:
-                src_token = src_part.token
-                self.part = CodePart(token=src_token, text="")
-
-                if self.is_console and token_is_a(src_token, Generic.Prompt):
-                    # Don't animate prompts
-                    self._skip_part(src_part.text)
-                    continue
-
-                if self.skip_comments and token_is_a(src_token, Comment):
-                    # Don't animate comments
-                    self._skip_part(src_part.text)
-                    continue
-
-                if self.skip_whitespace:
-                    # Don't animate whitespace; this can be a specific token,
-                    # or just blank text
-                    skip_it = token_is_a(src_token, Whitespace)
-
-                    if token_is_a(src_token, Text):
-                        skip_it |= src_part.text.isspace()
-
-                    if skip_it:
-                        self._skip_part(src_part.text)
-                        continue
-
-                for char in src_part.text:
-                    # Add the character to the part, put it in the line and
-                    # put that in the results listing
-                    self.part.text += char
-                    self._commit_part()
-
-                    del self.current.lines[-1]
-                    del self.line.parts[-1]
-
-                self.line.parts.append(self.part)
-            self.current.lines.append(self.line)
-
-        return self.results
-
 
 def code_typewriterize(render_state, src_code, skip_comments=True,
         skip_whitespace=True):
-    """Outputs a list of :class:`textual.content.Content` objects to be used
-    as typing animations"""
+    """Outputs a list of :class:`TypewriterOutput` objects to represent a
+    series of steps in a typing animations
+
+    :param render_state: :class:`~purdy.content.RenderState` object associated
+        with the code being typewriter-ized
+    :param src_code: :class:`~purdy.content.Code` object to turn into a
+        typewriter animation
+    :param skip_comments: When True, animate comments as a single step
+    :param skip_whitespace: When True, animate a block of whitespace as a
+        single step
+    """
     tw = _CodeTypewriter(render_state, src_code, skip_comments, skip_whitespace)
     return tw._run()
 
@@ -248,6 +182,14 @@ def _plain_typewriterize(results, base_render_state, rendered, line):
 
 
 def textual_typewriterize(base_render_state, section):
+    """Outputs a list of :class:`TypewriterOutput` objects to represent a
+    series of steps in a typing animations
+
+    :param render_state: :class:`~purdy.content.RenderState` object associated
+        with the text being typewriter-ized
+    :param section: :class:`~purdy.tui.tui_content.TextSection` wrapping text
+        to be turned into a typewriter animation
+    """
     results = []
     rendered = TContent()
     tokenizer = MarkupTokenizer()

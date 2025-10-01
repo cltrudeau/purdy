@@ -15,6 +15,7 @@ from textual.widgets import Static
 # =============================================================================
 
 class DarkThinBarRender(ScrollBarRender):
+    """Scroll bar renderer that is dark and thin"""
     @classmethod
     def render_bar(cls, size, virtual_size, window_size, position,
             thickness, vertical, back_color, bar_color) -> Segments:
@@ -24,6 +25,7 @@ class DarkThinBarRender(ScrollBarRender):
 
 
 class LightThinBarRender(ScrollBarRender):
+    """Scroll bar renderer that is light and thin"""
     @classmethod
     def render_bar(cls, size, virtual_size, window_size, position,
             thickness, vertical, back_color, bar_color) -> Segments:
@@ -33,6 +35,8 @@ class LightThinBarRender(ScrollBarRender):
 
 
 class TriangleScrollRender(ScrollBarRender):
+    """Scroll bar renderer that uses arrow icons at top and bottom, and a thin
+    line to indicate position"""
     NO_INDICATOR = "▮"
     UP_INDICATOR = "▲"
     DOWN_INDICATOR = "▼"
@@ -109,6 +113,7 @@ class TriangleScrollRender(ScrollBarRender):
 
 
 class BlurredTriangleScrollRender(TriangleScrollRender):
+    """Used with :class:`TriangleScrollRender` when it is out of focus"""
     NO_INDICATOR = "▯"
     UP_INDICATOR = "△"
     DOWN_INDICATOR = "▽"
@@ -139,6 +144,9 @@ class AlwaysVerticalScroll(ScrollableContainer):
 # Single container for all the CodeWidgets with a transition overlay
 
 class PurdyContainer(Container):
+    """Textual `Container` for the widgets that display purdy
+    :class:`~purdy.tui.codebox.CodeBox` objects
+    """
     def __init__(self, owner, row_specs, max_height=None):
         # Import here to avoid circular import
         from purdy.tui.codebox import CodeBox
@@ -187,6 +195,9 @@ class PurdyContainer(Container):
 # transition overlay
 
 class CodeWidget(Container):
+    """Textual widget to display a single :class:`~purdy.tui.codebox.CodeBox`
+    object.
+    """
     def __init__(self, border="", title=None):
         super().__init__(classes="code_widget")
 

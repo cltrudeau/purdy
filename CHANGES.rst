@@ -1,3 +1,12 @@
+2.0.0b1
+=======
+
+* 2025/10/01
+* Add purdy command
+* Add full documentation and fixed pydoc inter-class references
+* Dead code removal
+
+
 2.0.0a6
 =======
 

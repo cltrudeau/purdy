@@ -25,14 +25,17 @@ purdy_client_args(parser)
 def main():
     args = parser.parse_args()
 
-    theme_name = "default"
+    theme_name = args.theme
     if args.nocolour:
+        if args.theme != "detect":
+            parser.exit("Cannot specify both 'nocolur' and 'theme'")
+
         # Override theme
         theme_name = "no_colour"
 
     code = Code(args.filename, args.lexer, theme_name)
 
-    app = AppFactory.simple()
+    app = AppFactory.simple(args.maxheight)
     doc = app.box.doc
 
     if hasattr(args, "num") and args.num:
@@ -45,5 +48,9 @@ def main():
     if hasattr(args, "highlight") and args.highlight:
         code.highlight(*args.highlight)
 
-    app.box.append(code)
+    if args.notyping:
+        app.box.append(code)
+    else:
+        app.box.typewriter(code)
+
     app.run()
