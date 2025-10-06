@@ -5,6 +5,9 @@
 * Changed textual markup code highlighting so inner tokens are rendered plain,
   reversing the coloured ones was ugly
 * Slowed down the move_by animation
+* Add ability to partial highlight based on function's argument number
+* Add Python source code manipulation tools: find a subset by name, remove
+  double blanks, and left justify
 
 
 2.0.0b1

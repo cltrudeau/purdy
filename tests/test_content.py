@@ -2,7 +2,7 @@ from copy import deepcopy
 from pathlib import Path
 from unittest import TestCase
 
-from purdy.content import Code, Document, RenderState, StringSection
+from purdy.content import Code, Document, PyText, RenderState, StringSection
 from purdy.parser import HighlightOn, HighlightOff, token_is_a
 from purdy.renderers.plain import to_plain
 
@@ -87,6 +87,74 @@ class BraceFormatter:
             result += "\n"
 
         render_state.content += result
+
+# =============================================================================
+
+PYTEXT_SRC = """\
+# Header
+def print_name(name):
+    # Comment
+    print(name)
+
+class Car:
+    def drive(self):
+        print("Vroom")
+"""
+
+JUSTIFIED = """\
+one
+    two
+        three
+"""
+
+JUSTIFY1 = """\
+        one
+            two
+                three
+"""
+
+class TestPyText(TestCase):
+    def test_portion(self):
+        # test finding a function
+        original = PyText.text(PYTEXT_SRC)
+        part = original.get_part("print_name")
+
+        lines = part.content.splitlines()
+        self.assertEqual("def print_name(name):", lines[0])
+        self.assertEqual("    print(name)", lines[-1])
+
+        # test find a function with an integer header
+        part = original.get_part("Car", header=1)
+        lines = part.content.splitlines()
+        self.assertEqual("# Header", lines[0])
+        self.assertEqual('        print("Vroom")', lines[-1])
+
+        # test find a function with a tuple header
+        part = original.get_part("Car", header=(1, 3))
+        lines = part.content.splitlines()
+        self.assertEqual("def print_name(name):", lines[0])
+        self.assertEqual("    # Comment", lines[1])
+        self.assertEqual("class Car:", lines[2])
+        self.assertEqual('        print("Vroom")', lines[-1])
+
+    def test_left_justify(self):
+        original = PyText.text(JUSTIFY1)
+        result = original.left_justify()
+        self.assertEqual(JUSTIFIED, result.content)
+
+    def test_remove_double_blanks(self):
+        text = "one\n\ntwo\nthree\n  \n  \nfour"
+
+        # Trim whitespace
+        original = PyText.text(text)
+        result = original.remove_double_blanks()
+        self.assertEqual("one\n\ntwo\nthree\n  \nfour", result.content)
+
+        # Don't trim whitespace
+        text = "one\n\n\ntwo\n  \nthree"
+        original = PyText.text(text)
+        result = original.remove_double_blanks(trim_whitespace=False)
+        self.assertEqual("one\n\ntwo\n  \nthree", result.content)
 
 # =============================================================================
 
@@ -489,6 +557,7 @@ class TestCode(TestCase):
         result = to_plain(doc)
         self.assertEqual(WRAP_FOLD_BIG_NUM_SIMPLE, result)
 
+# =============================================================================
 
 class TestDocument(TestCase):
     def test_document_init(self):
@@ -519,6 +588,7 @@ class TestDocument(TestCase):
         result = to_plain(doc)
         self.assertEqual("one\ntwo\n", result)
 
+# =============================================================================
 
 class TestRenderState(TestCase):
     def test_line_numbers(self):

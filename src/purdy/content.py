@@ -1,6 +1,8 @@
 # content.py
 #
 # Encapsulates a block of code and manages any associated style information
+import ast
+import asttokens
 import math
 
 from collections import defaultdict
@@ -15,6 +17,7 @@ from purdy.parser import (CodeLine, CodePart, Fold, HighlightOff, HighlightOn,
 from purdy.themes import THEME_MAP, EMPTY_THEME
 
 # ===========================================================================
+# Sections: Collection classes for parts of a Document
 
 class Section:
     """Abstract base class for classes that contain a list of lines which can
@@ -26,7 +29,159 @@ class Section:
     def render_line(self, render_state, line, line_index):
         raise NotImplementedError()
 
+
+class StringSection(Section):
+    def __init__(self, content=None):
+        super().__init__()
+        self.theme = EMPTY_THEME
+
+        if content is None:
+            self.lines = []
+        elif isinstance(content, str):
+            self.lines = [content, ]
+        elif isinstance(content, list):
+            self.lines = content
+        else:
+            raise ValueError("StringSection requires string or list of strings")
+
+    def render_line(self, render_state, line, line_index):
+        # Strings have no formatting, just append it
+        render_state.content += line
+
 # ===========================================================================
+# PyText: Source code as text manipulation tools
+
+class PyText:
+    """Container for text that is valid Python. Useful for doing
+    pre-processing on source code before creating a :class:`Code` object.
+    Source text is stored in the `.content` attribute as a string.
+
+    :param filename: name of file containing the Python you want to handle
+    """
+    def __init__(self, filename):
+        path = Path(filename).resolve()
+        self.content = path.read_text()
+
+    @classmethod
+    def text(cls, content):
+        """Factory method based on text passed in instead of reading from a
+        file.
+
+        :param content: the Python source code for this object
+        """
+        obj = PyText.__new__(PyText)
+        obj.content = content
+        return obj
+
+    def __str__(self):
+        return self.content
+
+    # --- Source manipulation methods
+    def _descend_ast(self, atok, parent, local_name, name_parts):
+        for node in ast.iter_child_nodes(parent):
+            if node.__class__ in [ast.FunctionDef, ast.ClassDef] \
+                    and node.name == local_name:
+                if len(name_parts) == 0:
+                    # Found the node, return the code
+                    return atok.get_text(node) + "\n"
+
+                # Found a function or class, but looking for a child of it
+                return self._descend_ast(atok, node, name_parts[0],
+                    name_parts[1:])
+
+            if node.__class__ == ast.Assign and \
+                    node.first_token.string == local_name and \
+                    len(name_parts) == 0:
+                return atok.get_text(node) + "\n"
+
+        return ''
+
+    def get_part(self, name, header=None):
+        """Returns a new :class:`PyText` object containing just the named part
+        of the original. Parts can be a function, class, or assigned variable.
+
+        .. warning:: If the named item is not found your source will be empty!
+
+        :param name: dot notated name of a function or class. Examples:
+                     `Foo.bar` would find the `bar` method of class `Foo` or
+                     an inner function named `bar` in a function named `Foo`
+        :param header: optionally include another part of the source file
+                       before the parsed content. Typically used to include
+                       the header portion of a file. If given an integer, it
+                       will include the first X number of lines. If given a
+                       tuple "(x, y)" does a slice on the code with those
+                       values
+        """
+        output = ""
+        if header is not None:
+            result = []
+            lines = self.content.split('\n')
+            if isinstance(header, int):
+                result += lines[0:header]
+            elif isinstance(header, tuple):
+                start = header[0]
+                end = header[1]
+                result += lines[start:end]
+
+            output = "\n".join(result) + "\n"
+
+        atok = asttokens.ASTTokens(self.content, parse=True)
+        name_parts = name.split('.')
+        output += self._descend_ast(atok, atok.tree, name_parts[0],
+            name_parts[1:])
+
+        return PyText.text(output)
+
+    def left_justify(self):
+        """Returns a new :class:`PyText` object, having removed a consistent
+        amount of leading whitespace from the front of each line from the
+        original so that at least one line is left-justified.
+
+        .. warning:: will not work with mixed tabs and spaces
+        """
+        lines = self.content.split('\n')
+        leads = [len(line) - len(line.lstrip()) for line in lines if \
+            len(line.strip())]
+        if not leads:
+            # only blank lines, do nothing
+            return
+
+        min_lead = min(leads)
+        output = []
+        for line in lines:
+            if len(line.lstrip()):
+                output.append(line[min_lead:])
+            else:
+                output.append(line)
+
+        return PyText.text('\n'.join(output))
+
+    def remove_double_blanks(self, trim_whitespace=True):
+        """Returns a new :class:`PyText` object with any two blank lines in a
+        row removed. If trim_whitespace is True (default) a line with only
+        whitespace is considered blank, otherwise it only looks for \\n
+
+        :param trim_whitespace: when True, treat whitespace as a blank line
+        """
+        lines = self.content.split('\n')
+        output = []
+
+        previous = 'asdf'
+        for line in lines:
+            if trim_whitespace \
+                    and previous.strip() == '' and line.strip() == '':
+                continue
+            else:
+                if previous == '' and line == '':
+                    continue
+
+            output.append(line)
+            previous = line
+
+        return PyText.text('\n'.join(output))
+
+# ===========================================================================
+# Code: Parsed CodeLine Container
 
 @dataclass
 class _CodeLineMetadata:
@@ -247,7 +402,7 @@ class Code(Section):
                 break
 
         if start_bracket is None:
-            raise ValueError(f"No opening parenthesis found in line")
+            raise ValueError("No opening parenthesis found in line")
 
         # Advance to the nth argument
         current_part = start_bracket + 1
@@ -258,7 +413,7 @@ class Code(Section):
                 current_part += 1
                 letter_count += len(part.text)
                 if token_is_a(part.token, Punctuation) and part.text == ")":
-                    raise ValueError(f"Not enough arguments in line")
+                    raise ValueError("Not enough arguments in line")
                 if token_is_a(part.token, Punctuation) and part.text == ",":
                     current_arg += 1
                     if current_arg == arg_wanted:
@@ -606,26 +761,7 @@ class _LineWrapRenderer:
             self.formatter.render_code_line(self.render_state, self.current)
 
 # ===========================================================================
-
-class StringSection(Section):
-    def __init__(self, content=None):
-        super().__init__()
-        self.theme = EMPTY_THEME
-
-        if content is None:
-            self.lines = []
-        elif isinstance(content, str):
-            self.lines = [content, ]
-        elif isinstance(content, list):
-            self.lines = content
-        else:
-            raise ValueError("StringSection requires string or list of strings")
-
-    def render_line(self, render_state, line, line_index):
-        # Strings have no formatting, just append it
-        render_state.content += line
-
-# ===========================================================================
+# Document and rendering classes
 
 class Document(list):
     """Container for renderable :class:`Section` objects like :class:`Code`

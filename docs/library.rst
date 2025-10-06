@@ -90,6 +90,9 @@ Library API
 .. autoclass:: purdy.content.Code
     :members:
 
+.. autoclass:: purdy.content.PyText
+    :members:
+
 .. autoclass:: purdy.themes.Theme
     :members:
 
