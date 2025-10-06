@@ -2,7 +2,7 @@
 from pygments.token import Token, Whitespace
 from textual.content import Content
 
-from purdy.parser import HighlightOn, HighlightOff, token_ancestor
+from purdy.parser import HighlightOn, HighlightOff, token_ancestor, token_is_a
 from purdy.renderers.formatter import conversion_handler, Formatter
 
 # ===========================================================================
@@ -35,6 +35,7 @@ class TextualFormatter(Formatter):
         part_map = {}
         counter = 0
         markup = ""
+        highlight_on = False
 
         for part in line.parts:
             token = token_ancestor(part.token, self.ancestor_list)
@@ -42,14 +43,19 @@ class TextualFormatter(Formatter):
             name = f"text_{counter}"
             dname = "$" + name
 
-            try:
-                # Get the tag from the general map and replace $text with the
-                # counted version
-                marker = self.tag_map[token]
-                marker = marker.replace("$text", dname)
-            except KeyError:
-                # No map tags, use just the placeholder for the content
+            if highlight_on:
+                # When highlighting, ignore all other tags, reversing their
+                # colours looks bad
                 marker = dname
+            else:
+                try:
+                    # Get the tag from the general map and replace $text with
+                    # the counted version
+                    marker = self.tag_map[token]
+                    marker = marker.replace("$text", dname)
+                except KeyError:
+                    # No map tags, use just the placeholder for the content
+                    marker = dname
 
             # Store the text for Content's kwargs and update our markup
             # string
@@ -57,6 +63,11 @@ class TextualFormatter(Formatter):
             markup += marker
 
             counter += 1
+
+            if token_is_a(token, HighlightOn):
+                highlight_on = True
+            elif token_is_a(token, HighlightOff):
+                highlight_on = False
 
         if line.has_newline:
             markup += self.newline

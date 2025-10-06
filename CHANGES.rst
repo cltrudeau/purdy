@@ -1,3 +1,12 @@
+2.0.0b2
+=======
+
+* 2025/10/??
+* Changed textual markup code highlighting so inner tokens are rendered plain,
+  reversing the coloured ones was ugly
+* Slowed down the move_by animation
+
+
 2.0.0b1
 =======
 

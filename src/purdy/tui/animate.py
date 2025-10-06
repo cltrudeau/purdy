@@ -224,7 +224,8 @@ class AnimationController:
                 # Ignore it
                 continue
             elif isinstance(cell, MoveByCell):
-                cell.codebox.widget.vs.scroll_relative(y=cell.amount)
+                cell.codebox.widget.vs.scroll_relative(y=cell.amount,
+                    speed=15)
                 continue
             elif isinstance(cell, PauseCell):
                 # Pause directive, kick off the timer and leave
