@@ -319,10 +319,17 @@ class Code(Section):
         can be negative), a string specifying a range ("1-3" highlights lines
         1 through 3 inclusive), or a partial highlight.
 
-        Partial highlights support highlighting a subset of a line and are
+        There are two kinds of highlighting for part of a line. The first is
         specified by a line number, a colon, a starting character position and
         a length.  Example "3:15,5" highlights characters 15-20 on index line
         3. The line number indicator supports negative indexing.
+
+        The second is for highlighting an argument in a function call or
+        declaration. Example "3:arg:0" highlights the first argument on line
+        three. The parsing of arguments is very naive, it simply looks for
+        open parenthesis and commas to separate arguments. If your line has
+        tuples or other things that would break that, use partial highlighting
+        with start and length indexes.
 
         .. code-block:: python
 
@@ -332,6 +339,7 @@ class Code(Section):
                 -1,         # last line
                 "5-7"       # lines 5 through 7, inclusive
                 "10:20,5"   # line 10, characters 20 through 25
+                "12:arg:3"  # line 12, highlight the 4th argument
             )
 
         All start positions are zero indexed.
