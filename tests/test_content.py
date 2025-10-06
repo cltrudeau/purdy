@@ -361,6 +361,37 @@ class TestCode(TestCase):
         self.assertTrue(token_is_a(line.parts[1].token, HighlightOn))
         self.assertTrue(token_is_a(line.parts[3].token, HighlightOff))
 
+    def test_arg_highlight(self):
+        # Test highlighting based on argument number
+
+        #         0123456789^123456789^123456789^123456
+        text = """def fn(1, "hello", cat='tiger', True)"""
+        code = Code.text(text)
+
+        # Get partial indexing for first argument (zero-index)
+        index, (start, length) = code._parse_partial("0:arg:0")
+        self.assertEqual(0, index)
+        self.assertEqual("1", text[start:start+length])
+
+        # Get partial indexing info for the 3rd argument
+        index, (start, length) = code._parse_partial("0:arg:2")
+        self.assertEqual(0, index)
+        self.assertEqual("cat='tiger'", text[start:start+length])
+
+        # Get partial indexing info for last argument
+        index, (start, length) = code._parse_partial("0:arg:3")
+        self.assertEqual(0, index)
+        self.assertEqual("True", text[start:start+length])
+
+        # Validate error handling
+        with self.assertRaises(ValueError):
+            code._parse_partial("0:arg:4")
+
+        text = "x = 1"
+        code = Code.text(text)
+        with self.assertRaises(ValueError):
+            code._parse_partial("0:arg:0")
+
     def test_render_highlight(self):
         text = "zero\none\ntwo\nthree and a bit\nfour and a bit"
         code = Code.text(text, "plain")

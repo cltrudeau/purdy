@@ -1,5 +1,5 @@
 # Sample Code
-def do_nothing():
+def do_nothing(one, two):
     pass
 
 class Thing:

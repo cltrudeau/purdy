@@ -8,8 +8,10 @@ from copy import deepcopy
 from dataclasses import dataclass, field
 from pathlib import Path
 
+from pygments.token import Punctuation, Whitespace, Text
+
 from purdy.parser import (CodeLine, CodePart, Fold, HighlightOff, HighlightOn,
-    LexerSpec, LineNumber, Parser)
+    LexerSpec, LineNumber, Parser, token_is_a)
 from purdy.themes import THEME_MAP, EMPTY_THEME
 
 # ===========================================================================
@@ -234,11 +236,62 @@ class Code(Section):
                     # Positive number
                     self.meta[int(indicator)].highlight = value
 
+    def _parse_partial_arg_num(self, line, arg_wanted):
+        # Loop to find the opening bracket
+        start_bracket = None
+        letter_count = 0
+        for part_count, part in enumerate(line.parts):
+            letter_count += len(part.text)
+            if token_is_a(part.token, Punctuation) and part.text == "(":
+                start_bracket = part_count
+                break
+
+        if start_bracket is None:
+            raise ValueError(f"No opening parenthesis found in line")
+
+        # Advance to the nth argument
+        current_part = start_bracket + 1
+        current_arg = 0
+        if arg_wanted > 0:
+            args_subset = line.parts[current_part:]
+            for part in args_subset:
+                current_part += 1
+                letter_count += len(part.text)
+                if token_is_a(part.token, Punctuation) and part.text == ")":
+                    raise ValueError(f"Not enough arguments in line")
+                if token_is_a(part.token, Punctuation) and part.text == ",":
+                    current_arg += 1
+                    if current_arg == arg_wanted:
+                        break
+
+        # Find the length of the nth argument
+        args_subset = line.parts[current_part:]
+        length = 0
+        start = letter_count
+        beginning = True
+        for part in args_subset:
+            if beginning and (
+                    token_is_a(part.token, Whitespace)
+                    or (token_is_a(part.token, Text) and part.text.isspace())
+            ):
+                start += len(part.text)
+                continue
+            else:
+                beginning = False
+
+            if token_is_a(part.token, Punctuation) and part.text in (",", ")"):
+                # Found comma, that's the End of the argument
+                return start, length
+
+            length += len(part.text)
+
+        return start, length
+
     def _parse_partial(self, indicator):
         indicator = indicator.replace(" ", "")
-        index, scope = indicator.split(":")
-        start, length = scope.split(",")
+        pieces = indicator.split(":")
 
+        index = int(pieces[0])
         # Meta storage is a dictionary so need to turn the negative index into
         # its positive equivalent as the dict doesn't know -1 is the last item
         # in the list
@@ -246,6 +299,16 @@ class Code(Section):
         if index < 0:
             # Negative indexing
             index = len(self.lines) + index
+
+        if pieces[1] == "arg":
+            # Highlight using the "arg count" mechanism
+            line = self.lines[index]
+            arg_wanted = int(pieces[2])
+            start, length = self._parse_partial_arg_num(line, arg_wanted)
+            return index, (start, length)
+
+        # Highlight based on start and length values
+        start, length = pieces[1].split(",")
 
         return index, (int(start), int(length))
 

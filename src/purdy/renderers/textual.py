@@ -43,6 +43,9 @@ class TextualFormatter(Formatter):
             name = f"text_{counter}"
             dname = "$" + name
 
+            if token_is_a(token, HighlightOff):
+                highlight_on = False
+
             if highlight_on:
                 # When highlighting, ignore all other tags, reversing their
                 # colours looks bad
@@ -66,8 +69,6 @@ class TextualFormatter(Formatter):
 
             if token_is_a(token, HighlightOn):
                 highlight_on = True
-            elif token_is_a(token, HighlightOff):
-                highlight_on = False
 
         if line.has_newline:
             markup += self.newline
