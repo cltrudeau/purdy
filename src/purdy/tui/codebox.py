@@ -77,6 +77,10 @@ class CodeBox:
 
         self.doc = Document()
 
+        if box_spec.line_number is not None:
+            self.doc.line_numbers_enabled = True
+            self.doc.starting_line_number = box_spec.line_number
+
     def __repr__(self):
         return f"CodeBox({self.id})"
 

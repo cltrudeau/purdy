@@ -8,6 +8,7 @@
 * Add ability to partial highlight based on function's argument number
 * Add Python source code manipulation tools: find a subset by name, remove
   double blanks, and left justify
+* Fix bug with starting line numbers not getting initialized
 
 
 2.0.0b1
