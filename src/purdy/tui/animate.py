@@ -121,6 +121,7 @@ class TransitionCell(UndoableCell):
 
     async def callback(self):
         self.forwards()
+        self.codebox.widget.vs.scroll_to(y=0, animate=False)
 
 
 class ScreenTransitionCell(UndoableCell):
