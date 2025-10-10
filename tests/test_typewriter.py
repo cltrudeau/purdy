@@ -90,6 +90,38 @@ class TestTypewriter(TestCase):
         value = result[-1].text.plain
         self.assertEqual(expected, value)
 
+    def test_typewriter_bash(self):
+        code = Code.text("$ pgm\noutput", "con")
+        doc = Document(code)
+        rs = RenderState(doc)
+
+        result = code_typewriterize(rs, code)
+
+        # Console has a prompt and one output lines, should be 5
+        # TypewriterOutput objects for the program and the output, waiting
+        # after the initial line with the prompt, pausing to type the program
+        # name, then not pausing at the output
+        self.assertEqual(5, len(result))
+        self.assertEqual("W", result[0].state)
+        self.assertEqual("P", result[1].state)
+        self.assertEqual(None, result[-1].state)
+
+        # Test multi-part prompts
+        code = Code.text("(venv) $ thing\nstuff", "con")
+        doc = Document(code)
+        rs = RenderState(doc)
+
+        result = code_typewriterize(rs, code)
+
+        # Prompt has a VirtualEnv part, all that needs to have been merged
+        # into a single thing
+        self.assertEqual(7, len(result))
+        self.assertIn("(venv) $ ", result[0].text.plain)
+        self.assertEqual("W", result[0].state)
+        self.assertIn("(venv) $ t", result[1].text.plain)
+        self.assertEqual("P", result[1].state)
+        self.assertEqual(None, result[-1].state)
+
     def test_textual_typewriter(self):
         section = TextSection()
         plain = "plain [escaped] string\n"

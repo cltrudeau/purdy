@@ -87,15 +87,34 @@ class _CodeTypewriter:
                     self.typing_rs.content = TContent()
                     continue
 
-            # Typewriter-ize the line's parts
-            for src_part in src_line.parts:
+            # --- Typewriter-ize the line's parts
+
+            # Skip any starting prompt which might be multiple tokens
+            start_at = 0
+            first_part = src_line.parts[0]
+            if self.is_console and token_is_a(first_part.token, Generic.Prompt):
+                start_at = 1
+
+                if token_is_a(first_part.token, Generic.Prompt.VirtualEnv):
+                    prompt_part = copy(first_part)
+                    for part in src_line.parts[1:]:
+                        start_at += 1
+
+                        if token_is_a(part.token, Generic.Prompt):
+                            prompt_part.text += part.text
+                            self._skip_part(prompt_part, state="W")
+                            break
+
+                        # Multi-part prompt, keep collecting
+                        prompt_part.text += part.text
+                else:
+                    # Single part prompt, just skip it
+                    self._skip_part(first_part, state="W")
+
+            # Typewriterize the rest of the line
+            for src_part in src_line.parts[start_at:]:
                 src_token = src_part.token
                 part = CodePart(token=src_token, text="")
-
-                if self.is_console and token_is_a(src_token, Generic.Prompt):
-                    # Don't animate prompts
-                    self._skip_part(src_part, state="W")
-                    continue
 
                 if self.skip_comments and token_is_a(src_token, Comment):
                     # Don't animate comments
