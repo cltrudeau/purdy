@@ -16,9 +16,7 @@ screen = SimpleScreen(settings, starting_line_number=1)
 code_box = screen.code_box
 
 lexer = PurdyLexer('html', 'Html', HtmlLexer, False, 'xml')
-#blob = Code('../display_code/base.html', lexer_name='custom', purdy_lexer=lexer)
-blob = Code('/Users/ctrudeau/s/RealPython/drf/code/Fedora/templates/registration/login.html',
-    lexer_name='custom', purdy_lexer=lexer)
+blob = Code('../display_code/base.html', lexer_name='custom', purdy_lexer=lexer)
 
 actions = [
     Append(code_box, blob),

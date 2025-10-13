@@ -18,7 +18,7 @@ PY_CODE_LINES = [
     ], py3_lexer),
     CodeLine([
         CodePart(Token.Keyword, 'def'),
-        CodePart(Token.Text, ' '),
+        CodePart(Token.Text.Whitespace, ' '),
         CodePart(Token.Name.Function, 'foo'),
         CodePart(Token.Punctuation, '('),
         CodePart(Token.Punctuation, ')'),

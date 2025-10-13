@@ -4,7 +4,7 @@
     Token.Text.Whitespace: ''
 def foo():
     Token.Keyword: def
-    Token.Text:  
+    Token.Text.Whitespace:  
     Token.Name.Function: foo
     Token.Punctuation: (
     Token.Punctuation: )

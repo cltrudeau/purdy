@@ -1,3 +1,12 @@
+1.14.1
+======
+
+* 2025/04/13
+* Fixed bug where long line wraps for AppendTypewriter weren't scrolling the
+  screen
+* Pygments has changed how it parses certain text, bumped min requirement for
+  consistency
+
 1.14
 ====
 

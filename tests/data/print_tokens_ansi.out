@@ -4,7 +4,7 @@
     Token.Text.Whitespace: ''
 [38;5;15m[1m[48;5;4mdef foo():[0m
     Token.Keyword: [38;5;0m[48;5;249mdef[0m
-    Token.Text: [38;5;0m[48;5;249m [0m
+    Token.Text.Whitespace: [38;5;0m[48;5;249m [0m
     Token.Name.Function: [38;5;0m[48;5;249mfoo[0m
     Token.Punctuation: [38;5;0m[48;5;249m([0m
     Token.Punctuation: [38;5;0m[48;5;249m)[0m

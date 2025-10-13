@@ -164,6 +164,11 @@ class CodeWidget(urwid.Columns):
         index = position - 1
         self.walker.contents[index].set_text(markup)
 
+        if self.auto_scroll:
+            # if auto scrolling, change focus to last inserted item, needed in
+            # case the line height has change
+            self.listbox.set_focus(index)
+
     def clear(self):
         self.is_empty = True
         self.walker.contents.clear()

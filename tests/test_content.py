@@ -41,13 +41,21 @@ class TestContent(PurdyContentTest):
             for j, part in enumerate(line.parts):
                 expected = line_list[i].parts[j]
 
+#                print(f"******** {i=} {j=}")
+#                print(f"   {expected=}")
+#                print(f"   {expected.token=}")
+#                print(f"   {part.token=}")
+#                print(f"   {expected=}")
+#                print(f"   {expected.text=}")
+#                print(f"   {part.text=}")
+
                 self.assertEqual(expected.token, part.token,
                     msg=f'Failed for CodeLine[{i}]')
                 self.assertEqual(expected.text, part.text,
                     msg=f'Failed for CodeLine[{i}]')
 
     def assert_line_text(self, expected_text, lines):
-        self.assertEqual(len(expected_text), len(lines), 
+        self.assertEqual(len(expected_text), len(lines),
             msg='Size mismatch between expected_text and lines')
         for x, text in enumerate(expected_text):
             self.assertEqual(text, lines[x].parts[0].text,

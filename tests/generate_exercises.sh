@@ -118,3 +118,7 @@ mv flipbook.json exercise_data/triple.json
 echo "type_console"
 ./capture_exercise.py type_console
 mv flipbook.json exercise_data/type_console.json
+
+echo "wrap"
+./capture_exercise.py wrap
+mv flipbook.json exercise_data/wrap.json

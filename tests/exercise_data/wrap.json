@@ -1,0 +1,3397 @@
+[
+  "=== Actions ===",
+  "actions.AppendTypewriter(\">>> print(foo)\na ...\")",
+  "=== Steps ===",
+  "steps.InsertRow(\"[CodeLine(\"\")\" @ 0)",
+  "steps.ReplaceRows(\"[CodeLine(\">>> \")\" @ -1)",
+  "steps.ReplaceRows(\"[CodeLine(\">>> p\u2588\")\" @ -1)",
+  "steps.Sleep()",
+  "steps.ReplaceRows(\"[CodeLine(\">>> pr\u2588\")\" @ -1)",
+  "steps.Sleep()",
+  "steps.ReplaceRows(\"[CodeLine(\">>> pri\u2588\")\" @ -1)",
+  "steps.Sleep()",
+  "steps.ReplaceRows(\"[CodeLine(\">>> prin\u2588\")\" @ -1)",
+  "steps.Sleep()",
+  "steps.ReplaceRows(\"[CodeLine(\">>> print\u2588\")\" @ -1)",
+  "steps.Sleep()",
+  "steps.ReplaceRows(\"[CodeLine(\">>> print(\u2588\")\" @ -1)",
+  "steps.Sleep()",
+  "steps.ReplaceRows(\"[CodeLine(\">>> print(f\u2588\")\" @ -1)",
+  "steps.Sleep()",
+  "steps.ReplaceRows(\"[CodeLine(\">>> print(fo\u2588\")\" @ -1)",
+  "steps.Sleep()",
+  "steps.ReplaceRows(\"[CodeLine(\">>> print(foo\u2588\")\" @ -1)",
+  "steps.Sleep()",
+  "steps.ReplaceRows(\"[CodeLine(\">>> print(foo)\")\" @ -1)",
+  "steps.Sleep()",
+  "steps.InsertRow(\"[CodeLine(\"a bunch of text to fill the screen\")\" @ 0)",
+  "steps.InsertRow(\"[CodeLine(\"a bunch of text to fill the screen\")\" @ 0)",
+  "steps.InsertRow(\"[CodeLine(\"a bunch of text to fill the screen\")\" @ 0)",
+  "steps.InsertRow(\"[CodeLine(\"a bunch of text to fill the screen\")\" @ 0)",
+  "steps.InsertRow(\"[CodeLine(\"a bunch of text to fill the screen\")\" @ 0)",
+  "steps.InsertRow(\"[CodeLine(\"a bunch of text to fill the screen\")\" @ 0)",
+  "steps.InsertRow(\"[CodeLine(\"a bunch of text to fill the screen\")\" @ 0)",
+  "steps.InsertRow(\"[CodeLine(\"a bunch of text to fill the screen\")\" @ 0)",
+  "steps.InsertRow(\"[CodeLine(\"a bunch of text to fill the screen\")\" @ 0)",
+  "steps.InsertRow(\"[CodeLine(\"a bunch of text to fill the screen\")\" @ 0)",
+  "steps.InsertRow(\"[CodeLine(\"a bunch of text to fill the screen\")\" @ 0)",
+  "steps.InsertRow(\"[CodeLine(\"a bunch of text to fill the screen\")\" @ 0)",
+  "steps.InsertRow(\"[CodeLine(\"a bunch of text to fill the screen\")\" @ 0)",
+  "steps.InsertRow(\"[CodeLine(\"a bunch of text to fill the screen\")\" @ 0)",
+  "steps.InsertRow(\"[CodeLine(\"a bunch of text to fill the screen\")\" @ 0)",
+  "steps.InsertRow(\"[CodeLine(\"a bunch of text to fill the screen\")\" @ 0)",
+  "steps.InsertRow(\"[CodeLine(\"a bunch of text to fill the screen\")\" @ 0)",
+  "steps.InsertRow(\"[CodeLine(\"a bunch of text to fill the screen\")\" @ 0)",
+  "steps.InsertRow(\"[CodeLine(\"a bunch of text to fill the screen\")\" @ 0)",
+  "steps.InsertRow(\"[CodeLine(\"a bunch of text to fill the screen\")\" @ 0)",
+  "steps.InsertRow(\"[CodeLine(\"a bunch of text to fill the screen\")\" @ 0)",
+  "steps.InsertRow(\"[CodeLine(\"a bunch of text to fill the screen\")\" @ 0)",
+  "steps.InsertRow(\"[CodeLine(\"a bunch of text to fill the screen\")\" @ 0)",
+  "steps.InsertRow(\"[CodeLine(\"a bunch of text to fill the screen\")\" @ 0)",
+  "steps.InsertRow(\"[CodeLine(\"a bunch of text to fill the screen\")\" @ 0)",
+  "steps.InsertRow(\"[CodeLine(\"a bunch of text to fill the screen\")\" @ 0)",
+  "steps.InsertRow(\"[CodeLine(\"a bunch of text to fill the screen\")\" @ 0)",
+  "steps.InsertRow(\"[CodeLine(\"a bunch of text to fill the screen\")\" @ 0)",
+  "steps.InsertRow(\"[CodeLine(\"a bunch of text to fill the screen\")\" @ 0)",
+  "steps.InsertRow(\"[CodeLine(\"a bunch of text to fill the screen\")\" @ 0)",
+  "steps.InsertRow(\"[CodeLine(\"a bunch of text to fill the screen\")\" @ 0)",
+  "steps.InsertRow(\"[CodeLine(\"a bunch of text to fill the screen\")\" @ 0)",
+  "steps.InsertRow(\"[CodeLine(\"a bunch of text to fill the screen\")\" @ 0)",
+  "steps.InsertRow(\"[CodeLine(\"a bunch of text to fill the screen\")\" @ 0)",
+  "steps.InsertRow(\"[CodeLine(\"a bunch of text to fill the screen\")\" @ 0)",
+  "steps.InsertRow(\"[CodeLine(\"a bunch of text to fill the screen\")\" @ 0)",
+  "steps.InsertRow(\"[CodeLine(\"a bunch of text to fill the screen\")\" @ 0)",
+  "steps.InsertRow(\"[CodeLine(\"a bunch of text to fill the screen\")\" @ 0)",
+  "steps.InsertRow(\"[CodeLine(\"a bunch of text to fill the screen\")\" @ 0)",
+  "steps.InsertRow(\"[CodeLine(\"a bunch of text to fill the screen\")\" @ 0)",
+  "steps.InsertRow(\"[CodeLine(\"\")\" @ 0)",
+  "steps.ReplaceRows(\"[CodeLine(\">>> \")\" @ -1)",
+  "steps.ReplaceRows(\"[CodeLine(\">>> p\u2588\")\" @ -1)",
+  "steps.Sleep()",
+  "steps.ReplaceRows(\"[CodeLine(\">>> pr\u2588\")\" @ -1)",
+  "steps.Sleep()",
+  "steps.ReplaceRows(\"[CodeLine(\">>> pri\u2588\")\" @ -1)",
+  "steps.Sleep()",
+  "steps.ReplaceRows(\"[CodeLine(\">>> prin\u2588\")\" @ -1)",
+  "steps.Sleep()",
+  "steps.ReplaceRows(\"[CodeLine(\">>> print\u2588\")\" @ -1)",
+  "steps.Sleep()",
+  "steps.ReplaceRows(\"[CodeLine(\">>> print(\u2588\")\" @ -1)",
+  "steps.Sleep()",
+  "steps.ReplaceRows(\"[CodeLine(\">>> print(\"\u2588\")\" @ -1)",
+  "steps.Sleep()",
+  "steps.ReplaceRows(\"[CodeLine(\">>> print(\"T\u2588\")\" @ -1)",
+  "steps.Sleep()",
+  "steps.ReplaceRows(\"[CodeLine(\">>> print(\"Th\u2588\")\" @ -1)",
+  "steps.Sleep()",
+  "steps.ReplaceRows(\"[CodeLine(\">>> print(\"Thi\u2588\")\" @ -1)",
+  "steps.Sleep()",
+  "steps.ReplaceRows(\"[CodeLine(\">>> print(\"This\u2588\")\" @ -1)",
+  "steps.Sleep()",
+  "steps.ReplaceRows(\"[CodeLine(\">>> print(\"This \u2588\")\" @ -1)",
+  "steps.Sleep()",
+  "steps.ReplaceRows(\"[CodeLine(\">>> print(\"This i\u2588\")\" @ -1)",
+  "steps.Sleep()",
+  "steps.ReplaceRows(\"[CodeLine(\">>> print(\"This is\u2588\")\" @ -1)",
+  "steps.Sleep()",
+  "steps.ReplaceRows(\"[CodeLine(\">>> print(\"This is \u2588\")\" @ -1)",
+  "steps.Sleep()",
+  "steps.ReplaceRows(\"[CodeLine(\">>> print(\"This is a\u2588\")\" @ -1)",
+  "steps.Sleep()",
+  "steps.ReplaceRows(\"[CodeLine(\">>> print(\"This is a \u2588\")\" @ -1)",
+  "steps.Sleep()",
+  "steps.ReplaceRows(\"[CodeLine(\">>> print(\"This is a l\u2588\")\" @ -1)",
+  "steps.Sleep()",
+  "steps.ReplaceRows(\"[CodeLine(\">>> print(\"This is a lo\u2588\")\" @ -1)",
+  "steps.Sleep()",
+  "steps.ReplaceRows(\"[CodeLine(\">>> print(\"This is a lon\u2588\")\" @ -1)",
+  "steps.Sleep()",
+  "steps.ReplaceRows(\"[CodeLine(\">>> print(\"This is a long\u2588\")\" @ -1)",
+  "steps.Sleep()",
+  "steps.ReplaceRows(\"[CodeLine(\">>> print(\"This is a long \u2588\")\" @ -1)",
+  "steps.Sleep()",
+  "steps.ReplaceRows(\"[CodeLine(\">>> print(\"This is a long s\u2588\")\" @ -1)",
+  "steps.Sleep()",
+  "steps.ReplaceRows(\"[CodeLine(\">>> print(\"This is a long st\u2588\")\" @ -1)",
+  "steps.Sleep()",
+  "steps.ReplaceRows(\"[CodeLine(\">>> print(\"This is a long str\u2588\")\" @ -1)",
+  "steps.Sleep()",
+  "steps.ReplaceRows(\"[CodeLine(\">>> print(\"This is a long stri\u2588\")\" @ -1)",
+  "steps.Sleep()",
+  "steps.ReplaceRows(\"[CodeLine(\">>> print(\"This is a long strin\u2588\")\" @ -1)",
+  "steps.Sleep()",
+  "steps.ReplaceRows(\"[CodeLine(\">>> print(\"This is a long string\u2588\")\" @ -1)",
+  "steps.Sleep()",
+  "steps.ReplaceRows(\"[CodeLine(\">>> print(\"This is a long string \u2588\")\" @ -1)",
+  "steps.Sleep()",
+  "steps.ReplaceRows(\"[CodeLine(\">>> print(\"This is a long string t\u2588\")\" @ -1)",
+  "steps.Sleep()",
+  "steps.ReplaceRows(\"[CodeLine(\">>> print(\"This is a long string th\u2588\")\" @ -1)",
+  "steps.Sleep()",
+  "steps.ReplaceRows(\"[CodeLine(\">>> print(\"This is a long string tha\u2588\")\" @ -1)",
+  "steps.Sleep()",
+  "steps.ReplaceRows(\"[CodeLine(\">>> print(\"This is a long string that\u2588\")\" @ -1)",
+  "steps.Sleep()",
+  "steps.ReplaceRows(\"[CodeLine(\">>> print(\"This is a long string that \u2588\")\" @ -1)",
+  "steps.Sleep()",
+  "steps.ReplaceRows(\"[CodeLine(\">>> print(\"This is a long string that j\u2588\")\" @ -1)",
+  "steps.Sleep()",
+  "steps.ReplaceRows(\"[CodeLine(\">>> print(\"This is a long string that ju\u2588\")\" @ -1)",
+  "steps.Sleep()",
+  "steps.ReplaceRows(\"[CodeLine(\">>> print(\"This is a long string that jus\u2588\")\" @ -1)",
+  "steps.Sleep()",
+  "steps.ReplaceRows(\"[CodeLine(\">>> print(\"This is a long string that just\u2588\")\" @ -1)",
+  "steps.Sleep()",
+  "steps.ReplaceRows(\"[CodeLine(\">>> print(\"This is a long string that just \u2588\")\" @ -1)",
+  "steps.Sleep()",
+  "steps.ReplaceRows(\"[CodeLine(\">>> print(\"This is a long string that just g\u2588\")\" @ -1)",
+  "steps.Sleep()",
+  "steps.ReplaceRows(\"[CodeLine(\">>> print(\"This is a long string that just go\u2588\")\" @ -1)",
+  "steps.Sleep()",
+  "steps.ReplaceRows(\"[CodeLine(\">>> print(\"This is a long string that just goe\u2588\")\" @ -1)",
+  "steps.Sleep()",
+  "steps.ReplaceRows(\"[CodeLine(\">>> print(\"This is a long string that just goes\u2588\")\" @ -1)",
+  "steps.Sleep()",
+  "steps.ReplaceRows(\"[CodeLine(\">>> print(\"This is a long string that just goes \u2588\")\" @ -1)",
+  "steps.Sleep()",
+  "steps.ReplaceRows(\"[CodeLine(\">>> print(\"This is a long string that just goes o\u2588\")\" @ -1)",
+  "steps.Sleep()",
+  "steps.ReplaceRows(\"[CodeLine(\">>> print(\"This is a long string that just goes on\u2588\")\" @ -1)",
+  "steps.Sleep()",
+  "steps.ReplaceRows(\"[CodeLine(\">>> print(\"This is a long string that just goes on \u2588\")\" @ -1)",
+  "steps.Sleep()",
+  "steps.ReplaceRows(\"[CodeLine(\">>> print(\"This is a long string that just goes on a\u2588\")\" @ -1)",
+  "steps.Sleep()",
+  "steps.ReplaceRows(\"[CodeLine(\">>> print(\"This is a long string that just goes on an\u2588\")\" @ -1)",
+  "steps.Sleep()",
+  "steps.ReplaceRows(\"[CodeLine(\">>> print(\"This is a long string that just goes on and\u2588\")\" @ -1)",
+  "steps.Sleep()",
+  "steps.ReplaceRows(\"[CodeLine(\">>> print(\"This is a long string that just goes on and \u2588\")\" @ -1)",
+  "steps.Sleep()",
+  "steps.ReplaceRows(\"[CodeLine(\">>> print(\"This is a long string that just goes on and o\u2588\")\" @ -1)",
+  "steps.Sleep()",
+  "steps.ReplaceRows(\"[CodeLine(\">>> print(\"This is a long string that just goes on and on\u2588\")\" @ -1)",
+  "steps.Sleep()",
+  "steps.ReplaceRows(\"[CodeLine(\">>> print(\"This is a long string that just goes on and on \u2588\")\" @ -1)",
+  "steps.Sleep()",
+  "steps.ReplaceRows(\"[CodeLine(\">>> print(\"This is a long string that just goes on and on a\u2588\")\" @ -1)",
+  "steps.Sleep()",
+  "steps.ReplaceRows(\"[CodeLine(\">>> print(\"This is a long string that just goes on and on an\u2588\")\" @ -1)",
+  "steps.Sleep()",
+  "steps.ReplaceRows(\"[CodeLine(\">>> print(\"This is a long string that just goes on and on and\u2588\")\" @ -1)",
+  "steps.Sleep()",
+  "steps.ReplaceRows(\"[CodeLine(\">>> print(\"This is a long string that just goes on and on and \u2588\")\" @ -1)",
+  "steps.Sleep()",
+  "steps.ReplaceRows(\"[CodeLine(\">>> print(\"This is a long string that just goes on and on and s\u2588\")\" @ -1)",
+  "steps.Sleep()",
+  "steps.ReplaceRows(\"[CodeLine(\">>> print(\"This is a long string that just goes on and on and sh\u2588\")\" @ -1)",
+  "steps.Sleep()",
+  "steps.ReplaceRows(\"[CodeLine(\">>> print(\"This is a long string that just goes on and on and sho\u2588\")\" @ -1)",
+  "steps.Sleep()",
+  "steps.ReplaceRows(\"[CodeLine(\">>> print(\"This is a long string that just goes on and on and shou\u2588\")\" @ -1)",
+  "steps.Sleep()",
+  "steps.ReplaceRows(\"[CodeLine(\">>> print(\"This is a long string that just goes on and on and shoul\u2588\")\" @ -1)",
+  "steps.Sleep()",
+  "steps.ReplaceRows(\"[CodeLine(\">>> print(\"This is a long string that just goes on and on and should\u2588\")\" @ -1)",
+  "steps.Sleep()",
+  "steps.ReplaceRows(\"[CodeLine(\">>> print(\"This is a long string that just goes on and on and should \u2588\")\" @ -1)",
+  "steps.Sleep()",
+  "steps.ReplaceRows(\"[CodeLine(\">>> print(\"This is a long string that just goes on and on and should c\u2588\")\" @ -1)",
+  "steps.Sleep()",
+  "steps.ReplaceRows(\"[CodeLine(\">>> print(\"This is a long string that just goes on and on and should ca\u2588\")\" @ -1)",
+  "steps.Sleep()",
+  "steps.ReplaceRows(\"[CodeLine(\">>> print(\"This is a long string that just goes on and on and should cau\u2588\")\" @ -1)",
+  "steps.Sleep()",
+  "steps.ReplaceRows(\"[CodeLine(\">>> print(\"This is a long string that just goes on and on and should caus\u2588\")\" @ -1)",
+  "steps.Sleep()",
+  "steps.ReplaceRows(\"[CodeLine(\">>> print(\"This is a long string that just goes on and on and should cause\u2588\")\" @ -1)",
+  "steps.Sleep()",
+  "steps.ReplaceRows(\"[CodeLine(\">>> print(\"This is a long string that just goes on and on and should cause \u2588\")\" @ -1)",
+  "steps.Sleep()",
+  "steps.ReplaceRows(\"[CodeLine(\">>> print(\"This is a long string that just goes on and on and should cause t\u2588\")\" @ -1)",
+  "steps.Sleep()",
+  "steps.ReplaceRows(\"[CodeLine(\">>> print(\"This is a long string that just goes on and on and should cause th\u2588\")\" @ -1)",
+  "steps.Sleep()",
+  "steps.ReplaceRows(\"[CodeLine(\">>> print(\"This is a long string that just goes on and on and should cause the\u2588\")\" @ -1)",
+  "steps.Sleep()",
+  "steps.ReplaceRows(\"[CodeLine(\">>> print(\"This is a long string that just goes on and on and should cause the \u2588\")\" @ -1)",
+  "steps.Sleep()",
+  "steps.ReplaceRows(\"[CodeLine(\">>> print(\"This is a long string that just goes on and on and should cause the l\u2588\")\" @ -1)",
+  "steps.Sleep()",
+  "steps.ReplaceRows(\"[CodeLine(\">>> print(\"This is a long string that just goes on and on and should cause the li\u2588\")\" @ -1)",
+  "steps.Sleep()",
+  "steps.ReplaceRows(\"[CodeLine(\">>> print(\"This is a long string that just goes on and on and should cause the lin\u2588\")\" @ -1)",
+  "steps.Sleep()",
+  "steps.ReplaceRows(\"[CodeLine(\">>> print(\"This is a long string that just goes on and on and should cause the line\u2588\")\" @ -1)",
+  "steps.Sleep()",
+  "steps.ReplaceRows(\"[CodeLine(\">>> print(\"This is a long string that just goes on and on and should cause the line \u2588\")\" @ -1)",
+  "steps.Sleep()",
+  "steps.ReplaceRows(\"[CodeLine(\">>> print(\"This is a long string that just goes on and on and should cause the line t\u2588\")\" @ -1)",
+  "steps.Sleep()",
+  "steps.ReplaceRows(\"[CodeLine(\">>> print(\"This is a long string that just goes on and on and should cause the line to\u2588\")\" @ -1)",
+  "steps.Sleep()",
+  "steps.ReplaceRows(\"[CodeLine(\">>> print(\"This is a long string that just goes on and on and should cause the line to \u2588\")\" @ -1)",
+  "steps.Sleep()",
+  "steps.ReplaceRows(\"[CodeLine(\">>> print(\"This is a long string that just goes on and on and should cause the line to w\u2588\")\" @ -1)",
+  "steps.Sleep()",
+  "steps.ReplaceRows(\"[CodeLine(\">>> print(\"This is a long string that just goes on and on and should cause the line to wr\u2588\")\" @ -1)",
+  "steps.Sleep()",
+  "steps.ReplaceRows(\"[CodeLine(\">>> print(\"This is a long string that just goes on and on and should cause the line to wra\u2588\")\" @ -1)",
+  "steps.Sleep()",
+  "steps.ReplaceRows(\"[CodeLine(\">>> print(\"This is a long string that just goes on and on and should cause the line to wrap\u2588\")\" @ -1)",
+  "steps.Sleep()",
+  "steps.ReplaceRows(\"[CodeLine(\">>> print(\"This is a long string that just goes on and on and should cause the line to wrap.\u2588\")\" @ -1)",
+  "steps.Sleep()",
+  "steps.ReplaceRows(\"[CodeLine(\">>> print(\"This is a long string that just goes on and on and should cause the line to wrap. \u2588\")\" @ -1)",
+  "steps.Sleep()",
+  "steps.ReplaceRows(\"[CodeLine(\">>> print(\"This is a long string that just goes on and on and should cause the line to wrap. I\u2588\")\" @ -1)",
+  "steps.Sleep()",
+  "steps.ReplaceRows(\"[CodeLine(\">>> print(\"This is a long string that just goes on and on and should cause the line to wrap. I \u2588\")\" @ -1)",
+  "steps.Sleep()",
+  "steps.ReplaceRows(\"[CodeLine(\">>> print(\"This is a long string that just goes on and on and should cause the line to wrap. I m\u2588\")\" @ -1)",
+  "steps.Sleep()",
+  "steps.ReplaceRows(\"[CodeLine(\">>> print(\"This is a long string that just goes on and on and should cause the line to wrap. I me\u2588\")\" @ -1)",
+  "steps.Sleep()",
+  "steps.ReplaceRows(\"[CodeLine(\">>> print(\"This is a long string that just goes on and on and should cause the line to wrap. I mea\u2588\")\" @ -1)",
+  "steps.Sleep()",
+  "steps.ReplaceRows(\"[CodeLine(\">>> print(\"This is a long string that just goes on and on and should cause the line to wrap. I mean\u2588\")\" @ -1)",
+  "steps.Sleep()",
+  "steps.ReplaceRows(\"[CodeLine(\">>> print(\"This is a long string that just goes on and on and should cause the line to wrap. I mean \u2588\")\" @ -1)",
+  "steps.Sleep()",
+  "steps.ReplaceRows(\"[CodeLine(\">>> print(\"This is a long string that just goes on and on and should cause the line to wrap. I mean i\u2588\")\" @ -1)",
+  "steps.Sleep()",
+  "steps.ReplaceRows(\"[CodeLine(\">>> print(\"This is a long string that just goes on and on and should cause the line to wrap. I mean it\u2588\")\" @ -1)",
+  "steps.Sleep()",
+  "steps.ReplaceRows(\"[CodeLine(\">>> print(\"This is a long string that just goes on and on and should cause the line to wrap. I mean it,\u2588\")\" @ -1)",
+  "steps.Sleep()",
+  "steps.ReplaceRows(\"[CodeLine(\">>> print(\"This is a long string that just goes on and on and should cause the line to wrap. I mean it, \u2588\")\" @ -1)",
+  "steps.Sleep()",
+  "steps.ReplaceRows(\"[CodeLine(\">>> print(\"This is a long string that just goes on and on and should cause the line to wrap. I mean it, i\u2588\")\" @ -1)",
+  "steps.Sleep()",
+  "steps.ReplaceRows(\"[CodeLine(\">>> print(\"This is a long string that just goes on and on and should cause the line to wrap. I mean it, it\u2588\")\" @ -1)",
+  "steps.Sleep()",
+  "steps.ReplaceRows(\"[CodeLine(\">>> print(\"This is a long string that just goes on and on and should cause the line to wrap. I mean it, it \u2588\")\" @ -1)",
+  "steps.Sleep()",
+  "steps.ReplaceRows(\"[CodeLine(\">>> print(\"This is a long string that just goes on and on and should cause the line to wrap. I mean it, it j\u2588\")\" @ -1)",
+  "steps.Sleep()",
+  "steps.ReplaceRows(\"[CodeLine(\">>> print(\"This is a long string that just goes on and on and should cause the line to wrap. I mean it, it ju\u2588\")\" @ -1)",
+  "steps.Sleep()",
+  "steps.ReplaceRows(\"[CodeLine(\">>> print(\"This is a long string that just goes on and on and should cause the line to wrap. I mean it, it jus\u2588\")\" @ -1)",
+  "steps.Sleep()",
+  "steps.ReplaceRows(\"[CodeLine(\">>> print(\"This is a long string that just goes on and on and should cause the line to wrap. I mean it, it just\u2588\")\" @ -1)",
+  "steps.Sleep()",
+  "steps.ReplaceRows(\"[CodeLine(\">>> print(\"This is a long string that just goes on and on and should cause the line to wrap. I mean it, it just \u2588\")\" @ -1)",
+  "steps.Sleep()",
+  "steps.ReplaceRows(\"[CodeLine(\">>> print(\"This is a long string that just goes on and on and should cause the line to wrap. I mean it, it just k\u2588\")\" @ -1)",
+  "steps.Sleep()",
+  "steps.ReplaceRows(\"[CodeLine(\">>> print(\"This is a long string that just goes on and on and should cause the line to wrap. I mean it, it just ke\u2588\")\" @ -1)",
+  "steps.Sleep()",
+  "steps.ReplaceRows(\"[CodeLine(\">>> print(\"This is a long string that just goes on and on and should cause the line to wrap. I mean it, it just kee\u2588\")\" @ -1)",
+  "steps.Sleep()",
+  "steps.ReplaceRows(\"[CodeLine(\">>> print(\"This is a long string that just goes on and on and should cause the line to wrap. I mean it, it just keep\u2588\")\" @ -1)",
+  "steps.Sleep()",
+  "steps.ReplaceRows(\"[CodeLine(\">>> print(\"This is a long string that just goes on and on and should cause the line to wrap. I mean it, it just keeps\u2588\")\" @ -1)",
+  "steps.Sleep()",
+  "steps.ReplaceRows(\"[CodeLine(\">>> print(\"This is a long string that just goes on and on and should cause the line to wrap. I mean it, it just keeps \u2588\")\" @ -1)",
+  "steps.Sleep()",
+  "steps.ReplaceRows(\"[CodeLine(\">>> print(\"This is a long string that just goes on and on and should cause the line to wrap. I mean it, it just keeps g\u2588\")\" @ -1)",
+  "steps.Sleep()",
+  "steps.ReplaceRows(\"[CodeLine(\">>> print(\"This is a long string that just goes on and on and should cause the line to wrap. I mean it, it just keeps go\u2588\")\" @ -1)",
+  "steps.Sleep()",
+  "steps.ReplaceRows(\"[CodeLine(\">>> print(\"This is a long string that just goes on and on and should cause the line to wrap. I mean it, it just keeps goi\u2588\")\" @ -1)",
+  "steps.Sleep()",
+  "steps.ReplaceRows(\"[CodeLine(\">>> print(\"This is a long string that just goes on and on and should cause the line to wrap. I mean it, it just keeps goin\u2588\")\" @ -1)",
+  "steps.Sleep()",
+  "steps.ReplaceRows(\"[CodeLine(\">>> print(\"This is a long string that just goes on and on and should cause the line to wrap. I mean it, it just keeps going\u2588\")\" @ -1)",
+  "steps.Sleep()",
+  "steps.ReplaceRows(\"[CodeLine(\">>> print(\"This is a long string that just goes on and on and should cause the line to wrap. I mean it, it just keeps going,\u2588\")\" @ -1)",
+  "steps.Sleep()",
+  "steps.ReplaceRows(\"[CodeLine(\">>> print(\"This is a long string that just goes on and on and should cause the line to wrap. I mean it, it just keeps going, \u2588\")\" @ -1)",
+  "steps.Sleep()",
+  "steps.ReplaceRows(\"[CodeLine(\">>> print(\"This is a long string that just goes on and on and should cause the line to wrap. I mean it, it just keeps going, m\u2588\")\" @ -1)",
+  "steps.Sleep()",
+  "steps.ReplaceRows(\"[CodeLine(\">>> print(\"This is a long string that just goes on and on and should cause the line to wrap. I mean it, it just keeps going, ma\u2588\")\" @ -1)",
+  "steps.Sleep()",
+  "steps.ReplaceRows(\"[CodeLine(\">>> print(\"This is a long string that just goes on and on and should cause the line to wrap. I mean it, it just keeps going, man\u2588\")\" @ -1)",
+  "steps.Sleep()",
+  "steps.ReplaceRows(\"[CodeLine(\">>> print(\"This is a long string that just goes on and on and should cause the line to wrap. I mean it, it just keeps going, man \u2588\")\" @ -1)",
+  "steps.Sleep()",
+  "steps.ReplaceRows(\"[CodeLine(\">>> print(\"This is a long string that just goes on and on and should cause the line to wrap. I mean it, it just keeps going, man w\u2588\")\" @ -1)",
+  "steps.Sleep()",
+  "steps.ReplaceRows(\"[CodeLine(\">>> print(\"This is a long string that just goes on and on and should cause the line to wrap. I mean it, it just keeps going, man wh\u2588\")\" @ -1)",
+  "steps.Sleep()",
+  "steps.ReplaceRows(\"[CodeLine(\">>> print(\"This is a long string that just goes on and on and should cause the line to wrap. I mean it, it just keeps going, man who\u2588\")\" @ -1)",
+  "steps.Sleep()",
+  "steps.ReplaceRows(\"[CodeLine(\">>> print(\"This is a long string that just goes on and on and should cause the line to wrap. I mean it, it just keeps going, man who \u2588\")\" @ -1)",
+  "steps.Sleep()",
+  "steps.ReplaceRows(\"[CodeLine(\">>> print(\"This is a long string that just goes on and on and should cause the line to wrap. I mean it, it just keeps going, man who t\u2588\")\" @ -1)",
+  "steps.Sleep()",
+  "steps.ReplaceRows(\"[CodeLine(\">>> print(\"This is a long string that just goes on and on and should cause the line to wrap. I mean it, it just keeps going, man who ty\u2588\")\" @ -1)",
+  "steps.Sleep()",
+  "steps.ReplaceRows(\"[CodeLine(\">>> print(\"This is a long string that just goes on and on and should cause the line to wrap. I mean it, it just keeps going, man who typ\u2588\")\" @ -1)",
+  "steps.Sleep()",
+  "steps.ReplaceRows(\"[CodeLine(\">>> print(\"This is a long string that just goes on and on and should cause the line to wrap. I mean it, it just keeps going, man who type\u2588\")\" @ -1)",
+  "steps.Sleep()",
+  "steps.ReplaceRows(\"[CodeLine(\">>> print(\"This is a long string that just goes on and on and should cause the line to wrap. I mean it, it just keeps going, man who types\u2588\")\" @ -1)",
+  "steps.Sleep()",
+  "steps.ReplaceRows(\"[CodeLine(\">>> print(\"This is a long string that just goes on and on and should cause the line to wrap. I mean it, it just keeps going, man who types \u2588\")\" @ -1)",
+  "steps.Sleep()",
+  "steps.ReplaceRows(\"[CodeLine(\">>> print(\"This is a long string that just goes on and on and should cause the line to wrap. I mean it, it just keeps going, man who types t\u2588\")\" @ -1)",
+  "steps.Sleep()",
+  "steps.ReplaceRows(\"[CodeLine(\">>> print(\"This is a long string that just goes on and on and should cause the line to wrap. I mean it, it just keeps going, man who types th\u2588\")\" @ -1)",
+  "steps.Sleep()",
+  "steps.ReplaceRows(\"[CodeLine(\">>> print(\"This is a long string that just goes on and on and should cause the line to wrap. I mean it, it just keeps going, man who types thi\u2588\")\" @ -1)",
+  "steps.Sleep()",
+  "steps.ReplaceRows(\"[CodeLine(\">>> print(\"This is a long string that just goes on and on and should cause the line to wrap. I mean it, it just keeps going, man who types this\u2588\")\" @ -1)",
+  "steps.Sleep()",
+  "steps.ReplaceRows(\"[CodeLine(\">>> print(\"This is a long string that just goes on and on and should cause the line to wrap. I mean it, it just keeps going, man who types this \u2588\")\" @ -1)",
+  "steps.Sleep()",
+  "steps.ReplaceRows(\"[CodeLine(\">>> print(\"This is a long string that just goes on and on and should cause the line to wrap. I mean it, it just keeps going, man who types this m\u2588\")\" @ -1)",
+  "steps.Sleep()",
+  "steps.ReplaceRows(\"[CodeLine(\">>> print(\"This is a long string that just goes on and on and should cause the line to wrap. I mean it, it just keeps going, man who types this mu\u2588\")\" @ -1)",
+  "steps.Sleep()",
+  "steps.ReplaceRows(\"[CodeLine(\">>> print(\"This is a long string that just goes on and on and should cause the line to wrap. I mean it, it just keeps going, man who types this muc\u2588\")\" @ -1)",
+  "steps.Sleep()",
+  "steps.ReplaceRows(\"[CodeLine(\">>> print(\"This is a long string that just goes on and on and should cause the line to wrap. I mean it, it just keeps going, man who types this much\u2588\")\" @ -1)",
+  "steps.Sleep()",
+  "steps.ReplaceRows(\"[CodeLine(\">>> print(\"This is a long string that just goes on and on and should cause the line to wrap. I mean it, it just keeps going, man who types this much?\u2588\")\" @ -1)",
+  "steps.Sleep()",
+  "steps.ReplaceRows(\"[CodeLine(\">>> print(\"This is a long string that just goes on and on and should cause the line to wrap. I mean it, it just keeps going, man who types this much?\"\u2588\")\" @ -1)",
+  "steps.Sleep()",
+  "steps.ReplaceRows(\"[CodeLine(\">>> print(\"This is a long string that just goes on and on and should cause the line to wrap. I mean it, it just keeps going, man who types this much?\")\")\" @ -1)",
+  "steps.Sleep()",
+  "steps.InsertRow(\"[CodeLine(\"This is a long string that just goes on and on and should cause the line to wrap. I mean it, it just keeps going, man who types this much?\")\" @ 0)",
+  "=== Forward ===",
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "insert:1",
+    "content": ""
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:1",
+    "content": ">>> "
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:1",
+    "content": ">>> p\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:1",
+    "content": ">>> pr\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:1",
+    "content": ">>> pri\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:1",
+    "content": ">>> prin\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:1",
+    "content": ">>> print\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:1",
+    "content": ">>> print(\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:1",
+    "content": ">>> print(f\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:1",
+    "content": ">>> print(fo\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:1",
+    "content": ">>> print(foo\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:1",
+    "content": ">>> print(foo)"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "insert:2",
+    "content": "a bunch of text to fill the screen"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "insert:3",
+    "content": "a bunch of text to fill the screen"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "insert:4",
+    "content": "a bunch of text to fill the screen"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "insert:5",
+    "content": "a bunch of text to fill the screen"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "insert:6",
+    "content": "a bunch of text to fill the screen"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "insert:7",
+    "content": "a bunch of text to fill the screen"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "insert:8",
+    "content": "a bunch of text to fill the screen"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "insert:9",
+    "content": "a bunch of text to fill the screen"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "insert:10",
+    "content": "a bunch of text to fill the screen"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "insert:11",
+    "content": "a bunch of text to fill the screen"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "insert:12",
+    "content": "a bunch of text to fill the screen"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "insert:13",
+    "content": "a bunch of text to fill the screen"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "insert:14",
+    "content": "a bunch of text to fill the screen"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "insert:15",
+    "content": "a bunch of text to fill the screen"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "insert:16",
+    "content": "a bunch of text to fill the screen"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "insert:17",
+    "content": "a bunch of text to fill the screen"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "insert:18",
+    "content": "a bunch of text to fill the screen"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "insert:19",
+    "content": "a bunch of text to fill the screen"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "insert:20",
+    "content": "a bunch of text to fill the screen"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "insert:21",
+    "content": "a bunch of text to fill the screen"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "insert:22",
+    "content": "a bunch of text to fill the screen"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "insert:23",
+    "content": "a bunch of text to fill the screen"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "insert:24",
+    "content": "a bunch of text to fill the screen"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "insert:25",
+    "content": "a bunch of text to fill the screen"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "insert:26",
+    "content": "a bunch of text to fill the screen"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "insert:27",
+    "content": "a bunch of text to fill the screen"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "insert:28",
+    "content": "a bunch of text to fill the screen"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "insert:29",
+    "content": "a bunch of text to fill the screen"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "insert:30",
+    "content": "a bunch of text to fill the screen"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "insert:31",
+    "content": "a bunch of text to fill the screen"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "insert:32",
+    "content": "a bunch of text to fill the screen"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "insert:33",
+    "content": "a bunch of text to fill the screen"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "insert:34",
+    "content": "a bunch of text to fill the screen"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "insert:35",
+    "content": "a bunch of text to fill the screen"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "insert:36",
+    "content": "a bunch of text to fill the screen"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "insert:37",
+    "content": "a bunch of text to fill the screen"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "insert:38",
+    "content": "a bunch of text to fill the screen"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "insert:39",
+    "content": "a bunch of text to fill the screen"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "insert:40",
+    "content": "a bunch of text to fill the screen"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "insert:41",
+    "content": "a bunch of text to fill the screen"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "insert:42",
+    "content": ""
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:42",
+    "content": ">>> "
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:42",
+    "content": ">>> p\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:42",
+    "content": ">>> pr\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:42",
+    "content": ">>> pri\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:42",
+    "content": ">>> prin\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:42",
+    "content": ">>> print\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:42",
+    "content": ">>> print(\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:42",
+    "content": ">>> print(\"\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:42",
+    "content": ">>> print(\"T\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:42",
+    "content": ">>> print(\"Th\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:42",
+    "content": ">>> print(\"Thi\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:42",
+    "content": ">>> print(\"This\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:42",
+    "content": ">>> print(\"This \u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:42",
+    "content": ">>> print(\"This i\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:42",
+    "content": ">>> print(\"This is\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:42",
+    "content": ">>> print(\"This is \u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:42",
+    "content": ">>> print(\"This is a\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:42",
+    "content": ">>> print(\"This is a \u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:42",
+    "content": ">>> print(\"This is a l\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:42",
+    "content": ">>> print(\"This is a lo\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:42",
+    "content": ">>> print(\"This is a lon\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:42",
+    "content": ">>> print(\"This is a long\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:42",
+    "content": ">>> print(\"This is a long \u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:42",
+    "content": ">>> print(\"This is a long s\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:42",
+    "content": ">>> print(\"This is a long st\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:42",
+    "content": ">>> print(\"This is a long str\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:42",
+    "content": ">>> print(\"This is a long stri\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:42",
+    "content": ">>> print(\"This is a long strin\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:42",
+    "content": ">>> print(\"This is a long string\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:42",
+    "content": ">>> print(\"This is a long string \u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:42",
+    "content": ">>> print(\"This is a long string t\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:42",
+    "content": ">>> print(\"This is a long string th\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:42",
+    "content": ">>> print(\"This is a long string tha\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:42",
+    "content": ">>> print(\"This is a long string that\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:42",
+    "content": ">>> print(\"This is a long string that \u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:42",
+    "content": ">>> print(\"This is a long string that j\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:42",
+    "content": ">>> print(\"This is a long string that ju\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:42",
+    "content": ">>> print(\"This is a long string that jus\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:42",
+    "content": ">>> print(\"This is a long string that just\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:42",
+    "content": ">>> print(\"This is a long string that just \u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:42",
+    "content": ">>> print(\"This is a long string that just g\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:42",
+    "content": ">>> print(\"This is a long string that just go\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:42",
+    "content": ">>> print(\"This is a long string that just goe\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:42",
+    "content": ">>> print(\"This is a long string that just goes\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:42",
+    "content": ">>> print(\"This is a long string that just goes \u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:42",
+    "content": ">>> print(\"This is a long string that just goes o\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:42",
+    "content": ">>> print(\"This is a long string that just goes on\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:42",
+    "content": ">>> print(\"This is a long string that just goes on \u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:42",
+    "content": ">>> print(\"This is a long string that just goes on a\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:42",
+    "content": ">>> print(\"This is a long string that just goes on an\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:42",
+    "content": ">>> print(\"This is a long string that just goes on and\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:42",
+    "content": ">>> print(\"This is a long string that just goes on and \u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:42",
+    "content": ">>> print(\"This is a long string that just goes on and o\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:42",
+    "content": ">>> print(\"This is a long string that just goes on and on\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:42",
+    "content": ">>> print(\"This is a long string that just goes on and on \u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:42",
+    "content": ">>> print(\"This is a long string that just goes on and on a\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:42",
+    "content": ">>> print(\"This is a long string that just goes on and on an\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:42",
+    "content": ">>> print(\"This is a long string that just goes on and on and\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:42",
+    "content": ">>> print(\"This is a long string that just goes on and on and \u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:42",
+    "content": ">>> print(\"This is a long string that just goes on and on and s\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:42",
+    "content": ">>> print(\"This is a long string that just goes on and on and sh\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:42",
+    "content": ">>> print(\"This is a long string that just goes on and on and sho\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:42",
+    "content": ">>> print(\"This is a long string that just goes on and on and shou\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:42",
+    "content": ">>> print(\"This is a long string that just goes on and on and shoul\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:42",
+    "content": ">>> print(\"This is a long string that just goes on and on and should\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:42",
+    "content": ">>> print(\"This is a long string that just goes on and on and should \u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:42",
+    "content": ">>> print(\"This is a long string that just goes on and on and should c\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:42",
+    "content": ">>> print(\"This is a long string that just goes on and on and should ca\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:42",
+    "content": ">>> print(\"This is a long string that just goes on and on and should cau\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:42",
+    "content": ">>> print(\"This is a long string that just goes on and on and should caus\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:42",
+    "content": ">>> print(\"This is a long string that just goes on and on and should cause\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:42",
+    "content": ">>> print(\"This is a long string that just goes on and on and should cause \u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:42",
+    "content": ">>> print(\"This is a long string that just goes on and on and should cause t\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:42",
+    "content": ">>> print(\"This is a long string that just goes on and on and should cause th\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:42",
+    "content": ">>> print(\"This is a long string that just goes on and on and should cause the\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:42",
+    "content": ">>> print(\"This is a long string that just goes on and on and should cause the \u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:42",
+    "content": ">>> print(\"This is a long string that just goes on and on and should cause the l\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:42",
+    "content": ">>> print(\"This is a long string that just goes on and on and should cause the li\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:42",
+    "content": ">>> print(\"This is a long string that just goes on and on and should cause the lin\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:42",
+    "content": ">>> print(\"This is a long string that just goes on and on and should cause the line\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:42",
+    "content": ">>> print(\"This is a long string that just goes on and on and should cause the line \u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:42",
+    "content": ">>> print(\"This is a long string that just goes on and on and should cause the line t\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:42",
+    "content": ">>> print(\"This is a long string that just goes on and on and should cause the line to\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:42",
+    "content": ">>> print(\"This is a long string that just goes on and on and should cause the line to \u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:42",
+    "content": ">>> print(\"This is a long string that just goes on and on and should cause the line to w\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:42",
+    "content": ">>> print(\"This is a long string that just goes on and on and should cause the line to wr\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:42",
+    "content": ">>> print(\"This is a long string that just goes on and on and should cause the line to wra\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:42",
+    "content": ">>> print(\"This is a long string that just goes on and on and should cause the line to wrap\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:42",
+    "content": ">>> print(\"This is a long string that just goes on and on and should cause the line to wrap.\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:42",
+    "content": ">>> print(\"This is a long string that just goes on and on and should cause the line to wrap. \u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:42",
+    "content": ">>> print(\"This is a long string that just goes on and on and should cause the line to wrap. I\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:42",
+    "content": ">>> print(\"This is a long string that just goes on and on and should cause the line to wrap. I \u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:42",
+    "content": ">>> print(\"This is a long string that just goes on and on and should cause the line to wrap. I m\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:42",
+    "content": ">>> print(\"This is a long string that just goes on and on and should cause the line to wrap. I me\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:42",
+    "content": ">>> print(\"This is a long string that just goes on and on and should cause the line to wrap. I mea\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:42",
+    "content": ">>> print(\"This is a long string that just goes on and on and should cause the line to wrap. I mean\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:42",
+    "content": ">>> print(\"This is a long string that just goes on and on and should cause the line to wrap. I mean \u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:42",
+    "content": ">>> print(\"This is a long string that just goes on and on and should cause the line to wrap. I mean i\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:42",
+    "content": ">>> print(\"This is a long string that just goes on and on and should cause the line to wrap. I mean it\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:42",
+    "content": ">>> print(\"This is a long string that just goes on and on and should cause the line to wrap. I mean it,\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:42",
+    "content": ">>> print(\"This is a long string that just goes on and on and should cause the line to wrap. I mean it, \u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:42",
+    "content": ">>> print(\"This is a long string that just goes on and on and should cause the line to wrap. I mean it, i\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:42",
+    "content": ">>> print(\"This is a long string that just goes on and on and should cause the line to wrap. I mean it, it\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:42",
+    "content": ">>> print(\"This is a long string that just goes on and on and should cause the line to wrap. I mean it, it \u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:42",
+    "content": ">>> print(\"This is a long string that just goes on and on and should cause the line to wrap. I mean it, it j\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:42",
+    "content": ">>> print(\"This is a long string that just goes on and on and should cause the line to wrap. I mean it, it ju\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:42",
+    "content": ">>> print(\"This is a long string that just goes on and on and should cause the line to wrap. I mean it, it jus\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:42",
+    "content": ">>> print(\"This is a long string that just goes on and on and should cause the line to wrap. I mean it, it just\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:42",
+    "content": ">>> print(\"This is a long string that just goes on and on and should cause the line to wrap. I mean it, it just \u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:42",
+    "content": ">>> print(\"This is a long string that just goes on and on and should cause the line to wrap. I mean it, it just k\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:42",
+    "content": ">>> print(\"This is a long string that just goes on and on and should cause the line to wrap. I mean it, it just ke\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:42",
+    "content": ">>> print(\"This is a long string that just goes on and on and should cause the line to wrap. I mean it, it just kee\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:42",
+    "content": ">>> print(\"This is a long string that just goes on and on and should cause the line to wrap. I mean it, it just keep\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:42",
+    "content": ">>> print(\"This is a long string that just goes on and on and should cause the line to wrap. I mean it, it just keeps\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:42",
+    "content": ">>> print(\"This is a long string that just goes on and on and should cause the line to wrap. I mean it, it just keeps \u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:42",
+    "content": ">>> print(\"This is a long string that just goes on and on and should cause the line to wrap. I mean it, it just keeps g\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:42",
+    "content": ">>> print(\"This is a long string that just goes on and on and should cause the line to wrap. I mean it, it just keeps go\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:42",
+    "content": ">>> print(\"This is a long string that just goes on and on and should cause the line to wrap. I mean it, it just keeps goi\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:42",
+    "content": ">>> print(\"This is a long string that just goes on and on and should cause the line to wrap. I mean it, it just keeps goin\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:42",
+    "content": ">>> print(\"This is a long string that just goes on and on and should cause the line to wrap. I mean it, it just keeps going\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:42",
+    "content": ">>> print(\"This is a long string that just goes on and on and should cause the line to wrap. I mean it, it just keeps going,\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:42",
+    "content": ">>> print(\"This is a long string that just goes on and on and should cause the line to wrap. I mean it, it just keeps going, \u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:42",
+    "content": ">>> print(\"This is a long string that just goes on and on and should cause the line to wrap. I mean it, it just keeps going, m\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:42",
+    "content": ">>> print(\"This is a long string that just goes on and on and should cause the line to wrap. I mean it, it just keeps going, ma\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:42",
+    "content": ">>> print(\"This is a long string that just goes on and on and should cause the line to wrap. I mean it, it just keeps going, man\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:42",
+    "content": ">>> print(\"This is a long string that just goes on and on and should cause the line to wrap. I mean it, it just keeps going, man \u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:42",
+    "content": ">>> print(\"This is a long string that just goes on and on and should cause the line to wrap. I mean it, it just keeps going, man w\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:42",
+    "content": ">>> print(\"This is a long string that just goes on and on and should cause the line to wrap. I mean it, it just keeps going, man wh\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:42",
+    "content": ">>> print(\"This is a long string that just goes on and on and should cause the line to wrap. I mean it, it just keeps going, man who\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:42",
+    "content": ">>> print(\"This is a long string that just goes on and on and should cause the line to wrap. I mean it, it just keeps going, man who \u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:42",
+    "content": ">>> print(\"This is a long string that just goes on and on and should cause the line to wrap. I mean it, it just keeps going, man who t\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:42",
+    "content": ">>> print(\"This is a long string that just goes on and on and should cause the line to wrap. I mean it, it just keeps going, man who ty\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:42",
+    "content": ">>> print(\"This is a long string that just goes on and on and should cause the line to wrap. I mean it, it just keeps going, man who typ\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:42",
+    "content": ">>> print(\"This is a long string that just goes on and on and should cause the line to wrap. I mean it, it just keeps going, man who type\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:42",
+    "content": ">>> print(\"This is a long string that just goes on and on and should cause the line to wrap. I mean it, it just keeps going, man who types\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:42",
+    "content": ">>> print(\"This is a long string that just goes on and on and should cause the line to wrap. I mean it, it just keeps going, man who types \u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:42",
+    "content": ">>> print(\"This is a long string that just goes on and on and should cause the line to wrap. I mean it, it just keeps going, man who types t\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:42",
+    "content": ">>> print(\"This is a long string that just goes on and on and should cause the line to wrap. I mean it, it just keeps going, man who types th\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:42",
+    "content": ">>> print(\"This is a long string that just goes on and on and should cause the line to wrap. I mean it, it just keeps going, man who types thi\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:42",
+    "content": ">>> print(\"This is a long string that just goes on and on and should cause the line to wrap. I mean it, it just keeps going, man who types this\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:42",
+    "content": ">>> print(\"This is a long string that just goes on and on and should cause the line to wrap. I mean it, it just keeps going, man who types this \u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:42",
+    "content": ">>> print(\"This is a long string that just goes on and on and should cause the line to wrap. I mean it, it just keeps going, man who types this m\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:42",
+    "content": ">>> print(\"This is a long string that just goes on and on and should cause the line to wrap. I mean it, it just keeps going, man who types this mu\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:42",
+    "content": ">>> print(\"This is a long string that just goes on and on and should cause the line to wrap. I mean it, it just keeps going, man who types this muc\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:42",
+    "content": ">>> print(\"This is a long string that just goes on and on and should cause the line to wrap. I mean it, it just keeps going, man who types this much\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:42",
+    "content": ">>> print(\"This is a long string that just goes on and on and should cause the line to wrap. I mean it, it just keeps going, man who types this much?\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:42",
+    "content": ">>> print(\"This is a long string that just goes on and on and should cause the line to wrap. I mean it, it just keeps going, man who types this much?\"\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:42",
+    "content": ">>> print(\"This is a long string that just goes on and on and should cause the line to wrap. I mean it, it just keeps going, man who types this much?\")"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "insert:43",
+    "content": "This is a long string that just goes on and on and should cause the line to wrap. I mean it, it just keeps going, man who types this much?"
+  },
+  "=== Backward ===",
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "remove:43",
+    "content": ""
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:42",
+    "content": ">>> print(\"This is a long string that just goes on and on and should cause the line to wrap. I mean it, it just keeps going, man who types this much?\"\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:42",
+    "content": ">>> print(\"This is a long string that just goes on and on and should cause the line to wrap. I mean it, it just keeps going, man who types this much?\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:42",
+    "content": ">>> print(\"This is a long string that just goes on and on and should cause the line to wrap. I mean it, it just keeps going, man who types this much\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:42",
+    "content": ">>> print(\"This is a long string that just goes on and on and should cause the line to wrap. I mean it, it just keeps going, man who types this muc\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:42",
+    "content": ">>> print(\"This is a long string that just goes on and on and should cause the line to wrap. I mean it, it just keeps going, man who types this mu\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:42",
+    "content": ">>> print(\"This is a long string that just goes on and on and should cause the line to wrap. I mean it, it just keeps going, man who types this m\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:42",
+    "content": ">>> print(\"This is a long string that just goes on and on and should cause the line to wrap. I mean it, it just keeps going, man who types this \u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:42",
+    "content": ">>> print(\"This is a long string that just goes on and on and should cause the line to wrap. I mean it, it just keeps going, man who types this\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:42",
+    "content": ">>> print(\"This is a long string that just goes on and on and should cause the line to wrap. I mean it, it just keeps going, man who types thi\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:42",
+    "content": ">>> print(\"This is a long string that just goes on and on and should cause the line to wrap. I mean it, it just keeps going, man who types th\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:42",
+    "content": ">>> print(\"This is a long string that just goes on and on and should cause the line to wrap. I mean it, it just keeps going, man who types t\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:42",
+    "content": ">>> print(\"This is a long string that just goes on and on and should cause the line to wrap. I mean it, it just keeps going, man who types \u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:42",
+    "content": ">>> print(\"This is a long string that just goes on and on and should cause the line to wrap. I mean it, it just keeps going, man who types\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:42",
+    "content": ">>> print(\"This is a long string that just goes on and on and should cause the line to wrap. I mean it, it just keeps going, man who type\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:42",
+    "content": ">>> print(\"This is a long string that just goes on and on and should cause the line to wrap. I mean it, it just keeps going, man who typ\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:42",
+    "content": ">>> print(\"This is a long string that just goes on and on and should cause the line to wrap. I mean it, it just keeps going, man who ty\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:42",
+    "content": ">>> print(\"This is a long string that just goes on and on and should cause the line to wrap. I mean it, it just keeps going, man who t\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:42",
+    "content": ">>> print(\"This is a long string that just goes on and on and should cause the line to wrap. I mean it, it just keeps going, man who \u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:42",
+    "content": ">>> print(\"This is a long string that just goes on and on and should cause the line to wrap. I mean it, it just keeps going, man who\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:42",
+    "content": ">>> print(\"This is a long string that just goes on and on and should cause the line to wrap. I mean it, it just keeps going, man wh\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:42",
+    "content": ">>> print(\"This is a long string that just goes on and on and should cause the line to wrap. I mean it, it just keeps going, man w\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:42",
+    "content": ">>> print(\"This is a long string that just goes on and on and should cause the line to wrap. I mean it, it just keeps going, man \u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:42",
+    "content": ">>> print(\"This is a long string that just goes on and on and should cause the line to wrap. I mean it, it just keeps going, man\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:42",
+    "content": ">>> print(\"This is a long string that just goes on and on and should cause the line to wrap. I mean it, it just keeps going, ma\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:42",
+    "content": ">>> print(\"This is a long string that just goes on and on and should cause the line to wrap. I mean it, it just keeps going, m\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:42",
+    "content": ">>> print(\"This is a long string that just goes on and on and should cause the line to wrap. I mean it, it just keeps going, \u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:42",
+    "content": ">>> print(\"This is a long string that just goes on and on and should cause the line to wrap. I mean it, it just keeps going,\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:42",
+    "content": ">>> print(\"This is a long string that just goes on and on and should cause the line to wrap. I mean it, it just keeps going\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:42",
+    "content": ">>> print(\"This is a long string that just goes on and on and should cause the line to wrap. I mean it, it just keeps goin\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:42",
+    "content": ">>> print(\"This is a long string that just goes on and on and should cause the line to wrap. I mean it, it just keeps goi\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:42",
+    "content": ">>> print(\"This is a long string that just goes on and on and should cause the line to wrap. I mean it, it just keeps go\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:42",
+    "content": ">>> print(\"This is a long string that just goes on and on and should cause the line to wrap. I mean it, it just keeps g\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:42",
+    "content": ">>> print(\"This is a long string that just goes on and on and should cause the line to wrap. I mean it, it just keeps \u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:42",
+    "content": ">>> print(\"This is a long string that just goes on and on and should cause the line to wrap. I mean it, it just keeps\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:42",
+    "content": ">>> print(\"This is a long string that just goes on and on and should cause the line to wrap. I mean it, it just keep\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:42",
+    "content": ">>> print(\"This is a long string that just goes on and on and should cause the line to wrap. I mean it, it just kee\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:42",
+    "content": ">>> print(\"This is a long string that just goes on and on and should cause the line to wrap. I mean it, it just ke\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:42",
+    "content": ">>> print(\"This is a long string that just goes on and on and should cause the line to wrap. I mean it, it just k\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:42",
+    "content": ">>> print(\"This is a long string that just goes on and on and should cause the line to wrap. I mean it, it just \u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:42",
+    "content": ">>> print(\"This is a long string that just goes on and on and should cause the line to wrap. I mean it, it just\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:42",
+    "content": ">>> print(\"This is a long string that just goes on and on and should cause the line to wrap. I mean it, it jus\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:42",
+    "content": ">>> print(\"This is a long string that just goes on and on and should cause the line to wrap. I mean it, it ju\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:42",
+    "content": ">>> print(\"This is a long string that just goes on and on and should cause the line to wrap. I mean it, it j\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:42",
+    "content": ">>> print(\"This is a long string that just goes on and on and should cause the line to wrap. I mean it, it \u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:42",
+    "content": ">>> print(\"This is a long string that just goes on and on and should cause the line to wrap. I mean it, it\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:42",
+    "content": ">>> print(\"This is a long string that just goes on and on and should cause the line to wrap. I mean it, i\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:42",
+    "content": ">>> print(\"This is a long string that just goes on and on and should cause the line to wrap. I mean it, \u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:42",
+    "content": ">>> print(\"This is a long string that just goes on and on and should cause the line to wrap. I mean it,\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:42",
+    "content": ">>> print(\"This is a long string that just goes on and on and should cause the line to wrap. I mean it\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:42",
+    "content": ">>> print(\"This is a long string that just goes on and on and should cause the line to wrap. I mean i\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:42",
+    "content": ">>> print(\"This is a long string that just goes on and on and should cause the line to wrap. I mean \u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:42",
+    "content": ">>> print(\"This is a long string that just goes on and on and should cause the line to wrap. I mean\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:42",
+    "content": ">>> print(\"This is a long string that just goes on and on and should cause the line to wrap. I mea\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:42",
+    "content": ">>> print(\"This is a long string that just goes on and on and should cause the line to wrap. I me\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:42",
+    "content": ">>> print(\"This is a long string that just goes on and on and should cause the line to wrap. I m\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:42",
+    "content": ">>> print(\"This is a long string that just goes on and on and should cause the line to wrap. I \u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:42",
+    "content": ">>> print(\"This is a long string that just goes on and on and should cause the line to wrap. I\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:42",
+    "content": ">>> print(\"This is a long string that just goes on and on and should cause the line to wrap. \u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:42",
+    "content": ">>> print(\"This is a long string that just goes on and on and should cause the line to wrap.\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:42",
+    "content": ">>> print(\"This is a long string that just goes on and on and should cause the line to wrap\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:42",
+    "content": ">>> print(\"This is a long string that just goes on and on and should cause the line to wra\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:42",
+    "content": ">>> print(\"This is a long string that just goes on and on and should cause the line to wr\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:42",
+    "content": ">>> print(\"This is a long string that just goes on and on and should cause the line to w\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:42",
+    "content": ">>> print(\"This is a long string that just goes on and on and should cause the line to \u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:42",
+    "content": ">>> print(\"This is a long string that just goes on and on and should cause the line to\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:42",
+    "content": ">>> print(\"This is a long string that just goes on and on and should cause the line t\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:42",
+    "content": ">>> print(\"This is a long string that just goes on and on and should cause the line \u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:42",
+    "content": ">>> print(\"This is a long string that just goes on and on and should cause the line\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:42",
+    "content": ">>> print(\"This is a long string that just goes on and on and should cause the lin\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:42",
+    "content": ">>> print(\"This is a long string that just goes on and on and should cause the li\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:42",
+    "content": ">>> print(\"This is a long string that just goes on and on and should cause the l\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:42",
+    "content": ">>> print(\"This is a long string that just goes on and on and should cause the \u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:42",
+    "content": ">>> print(\"This is a long string that just goes on and on and should cause the\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:42",
+    "content": ">>> print(\"This is a long string that just goes on and on and should cause th\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:42",
+    "content": ">>> print(\"This is a long string that just goes on and on and should cause t\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:42",
+    "content": ">>> print(\"This is a long string that just goes on and on and should cause \u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:42",
+    "content": ">>> print(\"This is a long string that just goes on and on and should cause\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:42",
+    "content": ">>> print(\"This is a long string that just goes on and on and should caus\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:42",
+    "content": ">>> print(\"This is a long string that just goes on and on and should cau\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:42",
+    "content": ">>> print(\"This is a long string that just goes on and on and should ca\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:42",
+    "content": ">>> print(\"This is a long string that just goes on and on and should c\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:42",
+    "content": ">>> print(\"This is a long string that just goes on and on and should \u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:42",
+    "content": ">>> print(\"This is a long string that just goes on and on and should\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:42",
+    "content": ">>> print(\"This is a long string that just goes on and on and shoul\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:42",
+    "content": ">>> print(\"This is a long string that just goes on and on and shou\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:42",
+    "content": ">>> print(\"This is a long string that just goes on and on and sho\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:42",
+    "content": ">>> print(\"This is a long string that just goes on and on and sh\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:42",
+    "content": ">>> print(\"This is a long string that just goes on and on and s\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:42",
+    "content": ">>> print(\"This is a long string that just goes on and on and \u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:42",
+    "content": ">>> print(\"This is a long string that just goes on and on and\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:42",
+    "content": ">>> print(\"This is a long string that just goes on and on an\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:42",
+    "content": ">>> print(\"This is a long string that just goes on and on a\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:42",
+    "content": ">>> print(\"This is a long string that just goes on and on \u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:42",
+    "content": ">>> print(\"This is a long string that just goes on and on\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:42",
+    "content": ">>> print(\"This is a long string that just goes on and o\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:42",
+    "content": ">>> print(\"This is a long string that just goes on and \u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:42",
+    "content": ">>> print(\"This is a long string that just goes on and\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:42",
+    "content": ">>> print(\"This is a long string that just goes on an\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:42",
+    "content": ">>> print(\"This is a long string that just goes on a\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:42",
+    "content": ">>> print(\"This is a long string that just goes on \u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:42",
+    "content": ">>> print(\"This is a long string that just goes on\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:42",
+    "content": ">>> print(\"This is a long string that just goes o\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:42",
+    "content": ">>> print(\"This is a long string that just goes \u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:42",
+    "content": ">>> print(\"This is a long string that just goes\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:42",
+    "content": ">>> print(\"This is a long string that just goe\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:42",
+    "content": ">>> print(\"This is a long string that just go\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:42",
+    "content": ">>> print(\"This is a long string that just g\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:42",
+    "content": ">>> print(\"This is a long string that just \u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:42",
+    "content": ">>> print(\"This is a long string that just\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:42",
+    "content": ">>> print(\"This is a long string that jus\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:42",
+    "content": ">>> print(\"This is a long string that ju\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:42",
+    "content": ">>> print(\"This is a long string that j\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:42",
+    "content": ">>> print(\"This is a long string that \u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:42",
+    "content": ">>> print(\"This is a long string that\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:42",
+    "content": ">>> print(\"This is a long string tha\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:42",
+    "content": ">>> print(\"This is a long string th\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:42",
+    "content": ">>> print(\"This is a long string t\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:42",
+    "content": ">>> print(\"This is a long string \u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:42",
+    "content": ">>> print(\"This is a long string\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:42",
+    "content": ">>> print(\"This is a long strin\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:42",
+    "content": ">>> print(\"This is a long stri\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:42",
+    "content": ">>> print(\"This is a long str\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:42",
+    "content": ">>> print(\"This is a long st\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:42",
+    "content": ">>> print(\"This is a long s\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:42",
+    "content": ">>> print(\"This is a long \u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:42",
+    "content": ">>> print(\"This is a long\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:42",
+    "content": ">>> print(\"This is a lon\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:42",
+    "content": ">>> print(\"This is a lo\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:42",
+    "content": ">>> print(\"This is a l\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:42",
+    "content": ">>> print(\"This is a \u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:42",
+    "content": ">>> print(\"This is a\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:42",
+    "content": ">>> print(\"This is \u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:42",
+    "content": ">>> print(\"This is\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:42",
+    "content": ">>> print(\"This i\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:42",
+    "content": ">>> print(\"This \u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:42",
+    "content": ">>> print(\"This\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:42",
+    "content": ">>> print(\"Thi\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:42",
+    "content": ">>> print(\"Th\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:42",
+    "content": ">>> print(\"T\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:42",
+    "content": ">>> print(\"\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:42",
+    "content": ">>> print(\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:42",
+    "content": ">>> print\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:42",
+    "content": ">>> prin\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:42",
+    "content": ">>> pri\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:42",
+    "content": ">>> pr\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:42",
+    "content": ">>> p\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:42",
+    "content": ">>> "
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:42",
+    "content": ""
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "remove:42",
+    "content": ""
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "remove:41",
+    "content": ""
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "remove:40",
+    "content": ""
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "remove:39",
+    "content": ""
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "remove:38",
+    "content": ""
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "remove:37",
+    "content": ""
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "remove:36",
+    "content": ""
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "remove:35",
+    "content": ""
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "remove:34",
+    "content": ""
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "remove:33",
+    "content": ""
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "remove:32",
+    "content": ""
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "remove:31",
+    "content": ""
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "remove:30",
+    "content": ""
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "remove:29",
+    "content": ""
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "remove:28",
+    "content": ""
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "remove:27",
+    "content": ""
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "remove:26",
+    "content": ""
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "remove:25",
+    "content": ""
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "remove:24",
+    "content": ""
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "remove:23",
+    "content": ""
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "remove:22",
+    "content": ""
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "remove:21",
+    "content": ""
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "remove:20",
+    "content": ""
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "remove:19",
+    "content": ""
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "remove:18",
+    "content": ""
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "remove:17",
+    "content": ""
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "remove:16",
+    "content": ""
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "remove:15",
+    "content": ""
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "remove:14",
+    "content": ""
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "remove:13",
+    "content": ""
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "remove:12",
+    "content": ""
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "remove:11",
+    "content": ""
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "remove:10",
+    "content": ""
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "remove:9",
+    "content": ""
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "remove:8",
+    "content": ""
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "remove:7",
+    "content": ""
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "remove:6",
+    "content": ""
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "remove:5",
+    "content": ""
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "remove:4",
+    "content": ""
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "remove:3",
+    "content": ""
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "remove:2",
+    "content": ""
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:1",
+    "content": ">>> print(foo\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:1",
+    "content": ">>> print(fo\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:1",
+    "content": ">>> print(f\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:1",
+    "content": ">>> print(\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:1",
+    "content": ">>> print\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:1",
+    "content": ">>> prin\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:1",
+    "content": ">>> pri\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:1",
+    "content": ">>> pr\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:1",
+    "content": ">>> p\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:1",
+    "content": ">>> "
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:1",
+    "content": ""
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "remove:1",
+    "content": ""
+  },
+  "=== Forward ===",
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "insert:1",
+    "content": ""
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:1",
+    "content": ">>> "
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:1",
+    "content": ">>> p\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:1",
+    "content": ">>> pr\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:1",
+    "content": ">>> pri\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:1",
+    "content": ">>> prin\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:1",
+    "content": ">>> print\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:1",
+    "content": ">>> print(\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:1",
+    "content": ">>> print(f\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:1",
+    "content": ">>> print(fo\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:1",
+    "content": ">>> print(foo\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:1",
+    "content": ">>> print(foo)"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "insert:2",
+    "content": "a bunch of text to fill the screen"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "insert:3",
+    "content": "a bunch of text to fill the screen"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "insert:4",
+    "content": "a bunch of text to fill the screen"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "insert:5",
+    "content": "a bunch of text to fill the screen"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "insert:6",
+    "content": "a bunch of text to fill the screen"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "insert:7",
+    "content": "a bunch of text to fill the screen"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "insert:8",
+    "content": "a bunch of text to fill the screen"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "insert:9",
+    "content": "a bunch of text to fill the screen"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "insert:10",
+    "content": "a bunch of text to fill the screen"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "insert:11",
+    "content": "a bunch of text to fill the screen"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "insert:12",
+    "content": "a bunch of text to fill the screen"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "insert:13",
+    "content": "a bunch of text to fill the screen"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "insert:14",
+    "content": "a bunch of text to fill the screen"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "insert:15",
+    "content": "a bunch of text to fill the screen"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "insert:16",
+    "content": "a bunch of text to fill the screen"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "insert:17",
+    "content": "a bunch of text to fill the screen"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "insert:18",
+    "content": "a bunch of text to fill the screen"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "insert:19",
+    "content": "a bunch of text to fill the screen"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "insert:20",
+    "content": "a bunch of text to fill the screen"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "insert:21",
+    "content": "a bunch of text to fill the screen"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "insert:22",
+    "content": "a bunch of text to fill the screen"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "insert:23",
+    "content": "a bunch of text to fill the screen"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "insert:24",
+    "content": "a bunch of text to fill the screen"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "insert:25",
+    "content": "a bunch of text to fill the screen"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "insert:26",
+    "content": "a bunch of text to fill the screen"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "insert:27",
+    "content": "a bunch of text to fill the screen"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "insert:28",
+    "content": "a bunch of text to fill the screen"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "insert:29",
+    "content": "a bunch of text to fill the screen"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "insert:30",
+    "content": "a bunch of text to fill the screen"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "insert:31",
+    "content": "a bunch of text to fill the screen"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "insert:32",
+    "content": "a bunch of text to fill the screen"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "insert:33",
+    "content": "a bunch of text to fill the screen"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "insert:34",
+    "content": "a bunch of text to fill the screen"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "insert:35",
+    "content": "a bunch of text to fill the screen"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "insert:36",
+    "content": "a bunch of text to fill the screen"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "insert:37",
+    "content": "a bunch of text to fill the screen"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "insert:38",
+    "content": "a bunch of text to fill the screen"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "insert:39",
+    "content": "a bunch of text to fill the screen"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "insert:40",
+    "content": "a bunch of text to fill the screen"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "insert:41",
+    "content": "a bunch of text to fill the screen"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "insert:42",
+    "content": ""
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:42",
+    "content": ">>> "
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:42",
+    "content": ">>> p\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:42",
+    "content": ">>> pr\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:42",
+    "content": ">>> pri\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:42",
+    "content": ">>> prin\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:42",
+    "content": ">>> print\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:42",
+    "content": ">>> print(\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:42",
+    "content": ">>> print(\"\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:42",
+    "content": ">>> print(\"T\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:42",
+    "content": ">>> print(\"Th\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:42",
+    "content": ">>> print(\"Thi\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:42",
+    "content": ">>> print(\"This\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:42",
+    "content": ">>> print(\"This \u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:42",
+    "content": ">>> print(\"This i\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:42",
+    "content": ">>> print(\"This is\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:42",
+    "content": ">>> print(\"This is \u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:42",
+    "content": ">>> print(\"This is a\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:42",
+    "content": ">>> print(\"This is a \u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:42",
+    "content": ">>> print(\"This is a l\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:42",
+    "content": ">>> print(\"This is a lo\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:42",
+    "content": ">>> print(\"This is a lon\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:42",
+    "content": ">>> print(\"This is a long\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:42",
+    "content": ">>> print(\"This is a long \u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:42",
+    "content": ">>> print(\"This is a long s\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:42",
+    "content": ">>> print(\"This is a long st\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:42",
+    "content": ">>> print(\"This is a long str\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:42",
+    "content": ">>> print(\"This is a long stri\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:42",
+    "content": ">>> print(\"This is a long strin\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:42",
+    "content": ">>> print(\"This is a long string\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:42",
+    "content": ">>> print(\"This is a long string \u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:42",
+    "content": ">>> print(\"This is a long string t\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:42",
+    "content": ">>> print(\"This is a long string th\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:42",
+    "content": ">>> print(\"This is a long string tha\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:42",
+    "content": ">>> print(\"This is a long string that\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:42",
+    "content": ">>> print(\"This is a long string that \u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:42",
+    "content": ">>> print(\"This is a long string that j\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:42",
+    "content": ">>> print(\"This is a long string that ju\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:42",
+    "content": ">>> print(\"This is a long string that jus\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:42",
+    "content": ">>> print(\"This is a long string that just\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:42",
+    "content": ">>> print(\"This is a long string that just \u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:42",
+    "content": ">>> print(\"This is a long string that just g\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:42",
+    "content": ">>> print(\"This is a long string that just go\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:42",
+    "content": ">>> print(\"This is a long string that just goe\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:42",
+    "content": ">>> print(\"This is a long string that just goes\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:42",
+    "content": ">>> print(\"This is a long string that just goes \u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:42",
+    "content": ">>> print(\"This is a long string that just goes o\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:42",
+    "content": ">>> print(\"This is a long string that just goes on\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:42",
+    "content": ">>> print(\"This is a long string that just goes on \u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:42",
+    "content": ">>> print(\"This is a long string that just goes on a\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:42",
+    "content": ">>> print(\"This is a long string that just goes on an\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:42",
+    "content": ">>> print(\"This is a long string that just goes on and\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:42",
+    "content": ">>> print(\"This is a long string that just goes on and \u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:42",
+    "content": ">>> print(\"This is a long string that just goes on and o\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:42",
+    "content": ">>> print(\"This is a long string that just goes on and on\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:42",
+    "content": ">>> print(\"This is a long string that just goes on and on \u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:42",
+    "content": ">>> print(\"This is a long string that just goes on and on a\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:42",
+    "content": ">>> print(\"This is a long string that just goes on and on an\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:42",
+    "content": ">>> print(\"This is a long string that just goes on and on and\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:42",
+    "content": ">>> print(\"This is a long string that just goes on and on and \u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:42",
+    "content": ">>> print(\"This is a long string that just goes on and on and s\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:42",
+    "content": ">>> print(\"This is a long string that just goes on and on and sh\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:42",
+    "content": ">>> print(\"This is a long string that just goes on and on and sho\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:42",
+    "content": ">>> print(\"This is a long string that just goes on and on and shou\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:42",
+    "content": ">>> print(\"This is a long string that just goes on and on and shoul\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:42",
+    "content": ">>> print(\"This is a long string that just goes on and on and should\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:42",
+    "content": ">>> print(\"This is a long string that just goes on and on and should \u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:42",
+    "content": ">>> print(\"This is a long string that just goes on and on and should c\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:42",
+    "content": ">>> print(\"This is a long string that just goes on and on and should ca\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:42",
+    "content": ">>> print(\"This is a long string that just goes on and on and should cau\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:42",
+    "content": ">>> print(\"This is a long string that just goes on and on and should caus\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:42",
+    "content": ">>> print(\"This is a long string that just goes on and on and should cause\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:42",
+    "content": ">>> print(\"This is a long string that just goes on and on and should cause \u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:42",
+    "content": ">>> print(\"This is a long string that just goes on and on and should cause t\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:42",
+    "content": ">>> print(\"This is a long string that just goes on and on and should cause th\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:42",
+    "content": ">>> print(\"This is a long string that just goes on and on and should cause the\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:42",
+    "content": ">>> print(\"This is a long string that just goes on and on and should cause the \u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:42",
+    "content": ">>> print(\"This is a long string that just goes on and on and should cause the l\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:42",
+    "content": ">>> print(\"This is a long string that just goes on and on and should cause the li\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:42",
+    "content": ">>> print(\"This is a long string that just goes on and on and should cause the lin\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:42",
+    "content": ">>> print(\"This is a long string that just goes on and on and should cause the line\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:42",
+    "content": ">>> print(\"This is a long string that just goes on and on and should cause the line \u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:42",
+    "content": ">>> print(\"This is a long string that just goes on and on and should cause the line t\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:42",
+    "content": ">>> print(\"This is a long string that just goes on and on and should cause the line to\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:42",
+    "content": ">>> print(\"This is a long string that just goes on and on and should cause the line to \u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:42",
+    "content": ">>> print(\"This is a long string that just goes on and on and should cause the line to w\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:42",
+    "content": ">>> print(\"This is a long string that just goes on and on and should cause the line to wr\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:42",
+    "content": ">>> print(\"This is a long string that just goes on and on and should cause the line to wra\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:42",
+    "content": ">>> print(\"This is a long string that just goes on and on and should cause the line to wrap\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:42",
+    "content": ">>> print(\"This is a long string that just goes on and on and should cause the line to wrap.\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:42",
+    "content": ">>> print(\"This is a long string that just goes on and on and should cause the line to wrap. \u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:42",
+    "content": ">>> print(\"This is a long string that just goes on and on and should cause the line to wrap. I\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:42",
+    "content": ">>> print(\"This is a long string that just goes on and on and should cause the line to wrap. I \u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:42",
+    "content": ">>> print(\"This is a long string that just goes on and on and should cause the line to wrap. I m\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:42",
+    "content": ">>> print(\"This is a long string that just goes on and on and should cause the line to wrap. I me\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:42",
+    "content": ">>> print(\"This is a long string that just goes on and on and should cause the line to wrap. I mea\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:42",
+    "content": ">>> print(\"This is a long string that just goes on and on and should cause the line to wrap. I mean\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:42",
+    "content": ">>> print(\"This is a long string that just goes on and on and should cause the line to wrap. I mean \u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:42",
+    "content": ">>> print(\"This is a long string that just goes on and on and should cause the line to wrap. I mean i\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:42",
+    "content": ">>> print(\"This is a long string that just goes on and on and should cause the line to wrap. I mean it\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:42",
+    "content": ">>> print(\"This is a long string that just goes on and on and should cause the line to wrap. I mean it,\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:42",
+    "content": ">>> print(\"This is a long string that just goes on and on and should cause the line to wrap. I mean it, \u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:42",
+    "content": ">>> print(\"This is a long string that just goes on and on and should cause the line to wrap. I mean it, i\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:42",
+    "content": ">>> print(\"This is a long string that just goes on and on and should cause the line to wrap. I mean it, it\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:42",
+    "content": ">>> print(\"This is a long string that just goes on and on and should cause the line to wrap. I mean it, it \u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:42",
+    "content": ">>> print(\"This is a long string that just goes on and on and should cause the line to wrap. I mean it, it j\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:42",
+    "content": ">>> print(\"This is a long string that just goes on and on and should cause the line to wrap. I mean it, it ju\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:42",
+    "content": ">>> print(\"This is a long string that just goes on and on and should cause the line to wrap. I mean it, it jus\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:42",
+    "content": ">>> print(\"This is a long string that just goes on and on and should cause the line to wrap. I mean it, it just\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:42",
+    "content": ">>> print(\"This is a long string that just goes on and on and should cause the line to wrap. I mean it, it just \u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:42",
+    "content": ">>> print(\"This is a long string that just goes on and on and should cause the line to wrap. I mean it, it just k\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:42",
+    "content": ">>> print(\"This is a long string that just goes on and on and should cause the line to wrap. I mean it, it just ke\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:42",
+    "content": ">>> print(\"This is a long string that just goes on and on and should cause the line to wrap. I mean it, it just kee\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:42",
+    "content": ">>> print(\"This is a long string that just goes on and on and should cause the line to wrap. I mean it, it just keep\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:42",
+    "content": ">>> print(\"This is a long string that just goes on and on and should cause the line to wrap. I mean it, it just keeps\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:42",
+    "content": ">>> print(\"This is a long string that just goes on and on and should cause the line to wrap. I mean it, it just keeps \u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:42",
+    "content": ">>> print(\"This is a long string that just goes on and on and should cause the line to wrap. I mean it, it just keeps g\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:42",
+    "content": ">>> print(\"This is a long string that just goes on and on and should cause the line to wrap. I mean it, it just keeps go\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:42",
+    "content": ">>> print(\"This is a long string that just goes on and on and should cause the line to wrap. I mean it, it just keeps goi\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:42",
+    "content": ">>> print(\"This is a long string that just goes on and on and should cause the line to wrap. I mean it, it just keeps goin\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:42",
+    "content": ">>> print(\"This is a long string that just goes on and on and should cause the line to wrap. I mean it, it just keeps going\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:42",
+    "content": ">>> print(\"This is a long string that just goes on and on and should cause the line to wrap. I mean it, it just keeps going,\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:42",
+    "content": ">>> print(\"This is a long string that just goes on and on and should cause the line to wrap. I mean it, it just keeps going, \u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:42",
+    "content": ">>> print(\"This is a long string that just goes on and on and should cause the line to wrap. I mean it, it just keeps going, m\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:42",
+    "content": ">>> print(\"This is a long string that just goes on and on and should cause the line to wrap. I mean it, it just keeps going, ma\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:42",
+    "content": ">>> print(\"This is a long string that just goes on and on and should cause the line to wrap. I mean it, it just keeps going, man\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:42",
+    "content": ">>> print(\"This is a long string that just goes on and on and should cause the line to wrap. I mean it, it just keeps going, man \u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:42",
+    "content": ">>> print(\"This is a long string that just goes on and on and should cause the line to wrap. I mean it, it just keeps going, man w\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:42",
+    "content": ">>> print(\"This is a long string that just goes on and on and should cause the line to wrap. I mean it, it just keeps going, man wh\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:42",
+    "content": ">>> print(\"This is a long string that just goes on and on and should cause the line to wrap. I mean it, it just keeps going, man who\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:42",
+    "content": ">>> print(\"This is a long string that just goes on and on and should cause the line to wrap. I mean it, it just keeps going, man who \u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:42",
+    "content": ">>> print(\"This is a long string that just goes on and on and should cause the line to wrap. I mean it, it just keeps going, man who t\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:42",
+    "content": ">>> print(\"This is a long string that just goes on and on and should cause the line to wrap. I mean it, it just keeps going, man who ty\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:42",
+    "content": ">>> print(\"This is a long string that just goes on and on and should cause the line to wrap. I mean it, it just keeps going, man who typ\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:42",
+    "content": ">>> print(\"This is a long string that just goes on and on and should cause the line to wrap. I mean it, it just keeps going, man who type\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:42",
+    "content": ">>> print(\"This is a long string that just goes on and on and should cause the line to wrap. I mean it, it just keeps going, man who types\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:42",
+    "content": ">>> print(\"This is a long string that just goes on and on and should cause the line to wrap. I mean it, it just keeps going, man who types \u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:42",
+    "content": ">>> print(\"This is a long string that just goes on and on and should cause the line to wrap. I mean it, it just keeps going, man who types t\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:42",
+    "content": ">>> print(\"This is a long string that just goes on and on and should cause the line to wrap. I mean it, it just keeps going, man who types th\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:42",
+    "content": ">>> print(\"This is a long string that just goes on and on and should cause the line to wrap. I mean it, it just keeps going, man who types thi\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:42",
+    "content": ">>> print(\"This is a long string that just goes on and on and should cause the line to wrap. I mean it, it just keeps going, man who types this\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:42",
+    "content": ">>> print(\"This is a long string that just goes on and on and should cause the line to wrap. I mean it, it just keeps going, man who types this \u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:42",
+    "content": ">>> print(\"This is a long string that just goes on and on and should cause the line to wrap. I mean it, it just keeps going, man who types this m\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:42",
+    "content": ">>> print(\"This is a long string that just goes on and on and should cause the line to wrap. I mean it, it just keeps going, man who types this mu\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:42",
+    "content": ">>> print(\"This is a long string that just goes on and on and should cause the line to wrap. I mean it, it just keeps going, man who types this muc\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:42",
+    "content": ">>> print(\"This is a long string that just goes on and on and should cause the line to wrap. I mean it, it just keeps going, man who types this much\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:42",
+    "content": ">>> print(\"This is a long string that just goes on and on and should cause the line to wrap. I mean it, it just keeps going, man who types this much?\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:42",
+    "content": ">>> print(\"This is a long string that just goes on and on and should cause the line to wrap. I mean it, it just keeps going, man who types this much?\"\u2588"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "change:42",
+    "content": ">>> print(\"This is a long string that just goes on and on and should cause the line to wrap. I mean it, it just keeps going, man who types this much?\")"
+  },
+  {
+    "code_box": "CodeBox(id=1)",
+    "change_type": "insert:43",
+    "content": "This is a long string that just goes on and on and should cause the line to wrap. I mean it, it just keeps going, man who types this much?"
+  }
+]
