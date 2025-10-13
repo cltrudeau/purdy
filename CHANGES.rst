@@ -1,3 +1,11 @@
+##########
+DEPRECATED
+##########
+
+Purdy has been re-written in Textual. This branch is old and for emergency
+maintenance only.
+
+
 1.14.1
 ======
 

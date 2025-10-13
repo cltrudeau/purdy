@@ -2,6 +2,11 @@
 Purdy
 *****
 
+.. warning::
+
+    This is the deprecated, URWID version of purdy. Purdy has been re-written
+    in Textual. This branch likely won't be maintained unless desperately
+    needed. You could try to bribe the maintainer, he likes a nice whisky.
 
 During talks or screencasts I don't want to be typing code, it is too error
 prone and too likely to mess up my speaking flow. **Purdy** is both a set of
