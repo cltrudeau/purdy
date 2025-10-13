@@ -1,0 +1,8 @@
+argparse_formatter~=1.4
+asttokens==3.0.0
+Pygments~=2.19.2
+textual~=6.1
+textual-transitions>=0.0.3
+Sphinx==8.2.3
+sphinx-argparse==0.5.2
+sphinx-rtd-theme==3.0.2

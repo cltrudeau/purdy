@@ -43,7 +43,7 @@ The following programs come with the `purdy` library:
 * ``purdy`` -- Animated display that looks like a program is being typed to the
   screen.
 * ``subpurdy`` -- Full set of commands to control Purdy. Sub-commands dictate
-  behaviour. Does a variety of code presentation. Includes ANSI, RTF, HTML
+  behaviour, doing a variety of code presentation. Includes ANSI, RTF, HTML
   output as well as the typewriter animations.
 
 More information can be found in the Command Line Program Documentation.
@@ -73,10 +73,10 @@ skip past the next 12 steps.
 Purdy Library
 #############
 
-The ``purdy`` script is fairly simple. You can create more complex animations
-by writing programs using the purdy library. Custom programs can have split
-screens, highlighting lines, slide transitions and more.  More information can
-be found in the Library Documentation.
+The ``purdy`` script is fairly simple, but you can create more complex
+animations by writing programs using the purdy library. Custom programs can
+have split screens, highlight lines, do slide transitions, and more.  More
+information can be found in the Library Documentation.
 
 
 Installation
@@ -90,10 +90,10 @@ Installation
 Supports
 ########
 
-Purdy has been tested with Python 3.13. Terminal control is done with `Textual
-<https://github.com/Textualize/textual>`_ library. Parsing and tokenization is
-done through `Pygments <https://pygments.org/>`_. Both libraries are excellent
-and I'm grateful they're publicly available.
+Purdy has been tested with Python 3.13. Terminal control is done with the
+`Textual <https://github.com/Textualize/textual>`_ library. Parsing and
+tokenization is done through `Pygments <https://pygments.org/>`_. Both
+libraries are excellent and I'm grateful they're publicly available.
 
 Purdy was re-written from the ground up for version 2, moving to Textual and
 doing an API redesign based on pain points over the years. Version 2 is not
