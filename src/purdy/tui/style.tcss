@@ -1,0 +1,63 @@
+PurdyContainer {
+    layers: code_layer code_overlay_layer purdy_overlay;
+}
+
+HelpDialogScreen {
+    align: center middle;
+}
+
+#help_dialog_box {
+    border: white;
+    padding: 0 1;
+    background: blue;
+    height: auto;
+    width: auto;
+    max-width: 80%;
+    max-height: 80%;
+}
+
+#help_dialog_title {
+    content-align: center middle;
+    width: 100%;
+    padding: 1 0;
+}
+
+.help_dialog_item_container {
+    width: 100%;
+    height: auto;
+}
+
+.help_dialog_key_col {
+    content-align: right middle;
+    width: 16;
+}
+
+.help_dialog_extra_pad {
+    padding_bottom: 1;
+}
+
+.help_dialog_desc_holder {
+    height: auto;
+}
+
+#help_dialog_button_holder {
+    padding_top: 1;
+}
+
+#help_dialog_ok {
+    content-align: center middle;
+}
+
+.code_holder {
+    layer: code_layer;
+}
+
+.cw_effect_overlay {
+    layer: code_overlay_layer;
+    visibility: hidden;
+}
+
+.pc_effect_overlay {
+    layer: purdy_overlay;
+    visibility: hidden;
+}

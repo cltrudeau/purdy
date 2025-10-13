@@ -1,0 +1,24 @@
+>>> for x in sorted([2, 3, 1]):
+...     print(x, end=" ")
+...
+1 2 3 >>> 
+>>> match "3":
+...     case str:
+...         print(False)
+...
+False
+>>> None < "3"
+Traceback (most recent call last):
+  File "<python-input-29>", line 1, in <module>
+    None < "3"
+TypeError: '<' not supported between instances of 'NoneType' and 'str'
+>>> class Car(Vehicle):
+...     @classmethod
+...     def drive(self):
+...         raise ValueError(f"not implemented {3 < 2}", True)
+...
+Traceback (most recent call last):
+  File "<python-input-31>", line 1, in <module>
+    class Car(Vehicle):
+              ^^^^^^^
+NameError: name 'Vehicle' is not defined
