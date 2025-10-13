@@ -1,7 +1,8 @@
-2.0.0b2
+2.0.0
 =======
 
-* 2025/10/??
+* 2025/10/13
+* Full release of purdy 2.0!
 * Changed textual markup code highlighting so inner tokens are rendered plain,
   reversing the coloured ones was ugly
 * Slowed down the move_by animation

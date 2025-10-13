@@ -2,11 +2,6 @@
 Purdy
 *****
 
-.. warning::
-
-    Purdy 2 is currently in Beta. To install it you'll need to use ``pip
-    install --pre purdy`` or be explicit about the version number
-
 During talks or screencasts I don't want to be typing code, it is too error
 prone and too likely to mess up my speaking flow. **Purdy** is both a set of
 programs and a library to display colourized code in a series of animations.
@@ -102,7 +97,9 @@ and I'm grateful they're publicly available.
 
 Purdy was re-written from the ground up for version 2, moving to Textual and
 doing an API redesign based on pain points over the years. Version 2 is not
-compatible with version 1 which was based on `Urwid <http://urwid.org/>`_.
+compatible with version 1 which was based on `Urwid <http://urwid.org/>`_. For
+the deprecated version see `https://github.com/cltrudeau/purdy/tree/purdy1`_
+or ``pip install purdy==1.14.1``.
 
 Docs & Source
 #############
