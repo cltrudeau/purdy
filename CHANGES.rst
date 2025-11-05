@@ -1,3 +1,10 @@
+2.0.1
+=====
+
+* 2025/11/??
+* Fix IndexError happening when going backwards on last animation
+
+
 2.0.0
 =======
 

@@ -14,7 +14,7 @@ Type "help", "copyright", "credits" or "license" for more information.
 """
 
 con = Code.text(text)
-repl = Code("../display_code/console.repl", theme="pyrepl")
+repl = Code("../display_code/really_short.repl", theme="pyrepl")
 code = Code("../display_code/code.py")
 
 (box

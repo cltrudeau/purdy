@@ -314,11 +314,14 @@ class AnimationController:
         if start < 0:
             # First state was a Wait, that's weird, let's ignore it
             return
+        if start >= len(cell_list):
+            start = len(cell_list) - 1
 
         end = 0
         if self.first_wait is not None:
             end = self.first_wait
 
+        print("***", start, end, len(cell_list))
         for self.current in range(start, end - 1, -1):
             cell = cell_list[self.current]
             if isinstance(cell, DebugCell):
