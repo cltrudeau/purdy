@@ -637,57 +637,6 @@ class Code(Section):
         output.compress()
         return output
 
-    @classmethod
-    def _old_chop_partial_highlight(cls, line, cutpoints):
-        """Creates a new :class:`~purdy.parser.CodeLine` with highlight tokens
-        at partial highlight spots
-
-        :param line: :class:`~purdy.parser.CodeLine` to copy and transform
-        :param cutpoints: iterable of (start, length) cut point tuples
-        """
-        cutpoints.sort()
-        char_parts = cls._expand_parts(line)
-
-        # Loop through our single-character listing and insert the appropriate
-        # highlight on and off tokens
-        char_count = 0
-        start = cutpoints[0][0]   # start char for first marker
-        end = cutpoints[0][0] + cutpoints[0][1]  - 1 # end char for first marker
-        cut_index = 0
-        output = CodeLine(line.lexer_spec, has_newline=line.has_newline)
-        highlighting = False
-        for part in char_parts:
-            if char_count == start and len(part.text) != 0 and not highlighting:
-                output.parts.append(CodePart(HighlightOn, ""))
-                output.parts.append(part)
-                char_count += 1   # !!!! Causes off-by one
-                highlighting = True
-                continue
-
-            if char_count == end and len(part.text) != 0 and highlighting:
-                char_count += 1
-                output.parts.append(part)
-                output.parts.append(CodePart(HighlightOff, ""))
-                highlighting = False
-                try:
-                    # Was ended, advance to next cutpoint
-                    cut_index += 1
-                    start = cutpoints[cut_index][0]
-                    end = cutpoints[cut_index][0] + cutpoints[0][1] - 1
-
-                except IndexError:
-                    # No cutpoints left, do nothing
-                    pass
-
-                continue
-
-            output.parts.append(part)
-            char_count += len(part.text)
-
-        # Recompress our output
-        output.compress()
-        return output
-
     def _apply_highlight(self, line_index):
         """If there is highlighting to apply, creates a new
         :class:`~purdy.parser.CodeLine` as a copy of the given one but with
