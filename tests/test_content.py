@@ -413,7 +413,8 @@ class TestCode(TestCase):
         text = "zero\none\ntwo\nthree and a bit\nfour and a bit"
         code = Code.text(text, "plain")
 
-        code.highlight(2, "3:6,3")
+        # Make sure to test highlight length of 1, it was problematic before
+        code.highlight(2, "3:6,3", "4:0,1")
 
         # No highlighting
         line = code._apply_highlight(0)
@@ -424,10 +425,15 @@ class TestCode(TestCase):
         self.assertTrue(token_is_a(line.parts[0].token, HighlightOn))
         self.assertTrue(token_is_a(line.parts[-1].token, HighlightOff))
 
-        # Partial line
+        # Partial line, "and" in "three and a bit"
         line = code._apply_highlight(3)
         self.assertTrue(token_is_a(line.parts[1].token, HighlightOn))
         self.assertTrue(token_is_a(line.parts[3].token, HighlightOff))
+
+        # Partial line, "f" in "four and a bit"
+        line = code._apply_highlight(4)
+        self.assertTrue(token_is_a(line.parts[0].token, HighlightOn))
+        self.assertTrue(token_is_a(line.parts[2].token, HighlightOff))
 
     def test_arg_highlight(self):
         # Test highlighting based on argument number

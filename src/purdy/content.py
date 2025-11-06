@@ -610,6 +610,44 @@ class Code(Section):
         cutpoints.sort()
         char_parts = cls._expand_parts(line)
 
+        # Create slices based on the cutpoints
+        slices = []
+        for cutpoint in cutpoints:
+            slices.append( (cutpoint[0], cutpoint[0] + cutpoint[1]) )
+
+        # Iterate through each part, checking if it is inside a slice
+        output = CodeLine(line.lexer_spec, has_newline=line.has_newline)
+        slice_iter = iter(slices)
+        sliced = next(slice_iter)
+
+        for num in range(0, len(char_parts)):
+            if sliced and num == sliced[0]:
+                output.parts.append(CodePart(HighlightOn, ""))
+
+            output.parts.append(char_parts[num])
+
+            if sliced and num == sliced[1] - 1:
+                output.parts.append(CodePart(HighlightOff, ""))
+                try:
+                    sliced = next(slice_iter)
+                except StopIteration:
+                    sliced = None
+
+        # Recompress our output
+        output.compress()
+        return output
+
+    @classmethod
+    def _old_chop_partial_highlight(cls, line, cutpoints):
+        """Creates a new :class:`~purdy.parser.CodeLine` with highlight tokens
+        at partial highlight spots
+
+        :param line: :class:`~purdy.parser.CodeLine` to copy and transform
+        :param cutpoints: iterable of (start, length) cut point tuples
+        """
+        cutpoints.sort()
+        char_parts = cls._expand_parts(line)
+
         # Loop through our single-character listing and insert the appropriate
         # highlight on and off tokens
         char_count = 0
@@ -622,7 +660,7 @@ class Code(Section):
             if char_count == start and len(part.text) != 0 and not highlighting:
                 output.parts.append(CodePart(HighlightOn, ""))
                 output.parts.append(part)
-                char_count += 1
+                char_count += 1   # !!!! Causes off-by one
                 highlighting = True
                 continue
 
