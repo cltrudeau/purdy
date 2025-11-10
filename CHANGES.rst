@@ -1,7 +1,14 @@
+2.1.0
+=====
+
+* 2025/11/10
+* Add `prompt` command
+
+
 2.0.1
 =====
 
-* 2025/11/??
+* 2025/11/06
 * Fix IndexError happening when going backwards on last animation
 
 

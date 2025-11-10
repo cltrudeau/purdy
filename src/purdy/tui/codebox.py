@@ -109,7 +109,6 @@ class CodeBox:
 
         :returns: this :class:`CodeBox` so action calls can be chained
         """
-
         if isinstance(content, str):
             # If there is already a text section add to it, otherwise create
             # one
@@ -188,6 +187,68 @@ class CodeBox:
             section.render(render_state)
 
         return render_state
+
+    def prompt(self, prompt, answer, animate_answer=True,
+            delay=0.13, delay_variance=0.03):
+        """Appends two pieces of Textual markup into the :class:`CodeBox`,
+        first the prompt value, then waits, then animates the typing of the
+        answer value.  The answer appears on the same line as the prompt
+        unless you explicitly include a newline.
+
+        .. warning:: This method only accepts Textual markup. It does not support EscapedText. Text with markup characters will need to be escaped manually
+
+        :param prompt: text to prompt with
+        :param answer: the answer to append
+        :param animate_answer: when True (default) use a typewriter animation
+            for the answer
+        :param delay: Length of time to sleep between characters. Defaults to
+            0.13 seconds
+        :param delay_variance: amount of random variability in the typing
+            delay. Defaults to 0.03 seconds
+
+        :returns: this :class:`CodeBox` so action calls can be chained
+        """
+        # Explicit type check seeing as EscapeText inherits from str
+        if not type(prompt) is str:
+            raise ValueError("Prompt must strictly be a string")
+        if not type(answer) is str:
+            raise ValueError("Answer must strictly be a string")
+
+        # If there is already a text section add to it, otherwise create one
+        if len(self.doc) > 0 and isinstance(self.doc[-1], TextSection):
+            self.doc[-1].lines.append(prompt)
+        else:
+            self.doc.append(TextSection(prompt))
+
+        # Add the prompt
+        after = to_textual(self.doc)
+        animate.cell_list.append(animate.Cell(self, after))
+        animate.cell_list.append(animate.WaitCell())
+
+        if not animate_answer:
+            # Don't animate the answer
+            self.doc[-1].lines[-1] += answer
+            after = to_textual(self.doc)
+            animate.cell_list.append(animate.Cell(self, after))
+            return self
+
+        # Add the answer typing animation: put the prompt in a section for the
+        # animation calculation, then just use the what it returns
+        section = TextSection(answer)
+        render_state = self._pre_render(len(section.lines))
+        steps = textual_typewriterize(render_state, section)
+
+        for step in steps:
+            # Append, subtracting the newline
+            after = deepcopy(render_state.content)[:-1] + step.text
+            animate.cell_list.append(animate.Cell(self, after))
+            self.pause(delay, delay_variance)
+
+        # Final value should be the whole thing
+        self.doc[-1].lines[-1] += answer
+        render_state = self._pre_render()
+        animate.cell_list.append(animate.Cell(self, render_state.content))
+        return self
 
     def typewriter(self, code, skip_comments=True, skip_whitespace=True,
             delay=0.13, delay_variance=0.03):
