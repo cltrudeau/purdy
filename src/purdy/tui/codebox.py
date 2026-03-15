@@ -129,7 +129,7 @@ class CodeBox:
 
         :returns: this :class:`CodeBox` so action calls can be chained
         """
-        self.doc = Document()
+        self.doc = self.doc.spawn()
         animate.cell_list.append(animate.Cell(self, ""))
         return self
 
@@ -144,9 +144,9 @@ class CodeBox:
         :returns: this :class:`CodeBox` so action calls can be chained
         """
         if isinstance(content, str):
-            self.doc = Document(TextSection(content))
+            self.doc = self.doc.spawn(TextSection(content))
         else:
-            self.doc = Document(content)
+            self.doc = self.doc.spawn(content)
 
         after = to_textual(self.doc)
         animate.cell_list.append(animate.Cell(self, after))
@@ -163,13 +163,13 @@ class CodeBox:
         :returns: this :class:`CodeBox` so action calls can be chained
         """
         if content is None:
-            self.doc = Document()
+            self.doc = self.doc.spawn()
             after = ""
         else:
             if isinstance(content, str):
-                self.doc = Document(TextSection(content))
+                self.doc = self.doc.spawn(TextSection(content))
             else:
-                self.doc = Document(content)
+                self.doc = self.doc.spawn(content)
 
             after = to_textual(self.doc)
 

@@ -777,6 +777,19 @@ class Document(list):
         self.wrap = None
         self.fold_char = "⠇"
 
+    def spawn(self, sections=None):
+        """Creates a new :class:`Document` instance copying settings from this
+        existing one.
+        """
+        obj = Document(sections)
+        obj.background = self.background
+        obj.line_numbers_enabled = self.line_numbers_enabled
+        obj.starting_line_number = self.starting_line_number
+        obj.line_number_gap_char = self.line_number_gap_char
+        obj.wrap = self.wrap
+        obj.fold_char = self.fold_char
+        return obj
+
 # ---------------------------------------------------------------------------
 
 class RenderState:

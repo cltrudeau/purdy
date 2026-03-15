@@ -1,3 +1,11 @@
+2.2.0
+=====
+
+* 2026/03/15
+* Add "tuicon" format that is a modification of Bash interactive Console that
+  supports embedded Textual Markup
+
+
 2.1.1
 =====
 
