@@ -2,8 +2,9 @@
 from pygments.token import Token, Whitespace
 from textual.content import Content
 
-from purdy.parser import HighlightOn, HighlightOff, token_ancestor, token_is_a
 from purdy.renderers.formatter import conversion_handler, Formatter
+from purdy.tokens import (HighlightOn, HighlightOff, TextualOutput, token_is_a,
+    token_ancestor)
 
 # ===========================================================================
 
@@ -38,6 +39,12 @@ class TextualFormatter(Formatter):
         highlight_on = False
 
         for part in line.parts:
+            if token_is_a(part.token, TextualOutput):
+                # Embed TextualOutput directly so that the content doesn't get
+                # escaped
+                markup += part.text
+                continue
+
             token = token_ancestor(part.token, self.ancestor_list)
 
             name = f"text_{counter}"

@@ -1,3 +1,10 @@
+2.1.1
+=====
+
+* 2025/12/08
+* Force use of "utf-8" format for input files to resolve issues on Windows
+
+
 2.1.0
 =====
 

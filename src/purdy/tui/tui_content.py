@@ -2,8 +2,8 @@
 from textual.content import Content as TContent
 
 from purdy.content import Section
-from purdy.parser import LineNumber
 from purdy.themes import THEME_MAP
+from purdy.tokens import LineNumber
 
 # =============================================================================
 # Content Abstractions

@@ -3,15 +3,20 @@ from pygments.token import Token, Whitespace
 
 from rich.markup import escape as rich_escape
 
-from purdy.parser import HighlightOn, HighlightOff
 from purdy.renderers.formatter import StrFormatter, conversion_handler
+from purdy.tokens import HighlightOn, HighlightOff, TextualOutput, token_is_a
 
 # ===========================================================================
 
 class RichFormatter(StrFormatter):
     def __init__(self, section, exceptions):
         super().__init__(section, exceptions)
-        self.escape = rich_escape
+
+    def escape(self, text, token):
+        if token_is_a(token, TextualOutput):
+            return text
+
+        return rich_escape(text)
 
     def _map_tag(self, token, fg, bg, attrs, exceptions):
         if token in exceptions:

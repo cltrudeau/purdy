@@ -5,8 +5,8 @@ from pygments.lexers import PythonConsoleLexer
 from pygments.token import Token
 
 from purdy.content import Code
-from purdy.parser import (CodeLine, CodePart, LexerSpec, Parser, PartsList,
-    token_is_a, token_ancestor)
+from purdy.parser import CodeLine, CodePart, LexerSpec, Parser, PartsList
+from purdy.tokens import token_is_a, token_ancestor
 
 from shared import code_liner
 

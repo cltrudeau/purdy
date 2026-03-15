@@ -3,8 +3,8 @@ from pathlib import Path
 from unittest import TestCase
 
 from purdy.content import Code, Document, PyText, RenderState, StringSection
-from purdy.parser import HighlightOn, HighlightOff, token_is_a
 from purdy.renderers.plain import to_plain
+from purdy.tokens import HighlightOn, HighlightOff, token_is_a
 
 # =============================================================================
 # Result Constants

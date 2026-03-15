@@ -11,6 +11,8 @@ from pygments.lexer import Lexer
 from pygments.lexers import BashSessionLexer
 from pygments.token import Generic, Text
 
+from purdy.tokens import TextualOutput, token_is_a
+
 # =============================================================================
 
 class DollarBashSessionLexer(BashSessionLexer):
@@ -19,6 +21,20 @@ class DollarBashSessionLexer(BashSessionLexer):
     lots of stuff left of the '$'.
     """
     _ps1rgx = re.compile(r'^([^$]*[$]\s)(.*\n?)')
+
+
+class TUIDollarBashSessionLexer(DollarBashSessionLexer):
+    """Based on custom DollarBashSessionLexer but does additional processing
+    on output tokens to handle Textual TUI markup."""
+
+    def get_tokens_unprocessed(self, text):
+        # User parent's processor, just do further more work when it is an
+        # Output token
+        for item in super().get_tokens_unprocessed(text):
+            if token_is_a(item[1], Generic.Output) and "[" in item[2]:
+                yield (item[0], TextualOutput, item[2])
+            else:
+                yield item
 
 
 class NewlineLexer(Lexer):

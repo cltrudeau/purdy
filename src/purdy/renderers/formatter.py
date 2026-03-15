@@ -1,6 +1,6 @@
 # renderers/formatter.py
 from purdy.content import Code, Document, RenderState
-from purdy.parser import token_ancestor
+from purdy.tokens import token_ancestor
 
 # =============================================================================
 
@@ -31,7 +31,6 @@ class Formatter:
     def __init__(self, section, exceptions):
         self.tag_map = {}
         self.newline = "\n"
-        self.escape = lambda x:x
 
         self.section = section
         self.exceptions = exceptions
@@ -44,6 +43,9 @@ class Formatter:
 
     def _map_tag(self, token, fg, bg, attrs, exceptions):
         raise NotImplementedError()
+
+    def escape(self, text, token):
+        return text
 
     def render_code_line(self, render_state, line):
         """Abstract method that gets called for each code line to be rendered
@@ -62,7 +64,7 @@ class StrFormatter(Formatter):
     def render_code_line(self, render_state, line):
         for part in line.parts:
             token = token_ancestor(part.token, self.ancestor_list)
-            token_text = self.escape(part.text)
+            token_text = self.escape(part.text, part.token)
 
             try:
                 marker = self.tag_map[token]

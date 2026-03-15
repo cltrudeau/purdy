@@ -8,9 +8,10 @@ from pygments.token import Comment, Generic, Text, Whitespace
 from textual.content import Content as TContent
 from textual.markup import MarkupTokenizer
 
-from purdy.parser import CodePart, CURSOR, CURSOR_CHAR, LineNumber, token_is_a
+from purdy.parser import CodePart, CURSOR, CURSOR_CHAR
 from purdy.renderers.textual import TextualFormatter, _CODE_TAG_EXCEPTIONS
 from purdy.tui.tui_content import EscapeText
+from purdy.tokens import LineNumber, token_is_a
 
 # ===========================================================================
 

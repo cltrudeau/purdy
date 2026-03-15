@@ -5,8 +5,8 @@ from copy import deepcopy
 from pygments.token import Token, Whitespace
 
 from purdy.content import Code, Document, RenderState
-from purdy.parser import HighlightOn, HighlightOff
 from purdy.renderers.formatter import StrFormatter
+from purdy.tokens import HighlightOn, HighlightOff
 
 # ===========================================================================
 # RTF Specific Utilities
@@ -33,7 +33,9 @@ class RTFFormatter(StrFormatter):
 
         super().__init__(section, exceptions)
         self.newline = "\\\n"
-        self.escape = self.rtf_encode
+
+    def escape(self, text, token):
+        return self.rtf_encode(text)
 
     @classmethod
     def rtf_encode(cls, text):

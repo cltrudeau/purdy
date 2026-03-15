@@ -2,6 +2,7 @@
 # Print Utilities
 
 from rich.console import Console
+from rich.markup import escape
 
 # ==============================================================================
 
@@ -22,7 +23,7 @@ def print_code_lines(lines, title="", title_enabled=True, no_colour=False):
             if not no_colour:
                 output += "[reverse]"
 
-            output += part.text
+            output += escape(part.text)
 
             if not no_colour:
                 output += "[/]"

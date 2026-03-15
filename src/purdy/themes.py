@@ -4,7 +4,7 @@ from copy import copy
 from pygments.token import (Keyword, Name, Comment, String, Error, Number,
     Operator, Generic, Token, Whitespace, Punctuation, Text, Literal)
 
-from purdy.parser import HighlightOn, HighlightOff, Fold, LineNumber
+from purdy.tokens import HighlightOn, HighlightOff, Fold, LineNumber
 
 # ===========================================================================
 # Theme Class

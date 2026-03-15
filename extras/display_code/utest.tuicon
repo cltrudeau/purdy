@@ -1,0 +1,8 @@
+intro$ python -m unittest -v
+test_say_hello (test_simple.SimpleTestCase.test_say_hello) ... Hello
+[#00C200]ok[/]
+
+----------------------------------------------------------------------
+Ran 1 test in 0.000s
+
+[#00C200]OK[/]

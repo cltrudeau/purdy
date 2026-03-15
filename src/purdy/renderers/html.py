@@ -4,15 +4,17 @@ from html import escape as html_escape
 from pygments.token import Token, Whitespace
 
 from purdy.content import Code, Document, RenderState
-from purdy.parser import HighlightOn, HighlightOff
 from purdy.renderers.formatter import StrFormatter
+from purdy.tokens import HighlightOn, HighlightOff
 
 # ===========================================================================
 
 class HTMLFormatter(StrFormatter):
     def __init__(self, section, exceptions):
         super().__init__(section, exceptions)
-        self.escape = html_escape
+
+    def escape(self, text, token):
+        return html_escape(text)
 
     def _map_tag(self, token, fg, bg, attrs, exceptions):
         if token in exceptions:

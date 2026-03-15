@@ -12,9 +12,10 @@ from pathlib import Path
 
 from pygments.token import Punctuation, Whitespace, Text
 
-from purdy.parser import (CodeLine, CodePart, Fold, HighlightOff, HighlightOn,
-    LexerSpec, LineNumber, Parser, token_is_a)
+from purdy.parser import CodeLine, CodePart, LexerSpec, Parser
 from purdy.themes import THEME_MAP, EMPTY_THEME
+from purdy.tokens import (Fold, HighlightOff, HighlightOn, LineNumber,
+    token_is_a)
 
 # ===========================================================================
 # Sections: Collection classes for parts of a Document
@@ -56,11 +57,13 @@ class PyText:
     pre-processing on source code before creating a :class:`Code` object.
     Source text is stored in the `.content` attribute as a string.
 
+    .. warning:: Files must be in UTF-8 format
+
     :param filename: name of file containing the Python you want to handle
     """
     def __init__(self, filename):
         path = Path(filename).resolve()
-        self.content = path.read_text()
+        self.content = path.read_text(encoding="utf-8")
 
     @classmethod
     def text(cls, content):
@@ -200,6 +203,8 @@ class Code(Section):
     Constructor reads code from a file, build an associated parser, and add
     the resulting lines to this object.
 
+    .. warning:: Files must be in UTF-8 format
+
     :param filename: Name of file to read of `pathlib.Path` object
     :param lexer: Identifier that determines which
         :class:`~purdy.parser.LexerSpec` to use when parsing the code. Defaults
@@ -219,7 +224,7 @@ class Code(Section):
 
         path = Path(filename).resolve()
         self.parser = Parser(lexer_spec)
-        self.parser.parse(path.read_text(), self)
+        self.parser.parse(path.read_text(encoding="utf-8"), self)
 
         # !!! Anything added under here has to be copied to the text factory
         # and the spawn methods!!!

@@ -63,12 +63,14 @@ class CodeCleaner:
         else:
             path = Path(filename).resolve()
 
-        return path.read_text()
+        return path.read_text(encoding="utf-8")
 
     @classmethod
     def remove_double_blanks(cls, filename, trim_whitespace=True):
         """Opens the given file and removes any lines where two or more are
         blank in a row.
+
+        .. warning:: Files must be in UTF-8 format
 
         :param filename: Name of file to process or a :class:`pathlib.Path`
             object. File is read as text.
@@ -83,6 +85,8 @@ class CodeCleaner:
         """Open the given file and removes a consistent amount of leading
         whitespace from the front of each line so that at least one line is
         flushed left.
+
+        .. warning:: Files must be in UTF-8 format
 
         .. warning:: will not work with mixed tabs and spaces
 
