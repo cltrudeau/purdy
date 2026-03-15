@@ -4,6 +4,11 @@
 * 2026/03/15
 * Add "tuicon" format that is a modification of Bash interactive Console that
   supports embedded Textual Markup
+* Fix bug where transition animations were wiping out configuration like line
+  numbers
+* Changed how highlighting works in the TUI, was using reverse white ignoring
+  any syntax highlighting, now uses a light grey and keeps the syntax
+  highlighting in tact
 
 
 2.1.1
