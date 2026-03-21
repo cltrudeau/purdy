@@ -2,9 +2,42 @@
 from pygments.token import Token, Whitespace
 from textual.content import Content
 
+from purdy.parser import CodeLine, CodePart
 from purdy.renderers.formatter import conversion_handler, Formatter
 from purdy.tokens import (HighlightOn, HighlightOff, TextualOutput, token_is_a,
     token_ancestor)
+
+# ===========================================================================
+
+def textual_highlighter(line, cutpoints):
+    # Parse the Textual markup, split it at the cutpoints, then insert
+    # highlight tokens
+    content = Content.from_markup(line.parts[0].text)
+
+    output = CodeLine(line.lexer_spec, has_newline=line.has_newline)
+
+    # Handle anything before the first cutpoint
+    first_cutpoint_start = cutpoints[0][0]
+    if first_cutpoint_start != 0:
+        # First cutpoint isn't at the beginning, insert what we have
+        output.parts.append(
+            CodePart(TextualOutput, content[0:first_cutpoint_start].markup))
+
+    # Highlight each cutpoint section
+    for cutpoint in cutpoints:
+        end = cutpoint[0] + cutpoint[1]
+        output.parts.append(CodePart(HighlightOn, ""))
+        output.parts.append(
+            CodePart(TextualOutput, content[cutpoint[0]:end].markup))
+        output.parts.append(CodePart(HighlightOff, ""))
+
+    # Handle anything after the last cutpoint
+    last_cutpoint_end = cutpoints[-1][0] + cutpoints[-1][1]
+    if last_cutpoint_end < len(content.plain):
+        output.parts.append(
+            CodePart(TextualOutput, content[last_cutpoint_end:].markup))
+
+    return output
 
 # ===========================================================================
 

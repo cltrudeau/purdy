@@ -15,7 +15,7 @@ from pygments.token import Punctuation, Whitespace, Text
 from purdy.parser import CodeLine, CodePart, LexerSpec, Parser
 from purdy.themes import THEME_MAP, EMPTY_THEME
 from purdy.tokens import (Fold, HighlightOff, HighlightOn, LineNumber,
-    token_is_a)
+    TextualOutput, token_is_a)
 
 # ===========================================================================
 # Sections: Collection classes for parts of a Document
@@ -663,9 +663,21 @@ class Code(Section):
             output.parts.insert(0, CodePart(HighlightOn, ""))
             output.parts.append(CodePart(HighlightOff, ""))
         elif self.meta[line_index].highlight_partial:
-            # Partial highlighting, insert tokens as needed inside the line
-            output = self._chop_partial_highlight(output,
-                self.meta[line_index].highlight_partial)
+            # Partial highlighting
+
+            if token_is_a(output.parts[0].token, TextualOutput):
+                # Hackish special case for TextualOutput (no good place to put
+                # this code, the design normally separates presentation from
+                # content, but TextualOutput is a hackish exception to that)
+
+                # Import is here to avoid circular
+                from purdy.renderers.textual import textual_highlighter
+                output = textual_highlighter(output,
+                    self.meta[line_index].highlight_partial)
+            else:
+                # Insert HL tokens as needed inside the line
+                output = self._chop_partial_highlight(output,
+                    self.meta[line_index].highlight_partial)
 
         # Else: no highlighting
         return output

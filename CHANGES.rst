@@ -1,3 +1,10 @@
+2.2.1
+=====
+
+* 2026/03/21
+* Fix bug when highlighting the new tuicon file format
+
+
 2.2.0
 =====
 

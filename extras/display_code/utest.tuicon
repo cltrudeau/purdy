@@ -1,8 +1,15 @@
-intro$ python -m unittest -v
-test_say_hello (test_simple.SimpleTestCase.test_say_hello) ... Hello
-[#00C200]ok[/]
+$ python -m unittest
+[#C91B00]F[/][#00C200]..[/]
+======================================================================
+[#C91B00]FAIL[/][#FF6E67 bold]: test_fail (test_demo_asserts.DemoAssertsTest.test_fail)[/]
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File [#CA30C7]"/code/demo_asserts/test_demo_asserts.py"[/], line [#CA30C7]35[/], in [#CA30C7]test_fail[/]
+    [#C91B00]self.assertEqual[/][#FF6E67](42, 13)[/]
+    [#C91B00]~~~~~~~~~~~~~~~~[/][#FF6E67]^^^^^^^^[/]
+[#FF77FF bold]AssertionError[/]: [#CA30C7]42 != 13[/]
 
 ----------------------------------------------------------------------
-Ran 1 test in 0.000s
+Ran 3 tests in 0.001s
 
-[#00C200]OK[/]
+[#FF6E67]FAILED [/]([#FF6E67]failures=1[/])

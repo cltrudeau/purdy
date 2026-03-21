@@ -39,8 +39,8 @@ _CODE_TAG_EXCEPTIONS = {
     Whitespace:         "{text}",
 
     # Purdy tokens
-    HighlightOn:        "[reverse]{text}",
-    HighlightOff:       "[/reverse]",
+    HighlightOn:        "[on #444444]{text}",
+    HighlightOff:       "[/on #444444]",
 }
 
 # ===========================================================================

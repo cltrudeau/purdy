@@ -22,6 +22,8 @@ con = Code("../display_code/utest.tuicon")
     .append(INTRO)
     .wait()
     .typewriter(con)
+    .wait()
+    .highlight_chain(3, "3:11,4")
 )
 
 app.run()
