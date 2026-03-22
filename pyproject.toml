@@ -26,9 +26,11 @@ classifiers = [
 ]
 dynamic = ["version"]
 dependencies = [
+    "ansiscape~=1.1.2",
     "argparse_formatter~=1.4",
     "asttokens==3.0.0",
     "Pygments~=2.19.2",
+    "pyperclip~=1.11.0",
     "textual~=6.1",
     "textual-transitions>=0.0.3",
 ]
@@ -48,8 +50,9 @@ dev = [
 ]
 
 [project.scripts]
-subpurdy = "purdy.cmds.subpurdy:main"
+ansi2tui = "purdy.cmds.ansi2tui:main"
 purdy = "purdy.cmds.purdy:main"
+subpurdy = "purdy.cmds.subpurdy:main"
 
 [project.urls]
 repository = "https://github.com/cltrudeau/purdy"
