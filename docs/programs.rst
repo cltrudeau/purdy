@@ -21,3 +21,12 @@ Command Line Program Documentation
     :module: purdy.cmds.subpurdy
     :func: parser
     :prog: subpurdy
+
+
+``ansi2tui`` Command
+====================
+
+.. argparse::
+    :module: purdy.cmds.ansi2tui
+    :func: parser
+    :prog: ansi2tui

@@ -1,3 +1,12 @@
+2.3.0
+=====
+
+* 2026/03/22
+* Add ansi2tui tool that reads ANSI colour escape sequences from the clipboard
+  and outputs Textual TUI markup to the screen
+* Add option with typewriter animation to pause after outputting a prompt
+
+
 2.2.1
 =====
 
