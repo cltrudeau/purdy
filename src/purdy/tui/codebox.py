@@ -251,7 +251,7 @@ class CodeBox:
         return self
 
     def typewriter(self, code, skip_comments=True, skip_whitespace=True,
-            delay=0.13, delay_variance=0.03):
+            delay=0.13, delay_variance=0.03, prompt_wait=False):
         """Action: performs a typing animation with the content in given
         :class:`~purdy.content.Code` object. Note that unlike most actions
         this one does not support Textual Markup, use
@@ -266,6 +266,8 @@ class CodeBox:
             0.13 seconds
         :param delay_variance: amount of random variability in the typing
             delay. Defaults to 0.03 seconds
+        :param prompt_wait: When True, pause for interaction when at the end
+            of a line beginning with prompt
 
         :returns: this :class:`CodeBox` so action calls can be chained
         """
@@ -274,7 +276,7 @@ class CodeBox:
 
         render_state = self._pre_render(len(code.lines))
         steps = code_typewriterize(render_state, code, skip_comments,
-            skip_whitespace)
+            skip_whitespace, prompt_wait)
 
         for step, state in steps:
             if isinstance(step, animate.WaitCell):

@@ -20,7 +20,7 @@ TypewriterOutput = namedtuple("TypewriterOutput", ["text", "state"])
 
 class _CodeTypewriter:
     def __init__(self, base_render_state, src_code, skip_comments,
-            skip_whitespace):
+            skip_whitespace, prompt_wait):
         self.base_render_state = copy(base_render_state)
         self.base_render_state.formatter = TextualFormatter(src_code,
             _CODE_TAG_EXCEPTIONS)
@@ -28,6 +28,7 @@ class _CodeTypewriter:
         self.src_code = src_code
         self.skip_comments = skip_comments
         self.skip_whitespace = skip_whitespace
+        self.prompt_wait = prompt_wait
 
         self.is_console = src_code.parser.lexer_spec.console
 
@@ -158,6 +159,14 @@ class _CodeTypewriter:
 
                 self.typing_line.parts.append(src_part)
 
+            if self.is_console and self.prompt_wait \
+                    and token_is_a(src_line.parts[0].token, Generic.Prompt):
+                # Replace the final action with a Wait state instead of a
+                # pause
+                last = TypewriterOutput(text=self.results[-1].text, state="W")
+                del self.results[-1]
+                self.results.append(last)
+
             # Update the cached result with the final value of line
             self.cached_rs.formatter.render_code_line(self.cached_rs,
                 self.typing_line)
@@ -166,7 +175,7 @@ class _CodeTypewriter:
 
 
 def code_typewriterize(render_state, src_code, skip_comments=True,
-        skip_whitespace=True):
+        skip_whitespace=True, prompt_wait=False):
     """Outputs a list of :class:`TypewriterOutput` objects to represent a
     series of steps in a typing animations
 
@@ -178,7 +187,8 @@ def code_typewriterize(render_state, src_code, skip_comments=True,
     :param skip_whitespace: When True, animate a block of whitespace as a
         single step
     """
-    tw = _CodeTypewriter(render_state, src_code, skip_comments, skip_whitespace)
+    tw = _CodeTypewriter(render_state, src_code, skip_comments, skip_whitespace,
+        prompt_wait)
     return tw._run()
 
 # ---------------------------------------------------------------------------
