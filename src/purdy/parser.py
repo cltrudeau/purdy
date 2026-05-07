@@ -9,7 +9,7 @@ from pathlib import Path
 
 from pygments.lexer import Lexer as Pygments_Lexer
 from pygments.lexers import (BashSessionLexer, CssLexer, JsonLexer,
-    NodeConsoleLexer, PythonConsoleLexer, PythonLexer, TOMLLexer)
+    NodeConsoleLexer, PythonConsoleLexer, PythonLexer, RustLexer, TOMLLexer)
 from pygments.lexers.data import YamlLexer
 from pygments.lexers.markup import MarkdownLexer, RstLexer
 from pygments.lexers.templates import HtmlDjangoLexer
@@ -95,6 +95,7 @@ class LexerSpec:
 
 #: Map of all the built-in lexers
 LexerSpec.built_ins = {
+    #suffix:LexerSpec(Display Name,    Lexer,       REPL?, code/doc)
     'py': LexerSpec('Python 3 Source', PythonLexer, False, 'code'),
     'repl': LexerSpec('Interactive Python 3 console', PythonConsoleLexer,
         True, 'code'),
@@ -111,6 +112,7 @@ LexerSpec.built_ins = {
         NodeConsoleLexer, True, 'code'),
     'plain': LexerSpec('Plain text, no parsing', NewlineLexer, False, 'doc'),
     'rst': LexerSpec('RST Doc', RstLexer, False, 'doc'),
+    'rs': LexerSpec('Rust Language', RustLexer, False, 'code'),
     'toml': LexerSpec('TOML', TOMLLexer, False, 'doc'),
     'tuicon': LexerSpec('Bash Console with Textual highlighting',
         TUIDollarBashSessionLexer, True, 'code'),
