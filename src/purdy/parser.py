@@ -122,6 +122,7 @@ LexerSpec.built_ins = {
 #: Map of aliases for lexer names
 LexerSpec.aliases = {
     "htm": "html",
+    "rust": "rs",
     "tcon": "tuicon",
     "tcss": "css",
     "txt": "plain",
