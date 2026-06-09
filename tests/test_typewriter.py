@@ -147,3 +147,52 @@ class TestTypewriter(TestCase):
         expected = "plain [escaped] string\ntextual markup string" + CURSOR_CHAR
         value = results[-1].text.plain
         self.assertEqual(expected, value)
+
+    def test_more_pager_console(self):
+        text = "$ cat count.txt"
+        for x in range(20):
+            text = text + f"\n{x}"
+
+        code = Code.text(text, "con")
+        doc = Document(code)
+        rs = RenderState(doc)
+
+        result = code_typewriterize(rs, code, more=10)
+
+        # Console has a prompt and 20 output lines, first 14 are the animation
+        # of the prompt, check the rest of the TypewriterOutput objects and
+        # make sure the right ones are Wait state (there display shows extra
+        # \n in the animation, so there is an off-by-one thing going on
+        self.assertEqual(34, len(result))
+        for count, output in enumerate(result):
+            if count in [21, 30]:
+                # Lines where the pager kicks in
+                self.assertEqual("W", output.state)
+            elif count >= 14:
+                # This is everything after the prompt animation that isn't a
+                # pager line
+                self.assertEqual(None, output.state)
+
+    def test_more_pager_non_console(self):
+        src = ""
+        for x in range(30):
+            src += chr(48 + x) + "\n"
+
+        code = Code.text(src, "py")
+        doc = Document(code)
+        rs = RenderState(doc)
+
+        result = code_typewriterize(rs, code, more=10)
+
+        # "src" contains single ASCII characters starting from 0, check the
+        # TypewriterOutput objects and make sure the right ones are Wait state
+        # (there display shows extra \n in the animation, so there is an
+        # off-by-one thing going on
+        self.assertEqual(30, len(result))
+        for count, output in enumerate(result):
+            if count in [8, 17, 26]:
+                # Lines where the pager kicks in
+                self.assertEqual("W", output.state)
+            else:
+                # Everything else is a pause typing state
+                self.assertEqual("P", output.state)

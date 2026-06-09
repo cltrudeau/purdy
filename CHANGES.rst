@@ -1,7 +1,9 @@
-2.?
-===
+2.4.0
+=====
 
-* YYYY/MM/DD
+* 2026/06/09
+* Add "more" style pager for output in the `.typewriter` action to allow the
+  limitation of the number of output lines at a time
 * Added alias for Rust lexer
 
 

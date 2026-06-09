@@ -13,6 +13,12 @@ from purdy.renderers.textual import TextualFormatter, _CODE_TAG_EXCEPTIONS
 from purdy.tui.tui_content import EscapeText
 from purdy.tokens import LineNumber, token_is_a
 
+import logging
+logger = logging.getLogger(__name__)
+logging.basicConfig(filename='debug.log', encoding='utf-8', level=logging.DEBUG)
+logger.debug(50*"*")
+logger.debug("\n\n\n")
+
 # ===========================================================================
 
 TypewriterOutput = namedtuple("TypewriterOutput", ["text", "state"])
@@ -20,7 +26,7 @@ TypewriterOutput = namedtuple("TypewriterOutput", ["text", "state"])
 
 class _CodeTypewriter:
     def __init__(self, base_render_state, src_code, skip_comments,
-            skip_whitespace, prompt_wait):
+            skip_whitespace, prompt_wait, more):
         self.base_render_state = copy(base_render_state)
         self.base_render_state.formatter = TextualFormatter(src_code,
             _CODE_TAG_EXCEPTIONS)
@@ -29,6 +35,9 @@ class _CodeTypewriter:
         self.skip_comments = skip_comments
         self.skip_whitespace = skip_whitespace
         self.prompt_wait = prompt_wait
+        self.more = more
+        if self.more is not None:
+            self.more -= 1
 
         self.is_console = src_code.parser.lexer_spec.console
 
@@ -49,6 +58,100 @@ class _CodeTypewriter:
         del self.typing_line.parts[-1]  # cursor
         self.typing_rs.content = TContent()
 
+    def _check_more(self):
+        logger.debug(f"{self.more} {self.more_counter} -- {self.results[-1].text}")
+        if self.more is not None and self.more_counter >= self.more:
+            # We're in "more" paging mode and hit our limit, change the
+            # last line to be a wait state
+            last = TypewriterOutput(text=self.results[-1].text, state="W")
+            del self.results[-1]
+            self.results.append(last)
+            self.more_counter = 0
+
+    def _process_line_parts(self, src_line):
+        # Skip any starting prompt which might be multiple tokens
+        start_at = 0
+        first_part = src_line.parts[0]
+        if self.is_console and token_is_a(first_part.token, Generic.Prompt):
+            start_at = 1
+
+            if token_is_a(first_part.token, Generic.Prompt.VirtualEnv):
+                prompt_part = copy(first_part)
+                for part in src_line.parts[1:]:
+                    start_at += 1
+
+                    if token_is_a(part.token, Generic.Prompt):
+                        prompt_part.text += part.text
+                        self._skip_part(prompt_part, state="W")
+                        break
+
+                    # Multi-part prompt, keep collecting
+                    prompt_part.text += part.text
+            else:
+                # Single part prompt, just skip it
+                self._skip_part(first_part, state="W")
+
+        # Typewriterize the rest of the line
+        for src_part in src_line.parts[start_at:]:
+            src_token = src_part.token
+            part = CodePart(token=src_token, text="")
+
+            if self.skip_comments and token_is_a(src_token, Comment):
+                # Don't animate comments
+                self._skip_part(src_part)
+                continue
+
+            if self.skip_whitespace:
+                # Don't animate whitespace; this can be a specific token,
+                # or just blank text
+                skip_it = token_is_a(src_token, Whitespace)
+
+                if token_is_a(src_token, Text):
+                    skip_it |= src_part.text.isspace()
+
+                if skip_it:
+                    self._skip_part(src_part)
+                    continue
+
+            for char in src_part.text:
+                # Add the character to the part, put it in the line and
+                # put that in the results listing
+                part.text += char
+                self.typing_line.parts.append(part)
+                self.typing_line.parts.append(CURSOR)
+
+                self.typing_rs.formatter.render_code_line(self.typing_rs,
+                    self.typing_line)
+
+                result = TypewriterOutput(
+                    text=self.cached_rs.content + self.typing_rs.content,
+                    state="P"
+                )
+                self.results.append(result)
+
+                # Remove the partial part and the cursor, then reset for
+                # the next line
+                del self.typing_line.parts[-1]  # cursor
+                del self.typing_line.parts[-1]  # partial part
+                self.typing_rs.content = TContent()
+
+            self.typing_line.parts.append(src_part)
+
+        if self.is_console and self.prompt_wait \
+                and token_is_a(src_line.parts[0].token, Generic.Prompt):
+            # Replace the final action with a Wait state instead of a
+            # pause
+            last = TypewriterOutput(text=self.results[-1].text, state="W")
+            del self.results[-1]
+            self.results.append(last)
+
+        self._check_more()
+
+        # Update the cached result with the final value of line
+        self.cached_rs.formatter.render_code_line(self.cached_rs,
+            self.typing_line)
+
+
     def _run(self):
         """Returns a list of :class:`textual.content.Content` objects
         representing a series of steps used to emulate typing of this source
@@ -56,11 +159,13 @@ class _CodeTypewriter:
         self.results = []
         self.cached_rs = copy(self.base_render_state)
         self.cached_rs.content = TContent()
+        self.more_counter = 0
 
         for src_line in self.src_code.lines:
             self.typing_rs = copy(self.cached_rs)
             self.typing_rs.content = TContent()
             self.typing_line = src_line.spawn()
+            self.more_counter += 1
 
             if self.typing_rs.doc.line_numbers_enabled:
                 num = self.cached_rs.next_line_number()
@@ -83,6 +188,7 @@ class _CodeTypewriter:
                         state=None
                     )
                     self.results.append(result)
+                    self._check_more()
 
                     self.cached_rs.formatter.render_code_line(self.cached_rs,
                         src_line)
@@ -90,92 +196,14 @@ class _CodeTypewriter:
                     continue
 
             # --- Typewriter-ize the line's parts
-
-            # Skip any starting prompt which might be multiple tokens
-            start_at = 0
-            first_part = src_line.parts[0]
-            if self.is_console and token_is_a(first_part.token, Generic.Prompt):
-                start_at = 1
-
-                if token_is_a(first_part.token, Generic.Prompt.VirtualEnv):
-                    prompt_part = copy(first_part)
-                    for part in src_line.parts[1:]:
-                        start_at += 1
-
-                        if token_is_a(part.token, Generic.Prompt):
-                            prompt_part.text += part.text
-                            self._skip_part(prompt_part, state="W")
-                            break
-
-                        # Multi-part prompt, keep collecting
-                        prompt_part.text += part.text
-                else:
-                    # Single part prompt, just skip it
-                    self._skip_part(first_part, state="W")
-
-            # Typewriterize the rest of the line
-            for src_part in src_line.parts[start_at:]:
-                src_token = src_part.token
-                part = CodePart(token=src_token, text="")
-
-                if self.skip_comments and token_is_a(src_token, Comment):
-                    # Don't animate comments
-                    self._skip_part(src_part)
-                    continue
-
-                if self.skip_whitespace:
-                    # Don't animate whitespace; this can be a specific token,
-                    # or just blank text
-                    skip_it = token_is_a(src_token, Whitespace)
-
-                    if token_is_a(src_token, Text):
-                        skip_it |= src_part.text.isspace()
-
-                    if skip_it:
-                        self._skip_part(src_part)
-                        continue
-
-                for char in src_part.text:
-                    # Add the character to the part, put it in the line and
-                    # put that in the results listing
-                    part.text += char
-                    self.typing_line.parts.append(part)
-                    self.typing_line.parts.append(CURSOR)
-
-                    self.typing_rs.formatter.render_code_line(self.typing_rs,
-                        self.typing_line)
-
-                    result = TypewriterOutput(
-                        text=self.cached_rs.content + self.typing_rs.content,
-                        state="P"
-                    )
-                    self.results.append(result)
-
-                    # Remove the partial part and the cursor, then reset for
-                    # the next line
-                    del self.typing_line.parts[-1]  # cursor
-                    del self.typing_line.parts[-1]  # partial part
-                    self.typing_rs.content = TContent()
-
-                self.typing_line.parts.append(src_part)
-
-            if self.is_console and self.prompt_wait \
-                    and token_is_a(src_line.parts[0].token, Generic.Prompt):
-                # Replace the final action with a Wait state instead of a
-                # pause
-                last = TypewriterOutput(text=self.results[-1].text, state="W")
-                del self.results[-1]
-                self.results.append(last)
-
-            # Update the cached result with the final value of line
-            self.cached_rs.formatter.render_code_line(self.cached_rs,
-                self.typing_line)
+            logger.debug("*** calling PLP %s", src_line)
+            self._process_line_parts(src_line)
 
         return self.results
 
 
 def code_typewriterize(render_state, src_code, skip_comments=True,
-        skip_whitespace=True, prompt_wait=False):
+        skip_whitespace=True, prompt_wait=False, more=None):
     """Outputs a list of :class:`TypewriterOutput` objects to represent a
     series of steps in a typing animations
 
@@ -186,9 +214,13 @@ def code_typewriterize(render_state, src_code, skip_comments=True,
     :param skip_comments: When True, animate comments as a single step
     :param skip_whitespace: When True, animate a block of whitespace as a
         single step
+    :param prompt_wait: When True, pause for interaction when at the end of a
+        line beginning with prompt
+    :param more: Mimics the "more" Unix pager. Pause after `more` number of
+        lines of output. Defaults to None
     """
     tw = _CodeTypewriter(render_state, src_code, skip_comments, skip_whitespace,
-        prompt_wait)
+        prompt_wait, more)
     return tw._run()
 
 # ---------------------------------------------------------------------------
