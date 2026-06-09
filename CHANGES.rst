@@ -1,3 +1,11 @@
+2.4.1
+=====
+
+* 2026/06/09
+* Remove logging that wasn't supposed to be committed all of 5 minutes ago,
+  sigh
+
+
 2.4.0
 =====
 

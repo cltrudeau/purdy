@@ -13,12 +13,6 @@ from purdy.renderers.textual import TextualFormatter, _CODE_TAG_EXCEPTIONS
 from purdy.tui.tui_content import EscapeText
 from purdy.tokens import LineNumber, token_is_a
 
-import logging
-logger = logging.getLogger(__name__)
-logging.basicConfig(filename='debug.log', encoding='utf-8', level=logging.DEBUG)
-logger.debug(50*"*")
-logger.debug("\n\n\n")
-
 # ===========================================================================
 
 TypewriterOutput = namedtuple("TypewriterOutput", ["text", "state"])
@@ -59,7 +53,6 @@ class _CodeTypewriter:
         self.typing_rs.content = TContent()
 
     def _check_more(self):
-        logger.debug(f"{self.more} {self.more_counter} -- {self.results[-1].text}")
         if self.more is not None and self.more_counter >= self.more:
             # We're in "more" paging mode and hit our limit, change the
             # last line to be a wait state
@@ -196,7 +189,6 @@ class _CodeTypewriter:
                     continue
 
             # --- Typewriter-ize the line's parts
-            logger.debug("*** calling PLP %s", src_line)
             self._process_line_parts(src_line)
 
         return self.results
