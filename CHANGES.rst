@@ -1,3 +1,10 @@
+2.5.0
+=====
+
+* 2026/09/10
+* Update dependencies and tested with Python 3.15.0rc2
+
+
 2.4.1
 =====
 
