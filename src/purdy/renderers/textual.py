@@ -102,7 +102,8 @@ class TextualFormatter(Formatter):
             markup += self.newline
 
         # Now get Textual to render that mess
-        render_state.content += Content.from_markup(markup, **part_map)
+        content = Content.from_markup(markup, **part_map)
+        render_state.content += content.expand_tabs(4)
 
     def part_to_content(self, token, value):
         token = token_ancestor(token, self.ancestor_list)

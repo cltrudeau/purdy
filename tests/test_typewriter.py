@@ -2,6 +2,7 @@ from unittest import TestCase
 
 from purdy.content import Code, Document, RenderState
 from purdy.parser import CURSOR_CHAR
+from purdy.renderers.textual import to_textual
 from purdy.tui.tui_content import EscapeText, TextSection
 from purdy.tui.typewriter import code_typewriterize, textual_typewriterize
 
@@ -89,6 +90,15 @@ class TestTypewriter(TestCase):
         expected = ">>> x\nThis is a whole\nbunch of output text\n"
         value = result[-1].text.plain
         self.assertEqual(expected, value)
+
+    def test_console_output_tabs_use_four_column_stops(self):
+        code = Code.text(">>> x\n\talpha\tbeta\n", "repl")
+        doc = Document(code)
+        expected = ">>> x\n    alpha   beta\n"
+
+        self.assertEqual(expected, to_textual(doc).plain)
+        self.assertEqual(expected,
+            code_typewriterize(RenderState(doc), code)[-1].text.plain)
 
     def test_typewriter_bash(self):
         code = Code.text("$ pgm\noutput", "con")
