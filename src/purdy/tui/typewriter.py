@@ -219,12 +219,12 @@ def code_typewriterize(render_state, src_code, skip_comments=True,
 
 MARKUP_CURSOR = "[white]" + CURSOR_CHAR + "[/]"
 
-def _plain_typewriterize(results, base_render_state, rendered, line):
+def _plain_typewriterize(results, base_render_state, formatter, rendered, line):
     current = TContent()
 
     if base_render_state.doc.line_numbers_enabled:
         num = base_render_state.next_line_number()
-        current += base_render_state.formatter.part_to_content(LineNumber, num)
+        current += formatter.part_to_content(LineNumber, num)
 
     for char in line:
         current += char
@@ -246,14 +246,19 @@ def textual_typewriterize(base_render_state, section):
     """
     results = []
     rendered = TContent()
+    # `_pre_render()` assigns `render_state.formatter` while walking the
+    # sections already in the document, so an animation started on an empty
+    # document has no formatter. Build one from the section being animated;
+    # it also carries the theme used for line numbers.
+    formatter = TextualFormatter(section, _CODE_TAG_EXCEPTIONS)
     tokenizer = MarkupTokenizer()
     tag = ""
 
     for line in section.lines:
         if isinstance(line, EscapeText):
             # Handle plain text as a special case
-            result = _plain_typewriterize(results, base_render_state, rendered,
-                line)
+            result = _plain_typewriterize(results, base_render_state, formatter,
+                rendered, line)
             rendered += result
             continue
 
@@ -262,8 +267,7 @@ def textual_typewriterize(base_render_state, section):
 
         if base_render_state.doc.line_numbers_enabled:
             num = base_render_state.next_line_number()
-            rendered += base_render_state.formatter.part_to_content(LineNumber,
-                num)
+            rendered += formatter.part_to_content(LineNumber, num)
 
         for token in tokenizer(line, ("inline", "")):
             if token.name == "text":
