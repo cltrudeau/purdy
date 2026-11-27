@@ -148,6 +148,34 @@ class TestTypewriter(TestCase):
         value = results[-1].text.plain
         self.assertEqual(expected, value)
 
+    def test_textual_typewriter_line_numbers_escaped_text(self):
+        section = TextSection()
+        section.lines.append(EscapeText("plain text\n"))
+
+        doc = Document()
+        doc.line_numbers_enabled = True
+        rs = RenderState(doc)
+
+        results = textual_typewriterize(rs, section)
+
+        # First step is the line number followed by the first character
+        self.assertEqual("1 p" + CURSOR_CHAR, results[0].text.plain)
+        self.assertEqual("1 plain text\n" + CURSOR_CHAR,
+            results[-1].text.plain)
+
+    def test_textual_typewriter_line_numbers_markup(self):
+        section = TextSection("markup [blue]text[/]")
+
+        doc = Document()
+        doc.line_numbers_enabled = True
+        rs = RenderState(doc)
+
+        results = textual_typewriterize(rs, section)
+
+        self.assertEqual("1 m" + CURSOR_CHAR, results[0].text.plain)
+        self.assertEqual("1 markup text" + CURSOR_CHAR,
+            results[-1].text.plain)
+
     def test_more_pager_console(self):
         text = "$ cat count.txt"
         for x in range(20):
